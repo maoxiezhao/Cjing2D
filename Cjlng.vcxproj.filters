@@ -8,10 +8,30 @@
     <Filter Include="main">
       <UniqueIdentifier>{9aae537e-f830-4670-a11b-37eb5110eba9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{bea89fe2-ed86-4003-bb88-64110c31c051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{cd26037b-852c-41f5-9640-65c0b2835ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="entity">
+      <UniqueIdentifier>{1040fe9f-1a4d-40a2-9ae9-cf6cd9267a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hero">
+      <UniqueIdentifier>{f0ef9234-51e0-49e9-a045-a45b29689131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{9a0fe236-14f6-4a94-bdea-c47a161ca9e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
       <Filter>main</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\common\common.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

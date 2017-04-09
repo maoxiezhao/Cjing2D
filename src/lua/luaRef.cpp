@@ -1,4 +1,5 @@
 #include "luaRef.h"
+#include "luaTools.h"
 
 LuaRef::LuaRef():
 	l(nullptr),
@@ -88,11 +89,23 @@ void LuaRef::Clear()
 	mRef = LUA_REFNIL;
 }
 
+/**
+*	\brief 将引用的lua object压栈
+*/
 void LuaRef::Push()const
 {
-	
+	if (IsEmpty())
+		return;
+	lua_rawgeti(l, LUA_REGISTRYINDEX, mRef);
 }
 
+/**
+*	\brief 调用引用的Lua object
+*/
 void LuaRef::Call(const std::string & functionName)const
 {
+	if (IsEmpty())
+		return;
+	Push();
+	LuaTools::CallFunction(l, 0, 0, functionName);
 }

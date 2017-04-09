@@ -22,10 +22,27 @@ void LuaContext::OnMainStart()
 	lua_pop(l, 1);
 }
 
+void LuaContext::OnMainUpdate()
+{
+	PushMain(l);
+	OnUpdate();
+	lua_pop(l, 1);
+}
+
+void LuaContext::OnMainFinish()
+{
+	PushMain(l);
+	OnFinish();
+	lua_pop(l, 1);
+}
+
 int LuaContext::main_api_hello(lua_State* l)
 {
-	cout << "hello world." << endl;
-	return 0;
+	return LuaTools::ExceptionBoundary(l, [&] {
+		
+		cout << "hello world." << endl;
+		return 0;
+	});
 }
 
 void LuaContext::PushMain(lua_State*l)

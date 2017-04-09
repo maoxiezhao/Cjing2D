@@ -12,8 +12,9 @@ using std::endl;
 using std::vector;
 using std::string;
 
-
-
+#ifdef _MSC_VER
+	#pragma warning( disable : 4522 4800)
+#endif
 
 
 #endif

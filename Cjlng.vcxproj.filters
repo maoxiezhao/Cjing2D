@@ -55,6 +55,18 @@
     <ClCompile Include="src\core\logger.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\timer.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\system.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\app.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\luaException.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -77,6 +89,18 @@
     </ClInclude>
     <ClInclude Include="src\core\logger.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\timer.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\system.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\app.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\luaException.h">
+      <Filter>lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

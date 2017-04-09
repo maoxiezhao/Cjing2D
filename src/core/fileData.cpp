@@ -1,5 +1,5 @@
 #include"fileData.h"
-
+#include"debug.h"
 #include<physfs.h>
 #include<iostream>
 
@@ -48,12 +48,12 @@ namespace FileData
 	string ReadFile(const string& name)
 	{
 		// 确保文件存在
-		if (!PHYSFS_exists(name.c_str()))
-			std::cout << "the file:" << name << " isn't exits." << std::endl;
+		Debug::CheckAssertion(PHYSFS_exists(name.c_str()),
+			string("the file:") + name + " isn't exits.");
 
 		PHYSFS_file* file = PHYSFS_openRead(name.c_str());
-		if (file == nullptr)
-			std::cout << "the file:" << name << "loaded failed." << std::endl;
+		Debug::CheckAssertion(file != nullptr,
+			string("the file:") + name + " loaded failed.");
 		
 		size_t size = static_cast<size_t>(PHYSFS_fileLength(file));
 		vector<char> buffer(size);
@@ -68,10 +68,10 @@ namespace FileData
 	{
 		PHYSFS_File* file = PHYSFS_openWrite(name.c_str());
 		if (file == nullptr)
-			std::cout << "the file:" << name << "created failed." << std::endl;
+			Debug::Die(string("the file:") + name + " created failed.");
 
-		if(PHYSFS_write(file,buffer.data(),(PHYSFS_uint32)buffer.size(),1))
-			std::cout << "the file:" << name << "writed failed." << std::endl;
+		if (PHYSFS_write(file, buffer.data(), (PHYSFS_uint32)buffer.size(), 1))
+			Debug::Die(string("the file:") + name + "writed failed.");
 
 		PHYSFS_close(file);
 	}

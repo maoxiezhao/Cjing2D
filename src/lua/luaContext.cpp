@@ -1,5 +1,8 @@
 #include"luaContext.h"
 #include"core\fileData.h"
+#include"core\debug.h"
+
+std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 
 LuaContext::LuaContext()
 {
@@ -18,6 +21,7 @@ LuaContext::~LuaContext()
 void LuaContext::Initialize()
 {
 	l = luaL_newstate();
+	lua_atpanic(l, api_panic);
 	luaL_openlibs(l);
 	mLuaContexts[l] = this;
 
@@ -47,10 +51,20 @@ void LuaContext::Initialize()
 
 }
 
-void  LuaContext::Update()
+/**
+*	\brief 刷新Lua
+*
+*	包括刷新timers,menu,drawable,movements
+*/
+void LuaContext::Update()
 {
+	UpdateTimers();
 
+	OnMainUpdate();
+	Debug::CheckAssertion(lua_gettop(l) == 0,
+		"There are something in lua stack after update");
 }
+
 
 /**
 *	\brief 关闭lua
@@ -59,6 +73,8 @@ void LuaContext::Exit()
 {
 	if (l != nullptr)
 	{
+		DestoryTimers();
+
 		lua_close(l);
 		mLuaContexts.erase(l);
 		l = nullptr;
@@ -178,5 +194,20 @@ void LuaContext::OnFinish()
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
+	RegisterTimeModule();
 }
 
+LuaContext& LuaContext::GetLuaContext(lua_State* l)
+{
+	return *mLuaContexts[l];
+}
+
+/**
+*	\brief unprotected lua error发生时调用
+*/
+int LuaContext::api_panic(lua_State*l)
+{
+	string errmsg = LuaTools::CheckString(l, -1);
+	Debug::Die(errmsg);
+	return 0;
+}

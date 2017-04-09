@@ -1,6 +1,7 @@
 #ifndef _LUA_REF_H_
 #define _LUA_REF_H_
 
+#include"common\common.h"
 #include<lua.hpp>
 #include<string>
 

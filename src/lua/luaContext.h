@@ -3,6 +3,8 @@
 
 #include"common\common.h"
 #include"lua\luaTools.h"
+#include"lua\luaRef.h"
+#include"game\timer.h"
 
 #include<map>
 #include<list>
@@ -26,6 +28,7 @@ public:
 	void Exit();
 
 	// script
+	static LuaContext& GetLuaContext(lua_State* l);
 	bool DoFileIfExists(lua_State*l,const string& name);
 	bool LoadFile(lua_State*l, const string& name);
 	bool FindMethod(const string& name);
@@ -45,7 +48,9 @@ public:
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
 	static FunctionExportToLua
-		// tester main
+		// error
+		api_panic,
+		// main
 		main_api_hello,
 		
 		// time
@@ -54,7 +59,20 @@ public:
 	// main api	-- test 
 	void PushMain(lua_State*l);
 	void OnMainStart();
-	
+	void OnMainUpdate();
+	void OnMainFinish();
+
+	// time api
+	struct TimerData
+	{
+		LuaRef callBackRef;
+		const void* l;
+	};
+	void AddTimer(const TimerPtr& timer,int constext,const LuaRef& callback);
+	void CallTimerRef(const TimerPtr& timer);
+	void UpdateTimers();
+	void DestoryTimers();
+
 	// modules name
 	static const string module_prefix_name;
 	static const string module_main_name;
@@ -62,9 +80,13 @@ public:
 
 private:
 	lua_State* l;
-	std::map<lua_State*, LuaContext*>mLuaContexts;/* 用于在lua APi中通过lua_state获取
-														luaContext */
-	
+	static std::map<lua_State*, LuaContext*>mLuaContexts;/* 用于在lua APi中通过lua_state获取
+														    luaContext */
+
+	std::map<TimerPtr, TimerData>mTimers;				 /* 存储了定时器，每个定时器映射的对
+														    应的callback*/
+	std::list<TimerPtr>mTimersToRemove;
+
 };
 
 #endif

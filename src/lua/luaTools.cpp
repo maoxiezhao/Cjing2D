@@ -6,6 +6,10 @@
 
 namespace LuaTools
 {
+	LuaRef CreateRef(lua_State * l)
+	{
+		return LuaRef(l, luaL_ref(l, LUA_REGISTRYINDEX));
+	}
 	LuaRef CreateRef(lua_State * l, int index)
 	{
 		lua_pushvalue(l, index);

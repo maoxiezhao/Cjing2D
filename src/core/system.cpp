@@ -11,7 +11,7 @@ uint32_t System::Now()
 
 uint32_t System::RealTime()
 {
-	return (uint32_t)timeGetTime();
+	return (uint32_t)GetTickCount();
 }
 
 void System::Sleeps(uint32_t duration)

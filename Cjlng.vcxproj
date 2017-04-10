@@ -91,6 +91,7 @@
     <ClCompile Include="src\lua\luaRef.cpp" />
     <ClCompile Include="src\lua\luaTools.cpp" />
     <ClCompile Include="src\lua\mainApi.cpp" />
+    <ClCompile Include="src\lua\menuApi.cpp" />
     <ClCompile Include="src\lua\timeApi.cpp" />
     <ClCompile Include="src\main\main.cpp" />
   </ItemGroup>

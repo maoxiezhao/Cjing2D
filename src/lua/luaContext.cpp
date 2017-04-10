@@ -1,10 +1,12 @@
 #include"luaContext.h"
 #include"core\fileData.h"
 #include"core\debug.h"
+#include"game\app.h"
 
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 
-LuaContext::LuaContext()
+LuaContext::LuaContext(App* app):
+	mApp(app)
 {
 }
 
@@ -59,6 +61,7 @@ void LuaContext::Initialize()
 void LuaContext::Update()
 {
 	UpdateTimers();
+	UpdateMenus();
 
 	OnMainUpdate();
 	Debug::CheckAssertion(lua_gettop(l) == 0,
@@ -74,11 +77,17 @@ void LuaContext::Exit()
 	if (l != nullptr)
 	{
 		DestoryTimers();
+		DestoryMenus();
 
 		lua_close(l);
 		mLuaContexts.erase(l);
 		l = nullptr;
 	}
+}
+
+App * LuaContext::GetApp() const
+{
+	return mApp;
 }
 
 bool LuaContext::DoFileIfExists(lua_State* l, const string& name)
@@ -171,6 +180,30 @@ void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * fu
 		luaL_setfuncs(l, functions,0);
 
 	lua_pop(l, 1);
+}
+
+/**
+*	\brief 为栈顶元素创建一个新的LuaRef引用
+*/
+LuaRef LuaContext::CreateRef()
+{
+	return LuaTools::CreateRef(l);
+}
+
+/**
+*	\brief 将LuaRef引用对象压栈
+*
+*	如果LuaRef为空，则压入nil
+*/
+void LuaContext::PushRef(lua_State * l, const LuaRef & luaref)
+{
+	if (luaref.IsEmpty())
+	{
+		lua_pushnil(l);
+		return;
+	}
+	// need to judge these lua_State?
+	luaref.Push();
 }
 
 void LuaContext::OnStart()

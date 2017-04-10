@@ -1,4 +1,5 @@
 #include"luaContext.h"
+#include"game\app.h"
 
 const string LuaContext::module_main_name = "Main";
 
@@ -6,6 +7,7 @@ void LuaContext::RegisterMainModule()
 {
 	static const luaL_Reg functions[] = {
 		{"sayHello",main_api_hello},
+		{"Exit",main_api_exit},
 		{nullptr,nullptr }
 	};
 
@@ -41,6 +43,15 @@ int LuaContext::main_api_hello(lua_State* l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		
 		cout << "hello world." << endl;
+		return 0;
+	});
+}
+
+int LuaContext::main_api_exit(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		
+		GetLuaContext(l).GetApp()->SetExiting(true);
 		return 0;
 	});
 }

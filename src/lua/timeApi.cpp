@@ -1,8 +1,8 @@
 #include"luaContext.h"
 #include"luaRef.h"
 #include"core\debug.h"
-
-const string LuaContext::module_time_name = "Time";
+#include"core\system.h"
+const string LuaContext::module_time_name = "Timer";
 
 void LuaContext::RegisterTimeModule()
 {
@@ -115,7 +115,8 @@ int LuaContext::time_api_start(lua_State* l)
 	{
 		if (lua_type(l, 1) != LUA_TUSERDATA && lua_type(l, 1) != LUA_TTABLE)
 			// type error
-			std::cout << "wrong type." << std::endl;
+			LuaTools::Error(l, "wrong type.");
+
 	}
 
 	int delay = LuaTools::CheckInt(l, 2);

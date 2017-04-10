@@ -67,6 +67,9 @@
     <ClCompile Include="src\lua\luaException.cpp">
       <Filter>lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\menuApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

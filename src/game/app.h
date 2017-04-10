@@ -16,6 +16,7 @@ public:
 
 	void Run();
 	void Update();
+	void SetExiting(bool t);
 
 private:
 	bool IsExiting();
@@ -23,6 +24,8 @@ private:
 	void Render();
 
 	std::unique_ptr<LuaContext> mLuaContext;
+	
+	bool mExiting;
 
 };
 

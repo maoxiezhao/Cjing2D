@@ -11,6 +11,7 @@
 */
 namespace LuaTools
 {
+	LuaRef CreateRef(lua_State*l);
 	LuaRef CreateRef(lua_State*l, int index);
 	bool CallFunction(lua_State*l,int arguments,int results,const string& functionName);
 	int  GetPositiveIndex(lua_State*l, int index);

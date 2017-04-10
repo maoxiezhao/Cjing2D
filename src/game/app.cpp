@@ -6,7 +6,8 @@
 #include<Windows.h>
 
 App::App():
-	mLuaContext(nullptr)
+	mLuaContext(nullptr),
+	mExiting(false)
 {
 	Logger::Info("Cjing start initializing.");
 	
@@ -23,7 +24,7 @@ App::App():
 	Logger::Info("Initialize render system");
 
 	// initialize lua
-	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext);
+	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
 
 }
@@ -34,7 +35,7 @@ App::~App()
 		mLuaContext->Exit();
 
 	FileData::CloseData();
-	System::Quit;
+	System::Quit();
 }
 
 /**
@@ -99,9 +100,14 @@ void App::Update()
 	System::Update();
 }
 
+void App::SetExiting(bool t)
+{
+	mExiting = t;
+}
+
 bool App::IsExiting()
 {
-	return true;
+	return mExiting;
 }
 
 void App::CheckInput()

@@ -97,6 +97,8 @@ public:
 	void OnMenuStart(const LuaRef&menuRef);
 	void OnMenuUpdate(const LuaRef&menuRef);
 	void OnMenuFinish(const LuaRef&menuRef);
+	void RemoveMenus(int contextIndex);
+	void RemoveMenus();
 
 	// modules name
 	static const string module_prefix_name;

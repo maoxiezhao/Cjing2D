@@ -31,7 +31,7 @@ namespace LuaTools
 	{
 		int positiveIndex = index;
 		if (index < 0 && index >= -lua_gettop(l))
-			positiveIndex += lua_gettop(l) + index + 1;
+			positiveIndex = lua_gettop(l) + index + 1;
 		
 		return positiveIndex;
 	}

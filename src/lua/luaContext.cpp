@@ -227,6 +227,7 @@ void LuaContext::OnFinish()
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
+	RegisterMenuModule();
 	RegisterTimeModule();
 }
 

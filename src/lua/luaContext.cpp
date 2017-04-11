@@ -1,9 +1,12 @@
 #include"luaContext.h"
 #include"core\fileData.h"
 #include"core\debug.h"
+#include"core\logger.h"
 #include"game\app.h"
+#include<sstream>
 
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
+const string LuaContext::module_name = "cjing";
 
 LuaContext::LuaContext(App* app):
 	mApp(app)
@@ -44,11 +47,19 @@ void LuaContext::Initialize()
 	lua_newtable(l);
 	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
 
+	lua_newtable(l);
+	lua_setglobal(l, module_name.c_str());
 	// 注册函数
 	RegisterModules();
 
+	// 自定义lua require 加载器，用于解析打包的资源文件
+
+
 	// 加载main脚本,并从start出开始执行
+	Debug::CheckAssertion(lua_gettop(l) == 0, "The lua stack is not empty.");
 	DoFileIfExists(l,"main");
+	Debug::CheckAssertion(lua_gettop(l) == 0, "The lua stack is not empty.");
+
 	OnMainStart();
 
 }
@@ -151,7 +162,7 @@ bool LuaContext::FindMethod(const string & name, int index)
 		lua_pop(l, 1);
 		return false;
 	}
-	lua_pushvalue(l, index);// object要作为参数
+	lua_pushvalue(l, positiveIndex);// object要作为参数
 							// -- object -- function object
 	return true;
 }
@@ -165,21 +176,22 @@ bool LuaContext::FindMethod(const string & name, int index)
 */
 void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * functions)
 {
-	lua_getglobal(l, moduleName.c_str());
-	if (lua_isnil(l, -1))	
-	{	
+	lua_getglobal(l, module_name.c_str());
+					// cjing
+	lua_getfield(l, -1, moduleName.c_str());
+					// cjing module/nil
+	if (lua_isnil(l, -1))
+	{				
 		lua_pop(l, 1);
 		lua_newtable(l);
-						// table
-		lua_setglobal(l, moduleName.c_str());
-						// --
-		lua_getglobal(l, moduleName.c_str());
-						// table
+					// cjing module
 	}
 	if (functions != nullptr)
-		luaL_setfuncs(l, functions,0);
-
+		luaL_setfuncs(l, functions, 0);
+	lua_setfield(l, -2, moduleName.c_str());
+					// cjing
 	lua_pop(l, 1);
+					// --
 }
 
 /**
@@ -204,6 +216,35 @@ void LuaContext::PushRef(lua_State * l, const LuaRef & luaref)
 	}
 	// need to judge these lua_State?
 	luaref.Push();
+}
+
+/**
+*	\brief 打印当前Lua栈信息
+*/
+void LuaContext::PrintLuaStack(lua_State * l)
+{
+	int stackSize = lua_gettop(l);
+	std::ostringstream oss;
+	for (int i = 1; i <= stackSize; i++)
+	{
+		switch (lua_type(l,i))
+		{
+		case LUA_TSTRING:
+			oss << "\"" << lua_tostring(l, i) << "\"";
+			break;
+		case LUA_TBOOLEAN:
+			oss << (lua_toboolean(l,i) ? "True" : "False");
+			break;
+		case LUA_TNUMBER:
+			oss << (lua_tonumber(l, i));
+			break;
+		default:
+			oss << lua_typename(l, lua_type(l,i));
+			break;
+		}
+		oss << endl;
+	}
+	Logger::Debug(oss.str());
 }
 
 void LuaContext::OnStart()

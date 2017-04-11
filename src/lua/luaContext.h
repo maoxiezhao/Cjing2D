@@ -39,6 +39,7 @@ public:
 	void RegisterFunction(const string& moduleName, const luaL_Reg* functions);
 	LuaRef CreateRef();
 	void PushRef(lua_State*l,const LuaRef& luaref);
+	void PrintLuaStack(lua_State*l);
 
 	// process
 	void OnStart();
@@ -101,7 +102,7 @@ public:
 	void RemoveMenus();
 
 	// modules name
-	static const string module_prefix_name;
+	static const string module_name;
 	static const string module_main_name;
 	static const string module_time_name;
 	static const string module_menu_name;

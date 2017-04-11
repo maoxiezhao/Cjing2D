@@ -13,11 +13,16 @@ namespace Logger {
 			return errorFile;
 		}
 	}
-
+	
 	void Logger::Print(const string & msg, std::ostream & out)
 	{
 		out << msg << std::endl;
 	}
+
+	void Debug(const string & msg)
+	{
+		Print("Debug:" + msg);
+	} 
 
 	void Logger::Info(const string & msg)
 	{

@@ -11,7 +11,6 @@ void LuaContext::RegisterTimeModule()
 		{ nullptr,nullptr }
 	};
 	RegisterFunction(module_time_name, functions);
-
 }
 
 /**
@@ -111,6 +110,8 @@ int LuaContext::time_api_start(lua_State* l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 
 	LuaContext& luaContext = GetLuaContext(l);
+	//luaContext.PrintLuaStack(l);
+
 	if (lua_type(l, 1) != LUA_TNUMBER)
 	{
 		if (lua_type(l, 1) != LUA_TUSERDATA && lua_type(l, 1) != LUA_TTABLE)

@@ -11,7 +11,7 @@
 namespace Logger
 {
 	void Print(const string& msg, std::ostream&out = std::cout);
-
+	void Debug(const string& msg);
 	void Info(const string& msg);
 	void Warning(const string& msg);
 	void Error(const string& msg);

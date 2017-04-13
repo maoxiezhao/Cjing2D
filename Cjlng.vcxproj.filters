@@ -70,6 +70,12 @@
     <ClCompile Include="src\lua\menuApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\inputEvent.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\random.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -104,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="src\lua\luaException.h">
       <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\inputEvent.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\random.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

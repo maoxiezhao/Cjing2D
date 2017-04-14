@@ -1,4 +1,6 @@
 #include"system.h"
+#include"inputEvent.h"
+#include"video.h"
 #include<Windows.h>
 
 uint32_t System::mInitDate = 0;
@@ -24,6 +26,10 @@ void System::Initialize()
 {
 	mInitDate = RealTime();
 	mTicks = 0;
+
+	// “¿¥Œ≥ı ºªØinput,audio,video
+	InputEvent::Initialize();
+	Video::Initialize();
 }
 
 void System::Update()
@@ -33,4 +39,6 @@ void System::Update()
 
 void System::Quit()
 {
+	Video::Quit();
+	InputEvent::Quit();
 }

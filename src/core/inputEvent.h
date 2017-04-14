@@ -128,8 +128,11 @@ public:
 public:
 	static void Initialize();
 	static void Quit();
+	static bool IsInitialized();
 
 	static std::unique_ptr<InputEvent> GetEvent();
+	KeyEvent GetKeyEvent()const;
+
 	// callback
 	static void key_callback(GLFWwindow* window, int key_in, int scancode, int action, int mode);
 //	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -139,7 +142,6 @@ public:
 	KeyboardKey GetKeyBoardKey()const;
 	bool IsKeyBoardPressed() const;
 	bool IsKeyBoardPressed(KeyboardKey key)const;
-
 	bool IsKeyBoardReleased() const;
 	bool IsKeyBoardReleased(KeyboardKey key)const;
 

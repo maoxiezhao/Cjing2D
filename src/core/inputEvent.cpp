@@ -3,6 +3,19 @@
 std::set<InputEvent::KeyboardKey> InputEvent::mKeyPressed;
 std::queue<InputEvent::KeyEvent> InputEvent::mEventQueue;
 
+void InputEvent::Initialize()
+{
+}
+
+void InputEvent::Quit()
+{
+}
+
+bool InputEvent::IsInitialized()
+{
+	return false;
+}
+
 /**
 *	\brief 获取当前的输入事件
 *
@@ -18,6 +31,11 @@ std::unique_ptr<InputEvent> InputEvent::GetEvent()
 		result = new InputEvent(ent);
 	}
 	return std::unique_ptr<InputEvent>(result);
+}
+
+InputEvent::KeyEvent InputEvent::GetKeyEvent()const
+{
+	return mKeyEvent;
 }
 
 /**

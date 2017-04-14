@@ -3,6 +3,7 @@
 #include"core\logger.h"
 #include"core\system.h"
 #include"core\fileData.h"
+#include"core\video.h"
 #include<Windows.h>
 
 App::App():
@@ -68,6 +69,7 @@ void App::Run()
 		}
 
 		// 1.check input
+		glfwPollEvents();
 		CheckInput();
 
 		// 2.update	对于慢的机器，需要循环多次而跳过一些绘制过程
@@ -107,13 +109,36 @@ void App::SetExiting(bool t)
 
 bool App::IsExiting()
 {
-	return mExiting;
+	return mExiting || Video::IsExiting();
 }
 
+/**
+*	\brief 获取inputEvent
+*/
 void App::CheckInput()
 {
+	std::unique_ptr<InputEvent> ent = InputEvent::GetEvent();
+	while (ent != nullptr)
+	{
+		NotifyInput(*ent);
+		ent = InputEvent::GetEvent();
+	}
 }
 
 void App::Render()
 {
+}
+
+/**
+*	\brief 响应inputEvent，将event分发给外部
+*/
+void App::NotifyInput(const InputEvent & ent)
+{
+	if (ent.IsWindowClosing())
+		SetExiting(true);
+	if (ent.GetKeyEvent().key == InputEvent::KEY_F4 && ent.GetKeyEvent().repeat == false && ent.GetKeyEvent().type == InputEvent::KEYDOWN)
+		Video::SetFullScreen();
+
+	if (ent.GetKeyEvent().key == InputEvent::KEY_F5 && ent.GetKeyEvent().repeat == false && ent.GetKeyEvent().type == InputEvent::KEYDOWN)
+		Video::SetWindowScreen();
 }

@@ -6,6 +6,9 @@
 #include<memory>
 #include<vector>
 #include<iostream>
+#define GLEW_STATIC
+#include<glew.h>
+#include<GLFW\glfw3.h>
 
 using std::cout;
 using std::endl;
@@ -16,5 +19,7 @@ using std::string;
 	#pragma warning( disable : 4522 4800)
 #endif
 
+#define DEFAULT_WINDOW_WIDTH 640
+#define DEFAULT_WINDOW_HEIGHT 480
 
 #endif

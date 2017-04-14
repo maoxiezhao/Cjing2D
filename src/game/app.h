@@ -3,7 +3,7 @@
 
 #include"common\common.h"
 #include"lua\luaContext.h"
-
+#include"core\inputEvent.h"
 
 /**
 *	\brief 程序的主循环
@@ -22,6 +22,7 @@ private:
 	bool IsExiting();
 	void CheckInput();
 	void Render();
+	void NotifyInput(const InputEvent& ent);
 
 	std::unique_ptr<LuaContext> mLuaContext;
 	

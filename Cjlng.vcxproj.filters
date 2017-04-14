@@ -26,6 +26,9 @@
     <Filter Include="lua\luaApi">
       <UniqueIdentifier>{e23619c4-81c5-413c-af86-dfd91cadfbf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{967efb1c-ff14-4570-b9cc-2a808ea0da17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -76,6 +79,12 @@
     <ClCompile Include="src\core\random.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\video.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\luaData.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -117,8 +126,26 @@
     <ClInclude Include="src\core\random.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\video.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\size.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\luaData.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\currentQuest.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\configData.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="src\utils\size.inl">
+      <Filter>utils</Filter>
+    </None>
   </ItemGroup>
 </Project>

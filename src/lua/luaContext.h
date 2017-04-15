@@ -11,7 +11,7 @@
 #include<thirdparty\lua.hpp>
 
 class App;
-
+class InputEvent;
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
  *
@@ -29,6 +29,7 @@ public:
 	void Update();
 	void Exit();
 	App* GetApp()const;
+	bool NotifyInput(const InputEvent& event);
 
 	// script
 	static LuaContext& GetLuaContext(lua_State* l);
@@ -45,12 +46,16 @@ public:
 	void OnStart();
 	void OnUpdate();
 	void OnFinish();
-	
+	bool OnInput(const InputEvent& event);
+	bool OnKeyPressed(const InputEvent& event);
+	bool OnKeyReleased(const InputEvent& event);
+
 	// modules
 	void RegisterModules();
 	void RegisterMainModule();
 	void RegisterTimeModule();
 	void RegisterMenuModule();
+	void RegisterVideoModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -64,13 +69,17 @@ public:
 		time_api_start,
 		// menu
 		menu_api_start,
-		menu_api_stop;
+		menu_api_stop,
+		//video
+		video_api_setFullScreen,
+		video_api_isFullScreen;
 		
 	// main api	-- test 
 	void PushMain(lua_State*l);
 	void OnMainStart();
 	void OnMainUpdate();
 	void OnMainFinish();
+	bool OnMainInput(const InputEvent& event);
 
 	// time api
 	struct TimerData
@@ -98,6 +107,8 @@ public:
 	void OnMenuStart(const LuaRef&menuRef);
 	void OnMenuUpdate(const LuaRef&menuRef);
 	void OnMenuFinish(const LuaRef&menuRef);
+	bool OnMenuInput(int contextIndex,const InputEvent& event);
+	bool OnMenuInput(const InputEvent& event, const LuaRef&menuRef);
 	void RemoveMenus(int contextIndex);
 	void RemoveMenus();
 
@@ -106,6 +117,7 @@ public:
 	static const string module_main_name;
 	static const string module_time_name;
 	static const string module_menu_name;
+	static const string module_video_name;
 
 private:
 	App* mApp;

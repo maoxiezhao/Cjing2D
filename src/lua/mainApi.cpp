@@ -45,6 +45,22 @@ void LuaContext::OnMainFinish()
 	lua_pop(l, 1);
 }
 
+/**
+*	\brief 输入检测
+*
+*	输入事件需要传递给当前的menu
+*	\return 返回当前是否是有效输入
+*/
+bool LuaContext::OnMainInput(const InputEvent& event)
+{
+	PushMain(l);
+	bool handle = OnInput(event);
+	if (!handle)
+		handle = OnMenuInput(-1, event);
+	lua_pop(l, 1);
+	return handle;
+}
+
 int LuaContext::main_api_hello(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
@@ -66,5 +82,4 @@ int LuaContext::main_api_exit(lua_State*l)
 void LuaContext::PushMain(lua_State*l)
 {
 	lua_getfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
-	//lua_getglobal(l, module_main_name.c_str());
 }

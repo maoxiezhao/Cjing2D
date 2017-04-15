@@ -7,7 +7,7 @@ namespace
 {
 	GLFWwindow*  mainWindow = nullptr;
 	GLFWmonitor* mainMonitor = nullptr;
-	bool fullScreen = false;
+	bool fullScreenWindow = false;
 	bool visibleCursor = true;
 	bool initialized = false;
 	Size wantedWindowSize;
@@ -35,7 +35,7 @@ void Video::Initialize()
 	// 创建窗口
 	tilename = "CJING v0.1";
 	mainMonitor = glfwGetPrimaryMonitor();
-	mainWindow = glfwCreateWindow(wantedWindowSize.width, wantedWindowSize.height, tilename.c_str(), fullScreen ? mainMonitor : nullptr, nullptr);
+	mainWindow = glfwCreateWindow(wantedWindowSize.width, wantedWindowSize.height, tilename.c_str(), fullScreenWindow ? mainMonitor : nullptr, nullptr);
 	Debug::CheckAssertion(mainWindow != nullptr, "Cannot create window.");
 
 	// 移动窗口到中心位置
@@ -98,11 +98,20 @@ string Video::GetTitleName()
 /**
 *	\brief 设置为全屏模式
 */
-void Video::SetFullScreen()
+void Video::SetFullScreen(bool fullscreen)
 {
 	Debug::CheckAssertion(IsInitialized(), "No Initialized.");
-	glfwSetWindowPos(mainWindow, 0, 0);	
-	glfwSetWindowMonitor(mainWindow, mainMonitor, 0, 0,wantedWindowSize.width,wantedWindowSize.height, glfwGetVideoMode(mainMonitor)->refreshRate);
+	fullScreenWindow = fullscreen;
+	if (fullScreenWindow)
+	{
+		glfwSetWindowPos(mainWindow, 0, 0);
+		glfwSetWindowMonitor(mainWindow, mainMonitor, 0, 0, wantedWindowSize.width, wantedWindowSize.height, glfwGetVideoMode(mainMonitor)->refreshRate);
+	}
+	else
+	{
+		glfwSetWindowPos(mainWindow, positionWindow.width, positionWindow.height);
+		glfwSetWindowMonitor(mainWindow, nullptr, positionWindow.width, positionWindow.height, wantedWindowSize.width, wantedWindowSize.height, glfwGetVideoMode(mainMonitor)->refreshRate);
+	}
 }
 
 /**
@@ -111,7 +120,14 @@ void Video::SetFullScreen()
 void Video::SetWindowScreen()
 {
 	Debug::CheckAssertion(IsInitialized(), "No Initialized.");
-	//glfwSetWindowPos(mainWindow, 0, 0);
 	glfwSetWindowMonitor(mainWindow, nullptr, positionWindow.width, positionWindow.height, wantedWindowSize.width, wantedWindowSize.height, glfwGetVideoMode(mainMonitor)->refreshRate);
 
+}
+
+/**
+*	\brief 是否是fullScreen
+*/
+bool Video::IsFullScreen()
+{
+	return fullScreenWindow;
 }

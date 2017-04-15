@@ -2,6 +2,7 @@
 #define _INPUT_EVENT_H_
 
 #include"common\common.h"
+#include"game\enumInfo.h"
 #include<GLFW\glfw3.h>
 #include<set>
 #include<queue>
@@ -101,7 +102,11 @@ public:
 		KEY_F12 = GLFW_KEY_F12,
 		KEY_F13 = GLFW_KEY_F13,
 		KEY_F14 = GLFW_KEY_F14,
-		KEY_F15 = GLFW_KEY_F15
+		KEY_F15 = GLFW_KEY_F15,
+
+		KEY_SHIFT = GLFW_KEY_LEFT_SHIFT,
+		KEY_CTRL  = GLFW_KEY_LEFT_CONTROL,
+		KEY_ALT   = GLFW_KEY_LEFT_ALT
 	};
 
 	enum MouseButton
@@ -111,18 +116,25 @@ public:
 		MOUSE_BUTTON_MIDDLE= GLFW_MOUSE_BUTTON_MIDDLE,
 		MOUSE_BUTTON_RIGHT= GLFW_MOUSE_BUTTON_RIGHT
 	};
-	enum KeyType
+	enum KeyState	// 当前按键状态
 	{
 		UNKNOW,
 		KEYDOWN,
 		KEYUP
 	};
+	enum InputType  // 当前输入类型
+	{
+		UNKNOW_INPUT_TYPE,
+		KEYBOARD_INPUT_TYPE,
+		MOUSE_INPUT_TYPE
+	};
 	struct KeyEvent
 	{
 		KeyboardKey key;
-		KeyType type;
+		KeyState state;
+		InputType type;
 		bool repeat;
-		KeyEvent() :key(KEY_NONE), type(UNKNOW), repeat(false) {}
+		KeyEvent() :key(KEY_NONE), state(UNKNOW), type(UNKNOW_INPUT_TYPE),repeat(false) {}
 	};
 
 public:
@@ -132,18 +144,24 @@ public:
 
 	static std::unique_ptr<InputEvent> GetEvent();
 	KeyEvent GetKeyEvent()const;
+	bool IsKeyBoardEvent()const;
+	bool IsMouseEvent()const;
 
 	// callback
 	static void key_callback(GLFWwindow* window, int key_in, int scancode, int action, int mode);
-//	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-//	static void mouse_button_callback(GLFWwindow* window, int button, int action, int modes);
+	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+	static void mouse_button_callback(GLFWwindow* window, int button, int action, int modes);
 
 	// keyboard
 	KeyboardKey GetKeyBoardKey()const;
 	bool IsKeyBoardPressed() const;
 	bool IsKeyBoardPressed(KeyboardKey key)const;
+	bool IsKeyBoardRepeatPressed(KeyboardKey key)const;
 	bool IsKeyBoardReleased() const;
 	bool IsKeyBoardReleased(KeyboardKey key)const;
+	bool IsWithKeyCtrl()const;
+	bool IsWithKeyAlt()const;
+	bool IsWithKeyShift()const;
 
 	// mouse
 	MouseButton GetMouseButton()const;
@@ -160,5 +178,12 @@ private:
 
 };
 
+// 用于获取key枚举值对应的字符
+template<>
+struct EnumInfoTraits<InputEvent::KeyboardKey>
+{
+	static const string prettyName;
+	static const EnumInfo<InputEvent::KeyboardKey>::nameType names;
+};
 
 #endif

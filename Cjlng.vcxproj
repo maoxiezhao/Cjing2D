@@ -88,6 +88,7 @@
     <ClCompile Include="src\core\inputEvent.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
     <ClCompile Include="src\core\random.cpp" />
+    <ClCompile Include="src\core\renderer.cpp" />
     <ClCompile Include="src\core\system.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\game\app.cpp" />
@@ -100,7 +101,9 @@
     <ClCompile Include="src\lua\mainApi.cpp" />
     <ClCompile Include="src\lua\menuApi.cpp" />
     <ClCompile Include="src\lua\timeApi.cpp" />
+    <ClCompile Include="src\lua\videoApi.cpp" />
     <ClCompile Include="src\main\main.cpp" />
+    <ClCompile Include="src\main\test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h" />
@@ -110,20 +113,24 @@
     <ClInclude Include="src\core\inputEvent.h" />
     <ClInclude Include="src\core\logger.h" />
     <ClInclude Include="src\core\random.h" />
+    <ClInclude Include="src\core\renderer.h" />
     <ClInclude Include="src\core\system.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\currentQuest.h" />
+    <ClInclude Include="src\game\enumInfo.h" />
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />
     <ClInclude Include="src\lua\luaException.h" />
     <ClInclude Include="src\lua\luaRef.h" />
     <ClInclude Include="src\lua\luaTools.h" />
+    <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\utils\size.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="src\game\enumInfo.inl" />
     <None Include="src\utils\size.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

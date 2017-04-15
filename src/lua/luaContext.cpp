@@ -3,6 +3,7 @@
 #include"core\debug.h"
 #include"core\logger.h"
 #include"game\app.h"
+#include"game\enumInfo.h"
 #include<sstream>
 
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
@@ -99,6 +100,19 @@ void LuaContext::Exit()
 App * LuaContext::GetApp() const
 {
 	return mApp;
+}
+
+/**
+*	\brief 响应输入事件
+*
+*   调用OnMainInput函数，由main去处理事件
+*/
+bool LuaContext::NotifyInput(const InputEvent & event)
+{
+	Debug::CheckAssertion(lua_gettop(l) == 0, "Stack must empty before NotifyInput.");
+	bool handle = OnMainInput(event);
+	Debug::CheckAssertion(lua_gettop(l) == 0, "Stack must empty after NotifyInput.");
+	return handle;
 }
 
 bool LuaContext::DoFileIfExists(lua_State* l, const string& name)
@@ -265,9 +279,124 @@ void LuaContext::OnFinish()
 		LuaTools::CallFunction(l, 1, 0, "onFinished");
 }
 
+/**
+*	\brief 输入事件响应
+*
+*	根据event的类型(type和state)调用对应的Lua函数
+*/
+bool LuaContext::OnInput(const InputEvent & event)
+{
+	bool handle = false;
+	if (event.IsKeyBoardEvent())
+	{	// 键盘事件
+		if (event.IsKeyBoardPressed())
+			handle = OnKeyPressed(event);
+		if (event.IsKeyBoardReleased())
+			handle = OnKeyReleased(event);
+	}
+	else if (event.IsMouseEvent())
+	{	// 鼠标事件
+	}		
+	return handle;;
+}
+
+/**
+*	\brief 响应键盘按下事件
+*
+*	onKeyPressed(key,modifier),传入3个参数self为调用者key按下的键值,
+*   modifier是否同时按下ctrl/shift/alt lua的函数返回值表示是否是一个
+*   可传递的有效事件
+*   \return 返回值handle如果为true，则表示事件已经结束无需传递
+*/
+bool LuaContext::OnKeyPressed(const InputEvent & event)
+{
+	bool handle = false;
+	if (FindMethod("onKeyPressed"))	// 注意FindMethod会将Ojb复制一份放于stack中
+	{								// obj method obj
+		string key = EnumToString(event.GetKeyBoardKey());
+		if (!key.empty())
+		{
+			lua_pushstring(l, key.c_str());
+			lua_newtable(l);	// 创建modifiers表，用于设置是否同时按下其他修饰按键（主要包括
+								// ctrl、alt、shift)
+			if (event.IsWithKeyShift())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "shift");
+			}
+			if (event.IsWithKeyAlt())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "alt");
+			}
+			if (event.IsWithKeyCtrl())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "ctrl");
+			}
+			bool success = LuaTools::CallFunction(l, 3, 1, "onKeyPressed");
+			if (!success)
+				handle = true;
+			else
+			{
+				handle = lua_toboolean(l, -1);
+				lua_pop(l, 1);
+			}
+		}
+		else// obj mothod obj
+			lua_pop(l, 2);
+	}
+	return handle;
+}
+
+/**
+*	\brief 响应键盘放开事件
+*/
+bool LuaContext::OnKeyReleased(const InputEvent & event)
+{
+	bool handle = false;
+	if (FindMethod("onKeyReleased"))// 注意FindMethod会将Ojb复制一份放于stack中
+	{								// obj method obj
+		string key = EnumToString(event.GetKeyBoardKey());
+		if (!key.empty())
+		{
+			lua_pushstring(l, key.c_str());
+			lua_newtable(l);// modifiers
+
+			if (event.IsWithKeyAlt())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "alt");
+			}
+			if (event.IsWithKeyShift())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "shift");
+			}
+			if (event.IsWithKeyCtrl())
+			{
+				lua_pushboolean(l, 1);
+				lua_setfield(l, -2, "ctrl");
+			}
+			bool success = LuaTools::CallFunction(l, 3, 1, "onKeyReleased");
+			if (!success)
+				handle = true;
+			else
+			{
+				handle = lua_toboolean(l, -1);
+				lua_pop(l, 1);
+			}
+		}
+		else // obj method obj
+			lua_pop(l, 2);
+	}
+	return handle;
+}
+
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
+	RegisterVideoModule();
 	RegisterMenuModule();
 	RegisterTimeModule();
 }

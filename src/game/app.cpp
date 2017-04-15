@@ -136,9 +136,5 @@ void App::NotifyInput(const InputEvent & ent)
 {
 	if (ent.IsWindowClosing())
 		SetExiting(true);
-	if (ent.GetKeyEvent().key == InputEvent::KEY_F4 && ent.GetKeyEvent().repeat == false && ent.GetKeyEvent().type == InputEvent::KEYDOWN)
-		Video::SetFullScreen();
-
-	if (ent.GetKeyEvent().key == InputEvent::KEY_F5 && ent.GetKeyEvent().repeat == false && ent.GetKeyEvent().type == InputEvent::KEYDOWN)
-		Video::SetWindowScreen();
+	bool handle = mLuaContext->NotifyInput(ent);
 }

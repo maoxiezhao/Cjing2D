@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"lua\luaContext.h"
 #include"core\inputEvent.h"
+#include"core\renderer.h"
 
 /**
 *	\brief 程序的主循环

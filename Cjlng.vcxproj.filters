@@ -85,6 +85,15 @@
     <ClCompile Include="src\lua\luaData.cpp">
       <Filter>lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\test.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\videoApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -141,11 +150,23 @@
     <ClInclude Include="src\core\configData.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\renderer.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\enumInfo.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\test.h">
+      <Filter>main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="src\utils\size.inl">
       <Filter>utils</Filter>
+    </None>
+    <None Include="src\game\enumInfo.inl">
+      <Filter>game</Filter>
     </None>
   </ItemGroup>
 </Project>

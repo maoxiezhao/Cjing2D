@@ -16,8 +16,9 @@ public:
 	static void CreateWindow();
 	static void SetTitleName(const string& tname);
 	static string GetTitleName();
-	static void SetFullScreen();
+	static void SetFullScreen(bool fullscreen);
 	static void SetWindowScreen();
+	static bool IsFullScreen();
 };
 
 #endif

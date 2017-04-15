@@ -10,7 +10,6 @@ void LuaContext::RegisterMenuModule()
 		{"Stop",menu_api_stop},
 		{ nullptr,nullptr }
 	};
-
 	RegisterFunction(module_menu_name, functions);
 }
 
@@ -172,4 +171,34 @@ void LuaContext::OnMenuFinish(const LuaRef&menuRef)
 	RemoveMenus(-1);
 	OnFinish();
 	lua_pop(l, 1);
+}
+
+/**
+*	\brief 执行menu的context为指定contextIndex的输入检测
+*/
+bool LuaContext::OnMenuInput(int contextIndex,const InputEvent& event)
+{
+	const void* context = lua_topointer(l, contextIndex);
+	bool handle = false;
+	// 对每个菜单context等于该context调用OnMenuInput
+	std::list<LuaContext::MenuData>::reverse_iterator it;
+	for (it = mMenus.rbegin(); it != mMenus.rend() && !handle;++it)
+	{
+		const LuaRef&menuRef = it->menuRef;
+		if (it->l == context)
+			handle = OnMenuInput(event, menuRef);
+	}
+	return handle;
+}
+
+/**
+*	\brief 执行menu的输入检测
+*/
+bool LuaContext::OnMenuInput(const InputEvent & event, const LuaRef & menuRef)
+{
+	bool handle = false;
+	PushRef(l, menuRef);
+	handle = OnInput(event);
+	lua_pop(l, 1);
+	return handle;
 }

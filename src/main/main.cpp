@@ -5,13 +5,16 @@
 #include"core\random.h"
 #include"core\inputEvent.h"
 #include"utils\size.h"
+
+#include"test.h"
+
 int main(int argc,char** argv)
 {
 	Debug::SetAbortOnDie(true);
 
 	App().Run();
 
-	system("Pause");
+//	system("Pause");
 	return 0;
 }
 

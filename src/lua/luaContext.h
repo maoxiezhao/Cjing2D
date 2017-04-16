@@ -79,6 +79,7 @@ public:
 	void OnMainStart();
 	void OnMainUpdate();
 	void OnMainFinish();
+	void OnMainDraw();
 	bool OnMainInput(const InputEvent& event);
 
 	// time api
@@ -109,6 +110,8 @@ public:
 	void OnMenuFinish(const LuaRef&menuRef);
 	bool OnMenuInput(int contextIndex,const InputEvent& event);
 	bool OnMenuInput(const InputEvent& event, const LuaRef&menuRef);
+	void OnMenuDraw(int contextIndex);
+	void OnMenuDraw(const LuaRef& menuRef);
 	void RemoveMenus(int contextIndex);
 	void RemoveMenus();
 

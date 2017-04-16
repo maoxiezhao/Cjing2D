@@ -46,6 +46,13 @@ void LuaContext::OnMainFinish()
 }
 
 /**
+*	\brief 执行main的绘制操作OnDraw
+*/
+void LuaContext::OnMainDraw()
+{
+}
+
+/**
 *	\brief 输入检测
 *
 *	输入事件需要传递给当前的menu

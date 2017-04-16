@@ -28,7 +28,6 @@ private:
 	std::unique_ptr<LuaContext> mLuaContext;
 	
 	bool mExiting;
-
 };
 
 #endif

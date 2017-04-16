@@ -6,6 +6,7 @@
 #include<memory>
 #include<vector>
 #include<iostream>
+#include <windows.h>
 #define GLEW_STATIC
 #include<glew.h>
 #include<GLFW\glfw3.h>

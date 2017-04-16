@@ -4,6 +4,7 @@
 #include"core\system.h"
 #include"core\fileData.h"
 #include"core\video.h"
+#include"core\renderer.h"
 #include<Windows.h>
 
 App::App():
@@ -27,7 +28,6 @@ App::App():
 	// initialize lua
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
-
 }
 
 App::~App()
@@ -125,8 +125,15 @@ void App::CheckInput()
 	}
 }
 
+/**
+*	\brief Ö´ÐÐ»æÖÆ²Ù×÷
+*/
 void App::Render()
 {
+	Video::CleanCanvas();
+
+
+	Video::Rendercanvas();
 }
 
 /**

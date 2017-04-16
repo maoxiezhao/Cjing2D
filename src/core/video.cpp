@@ -1,6 +1,7 @@
 #include "video.h"
 #include "debug.h"
 #include "inputEvent.h"
+#include "renderer.h"
 #include "utils\Size.h"
 
 namespace
@@ -13,6 +14,7 @@ namespace
 	Size wantedWindowSize;
 	Size positionWindow;
 	string tilename;
+	Renderer* mRenderer = nullptr;
 }
 
 /**
@@ -53,17 +55,23 @@ void Video::Initialize()
 	//glfwSetMouseButtonCallback(window, InputEvent::mouse_button_callback);
 
 	// 初始化glew
+	glewExperimental = GL_TRUE;
 	glewInit();
 	glViewport(0, 0, wantedWindowSize.width, wantedWindowSize.height);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	initialized = true;
+
+	// 初始化渲染模块
+	mRenderer = &Renderer::GetInstance();
+	mRenderer->Initialize();
 }
 
 void Video::Quit()
 {
 	if (!IsInitialized())
 		return;
+	Renderer::GetInstance().Quit();
 	if (mainWindow != nullptr)
 		glfwTerminate();
 }
@@ -73,13 +81,30 @@ bool Video::IsInitialized()
 	return initialized;
 }
 
+/**
+*	\brief 清楚画布，默认设置界面为黑色
+*/
+void Video::CleanCanvas()
+{
+	mRenderer->RenderClear();
+}
+
+/**
+*	\brief 绘制画布
+*
+*	先调用Renderer的render，再执行交换缓冲
+*/
+void Video::Rendercanvas()
+{
+	if (!IsInitialized())
+		return;
+	mRenderer->Render();
+	glfwSwapBuffers(mainWindow);
+}
+
 bool Video::IsExiting()
 {
 	return glfwWindowShouldClose(mainWindow);
-}
-
-void Video::CreateWindow()
-{
 }
 
 void Video::SetTitleName(const string & tname)

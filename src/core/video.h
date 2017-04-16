@@ -12,8 +12,9 @@ public:
 	static void Initialize();
 	static void Quit();
 	static bool IsInitialized();
+	static void CleanCanvas();
+	static void Rendercanvas();
 	static bool IsExiting();
-	static void CreateWindow();
 	static void SetTitleName(const string& tname);
 	static string GetTitleName();
 	static void SetFullScreen(bool fullscreen);

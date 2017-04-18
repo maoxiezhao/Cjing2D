@@ -1,26 +1,26 @@
 #include"color.h"
 
-Color4I::Color4I():
+constexpr Color4B::Color4B():
 	r(0),g(0),b(0),a(0)
 {
 }
 
-inline Color4I::Color4I(GLushort r, GLushort g, GLushort b, GLushort a):
+constexpr Color4B::Color4B(GLubyte r, GLubyte g, GLubyte b, GLubyte a):
 	r(r),g(g),b(b),a(a)
 {
 }
 
-inline int Color4I::GetAlpha() const
+inline constexpr int Color4B::GetAlpha() const
 {
 	return a;
 }
 
-inline void Color4I::SetAlpha(GLushort a)
+inline void Color4B::SetAlpha(GLubyte a)
 {
 	this->a = a;
 }
 
-inline void Color4I::GetColors(GLushort & r, GLushort & g, GLushort & b, GLushort & a) const
+inline void Color4B::GetColors(GLubyte & r, GLubyte & g, GLubyte & b, GLubyte & a) const
 {
 	r = this->r;
 	g = this->g;
@@ -28,7 +28,7 @@ inline void Color4I::GetColors(GLushort & r, GLushort & g, GLushort & b, GLushor
 	a = this->a;
 }
 
-inline void Color4I::SetColors(GLushort r, GLushort g, GLushort b, GLushort a) 
+inline void Color4B::SetColors(GLubyte r, GLubyte g, GLubyte b, GLubyte a) 
 {
 	this->r = r;
 	this->g = g;
@@ -36,12 +36,12 @@ inline void Color4I::SetColors(GLushort r, GLushort g, GLushort b, GLushort a)
 	this->a = a;
 }
 
-bool operator==(const Color4I& lhs, const Color4I& rhs)
+constexpr bool operator==(const Color4B& lhs, const Color4B& rhs)
 {
 	return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
-bool operator!=(const Color4I& lhs, const Color4I& rhs)
+constexpr bool operator!=(const Color4B& lhs, const Color4B& rhs)
 {
 	return lhs.r != rhs.r || lhs.g != rhs.g || lhs.b != rhs.b || lhs.a != rhs.a;
 }

@@ -1,33 +1,37 @@
-#pragma once
+#ifndef _COLOR_H_
+#define _COLOR_H_
 
 #include"common\common.h"
 
 /**
 *	\brief 短整型颜色结构
 */
-class Color4I
+class Color4B
 {
 public:
-	constexpr Color4I();
-	constexpr Color4I(GLushort r, GLushort g, GLushort b, GLushort a);
+	constexpr Color4B();
+	constexpr Color4B(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 	
-	int  GetAlpha()const;
-	void SetAlpha(GLushort a);
-	void GetColors(GLushort& r, GLushort& g, GLushort& b, GLushort&a)const;
-	void SetColors(GLushort r, GLushort g, GLushort b, GLushort a);
+	constexpr int  GetAlpha()const;
+	void SetAlpha(GLubyte a);
+	void GetColors(GLubyte& r, GLubyte& g, GLubyte& b, GLubyte&a)const;
+	void SetColors(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 
-	friend bool operator==(const Color4I& lhs, const Color4I& rhs);
-	friend bool operator!=(const Color4I& lhs, const Color4I& rhs);
+	static const Color4B WHITE;
+	static const Color4B YELLOW;
+	static const Color4B BLUE;
+	static const Color4B GREEN;
+	static const Color4B RED;
+	static const Color4B MAGENTA;
+	static const Color4B BLACK;
 
-	GLushort r, g, b, a;
+private:
 
-	static const Color4I WHITE;
-	static const Color4I YELLOW;
-	static const Color4I BLUE;
-	static const Color4I GREEN;
-	static const Color4I RED;
-	static const Color4I MAGENTA;
-	static const Color4I BLACK;
+	friend constexpr bool operator==(const Color4B& lhs, const Color4B& rhs);
+	friend constexpr bool operator!=(const Color4B& lhs, const Color4B& rhs);
+
+	GLubyte r, g, b, a;
 };
 
 #include"color.inl"
+#endif

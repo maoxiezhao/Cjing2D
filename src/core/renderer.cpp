@@ -1,5 +1,6 @@
 #include"renderer.h"
 #include"renderCommand.h"
+#include"quadCommand.h"
 #include"debug.h"
 #include<algorithm>
 
@@ -131,18 +132,34 @@ void Renderer::InitIndices()
 }
 
 /**
-*	\brief 初始化VAO 和 VBO
+*	\brief 初始化VAO、VBO、VEO
 */
 void Renderer::InitVAOandVBO()
 {
 	Debug::CheckAssertion(mVAO == 0 && mVBO == 0, "The VAO and VBO already assign.");
-	glGenVertexArrays(1, &mVAO);
-	glGenBuffers(1, &mVBO);
+	glGenVertexArrays(1, &mVAO);	// VAO
+	glGenBuffers(1, &mVBO);			// 顶点数据
+	glGenBuffers(1, &mVEO);			// 顶点索引
+
+	// 绑定顶点数据缓冲区
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(mQuads[0])*VBO_SIZE, mQuads, GL_DYNAMIC_DRAW);
+	// 设置vao
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, vertices));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF,colors));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, texs));
+	// 绑定顶点索引
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVEO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(mIndices[0])*VBO_SIZE * 6, mIndices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
 }
 
 /**
@@ -154,7 +171,9 @@ void Renderer::Quit()
 		return;
 	mRenderGroups.clear();
 	mQuadBatches.clear();
-	mVAO = mVBO = 0;
+	glDeleteBuffers(1, &mVBO);
+	glDeleteBuffers(1, &mVEO);
+	mVAO = mVBO = mVEO = 0;
 	mInitialized = false;
 }
 
@@ -195,21 +214,29 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 	for (size_t queueIndex = 0; queueIndex < queueSize; ++queueIndex)
 	{
 		const auto& command = queue[queueIndex];
-		switch (command->GetCommandType())
-		{
-		case RenderCommand::COMMAND_QUAD:
-
-			break;
-		case RenderCommand::COMMAND_CUSTOMER:
-			break;
-		case RenderCommand::COMMAND_BATCH:
-			break;
-		default:
-			Debug::Error("Unknow render command.");
-			break;
-		}
-	}
+		RenderCommand::CommandType commandType = command->GetCommandType();
 		
+		if (commandType == RenderCommand::COMMAND_QUAD)
+		{
+			auto quadCommand = dynamic_cast<QuadCommand*>(command);
+			if (mQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
+			{	// 当前quad数量超过最大值，则先渲染之前保存的
+				Debug::Warning("The quad counts More than the maximum value");
+				Flush();
+			}
+			memcpy(mQuads + mQuadsCounts, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
+			mQuadBatches.push_back(quadCommand);
+			mQuadsCounts += quadCommand->GetQuadCounts();
+		}
+		else if (commandType == RenderCommand::COMMAND_BATCH)
+		{
+		}
+		else if (commandType == RenderCommand::COMMAND_CUSTOMER)
+		{
+		}
+		else
+			Debug::Error("Unknow render command.");
+	}	
 }
 
 /**
@@ -217,6 +244,8 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 */
 void Renderer::RenderAfterClean()
 {
+	for (auto& queue : mRenderGroups)
+		queue.Clear();
 }
 
 /**
@@ -235,7 +264,46 @@ void Renderer::Flush()
 */
 void Renderer::DrawQuadBatches()
 {
-	
+	if (mQuadsCounts <= 0 || mQuadBatches.empty())
+		return;
+	// 重新分配VBO绑定缓冲区大小
+	glBindVertexArray(mVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(mQuads[0])*mQuadsCounts, nullptr, GL_DYNAMIC_DRAW);
+	void*buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+	size_t allocSize = sizeof(mQuads[0])*mQuadsCounts;
+	memcpy_s(buf, allocSize, mQuads, allocSize);
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	int quadToDraw = 0;
+	int startQuad = 0;
+	uint32_t lastQuadState = mQuadBatches[0]->GetShadeState();
+	mQuadBatches[0]->UseShade();
+	for (auto& command : mQuadBatches)
+	{
+		uint32_t currQuadState = command->GetShadeState();
+		if (quadToDraw > 0 && currQuadState != lastQuadState)
+		{	// 如果当前渲染状态不等，则执行渲染
+			glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(mIndices[0])*startQuad * 6));
+			startQuad += quadToDraw;
+			quadToDraw = 0;
+			lastQuadState = currQuadState;
+
+			// 更改为新的着色状态
+			command->UseShade();
+		}
+		quadToDraw++;	// += command->getQuadCount();
+
+	}
+	// 绘制最后的quads
+	if (quadToDraw > 0)
+	{
+		glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(mIndices[0])*startQuad*6));
+	}
+
+	glBindVertexArray(0);
+	mQuadsCounts = 0;
+	mQuadBatches.clear();
 }
 
 bool Renderer::IsInitialized()

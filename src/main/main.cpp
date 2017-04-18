@@ -7,6 +7,8 @@
 #include"utils\size.h"
 
 #include"test.h"
+#include"core\types.h"
+#include"utils\vec2.h"
 
 int main(int argc,char** argv)
 {
@@ -14,7 +16,7 @@ int main(int argc,char** argv)
 
 	App().Run();
 
-//	system("Pause");
+	system("Pause");
 	return 0;
 }
 

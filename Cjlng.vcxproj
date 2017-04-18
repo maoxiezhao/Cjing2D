@@ -85,12 +85,16 @@
   <ItemGroup>
     <ClCompile Include="src\core\debug.cpp" />
     <ClCompile Include="src\core\fileData.cpp" />
+    <ClCompile Include="src\core\glProgram.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
+    <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
     <ClCompile Include="src\core\renderer.cpp" />
+    <ClCompile Include="src\core\shadeResource.cpp" />
     <ClCompile Include="src\core\system.cpp" />
+    <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\game\app.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
@@ -106,23 +110,31 @@
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\test.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
+    <ClCompile Include="src\utils\matrix4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h" />
     <ClInclude Include="src\core\configData.h" />
     <ClInclude Include="src\core\debug.h" />
     <ClInclude Include="src\core\fileData.h" />
+    <ClInclude Include="src\core\glProgram.h" />
+    <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />
     <ClInclude Include="src\core\logger.h" />
+    <ClInclude Include="src\core\quadCommand.h" />
     <ClInclude Include="src\core\random.h" />
     <ClInclude Include="src\core\renderCommand.h" />
     <ClInclude Include="src\core\renderer.h" />
+    <ClInclude Include="src\core\shadeResource.h" />
     <ClInclude Include="src\core\system.h" />
+    <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\currentQuest.h" />
+    <ClInclude Include="src\game\drawable.h" />
     <ClInclude Include="src\game\enumInfo.h" />
+    <ClInclude Include="src\game\sprite.h" />
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />
@@ -131,13 +143,22 @@
     <ClInclude Include="src\lua\luaTools.h" />
     <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\utils\color.h" />
+    <ClInclude Include="src\utils\geometry.h" />
+    <ClInclude Include="src\utils\matrix4.h" />
+    <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\size.h" />
+    <ClInclude Include="src\utils\vec2.h" />
+    <ClInclude Include="src\utils\vec3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\utils\color.inl" />
+    <None Include="src\utils\matrix4.inl" />
+    <None Include="src\utils\point.inl" />
     <None Include="src\utils\size.inl" />
+    <None Include="src\utils\vec2.inl" />
+    <None Include="src\utils\vec3.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

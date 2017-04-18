@@ -6,7 +6,8 @@
 #include<stack>
 
 class RenderCommand;
-
+class QuadCommand;
+class CustomerCommand;
 /**
 *	\brief 渲染队列，用于存放RenderCommand
 */
@@ -39,16 +40,17 @@ public:
 	Renderer(const Renderer&other) = delete;
 	Renderer&operator=(const Renderer& other) = delete;
 
+	// system
 	void Initialize();
 	void Quit();
+	bool IsInitialized();
+	void PushCommand(RenderCommand* command);
+	void PushCommand(RenderCommand* command, int groupIndex);
 
+	// render
 	void RenderClear();
 	void Render();
 	void RenderAfterClean();
-
-	bool IsInitialized();
-	void PushCommand(RenderCommand* command);
-	void PushCommand(RenderCommand* command,int groupIndex);
 
 private:
 	Renderer();
@@ -69,12 +71,14 @@ private:
 
 	GLuint mVAO;
 	GLuint mVBO;
-	GLushort mVEO;
+	GLuint mVEO;
 
+	// render data
 	static const uint32_t VBO_SIZE = 65536;
+	Quad mQuads[VBO_SIZE];
 	GLushort mIndices[VBO_SIZE * 6];
 	int mQuadsCounts;
-	std::vector<RenderCommand*>mQuadBatches;
+	std::vector<QuadCommand*>mQuadBatches;
 
 };
 

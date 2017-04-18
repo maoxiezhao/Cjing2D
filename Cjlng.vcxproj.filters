@@ -100,6 +100,21 @@
     <ClCompile Include="src\utils\color.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\quadCommand.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\matrix4.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\glProgram.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\shadeResource.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\texture.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -174,6 +189,42 @@
     <ClInclude Include="src\utils\color.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\vec3.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\quadCommand.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\vec2.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\sprite.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\drawable.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\glProgram.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\glProgramState.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\shadeResource.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\matrix4.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\geometry.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\point.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\texture.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -184,6 +235,18 @@
       <Filter>game</Filter>
     </None>
     <None Include="src\utils\color.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\vec3.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\vec2.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\matrix4.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\point.inl">
       <Filter>utils</Filter>
     </None>
   </ItemGroup>

@@ -1,10 +1,7 @@
 #ifndef _MATRIX4_H_
 #define _MATRIX4_H_
 
-#include"common\common.h"
-#include"vec2.h"
-#include"vec3.h"
-#include"point.h"
+#include"utils\vec3.h"
 
 /**
 *	\brief æÿ’Û µœ÷
@@ -53,10 +50,13 @@ public:
 private:
 	union 
 	{
-		float M[16];
+		float  M[16];
 		float _M[4][4];
 	};
 };
+
+
+
 
 #include"matrix4.inl"
 

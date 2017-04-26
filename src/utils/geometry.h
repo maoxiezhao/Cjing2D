@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _GEOMETRY_H_
+#define _GEOMETRY_H_
 
 /**
 *	\brief 数学常用定义和常用的数学函数
@@ -16,3 +17,6 @@ namespace Geometry
 		return (float)PI * angle  / 180.0f;
 	}
 }
+
+
+#endif

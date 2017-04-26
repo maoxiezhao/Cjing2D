@@ -1,4 +1,7 @@
 #include "quadCommand.h"
+#include "core\debug.h"
+#include "utils\xxhash.h"
+
 
 QuadCommand::QuadCommand():
 	RenderCommand(COMMAND_QUAD,0.0f),
@@ -16,10 +19,19 @@ QuadCommand::~QuadCommand()
 /**
 *	\brief 初始化quadCommand
 */
-void QuadCommand::Init(float globalOrder, GLuint textureID, Quad * quads, int quadCounts, const BlendFunc & blendFunc)
+void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad * quads, int quadCounts, const BlendFunc & blendFunc)
 {
-	if(mTextureID != textureID || mBlendFunc != blendFunc)
+	mGlobalOrder = globalOrder;
+	mProgramState = programState;
+	mQuadCounts = quadCounts;
+	mQuads = quads;
+
+	if (mTextureID != textureID || mBlendFunc != blendFunc)
+	{
+		mTextureID = textureID;
+		mBlendFunc = blendFunc;
 		GenerateShadeState();
+	}
 }
 
 /**
@@ -27,9 +39,13 @@ void QuadCommand::Init(float globalOrder, GLuint textureID, Quad * quads, int qu
 */
 void QuadCommand::UseShade()
 {
+	Debug::CheckAssertion(mProgramState != nullptr, "Invalid program");
 	// 使用着色器
+	mProgramState->Apply();
 
 	// 绑定纹理
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
 	// 设定混合模式
 	glBlendFunc(mBlendFunc.srcBlend, mBlendFunc.dstBlend);
@@ -55,6 +71,11 @@ BlendFunc QuadCommand::GetBlendFunc() const
 	return mBlendFunc;
 }
 
+Matrix4 QuadCommand::GetTransfomr() const
+{
+	return mTransform;
+}
+
 /**
 *	\brief 生成当前着色状态
 *
@@ -62,5 +83,8 @@ BlendFunc QuadCommand::GetBlendFunc() const
 */
 void QuadCommand::GenerateShadeState()
 {
-	mShadeState = 0;
+	int program = mProgramState->GetProgram();
+	int hashArray[4] = { program,(int)mTextureID,mBlendFunc.srcBlend ,mBlendFunc.dstBlend };
+
+	mShadeState = XXH32((const void*)hashArray, sizeof(hashArray), 0);
 }

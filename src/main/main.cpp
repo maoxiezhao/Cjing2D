@@ -9,11 +9,16 @@
 #include"test.h"
 #include"core\types.h"
 #include"utils\vec2.h"
+#include"core\resourceCache.h"
+#include"core\fileData.h"
+#include"utils\rectangle.h"
+#include"utils\matrix4.h"
 
 int main(int argc,char** argv)
 {
 	Debug::SetAbortOnDie(true);
 
+	//Test();
 	App().Run();
 
 	system("Pause");

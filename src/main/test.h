@@ -20,3 +20,5 @@ struct EnumInfoTraits<TestNumber>
 	static const string prettyName;
 	static const EnumInfo<TestNumber>::nameType names;
 };
+
+void Test();

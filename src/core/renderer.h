@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"core\types.h"
+
 #include<stack>
 
 class RenderCommand;
@@ -62,6 +63,7 @@ private:
 	void VisitRenderQueue(const RenderQueue& queue);
 	void Flush();
 	void DrawQuadBatches();
+//	void TransformQuadsToWorld(Quad* mQuads, int quadCount,const Matrix4 transform);
 
 	std::vector<RenderQueue> mRenderGroups;
 	std::stack<int> mRenderGroupsStack;

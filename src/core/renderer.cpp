@@ -225,6 +225,8 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 				Flush();
 			}
 			memcpy(mQuads + mQuadsCounts, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
+//			TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(),quadCommand->GetTransfomr());
+
 			mQuadBatches.push_back(quadCommand);
 			mQuadsCounts += quadCommand->GetQuadCounts();
 		}
@@ -305,6 +307,20 @@ void Renderer::DrawQuadBatches()
 	mQuadsCounts = 0;
 	mQuadBatches.clear();
 }
+
+/**
+*	\brief quad顶点指定变换操作
+
+void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 transform)
+{
+	for (int index = 0; index < quadCount; ++index)
+	{
+		transform.Transform(mQuads[index].lt.vertices);
+		transform.Transform(mQuads[index].lb.vertices);
+		transform.Transform(mQuads[index].rt.vertices);
+		transform.Transform(mQuads[index].rb.vertices);
+	}
+}*/
 
 bool Renderer::IsInitialized()
 {

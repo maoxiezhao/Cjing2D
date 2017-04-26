@@ -60,7 +60,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Lua_lib.lib;glew32s.lib;winmm.lib;OpenGL32.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;Lua_lib.lib;glew32s.lib;winmm.lib;OpenGL32.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -86,17 +86,20 @@
     <ClCompile Include="src\core\debug.cpp" />
     <ClCompile Include="src\core\fileData.cpp" />
     <ClCompile Include="src\core\glProgram.cpp" />
+    <ClCompile Include="src\core\glProgramState.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
     <ClCompile Include="src\core\renderer.cpp" />
-    <ClCompile Include="src\core\shadeResource.cpp" />
+    <ClCompile Include="src\core\resourceCache.cpp" />
     <ClCompile Include="src\core\system.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\game\app.cpp" />
+    <ClCompile Include="src\game\drawable.cpp" />
+    <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
     <ClCompile Include="src\lua\luaContext.cpp" />
     <ClCompile Include="src\lua\luaData.cpp" />
@@ -109,8 +112,10 @@
     <ClCompile Include="src\lua\videoApi.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\test.cpp" />
+    <ClCompile Include="src\movements\movement.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
+    <ClCompile Include="src\utils\xxhash.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h" />
@@ -125,11 +130,12 @@
     <ClInclude Include="src\core\random.h" />
     <ClInclude Include="src\core\renderCommand.h" />
     <ClInclude Include="src\core\renderer.h" />
-    <ClInclude Include="src\core\shadeResource.h" />
+    <ClInclude Include="src\core\resourceCache.h" />
     <ClInclude Include="src\core\system.h" />
     <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\video.h" />
+    <ClInclude Include="src\game\AnimationSprite.h" />
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\currentQuest.h" />
     <ClInclude Include="src\game\drawable.h" />
@@ -142,13 +148,17 @@
     <ClInclude Include="src\lua\luaRef.h" />
     <ClInclude Include="src\lua\luaTools.h" />
     <ClInclude Include="src\main\test.h" />
+    <ClInclude Include="src\movements\movement.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\geometry.h" />
     <ClInclude Include="src\utils\matrix4.h" />
     <ClInclude Include="src\utils\point.h" />
+    <ClInclude Include="src\utils\quadTree.h" />
+    <ClInclude Include="src\utils\rectangle.h" />
     <ClInclude Include="src\utils\size.h" />
     <ClInclude Include="src\utils\vec2.h" />
     <ClInclude Include="src\utils\vec3.h" />
+    <ClInclude Include="src\utils\xxhash.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -156,6 +166,8 @@
     <None Include="src\utils\color.inl" />
     <None Include="src\utils\matrix4.inl" />
     <None Include="src\utils\point.inl" />
+    <None Include="src\utils\quadTree.inl" />
+    <None Include="src\utils\rectangle.inl" />
     <None Include="src\utils\size.inl" />
     <None Include="src\utils\vec2.inl" />
     <None Include="src\utils\vec3.inl" />

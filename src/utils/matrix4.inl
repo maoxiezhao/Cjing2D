@@ -1,8 +1,10 @@
+/*
+
 #include"matrix4.h"
 
 Matrix4::Matrix4()
 {
-	MakeIdentity();
+	memset(M, 0, sizeof(float) * 16);
 }
 
 Matrix4::Matrix4(const Matrix4& other)
@@ -28,6 +30,7 @@ Matrix4 & Matrix4::operator=(const Matrix4 & other)
 	return *this;
 }
 
+
 inline float & Matrix4::operator()(int row, int col)
 {
 	return _M[row][col];
@@ -44,9 +47,9 @@ inline Matrix4 & Matrix4::operator*=(const Matrix4 & other)
 	for (int row = 0; row < 4; ++row)
 		for (int col = 0; col < 4; ++col)
 			temp._M[row][col] = _M[row][0] * other._M[0][col] +
-								_M[row][1] * other._M[1][col] +
-								_M[row][2] * other._M[2][col] +
-								_M[row][3] * other._M[3][col];
+			_M[row][1] * other._M[1][col] +
+			_M[row][2] * other._M[2][col] +
+			_M[row][3] * other._M[3][col];
 	*this = temp;
 	return *this;
 }
@@ -87,9 +90,9 @@ inline Matrix4 Matrix4::operator*(const Matrix4 & rhs)
 	for (int row = 0; row < 4; ++row)
 		for (int col = 0; col < 4; ++col)
 			temp._M[row][col] = _M[row][0] * rhs._M[0][col] +
-								_M[row][1] * rhs._M[1][col] +
-								_M[row][2] * rhs._M[2][col] +
-								_M[row][3] * rhs._M[3][col];
+			_M[row][1] * rhs._M[1][col] +
+			_M[row][2] * rhs._M[2][col] +
+			_M[row][3] * rhs._M[3][col];
 	return temp;
 }
 
@@ -108,10 +111,11 @@ inline void Matrix4::Set(float m11, float m12, float m13, float m14, float m21, 
 	M[8] = m31;	M[9] = m32; M[10] = m33; M[11] = m34;
 	M[12] = m41; M[13] = m42; M[14] = m43; M[15] = m44;
 }
+*/
 
 /**
 *	\brief 克拉姆法则计算逆矩阵
-*/
+*//*
 inline bool Matrix4::MakeInverse()
 {
 	const Matrix4 &m = *this;
@@ -152,7 +156,7 @@ inline void Matrix4::Transform(Vec3f& vec)const
 	float x = vec.x, y = vec.y, z = vec.z;
 	vec.x = M[0] * x + M[1] * y + M[2] * z + M[3];
 	vec.y = M[4] * x + M[5] * y + M[6] * z + M[7];
-	vec.z = M[8] * x + M[9] * y + M[10]* z + M[11];
+	vec.z = M[8] * x + M[9] * y + M[10] * z + M[11];
 }
 
 inline void Matrix4::Transfomr(const Vec3f& in, Vec3f& out)const
@@ -161,3 +165,4 @@ inline void Matrix4::Transfomr(const Vec3f& in, Vec3f& out)const
 	out.y = in.x*M[4] + in.y*M[5] + in.z*M[6] + M[7];
 	out.z = in.x*M[8] + in.y*M[9] + in.z*M[10] + M[11];
 }
+*/

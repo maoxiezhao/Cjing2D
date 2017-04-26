@@ -3,6 +3,7 @@
 #include "inputEvent.h"
 #include "renderer.h"
 #include "utils\Size.h"
+#include "resourceCache.h"
 
 namespace
 {
@@ -65,12 +66,17 @@ void Video::Initialize()
 	// 初始化渲染模块
 	mRenderer = &Renderer::GetInstance();
 	mRenderer->Initialize();
+
+	// 初始化着色资源模块
+	ResourceCache::GetInstance().LoadDefaultProgram();
+	ResourceCache::GetInstance().LoadDefaultProgramState();
 }
 
 void Video::Quit()
 {
 	if (!IsInitialized())
 		return;
+	ResourceCache::GetInstance().Clear();
 	Renderer::GetInstance().Quit();
 	if (mainWindow != nullptr)
 		glfwTerminate();

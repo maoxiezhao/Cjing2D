@@ -29,6 +29,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{967efb1c-ff14-4570-b9cc-2a808ea0da17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="movments">
+      <UniqueIdentifier>{fc058d36-6977-4403-9e97-cc326a14756a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -109,11 +112,26 @@
     <ClCompile Include="src\core\glProgram.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\shadeResource.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\texture.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\resourceCache.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\glProgramState.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\xxhash.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sprite.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\movement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\drawable.cpp">
+      <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +228,6 @@
     <ClInclude Include="src\core\glProgramState.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\shadeResource.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\matrix4.h">
       <Filter>utils</Filter>
     </ClInclude>
@@ -224,6 +239,24 @@
     </ClInclude>
     <ClInclude Include="src\core\texture.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resourceCache.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\quadTree.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\rectangle.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\xxhash.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\movement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\AnimationSprite.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +280,12 @@
       <Filter>utils</Filter>
     </None>
     <None Include="src\utils\point.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\quadTree.inl">
+      <Filter>utils</Filter>
+    </None>
+    <None Include="src\utils\rectangle.inl">
       <Filter>utils</Filter>
     </None>
   </ItemGroup>

@@ -46,9 +46,9 @@ inline Matrix4 & Matrix4::operator*=(const Matrix4 & other)
 	for (int row = 0; row < 4; ++row)
 		for (int col = 0; col < 4; ++col)
 			temp._M[row][col] = _M[row][0] * other._M[0][col] +
-			_M[row][1] * other._M[1][col] +
-			_M[row][2] * other._M[2][col] +
-			_M[row][3] * other._M[3][col];
+								_M[row][1] * other._M[1][col] +
+								_M[row][2] * other._M[2][col] +
+								_M[row][3] * other._M[3][col];
 	*this = temp;
 	return *this;
 }
@@ -148,6 +148,7 @@ inline bool Matrix4::MakeInverse()
 	}
 }
 
+/*************************************************************************/
 
 inline void Matrix4::Transform(Vec3f& vec)const
 {

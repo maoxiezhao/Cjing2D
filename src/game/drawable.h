@@ -20,6 +20,8 @@ public:
 	void SetPos(const Point2& pos);
 	float GetRotated()const;
 	void SetRotated(float angle);
+	float GetGlobalOrder()const;
+	void SetGlobalOrder(float order);
 
 protected:
 	Drawable();

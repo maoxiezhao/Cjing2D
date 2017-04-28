@@ -133,6 +133,9 @@
     <ClCompile Include="src\game\drawable.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\animationSprite.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -255,7 +258,13 @@
     <ClInclude Include="src\movements\movement.h">
       <Filter>movments</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\AnimationSprite.h">
+    <ClInclude Include="src\game\animationSprite.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\spriteData.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\spriteAnimation.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

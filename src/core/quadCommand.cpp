@@ -21,6 +21,8 @@ QuadCommand::~QuadCommand()
 */
 void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad * quads, int quadCounts, const BlendFunc & blendFunc)
 {
+	Debug::CheckAssertion(programState != nullptr, "Invalid programState in QuadCommand::Init().");
+
 	mGlobalOrder = globalOrder;
 	mProgramState = programState;
 	mQuadCounts = quadCounts;

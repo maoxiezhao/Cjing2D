@@ -48,6 +48,7 @@ struct BlendFunc
 	GLenum srcBlend;
 	GLenum dstBlend;
 	BlendFunc() :srcBlend(GL_SRC_ALPHA), dstBlend(GL_ONE_MINUS_DST_ALPHA) {}
+	BlendFunc(GLenum src, GLenum dst) :srcBlend(src), dstBlend(dst) {}
 };
 
 constexpr bool operator == (const BlendFunc& lhs, const BlendFunc& rhs)

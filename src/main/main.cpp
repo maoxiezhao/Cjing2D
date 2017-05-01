@@ -21,7 +21,7 @@ int main(int argc,char** argv)
 	//Test();
 	App().Run();
 
-	system("Pause");
+//	system("Pause");
 	return 0;
 }
 

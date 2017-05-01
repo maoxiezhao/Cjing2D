@@ -4,6 +4,20 @@
 #include"core\resourceCache.h"
 
 /**
+*	\brief 创建一个默认的精灵
+*/
+Sprite::Sprite():
+	mProgramState(nullptr),
+	mTexture(nullptr),
+	mVisible(true),
+	mDirty(true),
+	mAnchor(0, 0),
+	mBlendFunc()
+{
+	SetDefaultState();
+}
+
+/**
 *	\brief 创建一个基于纹理的精灵实例
 */
 Sprite::Sprite(const std::string & name):
@@ -15,7 +29,7 @@ Sprite::Sprite(const std::string & name):
 	mBlendFunc()
 {
 	InitWithFile(name);
-	SetDefaultProgramState();
+	SetDefaultState();
 }
 
 /**
@@ -30,7 +44,7 @@ Sprite::Sprite(TexturePtr & tex):
 	mBlendFunc()
 {
 	InitWithTexture(mTexture);
-	SetDefaultProgramState();
+	SetDefaultState();
 }
 
 /**
@@ -52,10 +66,19 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 
 Sprite::~Sprite()
 {
+	mChildSprites.clear();
 }
 
+/**
+*	\brief 更新自身状态同时更新所有children
+*/
 void Sprite::Update()
 {
+	if (mSuspended)
+		return;
+
+	for (auto& sprite : mChildSprites)
+		sprite->Update();
 }
 
 /**
@@ -82,7 +105,7 @@ void Sprite::Draw(const Point2 & pos, float rotate)
 	Matrix4 transfomr;
 	// 因为是右乘坐标，所有操作顺序为从下往上
 	// 移动到指定位置
-	transfomr = Matrix4::Translate(Vec3f(pos.x,pos.y, .0f));
+	transfomr =  Matrix4::Translate(Vec3f((float)pos.x,(float)pos.y, .0f));
 
 	// 移动到原点旋转后移回
 	transfomr *= Matrix4::Translate(Vec3f(mSize.width*0.5f, mSize.height*0.5f, 0.0f));
@@ -97,9 +120,11 @@ void Sprite::Draw(const Point2 & pos, float rotate)
 */
 void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 {
+	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Sprite::Draw().");
+
 	mQuadCommand.Init(GetGlobalOrder(),mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID(): 0,	// 这里需要考虑无纹理色块
-		&mQuad, 1, mBlendFunc);
+		&mQuad, 1, mBlendFunc,transform,mModelView);
 
 	renderer.PushCommand(&mQuadCommand);
 }
@@ -142,8 +167,8 @@ void Sprite::SetTextureCroods(const Rect & rect)
 {
 	Debug::CheckAssertion(mTexture != nullptr, "Set TextureCrooed without texture.");
 
-	float width = mTexture->GetSize().width;
-	float height = mTexture->GetSize().height;
+	float width =  (float)mTexture->GetSize().width;
+	float height = (float)mTexture->GetSize().height;
 	Point2 orgin = rect.GetPos();
 	Size   size = rect.GetSize();
 
@@ -153,13 +178,13 @@ void Sprite::SetTextureCroods(const Rect & rect)
 	float bottom = (orgin.y + height) / height;
 
 	mQuad.lt.texs.u = left;
-	mQuad.lt.texs.v = top;
+	mQuad.lt.texs.v = bottom;
 	mQuad.lb.texs.u = left;
-	mQuad.lb.texs.v = bottom;
+	mQuad.lb.texs.v = top;
 	mQuad.rt.texs.u = right;
-	mQuad.rt.texs.v = top;
+	mQuad.rt.texs.v = bottom;
 	mQuad.rb.texs.u = right;
-	mQuad.rb.texs.v = bottom;
+	mQuad.rb.texs.v = top;
 }
 
 /**
@@ -185,11 +210,12 @@ void Sprite::SetColor(const Color4B & color)
 }
 
 /**
-*	\brief 设置为默认的精灵着色器状态
+*	\brief 设置为默认的精灵状态,包括着色器，变换矩阵
 */
-void Sprite::SetDefaultProgramState()
+void Sprite::SetDefaultState()
 {
 	mProgramState =  ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME);
+	mModelView = Renderer::GetInstance().GetCameraMatrix();
 }
 
 /**
@@ -223,6 +249,19 @@ void Sprite::SetAnchor(const Point2 & anchor)
 void Sprite::SetBlendFunc(const BlendFunc & blendFunc)
 {
 	mBlendFunc = blendFunc;
+}
+
+void Sprite::SetModelView(const Matrix4 & modelView)
+{
+	mModelView = modelView;
+}
+
+/**
+*	\brief 设置是否暂停，即不参与update更新
+*/
+void Sprite::SetSuspended(bool suspend)
+{
+	mSuspended = suspend;
 }
 
 /**
@@ -282,6 +321,14 @@ BlendFunc Sprite::GetBlendFunc() const
 }
 
 /**
+*	\brief 是否暂定
+*/
+bool Sprite::IsSuspended() const
+{
+	return mSuspended;
+}
+
+/**
 *	\brief 是否脏精灵（是否需要更新位置）
 */
 bool Sprite::IsDirty() const
@@ -295,6 +342,19 @@ bool Sprite::IsDirty() const
 bool Sprite::IsVisible() const
 {
 	return mVisible;
+}
+
+/**
+*	\brief 是否是动画精灵，Sprite必然返回false;
+*/
+bool Sprite::IsAnimationed() const
+{
+	return false;
+}
+
+void Sprite::AddChildSprite(std::shared_ptr<Sprite> childSprite)
+{
+	mChildSprites.push_back(childSprite);
 }
 
 /**
@@ -351,15 +411,15 @@ bool Sprite::InitWithTexture(TexturePtr texture, const Rect & rect)
 */
 void Sprite::UpdateTransform()
 {
-	float x1 = mAnchor.x;
-	float y1 = mAnchor.y;
+	float x1 = 0 + (float)mAnchor.x;
+	float y1 = 0 + (float)mAnchor.y;
 	float x2 = x1 + mSize.width;	
 	float y2 = y1 + mSize.height;
 
-	mQuad.lt.vertices = Vec3f(x1, y1, .0f);
-	mQuad.lb.vertices = Vec3f(x1, y2, .0f);
-	mQuad.rt.vertices = Vec3f(x2, y1, .0f);
-	mQuad.rb.vertices = Vec3f(x2, y2, .0f);
+	mQuad.lb.vertices = Vec3f(x1, y1, .0f);
+	mQuad.lt.vertices = Vec3f(x1, y2, .0f);
+	mQuad.rb.vertices = Vec3f(x2, y1, .0f);
+	mQuad.rt.vertices = Vec3f(x2, y2, .0f);
 
 	SetDirty(false);
 }

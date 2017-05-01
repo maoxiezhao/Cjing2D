@@ -65,7 +65,7 @@ void Video::Initialize()
 
 	// 初始化渲染模块
 	mRenderer = &Renderer::GetInstance();
-	mRenderer->Initialize();
+	mRenderer->Initialize(wantedWindowSize.width,wantedWindowSize.height);
 
 	// 初始化着色资源模块
 	ResourceCache::GetInstance().LoadDefaultProgram();

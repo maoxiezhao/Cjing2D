@@ -7,6 +7,8 @@
 #include"core\renderer.h"
 #include<Windows.h>
 
+//test
+
 App::App():
 	mLuaContext(nullptr),
 	mExiting(false)
@@ -28,6 +30,12 @@ App::App():
 	// initialize lua
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
+
+	// test
+	testSprite = std::make_shared<Sprite>("sprite/test.png");
+	testSprite->SetPos(Point2(320, 240));
+	testSprite->SetRotated(45);
+	//testSprite->SetSize(Size(320, 100));
 }
 
 App::~App()
@@ -132,6 +140,7 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
+	testSprite->Draw();
 
 	Video::Rendercanvas();
 }

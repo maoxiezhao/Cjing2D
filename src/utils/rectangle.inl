@@ -158,15 +158,16 @@ inline Rect& Rect::operator&=(const Rect& rect)
 	int ry = min(y + height, rect.y + rect.height);
 
 	if (lx >= rx || ly >= ry)
-		return Rect();
+		*this = Rect();
 	else
-		return Rect(Point2(lx, ly),Point2( rx, ry));
+		*this = Rect(Point2(lx, ly), Point2(rx, ry));
+	return *this;
 }
 
 /**
 *	\brief 返回两个rect的并区域
 */
-Rect& Rect::operator |=(const Rect& rect)
+inline Rect& Rect::operator |=(const Rect& rect)
 {
 	int lx = min(x, rect.x);
 	int ly = min(y, rect.y);
@@ -174,7 +175,8 @@ Rect& Rect::operator |=(const Rect& rect)
 	int ry = max(y + height, rect.y + rect.height);
 
 	if (lx >= rx || ly >= ry)
-		return Rect();
+		*this = Rect();
 	else
-		return Rect(Point2(lx, ly), Point2(rx, ry));
+		*this = Rect(Point2(lx, ly), Point2(rx, ry));
+	return *this;
 }

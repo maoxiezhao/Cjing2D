@@ -71,6 +71,7 @@ public:
 	GLuint GetProgram()const;
 
 	// uniform
+	void SetTexture(const string&name, GLuint textureId);
 	void SetUniform1i(const string&name, int i1);
 	void SetUniform3i(const string&name, const Vec3i& vec3i);
 	void SetUniform1f(const string&name, float f1);

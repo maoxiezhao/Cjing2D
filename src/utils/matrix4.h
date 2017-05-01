@@ -1,7 +1,7 @@
-#ifndef _MATRIX4_H_
-#define _MATRIX4_H_
+#pragma once
 
 #include"utils\vec3.h"
+#include"common\common.h"
 
 /**
 *	\brief æÿ’Û µœ÷
@@ -31,6 +31,7 @@ public:
 		float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 	bool MakeInverse();
 
+	
 	static Matrix4 Translate(const Vec3f& delta);
 	static Matrix4 Scale(float x, float y, float z);
 	static Matrix4 RotateX(float angle);
@@ -40,7 +41,7 @@ public:
 	static Matrix4 LookAt(const Vec2f& pos, const Vec2f& look, const Vec3f& up);
 	static Matrix4 Perspective(float fov, float n, float f);
 	static Matrix4 Ortho(float width, float height, float zNear, float zFar);
-
+	
 	// transform
 	void Transform(Vec3f& vec)const;
 	void Transfomr(const Vec3f& in, Vec3f& out)const;
@@ -57,7 +58,17 @@ private:
 
 
 
+/*
+Matrix4 Translate(const Vec3f& delta);
+Matrix4 Scale(float x, float y, float z);
+Matrix4 RotateX(float angle);
+Matrix4 RotateY(float angle);
+Matrix4 RotateZ(float angle);
+Matrix4 Rotate(const Vec3f& axis, float angle);
+Matrix4 LookAt(const Vec2f& pos, const Vec2f& look, const Vec3f& up);
+Matrix4 Perspective(float fov, float n, float f);
+Matrix4 Ortho(float width, float height, float zNear, float zFar);
 
 #include"matrix4.inl"
+*/
 
-#endif

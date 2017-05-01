@@ -11,7 +11,7 @@
 class Drawable
 {
 public:
-	virtual ~Drawable();
+	~Drawable();
 
 	virtual void Update();
 	virtual void Draw() = 0;

@@ -1,6 +1,7 @@
 #include"matrix4.h"
 #include"geometry.h"
 
+
 Matrix4::Matrix4()
 {
 	memset(M, 0, sizeof(float) * 16);
@@ -30,44 +31,44 @@ Matrix4 & Matrix4::operator=(const Matrix4 & other)
 }
 
 
-inline float & Matrix4::operator()(int row, int col)
+float & Matrix4::operator()(int row, int col)
 {
 	return _M[row][col];
 }
 
-inline const float Matrix4::operator()(int row, int col) const
+const float Matrix4::operator()(int row, int col) const
 {
 	return _M[row][col];
 }
 
-inline Matrix4 & Matrix4::operator*=(const Matrix4 & other)
+Matrix4 & Matrix4::operator*=(const Matrix4 & other)
 {
 	Matrix4 temp;
 	for (int row = 0; row < 4; ++row)
 		for (int col = 0; col < 4; ++col)
 			temp._M[row][col] = _M[row][0] * other._M[0][col] +
-								_M[row][1] * other._M[1][col] +
-								_M[row][2] * other._M[2][col] +
-								_M[row][3] * other._M[3][col];
+			_M[row][1] * other._M[1][col] +
+			_M[row][2] * other._M[2][col] +
+			_M[row][3] * other._M[3][col];
 	*this = temp;
 	return *this;
 }
 
-inline void Matrix4::MakeIdentity()
+void Matrix4::MakeIdentity()
 {
 	for (int index = 0; index < 16; ++index)
 		M[index] = 0;
 	M[0] = M[5] = M[10] = M[15] = 1;
 }
 
-inline Matrix4 & Matrix4::operator*=(float factor)
+Matrix4 & Matrix4::operator*=(float factor)
 {
 	for (int index = 0; index < 16; ++index)
 		M[index] *= factor;
 	return *this;
 }
 
-inline bool Matrix4::operator==(const Matrix4 & rhs)
+bool Matrix4::operator==(const Matrix4 & rhs)
 {
 	for (int index = 0; index < 16; ++index)
 		if (M[index] != rhs.M[index])
@@ -75,7 +76,7 @@ inline bool Matrix4::operator==(const Matrix4 & rhs)
 	return true;
 }
 
-inline bool Matrix4::operator!=(const Matrix4 & rhs)
+bool Matrix4::operator!=(const Matrix4 & rhs)
 {
 	for (int index = 0; index < 16; ++index)
 		if (M[index] != rhs.M[index])
@@ -83,7 +84,7 @@ inline bool Matrix4::operator!=(const Matrix4 & rhs)
 	return false;
 }
 
-inline Matrix4 Matrix4::operator*(const Matrix4 & rhs)
+Matrix4 Matrix4::operator*(const Matrix4 & rhs)
 {
 	Matrix4 temp;
 	for (int row = 0; row < 4; ++row)
@@ -95,7 +96,7 @@ inline Matrix4 Matrix4::operator*(const Matrix4 & rhs)
 	return temp;
 }
 
-inline Matrix4 Matrix4::operator*(float factor)
+Matrix4 Matrix4::operator*(float factor)
 {
 	Matrix4 newMat;
 	for (int index = 0; index < 16; ++index)
@@ -103,7 +104,7 @@ inline Matrix4 Matrix4::operator*(float factor)
 	return newMat;
 }
 
-inline void Matrix4::Set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
+void Matrix4::Set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
 {
 	M[0] = m11;	M[1] = m12;	M[2] = m13;	M[3] = m14;
 	M[4] = m21; M[5] = m22;	M[6] = m23;	M[7] = m24;
@@ -114,7 +115,7 @@ inline void Matrix4::Set(float m11, float m12, float m13, float m14, float m21, 
 /**
 *	\brief 克拉姆法则计算逆矩阵
 */
-inline bool Matrix4::MakeInverse()
+bool Matrix4::MakeInverse()
 {
 	const Matrix4 &m = *this;
 
@@ -147,10 +148,7 @@ inline bool Matrix4::MakeInverse()
 		return true;
 	}
 }
-
-/*************************************************************************/
-
-inline void Matrix4::Transform(Vec3f& vec)const
+void Matrix4::Transform(Vec3f& vec)const
 {
 	float x = vec.x, y = vec.y, z = vec.z;
 	vec.x = M[0] * x + M[1] * y + M[2] * z + M[3];
@@ -158,13 +156,16 @@ inline void Matrix4::Transform(Vec3f& vec)const
 	vec.z = M[8] * x + M[9] * y + M[10] * z + M[11];
 }
 
-inline void Matrix4::Transfomr(const Vec3f& in, Vec3f& out)const
+void Matrix4::Transfomr(const Vec3f& in, Vec3f& out)const
 {
 	out.x = in.x*M[0] + in.y*M[1] + in.z*M[2] + M[3];
 	out.y = in.x*M[4] + in.y*M[5] + in.z*M[6] + M[7];
 	out.z = in.x*M[8] + in.y*M[9] + in.z*M[10] + M[11];
 }
 
+
+
+/*************************************************************************/
 
 Matrix4 Matrix4::Translate(const Vec3f& delta)
 {

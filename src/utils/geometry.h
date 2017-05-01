@@ -1,5 +1,7 @@
-#ifndef _GEOMETRY_H_
-#define _GEOMETRY_H_
+#ifndef _CJING_GEOMETRY_H_
+#define _CJING_GEOMETRY_H_
+
+#include"common\common.h"
 
 /**
 *	\brief 数学常用定义和常用的数学函数

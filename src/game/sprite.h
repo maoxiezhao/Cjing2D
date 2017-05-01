@@ -11,21 +11,21 @@
 #include"utils\rectangle.h"
 
 /**
-*	\brief 精灵
+*	\brief 精灵,可以显示纹理的移动单元，不能展示帧动画
 */
 class Sprite : public Drawable
 {
 public:
+	Sprite();
 	Sprite(const std::string& name);
 	Sprite(TexturePtr& tex);
 	Sprite(const Color4B& color, const Size& size);
-	virtual ~Sprite();
+	~Sprite();
 
 	// system
 	virtual void Update();
 	virtual void Draw();
-	virtual void Draw(const Point2& pos, float rotate);
-	void Draw(Renderer& renderer, const Matrix4& transform);
+	void Draw(const Point2& pos, float rotate);
 
 	// status
 	void SetVisible(bool visible);
@@ -34,11 +34,13 @@ public:
 	void SetTextureCroods(const Rect& rect);
 	void SetSize(const Size& size);
 	void SetColor(const Color4B&color);
-	void SetDefaultProgramState();
+	void SetDefaultState();
 	void SetProgramState(GLProgramStatePtr programstate);
 	void SetDirty(bool dirty);
 	void SetAnchor(const Point2& anchor);
 	void SetBlendFunc(const BlendFunc& blendFunc);
+	void SetModelView(const Matrix4& modelView);
+	void SetSuspended(bool suspend);
 
 	TexturePtr GetTexture()const;
 	Rect GetRect()const;
@@ -48,15 +50,20 @@ public:
 	Point2 GetAnchor()const;
 	BlendFunc GetBlendFunc()const;
 
+	bool IsSuspended()const;
 	bool IsDirty()const;
 	bool IsVisible()const;
+	virtual bool IsAnimationed()const;
+
+	// child
+	void AddChildSprite(std::shared_ptr<Sprite> childSprite);
 
 private:
 	bool InitWithFile(const std::string& name);
 	bool InitWithTexture(TexturePtr texture);
 	bool InitWithTexture(TexturePtr texture, const Rect& rect);
-	
 	void UpdateTransform();
+	void Draw(Renderer& renderer, const Matrix4& transform);
 
 protected:
 	Quad mQuad;
@@ -67,12 +74,18 @@ protected:
 	Size mSize;
 	Point2 mAnchor;
 	BlendFunc mBlendFunc;
+	Matrix4 mModelView;
 
 	bool mVisible;
 	bool mDirty;
 
+	// children
+	std::vector<std::shared_ptr<Sprite>> mChildSprites;
+	bool mSuspended;
+
 };
 
+using SpritePtr = std::shared_ptr<Sprite>;
 
 
 #endif

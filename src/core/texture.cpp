@@ -3,7 +3,6 @@
 #include"core\debug.h"
 #include"thirdparty\SOIL.h"
 
-
 Texture2D::Texture2D():
 	mTextureID(0),
 	mWidth(0),
@@ -53,7 +52,9 @@ bool Texture2D::InitWithFile(const string & texname)
 	}
 
 	int w, h;
-	unsigned char* imageData = SOIL_load_image(texname.c_str(), &w, &h, 0, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);	
+	const string data = FileData::ReadFile(texname);
+	unsigned char* imageData = SOIL_load_image_from_memory((unsigned char*)data.c_str(),data.length(),&w,&h,0, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
+//	unsigned char* imageData = SOIL_load_image(texname.c_str(), &w, &h, 0, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);	
 	mWidth = (GLuint)w;
 	mHeight = (GLuint)h;
 	
@@ -100,10 +101,17 @@ bool Texture2D::IsInitialized() const
 /**
 *	\brief Éú³Émipmap
 */
-bool Texture2D::GenerateMipmap()
+bool Texture2D::GenerateMipmap(unsigned char * data)
 {
 	if (!IsInitialized())
 		return false;
 
 	// generate....
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 6);
+	glTexEnvf(GL_TEXTURE_FILTER_CONTROL, GL_TEXTURE_LOD_BIAS, -1.5f);
+
+//	gluBuild2DMipmaps(GL_TEXTURE_2D, mImageFormat, mWidth, mHeight, mImageFormat, GL_UNSIGNED_BYTE, data);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

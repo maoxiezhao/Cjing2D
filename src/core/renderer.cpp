@@ -98,14 +98,27 @@ Renderer::~Renderer()
 *
 *   初始化GLProgram,VAO,VBO
 */
-void Renderer::Initialize()
+void Renderer::Initialize(int w,int h)
 {
 	if (mInitialized)
 		return;
-	InitDefaultProgram();
+	SetViewSize(w, h);
+	InitCamearMatrix();
 	InitIndices();
-	//InitVAOandVBO();
+	InitVAOandVBO();
 	mInitialized = true;
+}
+
+/**
+*	\brief 初始化默认的相机变换矩阵
+*
+*	默认使用正交矩阵
+*/
+void Renderer::InitCamearMatrix()
+{
+	mCamearMatrix  = Matrix4::Ortho((float)mViewWidth, (float)mViewHeight, -1.0f, 1.0f);
+	mCamearMatrix *= Matrix4::Translate(Vec3f(-(float)mViewWidth / 2, (float)mViewHeight / 2,0.0f));
+	mCamearMatrix *= Matrix4::Scale(1.0f, -1.0f, 1.0f);
 }
 
 /**
@@ -122,12 +135,12 @@ void Renderer::InitIndices()
 {
 	for (int i = 0; i < VBO_SIZE; ++i)
 	{
-		mIndices[i]   = (GLushort)(i * 4 + 0);
-		mIndices[i+1] = (GLushort)(i * 4 + 1);
-		mIndices[i+2] = (GLushort)(i * 4 + 2);
-		mIndices[i+3] = (GLushort)(i * 4 + 2);
-		mIndices[i+4] = (GLushort)(i * 4 + 3);
-		mIndices[i+5] = (GLushort)(i * 4 + 0);
+		mIndices[i*6+0] = (GLushort)(i * 4 + 0);
+		mIndices[i*6+1] = (GLushort)(i * 4 + 1);
+		mIndices[i*6+2] = (GLushort)(i * 4 + 2);
+		mIndices[i*6+3] = (GLushort)(i * 4 + 2);
+		mIndices[i*6+4] = (GLushort)(i * 4 + 3);
+		mIndices[i*6+5] = (GLushort)(i * 4 + 0);
 	}
 }
 
@@ -137,6 +150,7 @@ void Renderer::InitIndices()
 void Renderer::InitVAOandVBO()
 {
 	Debug::CheckAssertion(mVAO == 0 && mVBO == 0, "The VAO and VBO already assign.");
+
 	glGenVertexArrays(1, &mVAO);	// VAO
 	glGenBuffers(1, &mVBO);			// 顶点数据
 	glGenBuffers(1, &mVEO);			// 顶点索引
@@ -149,7 +163,7 @@ void Renderer::InitVAOandVBO()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, vertices));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF,colors));
+	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF,colors));
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, texs));
 	// 绑定顶点索引
@@ -225,7 +239,8 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 				Flush();
 			}
 			memcpy(mQuads + mQuadsCounts, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
-//			TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(),quadCommand->GetTransfomr());
+			TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(),quadCommand->GetTransfomr());
+	//		TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(), quadCommand->GetModelView());
 
 			mQuadBatches.push_back(quadCommand);
 			mQuadsCounts += quadCommand->GetQuadCounts();
@@ -248,6 +263,20 @@ void Renderer::RenderAfterClean()
 {
 	for (auto& queue : mRenderGroups)
 		queue.Clear();
+}
+
+Matrix4 Renderer::GetCameraMatrix() const
+{
+	return mCamearMatrix;
+}
+
+/**
+*	\brief 设置当前渲染视口大小
+*/
+void Renderer::SetViewSize(int w, int h)
+{
+	mViewWidth = w;
+	mViewHeight = h;
 }
 
 /**
@@ -310,7 +339,7 @@ void Renderer::DrawQuadBatches()
 
 /**
 *	\brief quad顶点指定变换操作
-
+*/
 void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 transform)
 {
 	for (int index = 0; index < quadCount; ++index)
@@ -320,7 +349,7 @@ void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 
 		transform.Transform(mQuads[index].rt.vertices);
 		transform.Transform(mQuads[index].rb.vertices);
 	}
-}*/
+}
 
 bool Renderer::IsInitialized()
 {

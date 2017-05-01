@@ -23,7 +23,7 @@ public:
 	void SetImageFormat(GLuint format);
 
 	bool IsInitialized()const;
-	bool GenerateMipmap();
+	bool GenerateMipmap(unsigned char * data);
 
 private:
 	GLuint mTextureID;

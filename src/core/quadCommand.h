@@ -15,7 +15,7 @@ public:
 	QuadCommand();
 	virtual ~QuadCommand();
 
-	void Init(float globalOrder,GLProgramStatePtr programState,GLuint textureID,Quad* quads,int quadCounts,const BlendFunc&blendFunc);
+	void Init(float globalOrder,GLProgramStatePtr programState,GLuint textureID,Quad* quads,int quadCounts,const BlendFunc&blendFunc,const Matrix4& transfomr,const Matrix4& modelView);
 	void UseShade();
 
 	int GetQuadCounts()const;
@@ -23,6 +23,7 @@ public:
 	uint32_t GetShadeState()const;
 	BlendFunc GetBlendFunc()const;
 	Matrix4 GetTransfomr()const;
+	Matrix4 GetModelView()const;
 
 private:
 	void GenerateShadeState();
@@ -34,6 +35,7 @@ private:
 	BlendFunc mBlendFunc;
 	uint32_t mShadeState;
 	Matrix4 mTransform;
+	Matrix4 mModelView;
 };
 
 #endif

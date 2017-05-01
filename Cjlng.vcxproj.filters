@@ -136,6 +136,9 @@
     <ClCompile Include="src\game\animationSprite.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\spriteAnimation.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

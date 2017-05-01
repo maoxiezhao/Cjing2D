@@ -5,6 +5,7 @@
 #include"lua\luaContext.h"
 #include"core\inputEvent.h"
 #include"core\renderer.h"
+#include"game\sprite.h"
 
 /**
 *	\brief 程序的主循环
@@ -28,6 +29,8 @@ private:
 	std::unique_ptr<LuaContext> mLuaContext;
 	
 	bool mExiting;
+
+	SpritePtr testSprite;
 };
 
 #endif

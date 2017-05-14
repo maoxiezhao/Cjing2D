@@ -136,7 +136,13 @@
     <ClCompile Include="src\game\animationSprite.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\spriteAnimation.cpp">
+    <ClCompile Include="src\game\animationData.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\animation.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\animationSet.cpp">
       <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -264,10 +270,13 @@
     <ClInclude Include="src\game\animationSprite.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\spriteData.h">
+    <ClInclude Include="src\game\animationData.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\spriteAnimation.h">
+    <ClInclude Include="src\game\animationSet.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\animation.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

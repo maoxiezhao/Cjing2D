@@ -3,7 +3,7 @@
 
 #include"common\common.h"
 #include"game\sprite.h"
-#include"game\spriteAnimation.h"
+#include"game\animationSet.h"
 
 /**
 *	\brief 动画精灵，可以加载动画文件，播放精灵帧动画
@@ -20,6 +20,9 @@ public:
 	virtual bool IsAnimationed()const;
 
 	bool IsFrameChanged()const;
+
+	// status
+
 
 private:
 	void UpdateFramedChanged();

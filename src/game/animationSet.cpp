@@ -1,4 +1,5 @@
 #include "animationSet.h"
+#include "animationData.h"
 #include "core\debug.h"
 
 AnimationSet::AnimationSet()
@@ -71,7 +72,7 @@ void AnimationSet::AddAnimation(const string & name, const Animation & animation
 void AnimationSet::AddAnimation(const string & name, const AnimationData & animationData)
 {
 	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
-	mAnimations.emplace(name, Animation());
+	mAnimations.emplace(name, Animation(animationData));
 }
 
 /**
@@ -86,7 +87,10 @@ void AnimationSet::InitAnimationSetWithFile(const string & name)
 	bool success = data.ImportFromFile(name);
 	if (success)
 	{
-
+		mAnimationDefaultName = data.GetDefaultName();
+		auto& animations = data.GetAnimations();
+		for (auto& it : animations)
+			AddAnimation(it.first, it.second);
 	}
 
 }

@@ -16,7 +16,6 @@
 class Sprite : public Drawable
 {
 public:
-	Sprite();
 	Sprite(const std::string& name);
 	Sprite(TexturePtr& tex);
 	Sprite(const Color4B& color, const Size& size);
@@ -58,7 +57,8 @@ public:
 	// child
 	void AddChildSprite(std::shared_ptr<Sprite> childSprite);
 
-private:
+protected:
+	Sprite();
 	bool InitWithFile(const std::string& name);
 	bool InitWithTexture(TexturePtr texture);
 	bool InitWithTexture(TexturePtr texture, const Rect& rect);

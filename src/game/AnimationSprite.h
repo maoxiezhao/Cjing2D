@@ -31,11 +31,20 @@ public:
 	bool IsFrameStarted()const ;
 	void SetFrameDelay(uint32_t delay);
 	uint32_t GetFrameDelay()const;
+	int GetNextFrame()const;
+	int GetNumFrames()const;
+
+	// direction
+	int GetCurrDirection()const;
+	int GetNumDirections()const;
 
 	// animation status
 	void SetCurrAnimation(const string& name);
 	void SetCurrAnimationSetId(const string& id);
 	string GetCurrAnimationSetId()const;
+
+	// notify
+	void NotifyFinished();
 
 private:
 	void SetDataFromAnimation(const Animation& animation);
@@ -54,6 +63,7 @@ private:
 	int      mFrameLoop;
 	int      mCurrFrame;
 	int      mFrameNum;
+	int      mCurrDirection;
 	bool     mFrameChanged;
 	bool     mFrameFinished;
 

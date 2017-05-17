@@ -1,5 +1,6 @@
 #include"animationSprite.h"
 #include"core\system.h"
+#include"core\debug.h"
 
 /**
 *	\brief 默认构造函数，目前需要考虑是否有必要提供
@@ -31,18 +32,34 @@ AnimationSprite::~AnimationSprite()
 */
 void AnimationSprite::Update()
 {
+	Sprite::Update();
+
 	if (IsSuspended())
 		return;
 
 	uint32_t now = System::Now();
-	if (now > mNextFrameDate)
+	while (!mFrameFinished && !IsSuspended() && 
+		GetFrameDelay() > 0 && now >= mNextFrameDate)
 	{
-		mNextFrameDate = now + mFrameDelay;
-		
+		int nextFrame = GetNextFrame();
+
+		if (nextFrame == -1)
+		{
+			mFrameFinished = true;
+			NotifyFinished();
+		}
+		else
+		{
+			mCurrFrame = nextFrame;
+			mNextFrameDate += GetFrameDelay();
+		}
+		SetFrameChanged(true);
+
+		// luaContext do onFrameChanged
 	}
 
 
-	Sprite::Update();
+
 }
 
 /**
@@ -86,6 +103,7 @@ void AnimationSprite::SetFrameChanged(bool changed)
 
 void AnimationSprite::SetCurrFrame(int currFrame)
 {
+	Debug::CheckAssertion(currFrame >= -1 && currFrame < mFrameNum, "");
 	mCurrFrame = currFrame;
 }
 
@@ -109,6 +127,9 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 		}
 		else
 			mCurrAnimation = nullptr;
+
+		if (mCurrDirection < 0 || mCurrDirection >= GetNumDirections())
+			mCurrDirection = 0;
 
 		// 先初始化texture，在根据animation设置rect
 		SetCurrFrame(0);
@@ -142,6 +163,40 @@ uint32_t AnimationSprite::GetFrameDelay() const
 }
 
 /**
+*	\brief 返回下一帧
+*
+*	如果动画结束，则返回-1
+*/
+int AnimationSprite::GetNextFrame() const
+{
+	if (mCurrAnimation == nullptr)
+		return -1;
+	return mCurrAnimation->GetNextFrame(mCurrFrame,mCurrDirection);
+}
+
+int AnimationSprite::GetNumFrames() const
+{
+	if (mCurrAnimation == nullptr)
+		return 0;
+	return mCurrAnimation->GetDirection(mCurrDirection).GetNumFrames();
+}
+
+int AnimationSprite::GetCurrDirection() const
+{
+	return mCurrDirection;
+}
+
+/**
+*	\brief 返回当前动画的最大帧数
+*/
+int AnimationSprite::GetNumDirections() const
+{
+	if (mCurrAnimation == nullptr)
+		return 0;
+	return mCurrAnimation->GetNumDirections();
+}
+
+/**
 *	\brief 设置新的动画集名称
 *
 *   如果设置的当前名称不同会重新载入动画
@@ -151,7 +206,7 @@ void AnimationSprite::SetCurrAnimationSetId(const string & id)
 	if (id != GetCurrAnimationSetId())
 	{
 		mCurrAnimationSet = GetAnimationSet(id);
-		SetFrameChanged(true);		// 更换动画集后需要重新调整帧
+		SetCurrAnimation(mCurrAnimationSet.GetAnimationDefaultName());		// 更换动画集后需要重新调整帧
 	}
 }
 
@@ -163,6 +218,10 @@ string AnimationSprite::GetCurrAnimationSetId() const
 	return mCurrAnimationSet.GetAnimationSetName();
 }
 
+void AnimationSprite::NotifyFinished()
+{
+}
+
 /**
 *	\brief 从animation中设置当前相关信息，只能在SetCurrAnimatio中调用
 */
@@ -170,6 +229,7 @@ void AnimationSprite::SetDataFromAnimation(const Animation & animation)
 {
 	mFrameDelay = animation.GetFrameDelay();
 	mFrameLoop = animation.GetFrameLoop();
+	mFrameNum;
 	mTexture = animation.GetTexture();
 
 	//+++++++++++++++++++++++

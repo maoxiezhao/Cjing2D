@@ -55,8 +55,15 @@ int Animation::GetNextFrame(int currFrame, int currDirection) const
 /**
 *	\brief 根据信息返回当前矩形
 */
-Rect Animation::GetAniamtionRect() const
+Rect Animation::GetAniamtionRect(int currDirection) const
 {
-	return Rect();
+	if (currDirection < 0 || currDirection >= GetNumDirections())
+		Debug::Die("Invaild directions in Animation::GetANimationRect.");
+
+	Rect animationRect;
+	AnimationDirectionData currDirectionData = mDirections[currDirection];
+	
+
+	return ;
 }
 

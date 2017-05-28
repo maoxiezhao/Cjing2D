@@ -72,7 +72,8 @@ void AnimationSet::AddAnimation(const string & name, const Animation & animation
 void AnimationSet::AddAnimation(const string & name, const AnimationData & animationData)
 {
 	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
-	mAnimations.emplace(name, Animation(animationData));
+	mAnimations.emplace(name, Animation(animationData.GetImageName(),animationData.GetFrameDelay(),
+		animationData.GetFrameLoop(),animationData.GetDirections()));
 }
 
 /**

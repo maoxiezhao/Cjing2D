@@ -1,11 +1,16 @@
 #include "animationData.h"
 #include "core\debug.h"
+#include "lua\luaTools.h"
 
 AnimationData::AnimationData()
 {
 }
 
-AnimationData::AnimationData(const string & imageName, const std::deque<AnimationDirectionData>& directions, uint32_t frameDelay, int frameLoop)
+AnimationData::AnimationData(const string & imageName, const std::deque<AnimationDirectionData>& directions, uint32_t frameDelay, int frameLoop):
+	mImageName(imageName),
+	mDirections(directions),
+	mFrameDelay(frameDelay),
+	mFrameLoop(frameLoop)
 {
 }
 
@@ -24,7 +29,7 @@ int AnimationData::GetFrameLoop() const
 	return mFrameLoop;
 }
 
-std::deque<AnimationDirectionData>& AnimationData::GetDirections()
+const std::deque<AnimationDirectionData>& AnimationData::GetDirections()
 {
 	return mDirections;
 }
@@ -54,11 +59,20 @@ bool AnimationLuaData::ImportFromLua(lua_State * l)
 }
 
 /**
-*	\brief animation 格式解析
+*	\brief animation格式解析
 */
 int AnimationLuaData::LuaAnimation(lua_State * l)
 {
-	return 0;
+	return LuaTools::ExceptionBoundary(l, [&]{
+		lua_getfield(l, LUA_REGISTRYINDEX, "Animation");
+		AnimationLuaData* animationData = static_cast<AnimationLuaData*>(lua_touserdata(l, -1));
+		lua_pop(l, 1);
+
+		LuaTools::CheckType(l, 1, LUA_TTABLE);
+		
+		
+	});
+
 }
 
 const std::map<string, AnimationData>& AnimationLuaData::GetAnimations() const

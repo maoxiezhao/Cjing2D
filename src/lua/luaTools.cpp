@@ -65,6 +65,57 @@ namespace LuaTools
 	}
 
 	/**
+	*	\brief 获取table中名字为name的int值
+	*/
+	int CheckFieldInt(lua_State*l, int tableIndex,const string& name) 
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!lua_isnumber(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:integer,got ") + luaL_typename(l, -1));
+		}
+		int value = (int)lua_tointeger(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
+	/**
+	*	\brief 获取table名字为name的string值
+	*/
+	string CheckFieldString(lua_State*l, int tableIndex, const string&name)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!lua_isstring(l,-1))
+		{
+			ArgError(l, tableIndex, string("Excepted:string,got ") + luaL_typename(l, -1));
+		}
+		const string& value = lua_tostring(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
+	/**
+	*	\brief 获取table中名字为name的int值,如果值不存在，则返回默认值
+	*/
+	int CheckFieldIntByDefault(lua_State * l, int tableIndex, const string & name, int defaultValue)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (lua_isnil(l,-1))
+		{
+			lua_pop(l, 1);
+			return defaultValue;
+		}
+
+		if (!lua_isnumber(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:integer,got ") + luaL_typename(l, -1));
+		}
+		int value = (int)lua_tointeger(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
+	/**
 	*	\brief 代替Lua_error抛出luaException异常.
 	*/
 	void Error(lua_State * l, const string & message)

@@ -17,6 +17,9 @@ namespace LuaTools
 	int  GetPositiveIndex(lua_State*l, int index);
 	void CheckType(lua_State*l, int index, int exceptedType);
 	int  CheckInt(lua_State*l, int index);
+	int  CheckFieldInt(lua_State*l, int tableIndex, const string& name);
+	string  CheckFieldString(lua_State*l, int tableIndex, const string& name);
+	int   CheckFieldIntByDefault(lua_State*l, int tableIndex, const string&name, int defaultValue);
 	string CheckString(lua_State*l,int index);
 	LuaRef CheckFunction(lua_State*l, int index);
 	void Error(lua_State*l, const string& message);

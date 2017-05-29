@@ -6,7 +6,11 @@
 #include<memory>
 #include<vector>
 #include<iostream>
-#include <windows.h>
+#include<windows.h>
+#include<algorithm>
+#undef max
+#undef min
+
 #define GLEW_STATIC
 #include<glew.h>
 #include<GLFW\glfw3.h>

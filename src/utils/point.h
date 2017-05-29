@@ -9,6 +9,7 @@ public:
 	constexpr Point2();
 	constexpr Point2(int x, int y);
 
+	const Point2 operator-()const;
 	Point2& operator+=(const Point2& other);
 	Point2& operator-=(const Point2& other);
 	Point2& operator*=(int factor);

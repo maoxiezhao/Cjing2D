@@ -67,13 +67,25 @@ void AnimationSet::AddAnimation(const string & name, const Animation & animation
 /**
 *	\brief 添加精灵
 *
-*	默认键值name唯一
+*	默认键值name唯一,并根据传入的方向数据，计算最大的碰撞盒
 */
 void AnimationSet::AddAnimation(const string & name, const AnimationData & animationData)
 {
 	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
-	mAnimations.emplace(name, Animation(animationData.GetImageName(),animationData.GetFrameDelay(),
-		animationData.GetFrameLoop(),animationData.GetDirections()));
+
+	// 创建direction对象
+	for (const auto& direction : animationData.GetDirections())
+	{
+		Size size = direction.GetSize();
+		mMaxSize.width = std::max(mMaxSize.width, size.width);
+		mMaxSize.height = std::max(mMaxSize.height,size.height);
+		mMaxBoundingBox |= direction.GetBoundingBox();
+
+		//
+	}
+	mAnimations.emplace(name, 
+		Animation(animationData.GetImageName(),animationData.GetFrameDelay(),
+				animationData.GetFrameLoop(),animationData.GetDirections()));
 }
 
 /**

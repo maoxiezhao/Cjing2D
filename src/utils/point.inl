@@ -9,6 +9,11 @@ constexpr Point2::Point2(int x, int y):
 {
 }
 
+inline const Point2 Point2::operator-() const
+{
+	return Point2(-x, -y);
+}
+
 inline Point2 & Point2::operator+=(const Point2 & other)
 {
 	x += other.x;

@@ -62,7 +62,7 @@ Rect Animation::GetAniamtionRect(int currDirection) const
 
 	Rect animationRect;
 	AnimationDirectionData currDirectionData = mDirections[currDirection];
-	
+	// 返回？？，是否可以同过currDirectionData的成员返回？
 
 	return ;
 }

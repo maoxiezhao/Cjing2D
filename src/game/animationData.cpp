@@ -29,7 +29,7 @@ int AnimationData::GetFrameLoop() const
 	return mFrameLoop;
 }
 
-const std::deque<AnimationDirectionData>& AnimationData::GetDirections()
+const std::deque<AnimationDirectionData>& AnimationData::GetDirections()const 
 {
 	return mDirections;
 }
@@ -63,14 +63,80 @@ bool AnimationLuaData::ImportFromLua(lua_State * l)
 */
 int AnimationLuaData::LuaAnimation(lua_State * l)
 {
-	return LuaTools::ExceptionBoundary(l, [&]{
+	return LuaTools::ExceptionBoundary(l, [&] {
 		lua_getfield(l, LUA_REGISTRYINDEX, "Animation");
 		AnimationLuaData* animationData = static_cast<AnimationLuaData*>(lua_touserdata(l, -1));
 		lua_pop(l, 1);
 
 		LuaTools::CheckType(l, 1, LUA_TTABLE);
+		string animationName = LuaTools::CheckFieldString(l, 1, "name");
+		string srcImage = LuaTools::CheckFieldString(l, 1, "src_image");
+		uint32_t frameDelay = LuaTools::CheckFieldIntByDefault(l, 1, "frame_delay", 0);
+		int frameLoop = LuaTools::CheckFieldInt(l, 1, "frame_loop");
+
+		if (frameLoop < -1)
+		{
+			LuaTools::ArgError(l, 1,
+				"Bad field 'frameloop',frame must be positive or -1.");
+		}
+
+		lua_settop(l, 1);
+		lua_getfield(l, 1, "directions");
+		if (lua_type(l, 2) != LUA_TTABLE)
+		{
+			LuaTools::ArgError(l, 1,
+				string("Bad filed 'directions',(excepted table,got ") + lua_typename(l, -1) + ")");
+		}
+
+		// 方向数据解析
+		std::deque<AnimationDirectionData> directions;
+		int directionIndex = 1;
+		lua_rawgeti(l, -1, directionIndex);
+		while (!lua_isnil(l, -1))
+		{
+			++directionIndex;
+
+			if (lua_type(l, -1) != LUA_TTABLE)
+			{
+				LuaTools::ArgError(l, 1,
+					string("Bad filed 'directions',(excepted table,got ") + lua_typename(l, -1) + ")");
+			}
+
+			// 单方向数据解析
+			int x = LuaTools::CheckFieldInt(l, -1, "x");
+			int y = LuaTools::CheckFieldInt(l, -1, "y");
+			int width = LuaTools::CheckFieldInt(l, -1, "width");
+			int height = LuaTools::CheckFieldInt(l, -1, "height");
+			int orginX = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_x", 0);
+			int orginY = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_y", 0);
+			int numFrames = LuaTools::CheckFieldIntByDefault(l, -1, "num_frames", 0);
+			int numColumns = LuaTools::CheckFieldInt(l, -1, "num_columns");
+
+			if (numColumns < 1 || numColumns > numFrames)
+			{
+				LuaTools::ArgError(l, 1,
+					string("Bad field 'num_colums',must be between 1 and num_frames."));
+			}
+			lua_pop(l, 1);
+			lua_rawgeti(l, -1, directionIndex);
+
+			directions.emplace_back(Point2(x, y), Point2(orginX, orginY),
+				Size(width, height), numFrames, numColumns);
+
+		}
+	
+		if (animationData->mAnimations.find(animationName) != animationData->mAnimations.end())
+		{
+			LuaTools::Error(l, string("Duplicate animation name '") + animationName + "'");
+		}
+		animationData->mAnimations.emplace(animationName, 
+			AnimationData(srcImage, directions, frameDelay, frameLoop));
 		
-		
+		// 如果载入的是一个动画，则设置默认动画名
+		if (animationData->mAnimations.size() == 1)
+		{
+			animationData->mDefaultName = animationName;
+		}
 	});
 
 }

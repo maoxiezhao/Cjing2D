@@ -25,6 +25,12 @@ constexpr Rect::Rect(const Size& size):
 {
 }
 
+constexpr Rect::Rect(int x, int y, int width, int height):
+	x(x),y(y),
+	width(width),height(height)
+{
+}
+
 constexpr Rect::Rect(const Point2&xy, const Size& size):
 	x(xy.x),
 	y(xy.y),

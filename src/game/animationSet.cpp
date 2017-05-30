@@ -73,19 +73,30 @@ void AnimationSet::AddAnimation(const string & name, const AnimationData & anima
 {
 	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
 
+	std::deque<AnimationDirection> animationDirections;
 	// 创建direction对象
 	for (const auto& direction : animationData.GetDirections())
 	{
 		Size size = direction.GetSize();
-		mMaxSize.width = std::max(mMaxSize.width, size.width);
-		mMaxSize.height = std::max(mMaxSize.height,size.height);
+		mMaxSize.width = max(mMaxSize.width, size.width);
+		mMaxSize.height = max(mMaxSize.height,size.height);
 		mMaxBoundingBox |= direction.GetBoundingBox();
 
-		//
+		animationDirections.emplace_back(direction.GetAllFrameRects(), direction.GetOrgin());
 	}
 	mAnimations.emplace(name, 
 		Animation(animationData.GetImageName(),animationData.GetFrameDelay(),
-				animationData.GetFrameLoop(),animationData.GetDirections()));
+				animationData.GetFrameLoop(),animationDirections));
+}
+
+Size AnimationSet::GetMaxSize() const
+{
+	return mMaxSize;
+}
+
+Rect AnimationSet::GetMaxBoundingBox() const
+{
+	return mMaxBoundingBox;
 }
 
 /**

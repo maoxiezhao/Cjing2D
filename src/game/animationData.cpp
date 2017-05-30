@@ -2,6 +2,33 @@
 #include "core\debug.h"
 #include "lua\luaTools.h"
 
+/**
+*	\brief 返回所有的帧动画纹理矩形
+*/
+const std::vector<Rect> AnimationDirectionData::GetAllFrameRects() const
+{
+	std::vector<Rect> frameRects;
+	int frameNum = 0;
+	int numRows = (mNumFrames - 1) / mNumColumn + 1;
+
+	for (int row = 0; row < numRows && frameNum < mNumFrames; row++)
+	{
+		for (int col = 0; col < mNumColumn && frameNum < mNumFrames; col++)
+		{
+
+			frameRects.emplace_back(
+				mPos.x + col * mSize.width,
+				mPos.y + row * mSize.height,
+				mSize.width,
+				mSize.height
+			);
+			++frameNum;
+		}
+	}
+	return frameRects;
+}
+
+
 AnimationData::AnimationData()
 {
 }
@@ -72,7 +99,7 @@ int AnimationLuaData::LuaAnimation(lua_State * l)
 		string animationName = LuaTools::CheckFieldString(l, 1, "name");
 		string srcImage = LuaTools::CheckFieldString(l, 1, "src_image");
 		uint32_t frameDelay = LuaTools::CheckFieldIntByDefault(l, 1, "frame_delay", 0);
-		int frameLoop = LuaTools::CheckFieldInt(l, 1, "frame_loop");
+		int frameLoop = LuaTools::CheckFieldIntByDefault(l, 1, "frame_loop",1);
 
 		if (frameLoop < -1)
 		{
@@ -105,12 +132,12 @@ int AnimationLuaData::LuaAnimation(lua_State * l)
 			// 单方向数据解析
 			int x = LuaTools::CheckFieldInt(l, -1, "x");
 			int y = LuaTools::CheckFieldInt(l, -1, "y");
-			int width = LuaTools::CheckFieldInt(l, -1, "width");
-			int height = LuaTools::CheckFieldInt(l, -1, "height");
+			int width = LuaTools::CheckFieldInt(l, -1, "frame_width");
+			int height = LuaTools::CheckFieldInt(l, -1, "frame_height");
 			int orginX = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_x", 0);
 			int orginY = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_y", 0);
 			int numFrames = LuaTools::CheckFieldIntByDefault(l, -1, "num_frames", 0);
-			int numColumns = LuaTools::CheckFieldInt(l, -1, "num_columns");
+			int numColumns = LuaTools::CheckFieldIntByDefault(l, -1, "num_columns",numFrames);
 
 			if (numColumns < 1 || numColumns > numFrames)
 			{
@@ -137,6 +164,8 @@ int AnimationLuaData::LuaAnimation(lua_State * l)
 		{
 			animationData->mDefaultName = animationName;
 		}
+
+		return 0;
 	});
 
 }

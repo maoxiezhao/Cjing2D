@@ -69,5 +69,6 @@ private:
 
 };
 
+using AnimationSpritePtr = std::shared_ptr<AnimationSprite>;
 
 #endif

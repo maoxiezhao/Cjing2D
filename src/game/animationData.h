@@ -20,9 +20,11 @@ public:
 
 	Point2 GetPos()const { return mPos; }
 	Size GetSize()const { return mSize; }
+	Point2 GetOrgin()const { return mOrgin; }
 	int GetNumFrames()const { return mNumFrames; }
 	int GetNumColumn()const { return mNumColumn; }
 	Rect GetBoundingBox()const { return Rect(-mOrgin, mSize); }
+	const std::vector<Rect> GetAllFrameRects()const;
 
 private:
 	Point2 mPos;

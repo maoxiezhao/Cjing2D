@@ -6,6 +6,7 @@
 #include"core\inputEvent.h"
 #include"core\renderer.h"
 #include"game\sprite.h"
+#include"game\animationSprite.h"
 
 /**
 *	\brief 程序的主循环
@@ -31,6 +32,8 @@ private:
 	bool mExiting;
 
 	SpritePtr testSprite;
+	AnimationSpritePtr testAnimation;
+	
 };
 
 #endif

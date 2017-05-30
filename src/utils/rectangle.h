@@ -12,6 +12,7 @@ public:
 	constexpr Rect(int x,int y);
 	explicit constexpr Rect(const Point2& xy);
 	explicit constexpr Rect(const Size& size);
+	constexpr Rect(int x, int y, int width, int height);
 	constexpr Rect(const Point2&xy, const Size& size);
 	constexpr Rect(const Point2&lt, const Point2&rb);
 

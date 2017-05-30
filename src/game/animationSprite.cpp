@@ -259,7 +259,7 @@ AnimationSet & AnimationSprite::GetAnimationSet(const string & id)
 */
 void AnimationSprite::UpdateFramedChanged()
 {
-	Rect rect = mCurrAnimation->GetAniamtionRect();
-	SetTextureRect(rect, true);		// 这里设计????????????
+	Rect rect = mCurrAnimation->GetAniamtionRect(mCurrFrame,mCurrDirection);
+	SetTextureRect(rect, true);	
 	SetFrameChanged(false);
 }

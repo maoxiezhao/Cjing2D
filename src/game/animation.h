@@ -9,22 +9,40 @@
 #include<deque>
 
 /**
+*	\brief animation方向数据
+*/
+class AnimationDirection
+{
+public:
+	AnimationDirection(const std::vector<Rect>& frameRect,const Point2& orgin);
+
+	Size GetSize()const;
+	int GetNumFrames()const;
+	Rect GetFrameRect(int frame)const;
+
+private:
+	Point2 mOrgin;
+	std::vector<Rect> mFrameRects;
+
+};
+
+/**
 *	\brief animation动画信息
 */
 class Animation
 {
 public:
 	Animation();
-	Animation(const string& imageName, uint32_t frameDelay, int frameLoop, const std::deque<AnimationDirectionData>& directions);
+	Animation(const string& imageName, uint32_t frameDelay, int frameLoop, const std::deque<AnimationDirection>& directions);
 
 	string GetImageName()const;
 	TexturePtr GetTexture()const;
 	uint32_t GetFrameDelay()const;
 	int GetFrameLoop()const;
-	Rect GetAniamtionRect(int currDirection)const;
+	Rect GetAniamtionRect(int currFrame,int currDirection)const;
 	int  GetNumDirections()const;
 	int  GetNextFrame(int currFrame,int currDirection)const;
-	const AnimationDirectionData& GetDirection(int direction)const;
+	const AnimationDirection& GetDirection(int direction)const;
 
 private:
 	string mImageName;
@@ -32,11 +50,11 @@ private:
 	uint32_t mFrameDelay;
 	int mFrameLoop;
 	int mCurrDirection;
-	std::deque<AnimationDirectionData> mDirections;
+	std::deque<AnimationDirection> mDirections;
 
 };
 
-inline const AnimationDirectionData& Animation::GetDirection(int direction)const
+inline const AnimationDirection& Animation::GetDirection(int direction)const
 {
 	Debug::CheckAssertion(direction >= 0 && direction < GetNumDirections(),
 		"Invalid animation direction.");

@@ -1,10 +1,46 @@
 #include "animation.h"
+#include "core\debug.h"
+#include <sstream>
 
-Animation::Animation()
+
+AnimationDirection::AnimationDirection(const std::vector<Rect>& frameRect, const Point2& orgin):
+	mFrameRects(frameRect),
+	mOrgin(orgin)
 {
 }
 
-Animation::Animation(const string & imageName, uint32_t frameDelay, int frameLoop, const std::deque<AnimationDirectionData>& directions):
+Size AnimationDirection::GetSize() const
+{
+	Debug::CheckAssertion(mFrameRects.size() > 0, "Invaild animation rect.");
+	return {mFrameRects[0].GetSize().width,
+			mFrameRects[0].GetSize().height};
+}
+
+int AnimationDirection::GetNumFrames() const
+{
+	return mFrameRects.size();
+}
+
+Rect AnimationDirection::GetFrameRect(int frame) const
+{
+	if (frame < 0 || frame >=  GetNumFrames() )
+	{
+		std::ostringstream oss;
+		oss << "Invaild frame " << frame <<
+			",the maxinum frame" << GetNumFrames();
+	}
+	return mFrameRects[frame];
+}
+
+//////////////////////////////////////////////////
+
+Animation::Animation():
+	mFrameDelay(0),
+	mFrameLoop(-1)
+{
+}
+
+Animation::Animation(const string & imageName, uint32_t frameDelay, int frameLoop, const std::deque<AnimationDirection>& directions):
 	mImageName(imageName),
 	mFrameDelay(frameDelay),
 	mFrameLoop(frameLoop),
@@ -47,7 +83,7 @@ int Animation::GetNextFrame(int currFrame, int currDirection) const
 
 	int nextFrame = currFrame + 1;
 	if (nextFrame == mDirections[currDirection].GetNumFrames())
-		nextFrame == mFrameLoop;
+		nextFrame = mFrameLoop;
 
 	return nextFrame;
 }
@@ -55,15 +91,13 @@ int Animation::GetNextFrame(int currFrame, int currDirection) const
 /**
 *	\brief 根据信息返回当前矩形
 */
-Rect Animation::GetAniamtionRect(int currDirection) const
+Rect Animation::GetAniamtionRect(int currFrame,int currDirection) const
 {
 	if (currDirection < 0 || currDirection >= GetNumDirections())
 		Debug::Die("Invaild directions in Animation::GetANimationRect.");
 
 	Rect animationRect;
-	AnimationDirectionData currDirectionData = mDirections[currDirection];
-	// 返回？？，是否可以同过currDirectionData的成员返回？
+	AnimationDirection currAnimaDirection = mDirections[currDirection];
 
-	return ;
+	return currAnimaDirection.GetFrameRect(currFrame);
 }
-

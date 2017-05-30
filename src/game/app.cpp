@@ -32,10 +32,14 @@ App::App():
 	mLuaContext->Initialize();
 
 	// test
-	testSprite = std::make_shared<Sprite>("sprite/test.png");
+	testSprite = std::make_shared<Sprite>("sprites/test.png");
 	testSprite->SetPos(Point2(320, 240));
-	testSprite->SetRotated(45);
+	testSprite->SetRotated(0);
 	//testSprite->SetSize(Size(320, 100));
+
+	testAnimation = std::make_shared<AnimationSprite>("sprites/explosion.dat");
+	testAnimation->SetPos(Point2(0, 0));
+
 }
 
 App::~App()
@@ -104,6 +108,9 @@ void App::Run()
 
 void App::Update()
 {
+	// test
+	testAnimation->Update();
+
 	// game update
 
 	mLuaContext->Update();
@@ -140,6 +147,7 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
+	testAnimation->Draw();
 	testSprite->Draw();
 
 	Video::Rendercanvas();

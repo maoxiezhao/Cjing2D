@@ -23,6 +23,9 @@ public:
 	float GetGlobalOrder()const;
 	void SetGlobalOrder(float order);
 
+	virtual void SetSuspended(bool suspended);
+	bool IsSuspended()const;
+
 protected:
 	Drawable();
 

@@ -39,12 +39,15 @@ public:
 	TexturePtr GetTexture()const;
 	uint32_t GetFrameDelay()const;
 	int GetFrameLoop()const;
+	int GetNumFrame(int currDirection)const;
 	Rect GetAniamtionRect(int currFrame,int currDirection)const;
 	int  GetNumDirections()const;
 	int  GetNextFrame(int currFrame,int currDirection)const;
 	const AnimationDirection& GetDirection(int direction)const;
 
 private:
+	void InitTextureWithImageSrc();
+
 	string mImageName;
 	TexturePtr mTexture;
 	uint32_t mFrameDelay;

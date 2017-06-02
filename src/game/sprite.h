@@ -26,7 +26,7 @@ public:
 	virtual void Draw();
 	void Draw(const Point2& pos, float rotate);
 
-	// status
+	// status 
 	void SetVisible(bool visible);
 	void SetTexture(TexturePtr texture);
 	void SetTextureRect(const Rect& rect,bool bResize = false);
@@ -39,7 +39,8 @@ public:
 	void SetAnchor(const Point2& anchor);
 	void SetBlendFunc(const BlendFunc& blendFunc);
 	void SetModelView(const Matrix4& modelView);
-	void SetSuspended(bool suspend);
+
+	virtual void SetSuspended(bool suspended);
 
 	TexturePtr GetTexture()const;
 	Rect GetRect()const;
@@ -49,7 +50,6 @@ public:
 	Point2 GetAnchor()const;
 	BlendFunc GetBlendFunc()const;
 
-	bool IsSuspended()const;
 	bool IsDirty()const;
 	bool IsVisible()const;
 	virtual bool IsAnimationed()const;

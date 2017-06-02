@@ -99,7 +99,7 @@ int AnimationLuaData::LuaAnimation(lua_State * l)
 		string animationName = LuaTools::CheckFieldString(l, 1, "name");
 		string srcImage = LuaTools::CheckFieldString(l, 1, "src_image");
 		uint32_t frameDelay = LuaTools::CheckFieldIntByDefault(l, 1, "frame_delay", 0);
-		int frameLoop = LuaTools::CheckFieldIntByDefault(l, 1, "frame_loop",1);
+		int frameLoop = LuaTools::CheckFieldIntByDefault(l, 1, "frame_loop",-1);
 
 		if (frameLoop < -1)
 		{

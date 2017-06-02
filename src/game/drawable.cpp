@@ -18,6 +18,10 @@ Drawable::~Drawable()
 */
 void Drawable::Update()
 {
+	if (IsSuspended() )
+	{
+		return;
+	}
 	for (auto& movment : mMovements)
 	{
 		// do movement
@@ -52,5 +56,15 @@ float Drawable::GetGlobalOrder() const
 void Drawable::SetGlobalOrder(float order)
 {
 	mGlobalZOrder = order;	
+}
+
+void Drawable::SetSuspended(bool suspended)
+{
+	mSuspended = suspended;
+}
+
+bool Drawable::IsSuspended() const
+{
+	return mSuspended;
 }
 

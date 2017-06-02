@@ -12,7 +12,8 @@ Sprite::Sprite():
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
-	mBlendFunc()
+	mBlendFunc(),
+	mSuspended(false)
 {
 	SetDefaultState();
 }
@@ -74,6 +75,8 @@ Sprite::~Sprite()
 */
 void Sprite::Update()
 {
+	Drawable::Update();
+
 	if (mSuspended)
 		return;
 
@@ -257,14 +260,6 @@ void Sprite::SetModelView(const Matrix4 & modelView)
 }
 
 /**
-*	\brief 设置是否暂停，即不参与update更新
-*/
-void Sprite::SetSuspended(bool suspend)
-{
-	mSuspended = suspend;
-}
-
-/**
 *	\brief 返回纹理
 */
 TexturePtr Sprite::GetTexture() const
@@ -320,12 +315,12 @@ BlendFunc Sprite::GetBlendFunc() const
 	return mBlendFunc;
 }
 
-/**
-*	\brief 是否暂定
-*/
-bool Sprite::IsSuspended() const
+void Sprite::SetSuspended(bool suspended)
 {
-	return mSuspended;
+	if (suspended != IsSuspended() )
+	{
+		Drawable::SetSuspended(suspended);
+	}
 }
 
 /**

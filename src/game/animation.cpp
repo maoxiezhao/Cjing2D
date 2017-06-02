@@ -1,5 +1,7 @@
 #include "animation.h"
 #include "core\debug.h"
+#include "core\fileData.h"
+#include "core\resourceCache.h"
 #include <sstream>
 
 
@@ -46,6 +48,7 @@ Animation::Animation(const string & imageName, uint32_t frameDelay, int frameLoo
 	mFrameLoop(frameLoop),
 	mDirections(directions)
 {
+	InitTextureWithImageSrc();
 }
 
 string Animation::GetImageName() const
@@ -66,6 +69,14 @@ uint32_t Animation::GetFrameDelay() const
 int Animation::GetFrameLoop() const
 {
 	return mFrameLoop;
+}
+
+int Animation::GetNumFrame(int currDirection) const
+{
+	if (currDirection < 0 || currDirection >= GetNumDirections())
+		Debug::Die("Invaild directions in Animation::GetNumFrame()");
+
+	return mDirections[currDirection].GetNumFrames();
 }
 
 int Animation::GetNumDirections() const
@@ -100,4 +111,26 @@ Rect Animation::GetAniamtionRect(int currFrame,int currDirection) const
 	AnimationDirection currAnimaDirection = mDirections[currDirection];
 
 	return currAnimaDirection.GetFrameRect(currFrame);
+}
+
+/**
+*	\brief 根据当前srcImage初始化texture,上级目录必然是sprites/
+*/
+void Animation::InitTextureWithImageSrc()
+{
+	std::string prefix = "sprites/";
+	std::string prefixedFileName = prefix + mImageName;
+
+	if (!FileData::IsFileExists(prefixedFileName) )
+	{
+		Debug::Error("The srcImage '" + mImageName + "' in animation is not existed.");
+		return;
+	}
+
+	mTexture = ResourceCache::GetInstance().LoadTexture2D(prefixedFileName);
+	if (mTexture == nullptr)
+	{
+		Debug::Error("The srcImage '" + mImageName + "' in animation initialize texture failed.");
+		return;
+	}
 }

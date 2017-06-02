@@ -15,7 +15,9 @@ AnimationSprite::AnimationSprite(const string & id):
 	mCurrAnimationSet(GetAnimationSet(id)),
 	mFrameDelay(0),
 	mFrameLoop(0),
-	mFrameNum(0)
+	mFrameNum(0),
+	mFrameFinished(false),
+	mFrameChanged(false)
 {
 	SetCurrAnimation(mCurrAnimationSet.GetAnimationDefaultName());
 }
@@ -101,15 +103,35 @@ void AnimationSprite::SetFrameChanged(bool changed)
 	mFrameChanged = changed;
 }
 
+/**
+*	\brief 设置当前帧
+*
+*	重新设置当前帧会重新播放动画
+*/
 void AnimationSprite::SetCurrFrame(int currFrame)
 {
-	Debug::CheckAssertion(currFrame >= -1 && currFrame < mFrameNum, "");
-	mCurrFrame = currFrame;
+	Debug::CheckAssertion(currFrame >= -1 && currFrame < mCurrAnimation->GetNumFrame(mCurrDirection),
+		"Invaild currFrame in AnimationSprite::setCurrFrame().");
+	
+	mFrameFinished = false;
+	mNextFrameDate = System::Now() + GetFrameDelay();
+
+	if (currFrame != mCurrFrame)
+	{
+		mCurrFrame = currFrame;
+		SetFrameChanged(true);
+	}
 }
+
 
 int AnimationSprite::GetCurrFrame() const
 {
 	return mCurrFrame;
+}
+
+void AnimationSprite::SetFrameFinished(bool finished)
+{
+	mFrameFinished = finished;
 }
 
 /**
@@ -117,7 +139,7 @@ int AnimationSprite::GetCurrFrame() const
 */
 void AnimationSprite::SetCurrAnimation(const string & name)
 {
-	if (name != mCurrAnimationName && !IsFrameStarted())
+	if (name != mCurrAnimationName || !IsFrameStarted())
 	{
 		mCurrAnimationName = name;
 		if (mCurrAnimationSet.HasAnimation(name))
@@ -134,6 +156,7 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 		// 先初始化texture，在根据animation设置rect
 		SetCurrFrame(0);
 		SetFrameChanged(true);
+		
 		InitWithTexture(mTexture);
 
 		// luaContext可能会存在一些操作
@@ -179,6 +202,47 @@ int AnimationSprite::GetNumFrames() const
 	if (mCurrAnimation == nullptr)
 		return 0;
 	return mCurrAnimation->GetDirection(mCurrDirection).GetNumFrames();
+}
+
+/**
+*	\brief 设置是否暂停
+*/
+void AnimationSprite::SetSuspended(bool suspended)
+{
+	if (mSuspended != IsSuspended() )
+	{
+		Sprite::SetSuspended(suspended);
+		if (!mSuspended)
+		{
+			// 解除暂停后，需要重新计算下一帧事件
+			uint32_t now = System::Now();
+			mNextFrameDate = now + GetFrameDelay();
+		}
+	}
+}
+
+/**
+*	\brief 重置当前动画
+*/
+void AnimationSprite::ResetAnimation()
+{
+	SetCurrFrame(0);
+}
+
+/**
+*	\brief 重新开始动画
+*/
+void AnimationSprite::StartAnimation()
+{
+	ResetAnimation();
+}
+
+/**
+*	\brief 停止动画
+*/
+void AnimationSprite::StopAnimation()
+{
+	mFrameFinished = true;
 }
 
 int AnimationSprite::GetCurrDirection() const
@@ -229,7 +293,6 @@ void AnimationSprite::SetDataFromAnimation(const Animation & animation)
 {
 	mFrameDelay = animation.GetFrameDelay();
 	mFrameLoop = animation.GetFrameLoop();
-	mFrameNum;
 	mTexture = animation.GetTexture();
 
 	//+++++++++++++++++++++++

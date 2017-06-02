@@ -27,6 +27,7 @@ public:
 	void SetFrameChanged(bool changed);
 	void SetCurrFrame(int currFrame);
 	int  GetCurrFrame()const;
+	void SetFrameFinished(bool finished);
 	bool IsFrameFinished()const;
 	bool IsFrameStarted()const ;
 	void SetFrameDelay(uint32_t delay);
@@ -34,11 +35,17 @@ public:
 	int GetNextFrame()const;
 	int GetNumFrames()const;
 
+	virtual void SetSuspended(bool suspended);
+
 	// direction
 	int GetCurrDirection()const;
 	int GetNumDirections()const;
 
 	// animation status
+	void ResetAnimation();
+	void StartAnimation();
+	void StopAnimation();
+
 	void SetCurrAnimation(const string& name);
 	void SetCurrAnimationSetId(const string& id);
 	string GetCurrAnimationSetId()const;
@@ -66,6 +73,7 @@ private:
 	int      mCurrDirection;
 	bool     mFrameChanged;
 	bool     mFrameFinished;
+	bool     mPaused;
 
 };
 

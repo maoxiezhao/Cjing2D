@@ -60,7 +60,7 @@ Animation & AnimationSet::GetAnimation(const string & name)
 */
 void AnimationSet::AddAnimation(const string & name, const Animation & animation)
 {
-	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
+	Debug::CheckAssertion(!HasAnimation(name), "Invalid animation name.");
 	mAnimations[name] = animation;
 }
 
@@ -71,7 +71,7 @@ void AnimationSet::AddAnimation(const string & name, const Animation & animation
 */
 void AnimationSet::AddAnimation(const string & name, const AnimationData & animationData)
 {
-	Debug::CheckAssertion(HasAnimation(name), "Invalid animation name.");
+	Debug::CheckAssertion(!HasAnimation(name), "Invalid animation name.");
 
 	std::deque<AnimationDirection> animationDirections;
 	// 创建direction对象

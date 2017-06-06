@@ -31,8 +31,9 @@ protected:
 
 	Point2 mPos;
 	float mRotate;
-	float mGlobalZOrder;
-	bool mSuspended;
+	float mGlobalZOrder;	// 全局次序，决定了渲染时的绘制次序
+	float mLocalZOrder;		// 局部测序，在作为子节点时的操作次序
+	bool mSuspended;		
 
 	std::vector<MovementPtr> mMovements;
 

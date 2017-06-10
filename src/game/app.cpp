@@ -44,8 +44,15 @@ App::App():
 
 App::~App()
 {
+	if (mCurrGame != nullptr)
+	{
+		mCurrGame->Stop();
+		mCurrGame.reset();
+	}
 	if (mLuaContext != nullptr)
+	{
 		mLuaContext->Exit();
+	}
 
 	FileData::CloseData();
 	System::Quit();
@@ -112,14 +119,31 @@ void App::Update()
 	testAnimation->Update();
 
 	// game update
-
+	if (mCurrGame != nullptr)
+	{
+		mCurrGame->Update();
+	}
 	mLuaContext->Update();
 	System::Update();
+
+	if (mNextGame != mCurrGame.get())
+	{
+		// 切换当前game
+		mCurrGame = std::unique_ptr<Game>(mNextGame);
+		if (mCurrGame != nullptr)
+		{
+			mCurrGame->Start();
+		}
+		else
+		{
+			mLuaContext->Exit();
+		}
+	}
 }
 
-void App::SetExiting(bool t)
+void App::SetExiting(bool isexit)
 {
-	mExiting = t;
+	mExiting = isexit;
 }
 
 bool App::IsExiting()
@@ -150,6 +174,12 @@ void App::Render()
 	testAnimation->Draw();
 	testSprite->Draw();
 
+	if (mCurrGame != nullptr)
+	{
+		mCurrGame->Draw();
+	}
+	mLuaContext->OnMainDraw();
+
 	Video::Rendercanvas();
 }
 
@@ -161,4 +191,24 @@ void App::NotifyInput(const InputEvent & ent)
 	if (ent.IsWindowClosing())
 		SetExiting(true);
 	bool handle = mLuaContext->NotifyInput(ent);
+	if ( mCurrGame != nullptr)
+	{
+		mCurrGame->NotifyInput(ent);
+	}
 }
+
+/**
+*	\brief 设置当前游戏
+*   \param game 当game为nullptr则退出游戏
+*/
+void App::SetGame(Game* game)
+{
+	mNextGame = game;
+}
+
+Game* App::GetGame()
+{
+	return mCurrGame.get();
+}
+
+

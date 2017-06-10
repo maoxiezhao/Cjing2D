@@ -7,7 +7,7 @@
 #include"core\renderer.h"
 #include"game\sprite.h"
 #include"game\animationSprite.h"
-
+#include"game\game.h"
 /**
 *	\brief 程序的主循环
 */
@@ -19,7 +19,9 @@ public:
 
 	void Run();
 	void Update();
-	void SetExiting(bool t);
+	void SetExiting(bool isexit);
+	void SetGame(Game* game);
+	Game* GetGame();
 
 private:
 	bool IsExiting();
@@ -29,8 +31,12 @@ private:
 
 	std::unique_ptr<LuaContext> mLuaContext;
 	
+	std::unique_ptr<Game> mCurrGame;   
+	Game* mNextGame;
+
 	bool mExiting;
 
+	// test
 	SpritePtr testSprite;
 	AnimationSpritePtr testAnimation;
 	

@@ -121,7 +121,12 @@ public:
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;
+	static const string module_animation_name;
+
+	// movement modules name
 	static const string module_movement_name;
+	static const string module_straight_movment_name;
+
 private:
 	App* mApp;
 	lua_State* l;

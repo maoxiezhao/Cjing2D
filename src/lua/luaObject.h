@@ -30,7 +30,7 @@ private:
 
 };
 
-using LuaObjectPtr = std::shared_ptr<LuaObject>
+using LuaObjectPtr = std::shared_ptr<LuaObject>;
 
 
 #endif

@@ -2,6 +2,7 @@
 #define _CJING_GEOMETRY_H_
 
 #include"common\common.h"
+#include"utils\point.h"
 
 /**
 *	\brief 数学常用定义和常用的数学函数
@@ -13,10 +14,36 @@ namespace Geometry
 	constexpr double INV_PI		 = 0.31830988618379067154;
 	constexpr double INV_TWOPI   = 0.15915494309189533577;
 	constexpr double INV_FOURPI  = 0.07957747154594766788;
+	constexpr double PI_OVER_2   = 1.57079632679489661923;
 
-	float Radians(float angle)
+	inline float Radians(float angle)
 	{
 		return (float)PI * angle  / 180.0f;
+	}
+
+	inline double GetDistance(const Point2& p1, const Point2& p2)
+	{
+		float dx = p2.x - p1.x;
+		float dy = p2.y - p1.y;
+		return (double)sqrtf(dx * dx + dy * dy);
+	}
+
+	inline double GetAngle(double x1,double y1,double x2,double y2)
+	{
+		double dx = x2 - x1;
+		double dy = y2 - y1;
+		
+		// 当都为0时，则直接返回90度
+		if (dx == 0.0 && dy == 0.0)
+		{
+			return PI_OVER_2;
+		}
+		double angle = std::atan2(-dy, dx);
+		if (angle < 0.0)
+		{
+			angle += PI_2;
+		}
+		return angle;
 	}
 }
 

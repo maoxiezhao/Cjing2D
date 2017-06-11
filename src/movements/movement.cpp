@@ -1,4 +1,5 @@
 #include "movement.h"
+#include "game\drawable.h"
 #include "core\system.h"
 #include "lua\luaContext.h"
 
@@ -65,6 +66,13 @@ void Movement::SetSuspended(bool suspended)
 bool Movement::IsFinished() const
 {
 	return mFinished;
+}
+
+/**
+*	\brief œÏ”¶“∆∂Ø±‰ªª
+*/
+void Movement::NotifyMovementChanged()
+{
 }
 
 /**

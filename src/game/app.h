@@ -8,6 +8,8 @@
 #include"game\sprite.h"
 #include"game\animationSprite.h"
 #include"game\game.h"
+#include"entity\player.h"
+
 /**
 *	\brief 程序的主循环
 */

@@ -4,9 +4,10 @@
 #include"common\common.h"
 #include"utils\point.h"
 #include"utils\rectangle.h"
-#include"game\drawable.h"
 #include"lua\luaRef.h"
 #include"lua\luaObject.h"
+
+class Drawable;
 
 /**
 *	\brief 移动插件的抽象基类,可以作为插件移动drawable和entity
@@ -21,8 +22,6 @@ public:
 	virtual void SetSuspended(bool suspended);
 	
 	// status
-	virtual bool IsFinished()const;
-	virtual void Stop();
 	Point2 GetPos()const;
 	void SetX(const int x);
 	void SetY(const int y);
@@ -31,7 +30,12 @@ public:
 	void TranslateY(int y);
 	void TranslatePos(const Point2& dxy);
 
+	// move
+	virtual bool IsFinished()const;
+	virtual void Stop();
+
 	// lua
+	void NotifyMovementChanged();
 	void NotifyMovementFinished();
 	virtual const string GetLuaObjectName()const override;
 

@@ -23,6 +23,8 @@ public:
 	void SetSpeedVec2(const Vec2f& speed);
 	void SetSpeedX(double speedX );
 	void SetSpeedY(double speedY );
+	double GetSpeed()const;
+	virtual bool IsStarted()const;
 
 	// move
 	virtual bool IsFinished()const;

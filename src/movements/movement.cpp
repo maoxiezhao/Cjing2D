@@ -87,14 +87,34 @@ void Movement::NotifyMovementFinished()
 	}
 }
 
+void Movement::NotifyObstacleReached()
+{
+
+}
+
 const string Movement::GetLuaObjectName() const
 {
 	return LuaContext::module_movement_name;
 }
 
+/**
+*	\brief 测试是否发生了碰撞
+*	\param dxy 相对当前位置的偏移值
+*/
 bool Movement::TestCollisionWithObstacles(const Point2 & dxy) const
 {
-	return false;
+	if (mIngoreObstacle || mEntity == nullptr)
+	{
+		return false;
+	}
+
+	Map map = GetMap();
+	Rect rect = GetBoundsRect();
+	rect.translate(dxy);
+
+	bool collision = map->TestCollisionWithObstacles(rect,*mEntity)
+
+	return collision;
 }
 
 bool Movement::IsIngoredObstacles() const
@@ -110,6 +130,16 @@ void Movement::SetIngoredObstacles(bool ingoredObstacles)
 void Movement::Stop()
 {
 	mFinished = true;
+}
+
+bool Movement::IsStop() const
+{
+	return !IsStarted();
+}
+
+bool Movement::IsStarted() const
+{
+	return false;
 }
 
 Point2 Movement::GetPos() const
@@ -145,4 +175,12 @@ void Movement::TranslateY(int y)
 void Movement::TranslatePos(const Point2 & dxy)
 {
 	mPos += dxy;
+}
+
+/**
+*	\brief 获取暂定时的时间
+*/
+uint32_t Movement::GetWhenSuspeneded() const
+{
+	return mWhenSuspendedTime;
 }

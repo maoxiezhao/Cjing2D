@@ -8,6 +8,7 @@
 #include"lua\luaObject.h"
 
 class Drawable;
+class Entity;
 
 /**
 *	\brief 移动插件的抽象基类,可以作为插件移动drawable和entity
@@ -29,14 +30,18 @@ public:
 	void TranslateX(int x);
 	void TranslateY(int y);
 	void TranslatePos(const Point2& dxy);
+	uint32_t GetWhenSuspeneded()const;
 
 	// move
 	virtual bool IsFinished()const;
 	virtual void Stop();
+	virtual bool IsStop()const;
+	virtual bool IsStarted()const;
 
 	// lua
 	void NotifyMovementChanged();
 	void NotifyMovementFinished();
+	void NotifyObstacleReached();
 	virtual const string GetLuaObjectName()const override;
 
 	// test collision
@@ -57,6 +62,7 @@ private:
 
 
 	Drawable* mDrawable;
+	Entity* mEntity;
 
 	LuaRef mFinishedCallBack;
 	

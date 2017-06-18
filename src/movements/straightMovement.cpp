@@ -57,8 +57,8 @@ void StraightMovement::SetAngle(double angle)
 	if (!IsStop())
 	{
 		double speed = GetSpeed();
-		SetSpeedX(speed * cosf(angle));
-		SetSpeedY(speed * -sinf(angle));
+		SetSpeedX(speed * cos(angle));
+		SetSpeedY(speed * -sin(angle));
 	}
 	mAngle = angle;
 	NotifyMovementChanged();
@@ -171,7 +171,7 @@ void StraightMovement::SetSpeedY(double speedY )
 */
 double StraightMovement::GetSpeed() const
 {
-	return sqrtf(mSpeedX * mSpeedX + mSpeedY * mSpeedY);
+	return sqrt(mSpeedX * mSpeedX + mSpeedY * mSpeedY);
 }
 
 /**

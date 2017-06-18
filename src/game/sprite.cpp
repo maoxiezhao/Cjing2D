@@ -2,6 +2,7 @@
 #include"core\texture.h"
 #include"core\debug.h"
 #include"core\resourceCache.h"
+#include"lua\luaContext.h"
 
 /**
 *	\brief 创建一个默认的精灵
@@ -350,6 +351,11 @@ bool Sprite::IsAnimationed() const
 void Sprite::AddChildSprite(std::shared_ptr<Sprite> childSprite)
 {
 	mChildSprites.push_back(childSprite);
+}
+
+const string Sprite::GetLuaObjectName() const
+{
+	return LuaContext::module_sprite_name;
 }
 
 /**

@@ -57,6 +57,9 @@ public:
 	// child
 	void AddChildSprite(std::shared_ptr<Sprite> childSprite);
 
+	// lua
+	virtual const string GetLuaObjectName()const;
+
 protected:
 	Sprite();
 	bool InitWithFile(const std::string& name);

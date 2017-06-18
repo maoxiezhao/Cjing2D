@@ -108,12 +108,14 @@ bool Movement::TestCollisionWithObstacles(const Point2 & dxy) const
 		return false;
 	}
 
-	Map map = GetMap();
-	Rect rect = GetBoundsRect();
-	rect.translate(dxy);
+	//Map map = GetMap();
+	//Rect rect = GetBoundsRect();
+	//rect.translate(dxy);
 
-	bool collision = map->TestCollisionWithObstacles(rect,*mEntity)
+	//bool collision = map->TestCollisionWithObstacles(rect, *mEntity);
 
+	bool collision = false;
+	
 	return collision;
 }
 

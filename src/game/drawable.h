@@ -4,11 +4,12 @@
 #include"common\common.h"
 #include"movements\movement.h"
 #include"utils\point.h"
+#include"lua\luaObject.h"
 
 /**
 *	\brief 提供位置属性的基本绘制单元
 */
-class Drawable
+class Drawable : public LuaObject
 {
 public:
 	~Drawable();
@@ -25,6 +26,9 @@ public:
 
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
+
+	// lua
+	virtual const string GetLuaObjectName()const ;
 
 protected:
 	Drawable();

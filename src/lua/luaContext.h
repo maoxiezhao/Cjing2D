@@ -56,6 +56,9 @@ public:
 	void RegisterTimeModule();
 	void RegisterMenuModule();
 	void RegisterVideoModule();
+	void RegisterDrawableModule();
+	void RegisterSpriteModule();
+	void RegisterAnimationModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -121,11 +124,15 @@ public:
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;
-	static const string module_animation_name;
 
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movment_name;
+
+	// drawable
+	static const string module_drawable_name;
+	static const string module_sprite_name;
+	static const string module_animation_name;
 
 private:
 	App* mApp;

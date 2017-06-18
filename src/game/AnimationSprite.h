@@ -53,6 +53,9 @@ public:
 	// notify
 	void NotifyFinished();
 
+	// lua
+	virtual const string GetLuaObjectName()const;
+
 private:
 	void SetDataFromAnimation(const Animation& animation);
 

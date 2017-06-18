@@ -1,6 +1,7 @@
 #include"animationSprite.h"
 #include"core\system.h"
 #include"core\debug.h"
+#include"lua\luaContext.h"
 
 /**
 *	\brief 默认构造函数，目前需要考虑是否有必要提供
@@ -284,6 +285,11 @@ string AnimationSprite::GetCurrAnimationSetId() const
 
 void AnimationSprite::NotifyFinished()
 {
+}
+
+const string AnimationSprite::GetLuaObjectName() const
+{
+	return LuaContext::module_sprite_name;
 }
 
 /**

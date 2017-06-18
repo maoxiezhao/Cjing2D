@@ -1,4 +1,5 @@
 #include "drawable.h"
+#include "lua\luaContext.h"
 
 Drawable::Drawable():
 	mPos(0,0),
@@ -66,5 +67,10 @@ void Drawable::SetSuspended(bool suspended)
 bool Drawable::IsSuspended() const
 {
 	return mSuspended;
+}
+
+const string Drawable::GetLuaObjectName() const
+{
+	return LuaContext::module_drawable_name;;
 }
 

@@ -23,9 +23,9 @@ namespace Geometry
 
 	inline double GetDistance(const Point2& p1, const Point2& p2)
 	{
-		float dx = p2.x - p1.x;
-		float dy = p2.y - p1.y;
-		return (double)sqrtf(dx * dx + dy * dy);
+		double dx = (double)(p2.x - p1.x);
+		double dy = (double)(p2.y - p1.y);
+		return sqrt(dx * dx + dy * dy);
 	}
 
 	inline double GetAngle(double x1,double y1,double x2,double y2)

@@ -11,7 +11,9 @@
 
 App::App():
 	mLuaContext(nullptr),
-	mExiting(false)
+	mExiting(false),
+	mCurrGame(nullptr),
+	mNextGame(nullptr)
 {
 	Logger::Info("Cjing start initializing.");
 	

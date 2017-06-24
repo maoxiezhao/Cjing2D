@@ -190,22 +190,70 @@ bool LuaContext::FindMethod(const string & name, int index)
 */
 void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * functions)
 {
-	lua_getglobal(l, module_name.c_str());
-					// cjing
-	lua_getfield(l, -1, moduleName.c_str());
-					// cjing module/nil
-	if (lua_isnil(l, -1))
-	{				
+	if (!moduleName.empty())
+	{
+		lua_getglobal(l, module_name.c_str());
+		// cjing
+		lua_getfield(l, -1, moduleName.c_str());
+		// cjing module/nil
+		if (lua_isnil(l, -1))
+		{
+			lua_pop(l, 1);
+			lua_newtable(l);
+			// cjing module
+		}
+		if (functions != nullptr)
+			luaL_setfuncs(l, functions, 0);
+		lua_setfield(l, -2, moduleName.c_str());
+		// cjing
 		lua_pop(l, 1);
-		lua_newtable(l);
-					// cjing module
+		// --
 	}
-	if (functions != nullptr)
+	else
+	{
 		luaL_setfuncs(l, functions, 0);
-	lua_setfield(l, -2, moduleName.c_str());
-					// cjing
-	lua_pop(l, 1);
-					// --
+	}
+}
+
+/**
+*	\brief 注册一个C++对象类型
+*/
+void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functions, const luaL_Reg * methods, const luaL_Reg * metamethods)
+{
+	luaL_getmetatable(l, moduleName.c_str());
+	Debug::CheckAssertion(lua_isnil(l, 1 - 1), string("Type:") + moduleName + " has already registered.");
+
+	// 注册函数
+	if (functions != nullptr )
+	{
+		RegisterFunction(moduleName, functions);
+	}
+
+	luaL_newmetatable(l, moduleName.c_str());
+	lua_pushstring(l, moduleName.c_str());	
+							// meta moduleName
+	lua_setfield(l, -2, "__CJING_TYPE");
+							// meta
+	// 注册方法
+	if (methods != nullptr )
+	{
+		RegisterFunction("", methods);
+	}
+	// 注册元表方法
+	if (metamethods != nullptr)
+	{
+		RegisterFunction("", metamethods);
+	}						// meta
+	lua_getfield(l, -1, "__index");
+							// meta index/nil
+	lua_pushvalue(l, -2);
+							// meta __index/nil 
+	if ( lua_isnil(l, -2))
+	{							
+		lua_setfield(l, -3, "__index");
+	}						// meta nil
+	lua_settop(l, 0);
+							// --
 }
 
 /**
@@ -259,6 +307,21 @@ void LuaContext::PrintLuaStack(lua_State * l)
 		oss << endl;
 	}
 	Logger::Debug(oss.str());
+}
+
+/**
+*	\brief 压入用户对象数据
+*/
+void LuaContext::PushUserdata(lua_State * l, LuaObject & userData)
+{
+}
+
+/**
+*	\brief 检查指定位置的lua用户对象，返回该对象
+*/
+const LuaObjectPtr LuaContext::CheckUserData(lua_State * l, int index, const string & moduleName)
+{
+	return LuaObjectPtr();
 }
 
 void LuaContext::OnStart()

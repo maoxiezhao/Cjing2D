@@ -4,14 +4,18 @@
 #include"common\common.h"
 #include"lua\luaTools.h"
 #include"lua\luaRef.h"
+#include"lua\luaObject.h"
 #include"game\timer.h"
+#include"game\drawable.h"
 
+#include<set>
 #include<map>
 #include<list>
 #include<thirdparty\lua.hpp>
 
 class App;
 class InputEvent;
+
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
  *
@@ -38,9 +42,13 @@ public:
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
 	void RegisterFunction(const string& moduleName, const luaL_Reg* functions);
+	void RegisterType(const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	LuaRef CreateRef();
 	void PushRef(lua_State*l,const LuaRef& luaref);
 	void PrintLuaStack(lua_State*l);
+	
+	void PushUserdata(lua_State*l, LuaObject& userData);
+	const LuaObjectPtr CheckUserData(lua_State*l, int index, const string& moduleName);
 
 	// process
 	void OnStart();
@@ -73,9 +81,12 @@ public:
 		// menu
 		menu_api_start,
 		menu_api_stop,
-		//video
+		// video
 		video_api_setFullScreen,
-		video_api_isFullScreen;
+		video_api_isFullScreen,
+		// sprite
+		sprite_api_create
+		;
 		
 	// main api	-- test 
 	void PushMain(lua_State*l);
@@ -118,6 +129,9 @@ public:
 	void RemoveMenus(int contextIndex);
 	void RemoveMenus();
 
+	// sprite api
+
+
 	// modules name
 	static const string module_name;
 	static const string module_main_name;
@@ -146,6 +160,10 @@ private:
 
 	std::list<MenuData>mMenus;							/* 存储了菜单，每个菜单存有映射menu 
 															table的luaRef*/
+
+	std::set<DrawablePtr>mDrawables;						/* 存储了由脚本创建的Drawable对象*/
+	std::set<DrawablePtr>mDrawablesToRemove;
+
 };
 
 #endif

@@ -2,11 +2,13 @@
 #define _POINT_H_
 
 #include"common\common.h"
+#include"utils\vec2.h"
 
 class Point2
 {
 public:
 	constexpr Point2();
+	constexpr Point2(const Vec2i& vec);
 	constexpr Point2(int x, int y);
 
 	const Point2 operator-()const;
@@ -24,6 +26,7 @@ constexpr bool operator!=(const Point2&lhs, const Point2& rhs);
 
 constexpr Point2 operator+(const Point2&lhs, const Point2& rhs);
 constexpr Point2 operator-(const Point2&lhs, const Point2& rhs);
+//constexpr Vec2i operator-(const Point2&lhs, const Point2& rhs);
 
 constexpr Point2 operator*(const Point2&lhs, int factor);
 constexpr Point2 operator/(const Point2&lhs, int divisor);

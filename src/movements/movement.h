@@ -31,6 +31,7 @@ public:
 	void TranslateY(int y);
 	void TranslatePos(const Point2& dxy);
 	uint32_t GetWhenSuspeneded()const;
+	void SetDrawable(Drawable* drawable);
 
 	// move
 	virtual bool IsFinished()const;

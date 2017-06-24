@@ -23,6 +23,9 @@ public:
 	void SetSpeedVec2(const Vec2f& speed);
 	void SetSpeedX(double speedX );
 	void SetSpeedY(double speedY );
+	void SetMaxDistance(double distance);
+	double GetMaxDistance()const;
+	double GetAngle()const;
 	double GetSpeed()const;
 	virtual bool IsStarted()const;
 

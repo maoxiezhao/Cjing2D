@@ -28,6 +28,11 @@ Movement::~Movement()
 {
 }
 
+/**
+*	\brief 每帧刷新事件
+*
+*    movement基类的update会在派生类调用，这里主要对是否finished进行处理
+*/
 void Movement::Update()
 {
 	if (!mFinished && IsFinished() )
@@ -100,6 +105,7 @@ const string Movement::GetLuaObjectName() const
 /**
 *	\brief 测试是否发生了碰撞
 *	\param dxy 相对当前位置的偏移值
+*	\return 无发生碰撞返回False,发生了碰撞返回true
 */
 bool Movement::TestCollisionWithObstacles(const Point2 & dxy) const
 {
@@ -185,4 +191,21 @@ void Movement::TranslatePos(const Point2 & dxy)
 uint32_t Movement::GetWhenSuspeneded() const
 {
 	return mWhenSuspendedTime;
+}
+
+/**
+*	\brief 设置当前移动的drwable宿主
+*/
+void Movement::SetDrawable(Drawable * drawable)
+{
+	mDrawable = drawable;
+	if (mDrawable == nullptr)
+	{
+		mPos = {0, 0};
+	}
+	else
+	{
+		mPos = mDrawable->GetPos();
+		NotifyMovementChanged();
+	}
 }

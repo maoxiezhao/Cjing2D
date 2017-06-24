@@ -4,6 +4,11 @@ constexpr Point2::Point2()
 {
 }
 
+constexpr Point2::Point2(const Vec2i& vec):
+	x(vec.x),y(vec.y)
+{
+}
+
 constexpr Point2::Point2(int x, int y):
 		x(x),y(y)
 {

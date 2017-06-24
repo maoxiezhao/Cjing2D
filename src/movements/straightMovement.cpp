@@ -166,6 +166,21 @@ void StraightMovement::SetSpeedY(double speedY )
 	NotifyMovementChanged();
 }
 
+void StraightMovement::SetMaxDistance(double distance)
+{
+	mMaxDistance = distance;
+}
+
+double StraightMovement::GetMaxDistance() const
+{
+	return mMaxDistance;
+}
+
+double StraightMovement::GetAngle() const
+{
+	return mAngle;
+}
+
 /**
 *	\brief 获取当前运动的矢量速度
 */

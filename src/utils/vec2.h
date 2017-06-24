@@ -32,8 +32,8 @@ public:
 	T operator*(const Vec2<T>&other)const;
 
 	void  Set(T xx, T yy);
-	float GetLength()const;
-	float GetLengthSquared()const;
+	double GetLength()const;
+	double GetLengthSquared()const;
 
 	Vec2<T> Normalized();
 

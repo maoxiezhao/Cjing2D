@@ -119,13 +119,13 @@ inline void Vec2<T>::Set(T xx, T yy)
 }
 
 template<typename T>
-inline float Vec2<T>::GetLength() const
+inline double Vec2<T>::GetLength() const
 {
 	return sqrtf(x*x + y*y);
 }
 
 template<typename T>
-inline float Vec2<T>::GetLengthSquared() const
+inline double Vec2<T>::GetLengthSquared() const
 {
 	return x*x + y*y;
 }

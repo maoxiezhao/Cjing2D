@@ -45,6 +45,21 @@ namespace Geometry
 		}
 		return angle;
 	}
+
+	inline double GetAngle(const Point2& p1, const Point2& p2)
+	{
+		Point2 dxy = p2 - p1;
+		if (dxy.x == 0 && dxy.y == 0)
+		{
+			return PI_OVER_2;
+		}
+		double angle = std::atan2(-dxy.y, dxy.x);
+		if (angle < 0.0)
+		{
+			angle += PI_2;
+		}
+		return angle;
+	}
 }
 
 #endif

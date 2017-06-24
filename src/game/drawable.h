@@ -2,9 +2,9 @@
 #define _DRAWABLE_H_
 
 #include"common\common.h"
-#include"movements\movement.h"
 #include"utils\point.h"
-#include"lua\luaObject.h"
+
+class Movement;
 
 /**
 *	\brief 提供位置属性的基本绘制单元
@@ -27,6 +27,11 @@ public:
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
 
+	//void AddMovement(const std::shared_ptr<Movement>& movement);
+	void StopMovement();
+	void StartMovement(const std::shared_ptr<Movement>& movement);
+	const std::shared_ptr<Movement>& GetMovement();
+
 	// lua
 	virtual const string GetLuaObjectName()const ;
 
@@ -39,10 +44,12 @@ protected:
 	float mLocalZOrder;		// 局部测序，在作为子节点时的操作次序
 	bool mSuspended;		
 
-	std::vector<MovementPtr> mMovements;
+	std::shared_ptr<Movement> mMovement;
+
+	std::vector<std::shared_ptr<Movement> > mMovements;		// 当前挂载的运动组件集，暂时不使用
 
 };
 
-
+using DrawablePtr = std::shared_ptr<Drawable>;
 
 #endif

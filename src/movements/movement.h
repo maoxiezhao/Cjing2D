@@ -23,6 +23,8 @@ public:
 	virtual void SetSuspended(bool suspended);
 	
 	// status
+	int GetPosX()const;
+	int GetPosY()const;
 	Point2 GetPos()const;
 	void SetX(const int x);
 	void SetY(const int y);
@@ -40,6 +42,7 @@ public:
 	virtual bool IsStarted()const;
 
 	// lua
+	void NotifyPositonChanged();
 	void NotifyMovementChanged();
 	void NotifyMovementFinished();
 	void NotifyObstacleReached();

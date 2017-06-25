@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"utils\point.h"
+#include"lua\luaObject.h"
 
 class Movement;
 

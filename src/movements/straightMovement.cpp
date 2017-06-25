@@ -102,7 +102,7 @@ void StraightMovement::SetSpeedX(double speedX )
 	{
 		speedX = 0;
 	}
-
+	mSpeedX = speedX;
 	uint32_t now = System::Now();
 	if (speedX == 0)
 	{
@@ -139,7 +139,7 @@ void StraightMovement::SetSpeedY(double speedY )
 	{
 		speedY = 0;
 	}
-
+	mSpeedY = speedY;
 	uint32_t now = System::Now();
 	if (speedY == 0)
 	{
@@ -258,8 +258,8 @@ void StraightMovement::Update()
 	if (!IsSuspended())
 	{
 		uint32_t now = System::Now();
-		bool isMoveX = mDirectionX != 0 && now > mNextMoveDateX;
-		bool isMoveY = mDirectionY != 0 && now > mNextMoveDateY;
+		bool isMoveX = mDirectionX != 0 && now >= mNextMoveDateX;
+		bool isMoveY = mDirectionY != 0 && now >= mNextMoveDateY;
 
 		while (isMoveX || isMoveY)
 		{
@@ -275,8 +275,8 @@ void StraightMovement::Update()
 			}
 			else
 			{
-				bool isMoveX = mDirectionX != 0 && now > mNextMoveDateX;
-				bool isMoveY = mDirectionY != 0 && now > mNextMoveDateY;
+				isMoveX = (mDirectionX != 0 && now >= mNextMoveDateX);
+				isMoveY = (mDirectionY != 0 && now >= mNextMoveDateY);
 			}
 		}
 	}
@@ -292,8 +292,8 @@ void StraightMovement::UpdateXY()
 	Point2 mOldPos = GetPos();
 
 	uint32_t now = System::Now();
-	bool isMoveX = mDirectionX != 0 && now > mNextMoveDateX;
-	bool isMoveY = mDirectionY != 0 && now > mNextMoveDateY;
+	bool isMoveX = mDirectionX != 0 && now >= mNextMoveDateX;
+	bool isMoveY = mDirectionY != 0 && now >= mNextMoveDateY;
 
 	if (isMoveX)
 	{

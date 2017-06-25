@@ -2,7 +2,7 @@
 #include "game\drawable.h"
 #include "core\system.h"
 #include "lua\luaContext.h"
-
+#include "entity\entity.h"
 
 Movement::Movement():
 	mPos(Point2(0,0)),
@@ -71,6 +71,13 @@ void Movement::SetSuspended(bool suspended)
 bool Movement::IsFinished() const
 {
 	return mFinished;
+}
+
+/**
+*	\brief ÏìÓ¦Î»ÖÃÒÆ¶¯
+*/
+void Movement::NotifyPositonChanged()
+{
 }
 
 /**
@@ -150,39 +157,58 @@ bool Movement::IsStarted() const
 	return false;
 }
 
+int Movement::GetPosX() const
+{
+	return mPos.x;
+}
+
+int Movement::GetPosY() const
+{
+	return mPos.y;
+}
+
 Point2 Movement::GetPos() const
 {
-	return mPos;;
+	return mPos;
 }
 
 void Movement::SetX(const int x)
 {
-	mPos.x = x;
+	SetPos(Point2(x, GetPosY()));
 }
 
 void Movement::SetY(const int y)
 {
-	mPos.y = y;
+	SetPos(Point2(GetPosX(), y));
 }
 
 void Movement::SetPos(const Point2 & pos)
 {
+	if (mEntity != nullptr)
+	{
+		mEntity->SetPos(pos);
+	}
+	if (mDrawable != nullptr)
+	{
+		mDrawable->SetPos(pos);
+	}
 	mPos = pos;
+	NotifyPositonChanged();
 }
 
 void Movement::TranslateX(int x)
 {
-	mPos.x += x;
+	TranslatePos(Point2(x, 0));
 }
 
 void Movement::TranslateY(int y)
 {
-	mPos.y += y;
+	TranslatePos(Point2(0, y));
 }
 
 void Movement::TranslatePos(const Point2 & dxy)
 {
-	mPos += dxy;
+	SetPos(Point2(GetPosX() + dxy.x, GetPosY() + dxy.y));
 }
 
 /**

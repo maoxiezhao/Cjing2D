@@ -311,17 +311,64 @@ void LuaContext::PrintLuaStack(lua_State * l)
 
 /**
 *	\brief 压入用户对象数据
+*	\param l lua指针
+*	\param userData 
 */
 void LuaContext::PushUserdata(lua_State * l, LuaObject & userData)
 {
+	lua_getfield(l, LUA_REGISTRYINDEX, "all_userdata");
+										// all_userdata
+	lua_pushlightuserdata(l, &userData);
+										// all_userdata  lightuser
+	lua_gettable(l, -2);
+										// all_userdata userdata/nil
+	if (!lua_isnil(l, -1))
+	{
+		lua_remove(l, -2);
+										// userdata
+	}
+	else
+	{
+		if (!userData.IsKnowToLua())
+		{
+			userData.SetKnowToLua(true);
+			userData.SetLuaContext(this);
+		}
+										// all_userdata nil
+		lua_pop(l, 1);
+		lua_pushlightuserdata(l, &userData);
+										// all_userdata lightuser
+		LuaObjectPtr luaObjectPtr = userData.shared_from_this();
+
+		LuaObjectPtr* luaObjectPtrAddress = static_cast<LuaObjectPtr*>(lua_newuserdata(l, sizeof(LuaObjectPtr)));
+		new (luaObjectPtrAddress)LuaObjectPtr(luaObjectPtr);
+										// all_userdata lightuser userdata
+		// 为对象添加元表
+		luaL_getmetatable(l, userData.GetLuaObjectName().c_str());
+										// all_userdata lightuser userdata mt
+		// 保证存在元表,且元表中存在gc
+		lua_setmetatable(l, -2);
+										// all_userdata lightuser userdata
+		lua_pushvalue(l, -1);
+		lua_insert(l, -4);	
+										// userdata all_userdata light userdata
+		lua_settable(l, -3);
+										// userdata all_userdata
+		lua_pop(l, 1);
+	}
 }
+
+
 
 /**
 *	\brief 检查指定位置的lua用户对象，返回该对象
 */
 const LuaObjectPtr LuaContext::CheckUserData(lua_State * l, int index, const string & moduleName)
 {
-	return LuaObjectPtr();
+	index = LuaTools::GetPositiveIndex(l, index);
+	
+	const LuaObjectPtr& userdata = *(static_cast<LuaObjectPtr*>(luaL_checkudata(l, index, moduleName.c_str()) ));
+	return userdata;
 }
 
 void LuaContext::OnStart()

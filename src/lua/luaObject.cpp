@@ -1,4 +1,5 @@
 #include "luaObject.h"
+#include "luaContext.h"
 
 LuaObject::LuaObject():
 	mKnowToLua(false),
@@ -10,7 +11,7 @@ LuaObject::~LuaObject()
 {
 	if (mLuaContext != nullptr)
 	{
-
+		mLuaContext->NotifyUserdataDestoryed(*this);
 	}
 }
 

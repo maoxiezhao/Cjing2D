@@ -181,7 +181,26 @@ bool LuaContext::FindMethod(const string & name, int index)
 	return true;
 }
 
+/**
+*	\brief userdata的终接器
+*/
+int LuaContext::userdata_meta_gc(lua_State*l)
+{
+	LuaObjectPtr* luaObject = static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
+	luaObject->~shared_ptr<LuaObject>();
+	return 0;
+}
 
+/**
+*	\brief 响应userdata销毁
+*
+*	当userdata(shared_ptr)的引用计数为0时，析构函数调用该函数,主要用来释放
+*	自身表所保存的数据
+*/
+void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
+{
+
+}
 
 /**
 *	\brief 注册C++ API 函数
@@ -412,11 +431,11 @@ bool LuaContext::OnInput(const InputEvent & event)
 
 /**
 *	\brief 响应键盘按下事件
+*   \return 返回值handle如果为true，则表示事件已经结束无需传递
 *
 *	onKeyPressed(key,modifier),传入3个参数self为调用者key按下的键值,
 *   modifier是否同时按下ctrl/shift/alt lua的函数返回值表示是否是一个
 *   可传递的有效事件
-*   \return 返回值handle如果为true，则表示事件已经结束无需传递
 */
 bool LuaContext::OnKeyPressed(const InputEvent & event)
 {

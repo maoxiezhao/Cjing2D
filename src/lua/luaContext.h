@@ -47,8 +47,10 @@ public:
 	void PushRef(lua_State*l,const LuaRef& luaref);
 	void PrintLuaStack(lua_State*l);
 	
+	// userdata
 	void PushUserdata(lua_State*l, LuaObject& userData);
 	const LuaObjectPtr CheckUserData(lua_State*l, int index, const string& moduleName);
+	void NotifyUserdataDestoryed(LuaObject& obj);
 
 	// process
 	void OnStart();
@@ -85,7 +87,11 @@ public:
 		video_api_setFullScreen,
 		video_api_isFullScreen,
 		// sprite
-		sprite_api_create
+		sprite_api_create,
+		// userdata
+		userdata_meta_gc,
+		userdata_meta_newindex,
+		userdata_meta_index
 		;
 		
 	// main api	-- test 

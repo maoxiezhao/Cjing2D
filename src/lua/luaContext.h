@@ -130,7 +130,8 @@ public:
 	void RemoveMenus();
 
 	// sprite api
-
+	void PushSprite(lua_State*l, Sprite& sprite);
+	SpritePtr CheckSprite(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;

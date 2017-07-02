@@ -11,6 +11,7 @@
 */
 namespace LuaTools
 {
+	// public method
 	LuaRef CreateRef(lua_State*l);
 	LuaRef CreateRef(lua_State*l, int index);
 	bool CallFunction(lua_State*l,int arguments,int results,const string& functionName);
@@ -25,25 +26,18 @@ namespace LuaTools
 	void Error(lua_State*l, const string& message);
 	void ArgError(lua_State*l, int index, const string&message);
 
+	// template
 	template<typename Callable>
-	int  ExceptionBoundary(lua_State*l, Callable&& func)
-	{
-		try
-		{
-			return func();
-		}
-		catch (const LuaException& ex)
-		{
-			
-			luaL_error(l, ex.what());
-		}
-		catch (const std::exception&ex)
-		{
-			luaL_error(l, (string("Error:") + ex.what()).c_str());
-		}
+	int  ExceptionBoundary(lua_State*l, Callable&& func);
 
-		return 0;
-	}
+	template<typename E>
+	E CheckEnum(lua_State*l, int index);
+
+	template<typename E>
+	E CheckEnum(lua_State*l, int index, const std::map<E, string>& names);
+
 }
+
+#include"luaTools.inl"
 
 #endif

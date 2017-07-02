@@ -261,6 +261,20 @@ void Sprite::SetModelView(const Matrix4 & modelView)
 }
 
 /**
+*	\brief 设置透明度(alpha)
+*/
+void Sprite::SetOpacity(int opacity)
+{
+	Debug::CheckAssertion(opacity >= 0 && opacity <= 255,
+		"Invalid alpha value.");
+
+	mQuad.lt.colors.SetAlpha(opacity);
+	mQuad.lb.colors.SetAlpha(opacity);
+	mQuad.rb.colors.SetAlpha(opacity);
+	mQuad.rt.colors.SetAlpha(opacity);
+}
+
+/**
 *	\brief 返回纹理
 */
 TexturePtr Sprite::GetTexture() const
@@ -316,6 +330,14 @@ BlendFunc Sprite::GetBlendFunc() const
 	return mBlendFunc;
 }
 
+/**
+*	\brief 返回透明度(alpha)
+*/
+int Sprite::GetOpacity() const
+{
+	return mQuad.lt.colors.GetAlpha();
+}
+
 void Sprite::SetSuspended(bool suspended)
 {
 	if (suspended != IsSuspended() )
@@ -366,7 +388,7 @@ bool Sprite::InitWithFile(const std::string & name)
 	auto texturePtr = ResourceCache::GetInstance().LoadTexture2D(name);
 	if (texturePtr == nullptr)
 	{
-		Debug::Error("Invalid texture name.");
+		Debug::Error("Invalid texture name in sprite.");
 		return false;
 	}
 	Rect rect(texturePtr->GetSize());

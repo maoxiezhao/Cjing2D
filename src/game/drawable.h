@@ -17,6 +17,7 @@ public:
 
 	virtual void Update();
 	virtual void Draw() = 0;
+	//virtual void Draw(int x, int y) = 0;
 
 	Point2 GetPos()const;
 	void SetPos(const Point2& pos);

@@ -21,11 +21,15 @@ public:
 	bool IsKnowToLua()const;
 	void SetKnowToLua(bool knowToLua);
 
+	bool IsWithLuaTable()const;
+	void SetWithLuaTable(bool withLuaTable);
+
 	virtual const string GetLuaObjectName()const = 0;
 
 private:
 	LuaContext* mLuaContext;
 
+	bool mWithLuaTable; // 是否作为一个lua table
 	bool mKnowToLua;	// 是否已经载入到lua
 
 };

@@ -34,3 +34,13 @@ void LuaObject::SetKnowToLua(bool knowToLua)
 {
 	mKnowToLua = knowToLua;
 }
+
+bool LuaObject::IsWithLuaTable() const
+{
+	return mWithLuaTable;
+}
+
+void LuaObject::SetWithLuaTable(bool withLuaTable)
+{
+	mWithLuaTable = withLuaTable;
+}

@@ -195,11 +195,25 @@ int LuaContext::userdata_meta_gc(lua_State*l)
 *	\brief 响应userdata销毁
 *
 *	当userdata(shared_ptr)的引用计数为0时，析构函数调用该函数,主要用来释放
-*	自身表所保存的数据
+*	自身表所保存的数据,同时从userda_fields容器中移除userdata
 */
 void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
 {
-
+	if (obj.IsWithLuaTable())
+	{
+		lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");	
+								// userdata_table/nil
+		if (!lua_isnil(l, -1))
+		{
+			lua_pushlightuserdata(l, &obj);
+								// userdata_tables lightuserdata
+			lua_pushnil(l);
+								// userdata_tables lightuserdata nil
+			lua_settable(l, -3);
+								// userdata_talbes
+		}
+		lua_pop(l, 1);
+	}
 }
 
 /**
@@ -382,12 +396,39 @@ void LuaContext::PushUserdata(lua_State * l, LuaObject & userData)
 /**
 *	\brief 检查指定位置的lua用户对象，返回该对象
 */
-const LuaObjectPtr LuaContext::CheckUserData(lua_State * l, int index, const string & moduleName)
+const LuaObjectPtr LuaContext::CheckUserdata(lua_State * l, int index, const string & moduleName)
 {
 	index = LuaTools::GetPositiveIndex(l, index);
 	
 	const LuaObjectPtr& userdata = *(static_cast<LuaObjectPtr*>(luaL_checkudata(l, index, moduleName.c_str()) ));
 	return userdata;
+}
+
+/**
+*	\brief 检查指定位置的lua用户对象
+*	\return true 如果对象为name类型userdata
+*/
+const bool LuaContext::IsUserdata(lua_State * l, int index, const string& name)
+{
+	// 先检查udata是否存在,其次metatable是否存在，然后对比metatalbe
+	index = LuaTools::GetPositiveIndex(l, index);
+
+	void* udata = lua_touserdata(l, index);
+	if (udata == nullptr)
+	{
+		return false;
+	}
+	if (!lua_getmetatable(l, index))
+	{
+		return false;
+	}
+						// udata mt 
+	lua_getfield(l, LUA_REGISTRYINDEX, name.c_str());
+						// udata mt mt_excepted
+	bool result = lua_rawequal(l, -1, -2);
+	lua_pop(l, 2);
+						// udata
+	return result;
 }
 
 void LuaContext::OnStart()
@@ -528,6 +569,7 @@ void LuaContext::RegisterModules()
 	RegisterVideoModule();
 	RegisterMenuModule();
 	RegisterTimeModule();
+	RegisterSpriteModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

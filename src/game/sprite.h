@@ -39,6 +39,7 @@ public:
 	void SetAnchor(const Point2& anchor);
 	void SetBlendFunc(const BlendFunc& blendFunc);
 	void SetModelView(const Matrix4& modelView);
+	void SetOpacity(int opacity);
 
 	virtual void SetSuspended(bool suspended);
 
@@ -49,6 +50,7 @@ public:
 	GLProgramStatePtr GetProgramState()const;
 	Point2 GetAnchor()const;
 	BlendFunc GetBlendFunc()const;
+	int GetOpacity()const;
 
 	bool IsDirty()const;
 	bool IsVisible()const;

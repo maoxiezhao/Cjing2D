@@ -6,6 +6,7 @@
 #include"lua\luaRef.h"
 #include"lua\luaObject.h"
 #include"game\timer.h"
+#include"game\sprite.h"
 #include"game\drawable.h"
 
 #include<set>
@@ -15,6 +16,8 @@
 
 class App;
 class InputEvent;
+class Sprite;
+class Drawable;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -49,7 +52,8 @@ public:
 	
 	// userdata
 	void PushUserdata(lua_State*l, LuaObject& userData);
-	const LuaObjectPtr CheckUserData(lua_State*l, int index, const string& moduleName);
+	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
+	static const bool IsUserdata(lua_State*l, int index, const string& name);
 	void NotifyUserdataDestoryed(LuaObject& obj);
 
 	// process
@@ -88,6 +92,18 @@ public:
 		video_api_isFullScreen,
 		// sprite
 		sprite_api_create,
+		sprite_api_set_size,
+		sprite_api_get_size,
+		sprite_api_set_blend,
+		sprite_api_get_blend,
+		sprite_api_set_pos,
+		sprite_api_get_pos,
+		sprite_api_run_movement,
+		sprite_api_get_movement,
+		sprite_api_stop_movment,
+		sprite_api_set_opacity,
+		sprite_api_get_opacity,
+		sprite_api_draw,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -136,8 +152,14 @@ public:
 	void RemoveMenus();
 
 	// sprite api
+	void AddDrawable(const std::shared_ptr<Drawable>& drawable);
+	bool HasDrawable(const std::shared_ptr<Drawable>& drawalbe);
+	void RemoveDrawable(const std::shared_ptr<Drawable>& drawable);
 	void PushSprite(lua_State*l, Sprite& sprite);
-	SpritePtr CheckSprite(lua_State*l, int index);
+	
+	// checkXX and isXXX
+	static SpritePtr CheckSprite(lua_State*l, int index);
+	static bool IsSprite(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
@@ -168,8 +190,8 @@ private:
 	std::list<MenuData>mMenus;							/* 存储了菜单，每个菜单存有映射menu 
 															table的luaRef*/
 
-	std::set<DrawablePtr>mDrawables;						/* 存储了由脚本创建的Drawable对象*/
-	std::set<DrawablePtr>mDrawablesToRemove;
+	std::set<std::shared_ptr<Drawable> >mDrawables;						/* 存储了由脚本创建的Drawable对象*/
+	std::set<std::shared_ptr<Drawable> >mDrawablesToRemove;
 
 };
 

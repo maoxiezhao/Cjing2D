@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"utils\color.h"
 #include"utils\vec3.h"
+#include"game\enumInfo.h"
 
 /******************************************
 *	\brief 存放用于渲染的结构体
@@ -60,6 +61,14 @@ constexpr bool operator != (const BlendFunc& lhs, const BlendFunc& rhs)
 {
 	return lhs.dstBlend != rhs.dstBlend || lhs.srcBlend != rhs.srcBlend;
 }
+
+// 用于对opengl的blend枚举值对应的字符
+template<>
+struct EnumInfoTraits<GLenum>
+{
+	static const string prettyName;
+	static const EnumInfo<GLenum>::nameType names;
+};
 
 
 #endif

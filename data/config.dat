@@ -1,0 +1,5 @@
+config{
+	title = "Run To Down",
+	width = 640,
+	height= 480,
+}

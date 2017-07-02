@@ -1,4 +1,3 @@
-#include"point.h"
 
 constexpr Point2::Point2()
 {

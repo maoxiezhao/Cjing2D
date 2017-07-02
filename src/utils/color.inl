@@ -1,4 +1,3 @@
-#include"color.h"
 
 constexpr Color4B::Color4B():
 	r(0),g(0),b(0),a(0)

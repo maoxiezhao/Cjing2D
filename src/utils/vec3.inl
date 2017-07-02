@@ -1,4 +1,3 @@
-#include"vec3.h"
 
 template<typename T>
 constexpr Vec3<T>::Vec3():

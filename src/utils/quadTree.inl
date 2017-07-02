@@ -1,4 +1,3 @@
-#include"quadTree.h"
 #include"rectangle.h"
 
 template <typename T>

@@ -72,6 +72,7 @@ void LuaContext::Initialize()
 */
 void LuaContext::Update()
 {
+	UpdateDrawables();
 	UpdateTimers();
 	UpdateMenus();
 
@@ -90,6 +91,7 @@ void LuaContext::Exit()
 	{
 		DestoryTimers();
 		DestoryMenus();
+		DestoryDrawables();
 
 		lua_close(l);
 		mLuaContexts.erase(l);
@@ -254,7 +256,7 @@ void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * fu
 void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functions, const luaL_Reg * methods, const luaL_Reg * metamethods)
 {
 	luaL_getmetatable(l, moduleName.c_str());
-	Debug::CheckAssertion(lua_isnil(l, 1 - 1), string("Type:") + moduleName + " has already registered.");
+	Debug::CheckAssertion(lua_isnil(l, -1), string("Type:") + moduleName + " has already registered.");
 
 	// ×¢²áº¯Êý
 	if (functions != nullptr )
@@ -320,6 +322,7 @@ void LuaContext::PrintLuaStack(lua_State * l)
 {
 	int stackSize = lua_gettop(l);
 	std::ostringstream oss;
+	oss << endl;
 	for (int i = 1; i <= stackSize; i++)
 	{
 		switch (lua_type(l,i))
@@ -365,7 +368,7 @@ void LuaContext::PushUserdata(lua_State * l, LuaObject & userData)
 		if (!userData.IsKnowToLua())
 		{
 			userData.SetKnowToLua(true);
-			userData.SetLuaContext(this);
+			userData.SetLuaContext(&GetLuaContext(l));
 		}
 										// all_userdata nil
 		lua_pop(l, 1);
@@ -447,6 +450,14 @@ void LuaContext::OnFinish()
 {
 	if (FindMethod("onFinished"))
 		LuaTools::CallFunction(l, 1, 0, "onFinished");
+}
+
+void LuaContext::OnDraw()
+{
+	if (FindMethod("onDraw"))
+	{
+		LuaTools::CallFunction(l, 1, 0, "onDraw");
+	}
 }
 
 /**

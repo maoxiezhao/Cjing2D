@@ -6,8 +6,8 @@ const string LuaContext::module_main_name = "Main";
 void LuaContext::RegisterMainModule()
 {
 	static const luaL_Reg functions[] = {
-		{"sayHello",main_api_hello},
-		{"Exit",main_api_exit},
+		{"sayHello", main_api_hello},
+		{"Exit", main_api_exit},
 		{nullptr,nullptr }
 	};
 
@@ -50,6 +50,9 @@ void LuaContext::OnMainFinish()
 */
 void LuaContext::OnMainDraw()
 {
+	PushMain(l);
+	OnDraw();
+	lua_pop(l, 1);
 }
 
 /**
@@ -90,3 +93,4 @@ void LuaContext::PushMain(lua_State*l)
 {
 	lua_getfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
 }
+

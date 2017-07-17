@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"lua\luaException.h"
 #include"lua\luaRef.h"
+#include<map>
 #include<lua.hpp>
 
 /**
@@ -18,6 +19,7 @@ namespace LuaTools
 	int  GetPositiveIndex(lua_State*l, int index);
 	void CheckType(lua_State*l, int index, int exceptedType);
 	int  CheckInt(lua_State*l, int index);
+	float CheckFloat(lua_State*l, int index);
 	int  CheckFieldInt(lua_State*l, int tableIndex, const string& name);
 	string  CheckFieldString(lua_State*l, int tableIndex, const string& name);
 	int   CheckFieldIntByDefault(lua_State*l, int tableIndex, const string&name, int defaultValue);

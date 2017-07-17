@@ -8,22 +8,24 @@ const string LuaContext::module_sprite_name = "Sprite";
 void LuaContext::RegisterSpriteModule()
 {
 	static const luaL_Reg function[] = {
-		{"Create", sprite_api_create},
+		{"create", sprite_api_create},
 		{nullptr,nullptr}
 	};
 
 	static const luaL_Reg methods[] = {
-		{"SetSize", sprite_api_set_size},
-		{"GetSize", sprite_api_get_size},
-		{"SetBlend", sprite_api_set_blend},
-		{"GetBlend", sprite_api_get_blend},
-		{"SetOpacity", sprite_api_set_opacity},
-		{"GetOpacity", sprite_api_get_opacity},
-		{"Draw", sprite_api_draw},
-		{ "SetPos", sprite_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
-		{ "RunMovement", sprite_api_run_movement },
-		{ "GetMovment", sprite_api_get_movement },
-		{ "StopMovement", sprite_api_stop_movment },
+		{"setSize", sprite_api_set_size},
+		{"getSize", sprite_api_get_size},
+		{"setRotation", sprite_api_set_rotation},
+		{"getRotation", sprite_api_get_rotation},
+		{"setBlend", sprite_api_set_blend},
+		{"getBlend", sprite_api_get_blend},
+		{"setOpacity", sprite_api_set_opacity},
+		{"getOpacity", sprite_api_get_opacity},
+		{"draw", sprite_api_draw},
+		{"setPos", sprite_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
+		{"runMovement", sprite_api_run_movement },
+		{"getMovment", sprite_api_get_movement },
+		{"stopMovement", sprite_api_stop_movment },
 		{nullptr, nullptr}
 	};
 
@@ -72,6 +74,8 @@ int LuaContext::sprite_api_create(lua_State*l)
 		
 		SpritePtr sprite = std::make_shared<Sprite>(spriteName);
 		GetLuaContext(l).AddDrawable(sprite);
+
+		PushSprite(l, *sprite);
 		return 1;
 	});
 }
@@ -231,6 +235,28 @@ int LuaContext::sprite_api_stop_movment(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 
+
+		return 1;
+	});
+}
+
+int LuaContext::sprite_api_set_rotation(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		float angle = LuaTools::CheckFloat(l, 2);
+		sprite.SetRotated(angle);
+
+		return 0;
+	});
+}
+
+int LuaContext::sprite_api_get_rotation(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		float angle = sprite.GetRotated();
+		lua_pushnumber(l, angle);
 
 		return 1;
 	});

@@ -51,6 +51,14 @@ namespace LuaTools
 		return (int)lua_tointeger(l,index);
 	}
 
+	float CheckFloat(lua_State * l, int index)
+	{
+		if (!lua_isnumber(l, index))
+			ArgError(l, index, string("Excepted:float,got ") + luaL_typename(l, index));
+
+		return (float)lua_tonumber(l, index);
+	}
+
 	string CheckString(lua_State * l, int index)
 	{
 		if (!lua_isstring(l, index))

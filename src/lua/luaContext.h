@@ -51,7 +51,6 @@ public:
 	void PrintLuaStack(lua_State*l);
 	
 	// userdata
-	void PushUserdata(lua_State*l, LuaObject& userData);
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
 	static const bool IsUserdata(lua_State*l, int index, const string& name);
 	void NotifyUserdataDestoryed(LuaObject& obj);
@@ -60,6 +59,7 @@ public:
 	void OnStart();
 	void OnUpdate();
 	void OnFinish();
+	void OnDraw();
 	bool OnInput(const InputEvent& event);
 	bool OnKeyPressed(const InputEvent& event);
 	bool OnKeyReleased(const InputEvent& event);
@@ -96,6 +96,8 @@ public:
 		sprite_api_get_size,
 		sprite_api_set_blend,
 		sprite_api_get_blend,
+		sprite_api_set_rotation,
+		sprite_api_get_rotation,
 		sprite_api_set_pos,
 		sprite_api_get_pos,
 		sprite_api_run_movement,
@@ -152,10 +154,15 @@ public:
 	void RemoveMenus();
 
 	// sprite api
+	void UpdateDrawables();
+	void DestoryDrawables();
 	void AddDrawable(const std::shared_ptr<Drawable>& drawable);
 	bool HasDrawable(const std::shared_ptr<Drawable>& drawalbe);
 	void RemoveDrawable(const std::shared_ptr<Drawable>& drawable);
-	void PushSprite(lua_State*l, Sprite& sprite);
+
+	// push data
+	static void PushUserdata(lua_State*l, LuaObject& userData);
+	static void PushSprite(lua_State*l, Sprite& sprite);
 	
 	// checkXX and isXXX
 	static SpritePtr CheckSprite(lua_State*l, int index);

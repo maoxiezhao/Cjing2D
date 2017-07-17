@@ -1,5 +1,3 @@
-#include "luaTools.h"
-
 namespace LuaTools {
 
 template<typename Callable>

@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 
+class Map;
 class Player;
 class App;
 class InputEvent;
@@ -26,6 +27,11 @@ public:
 	void Update();
 	void Draw();
 
+	// map
+	bool HasCurrentMap()const;
+	Map& GetCurrentMap();
+	void SetCurrentMap(const string& mapID);
+
 	// notify
 	void NotifyInput(const InputEvent & ent);
 
@@ -33,6 +39,9 @@ private:
 	bool mStarted;
 
 	std::shared_ptr<Player> mPlayer;
+
+	std::shared_ptr<Map> mCurrentMap;
+	std::shared_ptr<Map> mNextMap;
 
 };
 

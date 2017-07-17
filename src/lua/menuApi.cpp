@@ -97,6 +97,7 @@ int LuaContext::menu_api_start(lua_State* l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		LuaContext& luaContext = GetLuaContext(l);
 		
+		luaContext.PrintLuaStack(l);
 		// 参数1必须是context table
 		if (lua_type(l, 1) != LUA_TUSERDATA && lua_type(l, 1) != LUA_TTABLE)
 			LuaTools::Error(l, "wrong type.Only userdata or table");

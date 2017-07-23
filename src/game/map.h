@@ -2,23 +2,76 @@
 #define _MAP_H_
 
 #include"common\common.h"
-#include"core\inputEvent.h"
+#include"lua\luaObject.h"
 
+class Game;
+class Camera;
+class LuaContext;
+class Tileset;
+class Entities;
+class InputEvent;
 /**
 *	\brief map类
+*
+*	map类包含以下信息：
+*	tileset
+*	entities
+*	music
+*	ground
+*	mapcamera
 */
-class Map
+class Map : public LuaObject
 {
 public:
-	Map();
+	explicit Map(const std::string& id);
 	~Map();
 
-	void Update();
-	void Draw();
-	bool NotifyInput(const InputEvent & ent);
+	// system
+	virtual void Load(Game* game);
+	virtual void Update();
+	virtual bool NotifyInput(const InputEvent& event);
+	virtual void Draw();
+	virtual void DrawBackground();		// 绘制背景图（后景）
+	virtual void DrawForeground();		// 绘制背景图（前景）
+
+	// status
+	bool IsLoaded()const;
+	bool IsStarted()const;
+	bool IsSuspended()const;
+	void CheckSuspended();
+	void SetSuspended(bool suspended);
+
+	Game& GetGame();
+	LuaContext& GetLuaContext();
+	const string GetLuaObjectName()const;
+
+	const std::shared_ptr<Camera>& GetCamera();
+
+	// map property
+	const string& GetMapID()const;
+	const Tileset& GetTileset()const;
+	void SetTileset(const string& tilesetID);
+	const string& getTilesetID()const;
 
 private:
+	string mMapID;
+	int mWidth;
+	int mHeight;
+	int mMinLayer;
+	int mMaxLayer;
+	
+	string mTilesetId;
+	const Tileset* mTileset;
 
+	Game* mGame;
+
+	std::shared_ptr<Camera> mCamera;
+
+	std::unique_ptr<Entities> mEntities;
+
+	bool mIsLoaded;
+	bool mIsStarted;
+	bool mSuspended;
 };
 
 

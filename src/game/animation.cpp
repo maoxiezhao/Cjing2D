@@ -79,6 +79,9 @@ int Animation::GetNumFrame(int currDirection) const
 	return mDirections[currDirection].GetNumFrames();
 }
 
+/**
+*	\brief 返会方向的个数
+*/
 int Animation::GetNumDirections() const
 {
 	return mDirections.size();

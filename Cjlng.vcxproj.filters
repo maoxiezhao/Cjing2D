@@ -190,6 +190,9 @@
     <ClCompile Include="src\lua\gameApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\mapApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

@@ -21,12 +21,14 @@ public:
 	Game(const Game& game) = delete;
 	Game& operator=(const Game& game) = delete;
 	
-	// status
+	// system
 	void Start();
 	void Stop();
 	void Restart();
 	void Update();
 	void Draw();
+	
+	bool IsSuspended()const;
 
 	// map
 	bool HasCurrentMap()const;
@@ -43,6 +45,7 @@ public:
 
 private:
 	bool mStarted;
+	bool mSuspended;
 
 	App& mApp;
 

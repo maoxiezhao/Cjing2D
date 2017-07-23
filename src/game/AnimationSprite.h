@@ -31,6 +31,7 @@ public:
 	bool IsFrameFinished()const;
 	bool IsFrameStarted()const ;
 	void SetFrameDelay(uint32_t delay);
+	void SetPaused(bool paused);
 	uint32_t GetFrameDelay()const;
 	int GetNextFrame()const;
 	int GetNumFrames()const;
@@ -40,6 +41,7 @@ public:
 	// direction
 	int GetCurrDirection()const;
 	int GetNumDirections()const;
+	void SetCurrDirection(int direction);
 
 	// animation status
 	void ResetAnimation();
@@ -76,8 +78,7 @@ private:
 	int      mCurrDirection;
 	bool     mFrameChanged;
 	bool     mFrameFinished;
-	bool     mPaused;
-
+	bool     mPaused;			// 与suspended不同，是动画是否播放的标记
 };
 
 using AnimationSpritePtr = std::shared_ptr<AnimationSprite>;

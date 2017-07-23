@@ -3,3 +3,11 @@
 Entities::Entities()
 {
 }
+
+void Entities::Update()
+{
+}
+
+void Entities::Draw()
+{
+}

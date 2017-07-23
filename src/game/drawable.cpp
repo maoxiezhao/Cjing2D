@@ -6,6 +6,7 @@ Drawable::Drawable():
 	mPos(0,0),
 	mRotate(0.0f),
 	mGlobalZOrder(0),
+	mLocalZOrder(0),
 	mSuspended(false),
 	mMovement(nullptr)
 {

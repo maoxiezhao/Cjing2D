@@ -18,6 +18,7 @@ class App;
 class InputEvent;
 class Sprite;
 class Drawable;
+class AnimationSprite;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -112,6 +113,11 @@ public:
 		sprite_api_draw,
 		// animation
 		animation_api_create,
+		animation_api_set_animation,
+		animation_api_set_direction,
+		animation_api_play_animation,
+		animation_api_stop_animation,
+		animation_api_draw,
 		// movement
 		movement_api_create,
 		// userdata
@@ -134,6 +140,13 @@ public:
 	void OnGameFinish();
 	void OnGameDraw();
 	bool OnGameInput(const InputEvent& event);
+
+	// map api
+	void OnMapStart();
+	void OnMapUpdate();
+	void OnMapFinish();
+	void OnMapDraw();
+	bool OnMapInput(const InputEvent& event);
 
 	// time api
 	struct TimerData
@@ -179,16 +192,20 @@ public:
 	static void PushUserdata(lua_State*l, LuaObject& userData);
 	static void PushDrawable(lua_State*l, Drawable& drawable);
 	static void PushSprite(lua_State*l, Sprite& sprite);
-	
+	static void PushAnimation(lua_State*l, AnimationSprite& animation);
+
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
 	static bool IsDrawable(lua_State*l, int index);
 	static SpritePtr CheckSprite(lua_State*l, int index);
 	static bool IsSprite(lua_State*l, int index);
+	static std::shared_ptr<AnimationSprite> CheckAnimation(lua_State*l, int index);
+	static bool IsAnimation(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
 	static const string module_main_name;
+	static const string module_map_name;
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;

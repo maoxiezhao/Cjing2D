@@ -7,7 +7,7 @@ const string LuaContext::module_time_name = "Timer";
 void LuaContext::RegisterTimeModule()
 {
 	static const luaL_Reg functions[] = {
-		{ "Start",time_api_start },
+		{ "start",time_api_start },
 		{ nullptr,nullptr }
 	};
 	RegisterFunction(module_time_name, functions);

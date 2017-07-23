@@ -293,6 +293,37 @@ void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functi
 }
 
 /**
+*	\brief 注册一个C++对象类型，并设置该类型的基类
+*
+*	在使用该方法前必须保证baseModule存在，并已经注册
+*/
+void LuaContext::RegisterType(const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, 
+				const luaL_Reg* methods, const luaL_Reg* metamethods)
+{
+	// base module 必须已经注册
+	luaL_getmetatable(l, baseModuleName.c_str());
+	Debug::CheckAssertion(!lua_isnil(l, -1), string("Base Type:") + baseModuleName + " has not registered.");
+	lua_pop(l, 1);
+				// --
+	RegisterType(moduleName, functions, methods, metamethods);
+
+	luaL_getmetatable(l, moduleName.c_str());
+				// meta
+	lua_newtable(l);
+				// meta table
+	luaL_getmetatable(l, baseModuleName.c_str());
+				// meta table basemeta
+	lua_setfield(l, -2, "__index");
+				// meta table
+	lua_setmetatable(l, -2);
+				// meta
+	luaL_getmetatable(l, baseModuleName.c_str());
+				// meta basemeta
+	lua_setfield(l, -2, "super");
+	lua_settop(l, 0);
+}
+
+/**
 *	\brief 为栈顶元素创建一个新的LuaRef引用
 */
 LuaRef LuaContext::CreateRef()
@@ -585,6 +616,11 @@ bool LuaContext::OnKeyReleased(const InputEvent & event)
 	return handle;
 }
 
+/**
+*	\brief 注册lua接口
+*
+*	对于有派生关系的module，需要保证正确的注册顺序
+*/
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
@@ -592,6 +628,7 @@ void LuaContext::RegisterModules()
 	RegisterMenuModule();
 	RegisterTimeModule();
 	RegisterSpriteModule();
+	RegisterAnimationModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

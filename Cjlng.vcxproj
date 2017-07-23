@@ -122,6 +122,7 @@
     <ClCompile Include="src\lua\luaRef.cpp" />
     <ClCompile Include="src\lua\luaTools.cpp" />
     <ClCompile Include="src\lua\mainApi.cpp" />
+    <ClCompile Include="src\lua\mapApi.cpp" />
     <ClCompile Include="src\lua\menuApi.cpp" />
     <ClCompile Include="src\lua\movementApi.cpp" />
     <ClCompile Include="src\lua\spriteApi.cpp" />

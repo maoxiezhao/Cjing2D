@@ -6,4 +6,8 @@ class Entities
 {
 public:
 	Entities();
+
+	void Update();
+	void Draw();
+
 };

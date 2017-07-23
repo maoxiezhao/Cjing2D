@@ -23,6 +23,7 @@ class InputEvent;
 class Map : public LuaObject
 {
 public:
+	explicit Map();
 	explicit Map(const std::string& id);
 	~Map();
 

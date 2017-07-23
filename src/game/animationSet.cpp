@@ -106,9 +106,9 @@ void AnimationSet::InitAnimationSetWithFile(const string & name)
 {
 	Debug::CheckAssertion(mAnimations.empty(), "Animation set already loaded.");
 
-	string fileName = string("sprites") + name + ".dat";
+	string fileName = string("sprites/") + name + ".dat";
 	AnimationLuaData data;
-	bool success = data.ImportFromFile(name);
+	bool success = data.ImportFromFile(fileName);
 	if (success)
 	{
 		mAnimationDefaultName = data.GetDefaultName();

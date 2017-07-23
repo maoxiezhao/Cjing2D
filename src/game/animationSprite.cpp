@@ -11,14 +11,15 @@
 }*/
 
 
-AnimationSprite::AnimationSprite(const string & id):
+AnimationSprite::AnimationSprite(const string & id) :
 	Sprite(),	// 默认的构造函数只创建programState和cameraMatrix
 	mCurrAnimationSet(GetAnimationSet(id)),
 	mFrameDelay(0),
 	mFrameLoop(0),
 	mFrameNum(0),
 	mFrameFinished(false),
-	mFrameChanged(false)
+	mFrameChanged(false),
+	mPaused(true)
 {
 	SetCurrAnimation(mCurrAnimationSet.GetAnimationDefaultName());
 }
@@ -38,6 +39,9 @@ void AnimationSprite::Update()
 	Sprite::Update();
 
 	if (IsSuspended())
+		return;
+
+	if (mPaused)
 		return;
 
 	uint32_t now = System::Now();
@@ -60,9 +64,6 @@ void AnimationSprite::Update()
 
 		// luaContext do onFrameChanged
 	}
-
-
-
 }
 
 /**
@@ -181,6 +182,11 @@ void AnimationSprite::SetFrameDelay(uint32_t delay)
 	mFrameDelay = delay;
 }
 
+void AnimationSprite::SetPaused(bool paused)
+{
+	mPaused = paused;
+}
+
 uint32_t AnimationSprite::GetFrameDelay() const
 {
 	return mFrameDelay;
@@ -210,10 +216,10 @@ int AnimationSprite::GetNumFrames() const
 */
 void AnimationSprite::SetSuspended(bool suspended)
 {
-	if (mSuspended != IsSuspended() )
+	if (suspended != IsSuspended() )
 	{
 		Sprite::SetSuspended(suspended);
-		if (!mSuspended)
+		if (!suspended)
 		{
 			// 解除暂停后，需要重新计算下一帧事件
 			uint32_t now = System::Now();
@@ -227,6 +233,7 @@ void AnimationSprite::SetSuspended(bool suspended)
 */
 void AnimationSprite::ResetAnimation()
 {
+	SetPaused(false);
 	SetCurrFrame(0);
 }
 
@@ -259,6 +266,16 @@ int AnimationSprite::GetNumDirections() const
 	if (mCurrAnimation == nullptr)
 		return 0;
 	return mCurrAnimation->GetNumDirections();
+}
+
+/**
+*	\brief 设置当前的方向
+*/
+void AnimationSprite::SetCurrDirection(int direction)
+{
+	Debug::CheckAssertion(direction >= -1 && direction < mCurrAnimation->GetNumDirections(),
+		"Invaild direction in AnimationSprite::SetCurrDirection().");
+	mCurrDirection = direction;
 }
 
 /**

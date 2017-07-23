@@ -93,6 +93,11 @@ void Game::Draw()
 	}
 }
 
+bool Game::IsSuspended() const
+{
+	return mSuspended;
+}
+
 bool Game::HasCurrentMap() const
 {
 	return false;

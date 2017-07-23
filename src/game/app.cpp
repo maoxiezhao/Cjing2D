@@ -35,11 +35,11 @@ App::App():
 	mLuaContext->Initialize();
 
 	// test
-	testAnimation = std::make_shared<AnimationSprite>("sprites/explosion.dat");
-	testAnimation->SetPos(Point2(0, 0));
-	
-	testMovement = std::make_shared<TargetMovement>(nullptr, Point2(300, 300), 25, false);
-	testAnimation->StartMovement(testMovement);
+	//testAnimation = std::make_shared<AnimationSprite>("sprites/explosion.dat");
+	//testAnimation->SetPos(Point2(0, 0));
+	//
+	//testMovement = std::make_shared<TargetMovement>(nullptr, Point2(300, 300), 25, false);
+	//testAnimation->StartMovement(testMovement);
 }
 
 App::~App()
@@ -115,9 +115,6 @@ void App::Run()
 
 void App::Update()
 {
-	// test
-	testAnimation->Update();
-
 	// game update
 	if (mCurrGame != nullptr)
 	{
@@ -170,8 +167,6 @@ void App::CheckInput()
 void App::Render()
 {
 	Video::CleanCanvas();
-
-	testAnimation->Draw();
 
 	if (mCurrGame != nullptr)
 	{

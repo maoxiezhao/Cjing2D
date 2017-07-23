@@ -2,8 +2,9 @@
 #define _HERO_H_
 
 #include"common\common.h"
+#include"entity\entity.h"
 
-class Player
+class Player : public Entity
 {
 public:
 	Player();

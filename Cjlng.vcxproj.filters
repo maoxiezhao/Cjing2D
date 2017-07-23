@@ -37,9 +37,6 @@
     <ClCompile Include="src\main\main.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\luaContext.cpp">
-      <Filter>lua</Filter>
-    </ClCompile>
     <ClCompile Include="src\lua\mainApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
@@ -144,6 +141,54 @@
     </ClCompile>
     <ClCompile Include="src\game\animationSet.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\spriteApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\animationApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\luaObject.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\straightMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\player.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\game.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\targetMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\entity.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\luaContext.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\types.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\drawableApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\movementApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\map.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\entities.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\savegame.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\gameApi.cpp">
+      <Filter>lua\luaApi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +324,36 @@
     <ClInclude Include="src\game\animation.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\lua\luaObject.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\straightMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\player.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\game.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\savegame.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\targetMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\entity.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\map.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\entities.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\setting.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -308,6 +383,10 @@
     </None>
     <None Include="src\utils\rectangle.inl">
       <Filter>utils</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="src\lua\luaTools.inl">
+      <Filter>lua</Filter>
     </None>
   </ItemGroup>
 </Project>

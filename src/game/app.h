@@ -1,5 +1,5 @@
-#ifndef _APP_H_
-#define _APP_H_
+#ifndef _CJLING_APP_H_
+#define _CJLING_APP_H_
 
 #include"common\common.h"
 #include"lua\luaContext.h"
@@ -9,6 +9,7 @@
 #include"game\animationSprite.h"
 #include"game\game.h"
 #include"entity\player.h"
+#include"movements\movement.h"
 
 /**
 *	\brief 程序的主循环
@@ -22,8 +23,10 @@ public:
 	void Run();
 	void Update();
 	void SetExiting(bool isexit);
+
 	void SetGame(Game* game);
 	Game* GetGame();
+	LuaContext& GetLuaContext();
 
 private:
 	bool IsExiting();
@@ -39,9 +42,8 @@ private:
 	bool mExiting;
 
 	// test
-	SpritePtr testSprite;
 	AnimationSpritePtr testAnimation;
-	
+	MovementPtr testMovement;
 };
 
 #endif

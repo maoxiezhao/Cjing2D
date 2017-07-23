@@ -8,6 +8,7 @@
 #include<Windows.h>
 
 //test
+#include"movements\targetMovement.h"
 
 App::App():
 	mLuaContext(nullptr),
@@ -34,14 +35,11 @@ App::App():
 	mLuaContext->Initialize();
 
 	// test
-	testSprite = std::make_shared<Sprite>("sprites/test.png");
-	testSprite->SetPos(Point2(320, 240));
-	testSprite->SetRotated(0);
-	//testSprite->SetSize(Size(320, 100));
-
 	testAnimation = std::make_shared<AnimationSprite>("sprites/explosion.dat");
 	testAnimation->SetPos(Point2(0, 0));
-
+	
+	testMovement = std::make_shared<TargetMovement>(nullptr, Point2(300, 300), 25, false);
+	testAnimation->StartMovement(testMovement);
 }
 
 App::~App()
@@ -174,7 +172,6 @@ void App::Render()
 	Video::CleanCanvas();
 
 	testAnimation->Draw();
-	testSprite->Draw();
 
 	if (mCurrGame != nullptr)
 	{
@@ -211,6 +208,11 @@ void App::SetGame(Game* game)
 Game* App::GetGame()
 {
 	return mCurrGame.get();
+}
+
+LuaContext & App::GetLuaContext()
+{
+	return *mLuaContext;
 }
 
 

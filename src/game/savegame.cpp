@@ -3,3 +3,8 @@
 Savegame::Savegame()
 {
 }
+
+void Savegame::SetGame(Game * game)
+{
+	mGame = game;
+}

@@ -8,6 +8,7 @@ class Player;
 class App;
 class InputEvent;
 class Savegame;
+class LuaContext;
 /**
 *	\brief Game类管理当前地图，所有的游戏对象
 */
@@ -15,7 +16,7 @@ class Game
 {
 public:
 	Game(App* app);	// test,no savegame
-	Game(App* app, const std::shared_ptr<Savegame> savegame);
+	Game(App* app, const std::shared_ptr<Savegame>& savegame);
 	
 	Game(const Game& game) = delete;
 	Game& operator=(const Game& game) = delete;
@@ -31,12 +32,19 @@ public:
 	bool HasCurrentMap()const;
 	Map& GetCurrentMap();
 	void SetCurrentMap(const string& mapID);
+	void UpdateTransitoin();
 
 	// notify
-	void NotifyInput(const InputEvent & ent);
+	bool NotifyInput(const InputEvent & ent);
+
+	// lua
+	LuaContext& GetLuaContext();
+
 
 private:
 	bool mStarted;
+
+	App& mApp;
 
 	std::shared_ptr<Player> mPlayer;
 

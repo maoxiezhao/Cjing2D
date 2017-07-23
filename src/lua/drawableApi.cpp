@@ -4,6 +4,29 @@
 
 const string LuaContext::module_drawable_name = "Drawable";
 
+DrawablePtr LuaContext::CheckDrawable(lua_State*l, int index)
+{
+	if (IsDrawable(l, index))
+	{
+		const LuaObjectPtr& userdata = *(static_cast<LuaObjectPtr*>(lua_touserdata(l, index)));
+		return std::static_pointer_cast<Drawable>(userdata);
+	}
+	else
+	{
+		LuaTools::ArgError(l, index, "Not a Drawable");
+		throw;
+	}
+}
+
+bool LuaContext::IsDrawable(lua_State*l, int index)
+{
+	return IsSprite(l, index);
+}
+
+void LuaContext::PushDrawable(lua_State*l, Drawable& drawable)
+{
+	PushUserdata(l, drawable);
+}
 
 void LuaContext::AddDrawable(const std::shared_ptr<Drawable>& drawable)
 {
@@ -46,4 +69,45 @@ void LuaContext::RemoveDrawable(const std::shared_ptr<Drawable>& drawable)
 	Debug::CheckAssertion(HasDrawable(drawable),
 		"The drawable have not created in RemoveDrawalbe.");
 	mDrawablesToRemove.insert(drawable);
+}
+
+int LuaContext::drawable_api_get_pos(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		DrawablePtr drawable = CheckDrawable(l, 1);
+		Point2 pos = drawable->GetPos();
+		
+		lua_pushinteger(l, pos.x);
+		lua_pushinteger(l, pos.y);
+
+		return 2;
+	});
+}
+
+int LuaContext::drawable_api_set_pos(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		DrawablePtr drawable = CheckDrawable(l, 1);
+		int x = LuaTools::CheckInt(l, 2);
+		int y = LuaTools::CheckInt(l, 2);
+		drawable->SetPos(Point2(x, y));
+
+		return 0;
+	});
+}
+
+int LuaContext::drawable_meta_api_gc(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaContext& luaContext = GetLuaContext(l);
+		DrawablePtr drawalbe = CheckDrawable(l, 1);
+
+		if (luaContext.HasDrawable(drawalbe))
+		{
+			luaContext.RemoveDrawable(drawalbe);
+		}
+		userdata_meta_gc(l);
+
+		return 0;
+	});
 }

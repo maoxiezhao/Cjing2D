@@ -46,6 +46,7 @@ public:
 	bool FindMethod(const string& name, int index);
 	void RegisterFunction(const string& moduleName, const luaL_Reg* functions);
 	void RegisterType(const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
+	void RegisterType(const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	LuaRef CreateRef();
 	void PushRef(lua_State*l,const LuaRef& luaref);
 	void PrintLuaStack(lua_State*l);
@@ -53,6 +54,7 @@ public:
 	// userdata
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
 	static const bool IsUserdata(lua_State*l, int index, const string& name);
+	void CloseUserdatas();
 	void NotifyUserdataDestoryed(LuaObject& obj);
 
 	// process
@@ -70,7 +72,7 @@ public:
 	void RegisterTimeModule();
 	void RegisterMenuModule();
 	void RegisterVideoModule();
-	void RegisterDrawableModule();
+	void RegisterMovementModule();
 	void RegisterSpriteModule();
 	void RegisterAnimationModule();
 
@@ -90,6 +92,10 @@ public:
 		// video
 		video_api_setFullScreen,
 		video_api_isFullScreen,
+		// drawable
+		drawable_api_get_pos,
+		drawable_api_set_pos,
+		drawable_meta_api_gc,
 		// sprite
 		sprite_api_create,
 		sprite_api_set_size,
@@ -98,14 +104,16 @@ public:
 		sprite_api_get_blend,
 		sprite_api_set_rotation,
 		sprite_api_get_rotation,
-		sprite_api_set_pos,
-		sprite_api_get_pos,
 		sprite_api_run_movement,
 		sprite_api_get_movement,
 		sprite_api_stop_movment,
 		sprite_api_set_opacity,
 		sprite_api_get_opacity,
 		sprite_api_draw,
+		// animation
+		animation_api_create,
+		// movement
+		movement_api_create,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -119,6 +127,13 @@ public:
 	void OnMainFinish();
 	void OnMainDraw();
 	bool OnMainInput(const InputEvent& event);
+
+	// game api
+	void OnGameStart();
+	void OnGameUpdate();
+	void OnGameFinish();
+	void OnGameDraw();
+	bool OnGameInput(const InputEvent& event);
 
 	// time api
 	struct TimerData
@@ -162,9 +177,12 @@ public:
 
 	// push data
 	static void PushUserdata(lua_State*l, LuaObject& userData);
+	static void PushDrawable(lua_State*l, Drawable& drawable);
 	static void PushSprite(lua_State*l, Sprite& sprite);
 	
 	// checkXX and isXXX
+	static DrawablePtr CheckDrawable(lua_State*l, int index);
+	static bool IsDrawable(lua_State*l, int index);
 	static SpritePtr CheckSprite(lua_State*l, int index);
 	static bool IsSprite(lua_State*l, int index);
 

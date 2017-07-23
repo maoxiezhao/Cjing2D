@@ -92,6 +92,7 @@ void LuaContext::Exit()
 		DestoryTimers();
 		DestoryMenus();
 		DestoryDrawables();
+		CloseUserdatas();
 
 		lua_close(l);
 		mLuaContexts.erase(l);
@@ -432,6 +433,16 @@ const bool LuaContext::IsUserdata(lua_State * l, int index, const string& name)
 	lua_pop(l, 2);
 						// udata
 	return result;
+}
+
+/**
+*	\brief 清楚所有Userdata数据
+*/
+void LuaContext::CloseUserdatas()
+{
+	lua_getfield(l,LUA_REGISTRYINDEX,"all_userdata");
+
+	// 依次去除userdata清楚
 }
 
 void LuaContext::OnStart()

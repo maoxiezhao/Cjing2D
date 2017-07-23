@@ -22,7 +22,8 @@ void LuaContext::RegisterSpriteModule()
 		{"setOpacity", sprite_api_set_opacity},
 		{"getOpacity", sprite_api_get_opacity},
 		{"draw", sprite_api_draw},
-		{"setPos", sprite_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
+		{"getPos", drawable_api_get_pos},
+		{"setPos", drawable_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
 		{"runMovement", sprite_api_run_movement },
 		{"getMovment", sprite_api_get_movement },
 		{"stopMovement", sprite_api_stop_movment },
@@ -30,7 +31,7 @@ void LuaContext::RegisterSpriteModule()
 	};
 
 	static const luaL_Reg metamethods[] = {
-		{"__gc", userdata_meta_gc},
+		{"__gc", drawable_meta_api_gc },
 		{nullptr, nullptr}
 	};
 	RegisterType(module_sprite_name, function, methods, metamethods);
@@ -139,35 +140,6 @@ int LuaContext::sprite_api_get_blend(lua_State*l)
 
 		lua_pushstring(l, EnumToString(blend.srcBlend).c_str());
 		lua_pushstring(l, EnumToString(blend.dstBlend).c_str());
-
-		return 2;
-	});
-}
-
-/**
-*	\brief
-*/
-int LuaContext::sprite_api_set_pos(lua_State*l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-		Sprite& sprite = *CheckSprite(l, 1);
-		int x = LuaTools::CheckInt(l, 2);
-		int y = LuaTools::CheckInt(l, 3);
-
-		sprite.SetPos(Point2(x, y));
-
-		return 0;
-	});
-}
-
-int LuaContext::sprite_api_get_pos(lua_State*l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-		Sprite& sprite = *CheckSprite(l, 1);
-
-		const Point2 pos = sprite.GetPos();
-		lua_pushinteger(l, pos.x);
-		lua_pushinteger(l, pos.y);
 
 		return 2;
 	});

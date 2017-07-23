@@ -2,6 +2,7 @@
 #define _MAP_H_
 
 #include"common\common.h"
+#include"core\inputEvent.h"
 
 /**
 *	\brief map¿‡
@@ -12,6 +13,11 @@ public:
 	Map();
 	~Map();
 
+	void Update();
+	void Draw();
+	bool NotifyInput(const InputEvent & ent);
+
+private:
 
 };
 

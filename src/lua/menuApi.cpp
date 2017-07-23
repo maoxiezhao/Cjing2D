@@ -203,3 +203,11 @@ bool LuaContext::OnMenuInput(const InputEvent & event, const LuaRef & menuRef)
 	lua_pop(l, 1);
 	return handle;
 }
+
+void LuaContext::OnMenuDraw(int contextIndex)
+{
+}
+
+void LuaContext::OnMenuDraw(const LuaRef& menuRef)
+{
+}

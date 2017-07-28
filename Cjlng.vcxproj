@@ -98,6 +98,7 @@
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\types.cpp" />
     <ClCompile Include="src\core\video.cpp" />
+    <ClCompile Include="src\entity\camera.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\test.cpp" />
     <ClCompile Include="src\movements\movement.cpp" />
+    <ClCompile Include="src\movements\rotateMovement.cpp" />
     <ClCompile Include="src\movements\straightMovement.cpp" />
     <ClCompile Include="src\movements\targetMovement.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
@@ -155,6 +157,7 @@
     <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\video.h" />
+    <ClInclude Include="src\entity\camera.h" />
     <ClInclude Include="src\entity\entities.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\entity\player.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="src\lua\luaTools.h" />
     <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\movements\movement.h" />
+    <ClInclude Include="src\movements\rotateMovement.h" />
     <ClInclude Include="src\movements\straightMovement.h" />
     <ClInclude Include="src\movements\targetMovement.h" />
     <ClInclude Include="src\utils\color.h" />

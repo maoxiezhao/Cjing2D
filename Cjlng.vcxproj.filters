@@ -193,6 +193,12 @@
     <ClCompile Include="src\lua\mapApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\movements\rotateMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\camera.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -356,6 +362,12 @@
     </ClInclude>
     <ClInclude Include="src\game\setting.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\rotateMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\camera.h">
+      <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

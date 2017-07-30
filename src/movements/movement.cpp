@@ -63,6 +63,16 @@ void Movement::SetSuspended(bool suspended)
 	}
 }
 
+Entity * Movement::GetEntity()
+{
+	return mEntity;
+}
+
+Drawable * Movement::GetDrawable()
+{
+	return mDrawable;
+}
+
 /**
 *	\brief 移动是否完成
 *
@@ -71,6 +81,11 @@ void Movement::SetSuspended(bool suspended)
 bool Movement::IsFinished() const
 {
 	return mFinished;
+}
+
+void Movement::Start()
+{
+	mFinished = false;
 }
 
 /**
@@ -107,6 +122,11 @@ void Movement::NotifyObstacleReached()
 const string Movement::GetLuaObjectName() const
 {
 	return LuaContext::module_movement_name;
+}
+
+void Movement::SetFinishedCallBack(const LuaRef & callback)
+{
+	mFinishedCallBack = callback;
 }
 
 /**

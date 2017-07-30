@@ -37,7 +37,7 @@ public:
 	void SetNextMoveDateY(uint32_t date);
 
 	// lua
-	virtual const string GetLuaObjectName()const override;
+	virtual const string GetLuaObjectName()const;
 
 protected:
 	void UpdateXY();

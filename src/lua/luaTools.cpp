@@ -43,12 +43,37 @@ namespace LuaTools
 				" but get" + luaL_typename(l, index));
 	}
 
+	bool CheckBoolean(lua_State * l, int index)
+	{
+		if (!lua_isboolean(l, index))
+			ArgError(l, index, string("Excepted:boolean,got ") + luaL_typename(l, index));
+
+		return (bool)lua_toboolean(l, index);
+	}
+
+	bool OptBoolean(lua_State * l, int index, bool defaultValue)
+	{
+		if (!lua_isboolean(l, index))
+		{
+			return defaultValue;
+		}
+		return CheckBoolean(l, index);
+	}
+
 	int CheckInt(lua_State * l, int index)
 	{
 		if (!lua_isnumber(l, index))
 			ArgError(l, index, string("Excepted:integer,got ") + luaL_typename(l, index));
 
 		return (int)lua_tointeger(l,index);
+	}
+
+	double CheckNumber(lua_State * l, int index)
+	{
+		if (!lua_isnumber(l, index))
+			ArgError(l, index, string("Excepted:Number,got ") + luaL_typename(l, index));
+
+		return (double)lua_tonumber(l, index);
 	}
 
 	float CheckFloat(lua_State * l, int index)
@@ -70,6 +95,15 @@ namespace LuaTools
 	{
 		CheckType(l, index, LUA_TFUNCTION);
 		return CreateRef(l, index);;
+	}
+
+	LuaRef OptFunction(lua_State * l, int index)
+	{
+		if (lua_isnoneornil(l, index))
+		{
+			return LuaRef();
+		}
+		return CheckFunction(l, index);
 	}
 
 	/**

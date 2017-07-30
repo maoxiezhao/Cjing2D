@@ -1,6 +1,7 @@
 #include "targetMovement.h"
 #include "core\system.h"
 #include "utils\geometry.h"
+#include "lua\luaContext.h"
 
 namespace {
 	const uint32_t refreshMovementDelay = 200;
@@ -16,6 +17,13 @@ TargetMovement::TargetMovement(const EntityPtr & entity, const Point2 & target, 
 	mTargetEntity(entity),
 	mFinished(false)
 {
+}
+
+void TargetMovement::SetDrawable(Drawable * drawable)
+{
+	Movement::SetDrawable(drawable);
+	RefreshMovment();
+	mNextRefreshMovmentDate = System::Now() + refreshMovementDelay;
 }
 
 /**
@@ -129,5 +137,5 @@ bool TargetMovement::IsFinished() const
 
 const string TargetMovement::GetLuaObjectName() const
 {
-	return string();
+	return LuaContext::module_target_movement_name;
 }

@@ -306,7 +306,7 @@ void AnimationSprite::NotifyFinished()
 
 const string AnimationSprite::GetLuaObjectName() const
 {
-	return LuaContext::module_sprite_name;
+	return LuaContext::module_animation_name;
 }
 
 /**

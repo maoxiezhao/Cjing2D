@@ -72,8 +72,8 @@ void LuaContext::Initialize()
 */
 void LuaContext::Update()
 {
-	UpdateDrawables();
 	UpdateTimers();
+	UpdateDrawables();
 	UpdateMenus();
 
 	OnMainUpdate();
@@ -190,7 +190,8 @@ bool LuaContext::FindMethod(const string & name, int index)
 int LuaContext::userdata_meta_gc(lua_State*l)
 {
 	LuaObjectPtr* luaObject = static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
-	luaObject->~shared_ptr<LuaObject>();
+	if (luaObject != nullptr)		// 判空的存在内存泄露的可能
+		luaObject->~shared_ptr<LuaObject>();
 	return 0;
 }
 
@@ -296,6 +297,7 @@ void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functi
 *	\brief 注册一个C++对象类型，并设置该类型的基类
 *
 *	在使用该方法前必须保证baseModule存在，并已经注册
+*	bug:目前使用该方法会导致父类metatable的gc方法调用
 */
 void LuaContext::RegisterType(const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, 
 				const luaL_Reg* methods, const luaL_Reg* metamethods)
@@ -309,12 +311,12 @@ void LuaContext::RegisterType(const string& moduleName, const string& baseModule
 
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
-	lua_newtable(l);
-				// meta table
+	//lua_newtable(l);
+	//			// meta table
 	luaL_getmetatable(l, baseModuleName.c_str());
-				// meta table basemeta
-	lua_setfield(l, -2, "__index");
-				// meta table
+	//			// meta table basemeta
+	//lua_setfield(l, -2, "__index");
+	//			// meta table
 	lua_setmetatable(l, -2);
 				// meta
 	luaL_getmetatable(l, baseModuleName.c_str());
@@ -435,8 +437,77 @@ const LuaObjectPtr LuaContext::CheckUserdata(lua_State * l, int index, const str
 {
 	index = LuaTools::GetPositiveIndex(l, index);
 	
-	const LuaObjectPtr& userdata = *(static_cast<LuaObjectPtr*>(luaL_checkudata(l, index, moduleName.c_str()) ));
-	return userdata;
+	/*const LuaObjectPtr& userdata = *(static_cast<LuaObjectPtr*>(luaL_checkudata(l, index, moduleName.c_str()) ));
+	return userdata;*/
+
+	// 临时处理派生类，目前的做法对非法情况直接抛出错误！！！
+	void* udata = lua_touserdata(l, index);
+	if (udata == nullptr)
+	{
+		LuaTools::ArgError(l, index, string("CheckUserdata():excepted userdata, but get") + lua_typename(l, index));
+		return nullptr;
+	}
+	lua_getfield(l, LUA_REGISTRYINDEX, moduleName.c_str());
+	if (lua_isnil(l, -1))
+	{
+		LuaTools::ArgError(l, index, string("CheckUserdata():unregistered type:") + moduleName);
+		return nullptr;
+
+	}					// dstmeta
+	if (!lua_getmetatable(l, index))
+	{
+		LuaTools::ArgError(l, index, string("CheckUserdata():excepted userdata, but get") + lua_typename(l, index));
+		return nullptr;
+	}					// dstmeta curmeta
+
+	// 这里需要考虑当前udata可能是module的派生类，通过获取
+	// 元表的元表进行匹配来判断是否是子类,同时设置最大的继承
+	// 深度
+	const int MaxDeriveDepth = 5;
+	int curDeriveDepth = 1;
+
+	bool isMatched = false;
+	int curIndex = LuaTools::GetPositiveIndex(l, -1);
+	while (!lua_isnil(l, curIndex))
+	{
+		if (curDeriveDepth >= MaxDeriveDepth)
+		{
+			LuaTools::ArgError(l, index, 
+				string("CheckUserdata():can not mathced current modulename,beyond max derive depths ") + moduleName);
+			return nullptr;
+		}
+
+		isMatched = lua_rawequal(l, -1, -2);
+		//GetLuaContext(l).PrintLuaStack(l);
+		if (isMatched)
+		{				// dstmeta meta
+			lua_pop(l, 1);
+						// dstmeat
+			break;
+		}
+		else
+		{				// dstmeta curmeta
+			lua_getmetatable(l, -1);
+			//GetLuaContext(l).PrintLuaStack(l);
+						// dstmeta curmeta meta
+			int removeIndex = LuaTools::GetPositiveIndex(l, -2);
+			lua_remove(l, removeIndex);
+			//GetLuaContext(l).PrintLuaStack(l);
+						// dstmeta meta
+		}
+	}
+	lua_pop(l, 1);
+						// ...
+	//GetLuaContext(l).PrintLuaStack(l);
+	if (isMatched)
+	{
+		return *(static_cast<LuaObjectPtr*>(udata));
+	}
+	else
+	{
+		LuaTools::ArgError(l, index, string("CheckUserdata():can not mathced current modulename ") + moduleName);
+		return nullptr;
+	}
 }
 
 /**
@@ -624,11 +695,13 @@ bool LuaContext::OnKeyReleased(const InputEvent & event)
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
+	RegisterGameModule();
 	RegisterVideoModule();
 	RegisterMenuModule();
 	RegisterTimeModule();
 	RegisterSpriteModule();
 	RegisterAnimationModule();
+	RegisterMovementModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

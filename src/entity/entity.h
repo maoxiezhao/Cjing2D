@@ -21,6 +21,9 @@ public:
 	Point2 GetPos()const;
 	void SetPos(const Point2& pos);
 
+	// movement
+	void ClearMovements();
+
 	// lua
 	virtual const string GetLuaObjectName()const;
 

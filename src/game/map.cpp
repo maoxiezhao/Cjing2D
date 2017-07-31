@@ -96,6 +96,11 @@ const string Map::GetLuaObjectName() const
 	return LuaContext::module_map_name;
 }
 
+const std::shared_ptr<Camera>& Map::GetCamera()
+{
+	return nullptr;
+}
+
 const string & Map::GetMapID() const
 {
 	return mMapID;

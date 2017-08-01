@@ -108,9 +108,12 @@
     <ClCompile Include="src\game\animationSprite.cpp" />
     <ClCompile Include="src\game\app.cpp" />
     <ClCompile Include="src\game\drawable.cpp" />
+    <ClCompile Include="src\game\EntityData.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\map.cpp" />
+    <ClCompile Include="src\game\mapData.cpp" />
     <ClCompile Include="src\game\savegame.cpp" />
+    <ClCompile Include="src\game\setting.cpp" />
     <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
     <ClCompile Include="src\gui\widget.cpp" />
@@ -168,9 +171,11 @@
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\currentQuest.h" />
     <ClInclude Include="src\game\drawable.h" />
+    <ClInclude Include="src\game\EntityData.h" />
     <ClInclude Include="src\game\enumInfo.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\map.h" />
+    <ClInclude Include="src\game\mapData.h" />
     <ClInclude Include="src\game\savegame.h" />
     <ClInclude Include="src\game\setting.h" />
     <ClInclude Include="src\game\sprite.h" />

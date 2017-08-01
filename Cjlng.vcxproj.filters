@@ -205,6 +205,15 @@
     <ClCompile Include="src\gui\widget.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\setting.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\mapData.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\EntityData.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -377,6 +386,12 @@
     </ClInclude>
     <ClInclude Include="src\gui\widget.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\mapData.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\EntityData.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

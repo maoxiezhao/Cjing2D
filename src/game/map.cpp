@@ -1,8 +1,9 @@
 #include "map.h"
 #include "core\inputEvent.h"
-#include "game\game.h"
-#include "lua\luaContext.h"
 #include "entity\entities.h"
+#include "lua\luaContext.h"
+#include "game\game.h"
+#include "game\mapData.h"
 
 Map::Map():
 	mMapID(),
@@ -38,8 +39,27 @@ Map::~Map()
 {
 }
 
+/**
+*	\brief 加载地图
+*/
 void Map::Load(Game * game)
 {
+	MapData mapData;
+	const string& mapFileName = string("maps/") + GetMapID();
+	bool successed = mapData.ImportFromFile(mapFileName);
+
+	if (!successed)
+	{
+		Debug::Die("Failed to load map file '" + GetMapID() + "'.");
+	}
+
+	// 加载地图成功，则初始化地图数据
+
+	mEntities = nullptr;
+	mTileset = nullptr;
+
+	mGame = game;
+	mIsLoaded = true;
 }
 
 /**

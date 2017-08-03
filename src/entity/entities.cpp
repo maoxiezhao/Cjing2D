@@ -12,8 +12,6 @@ Entities::Entities(Game&game, Map&map):
 	// 初始化每层的layer
 
 	// 初始化四叉树
-
-
 }
 
 void Entities::Update()
@@ -22,6 +20,20 @@ void Entities::Update()
 
 void Entities::Draw()
 {
+}
+
+void Entities::SetSuspended(bool suspended)
+{
+}
+
+CameraPtr Entities::GetCamear() const
+{
+	return CameraPtr();
+}
+
+EntityVector Entities::GetEntities()
+{
+	return EntityVector();
 }
 
 void Entities::InitEntities()

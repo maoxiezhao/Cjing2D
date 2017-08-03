@@ -1,6 +1,7 @@
 #include "straightMovement.h"
 #include "core\system.h"
 #include "utils\geometry.h"
+#include "lua\luaContext.h"
 
 StraightMovement::StraightMovement():
 	Movement(),
@@ -250,7 +251,7 @@ void StraightMovement::SetNextMoveDateY(uint32_t date)
 
 const string StraightMovement::GetLuaObjectName() const
 {
-	return string();
+	return LuaContext::module_straight_movement_name;
 }
 
 void StraightMovement::Update()

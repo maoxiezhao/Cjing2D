@@ -13,6 +13,10 @@ void Entity::SetPos(const Point2 & pos)
 {
 }
 
+void Entity::ClearMovements()
+{
+}
+
 const string Entity::GetLuaObjectName() const
 {
 	return string();

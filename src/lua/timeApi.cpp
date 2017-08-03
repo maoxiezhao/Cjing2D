@@ -45,8 +45,8 @@ void LuaContext::UpdateTimers()
 */
 void LuaContext::DestoryTimers()
 {
-	for (auto& kvp : mTimers)
-		mTimers.erase(kvp.first);
+	//for (auto& kvp : mTimers)
+	//	mTimers.erase(kvp.first);
 	mTimers.clear();
 }
 

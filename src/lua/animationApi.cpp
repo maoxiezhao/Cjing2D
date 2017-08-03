@@ -16,14 +16,19 @@ void LuaContext::RegisterAnimationModule()
 	static const luaL_Reg methods[] = {
 		{"setAnimation", animation_api_set_animation},
 		{"setDirection", animation_api_set_direction},
-		{"play", animation_api_play_animation},
+		{"start", animation_api_play_animation},
 		{"stop", animation_api_stop_animation},
 		{"draw", animation_api_draw },
 		{nullptr,nullptr}
 	};
 
+	static const luaL_Reg metamethods[] = {
+		{ "__gc", drawable_meta_api_gc },
+		{ nullptr, nullptr }
+	};
+
 	RegisterType(module_animation_name,module_sprite_name,
-		function,methods,nullptr);
+		function,methods, metamethods);
 }
 
 void LuaContext::PushAnimation(lua_State*l, AnimationSprite& animation)

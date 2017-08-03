@@ -8,10 +8,9 @@ QuadTree<T>::QuadTree()
 
 /**
 *	\brief Ìí¼Óelement
-*
 */
 template<typename T>
-inline bool QuadTree<T>::Add(const T & element, const Rectangle & boundingBox)
+inline bool QuadTree<T>::Add(const T & element, const Rect & boundingBox)
 {
 	if (Contain(element))
 		return false;

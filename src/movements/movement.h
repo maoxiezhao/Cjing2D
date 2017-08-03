@@ -23,6 +23,9 @@ public:
 	virtual void SetSuspended(bool suspended);
 	
 	// status
+	Entity* GetEntity();
+	Drawable* GetDrawable();
+
 	int GetPosX()const;
 	int GetPosY()const;
 	Point2 GetPos()const;
@@ -33,10 +36,11 @@ public:
 	void TranslateY(int y);
 	void TranslatePos(const Point2& dxy);
 	uint32_t GetWhenSuspeneded()const;
-	void SetDrawable(Drawable* drawable);
+	virtual void SetDrawable(Drawable* drawable);
 
 	// move
 	virtual bool IsFinished()const;
+	virtual void Start();
 	virtual void Stop();
 	virtual bool IsStop()const;
 	virtual bool IsStarted()const;
@@ -46,7 +50,8 @@ public:
 	void NotifyMovementChanged();
 	void NotifyMovementFinished();
 	void NotifyObstacleReached();
-	virtual const string GetLuaObjectName()const override;
+	virtual const string GetLuaObjectName()const;
+	void SetFinishedCallBack(const LuaRef& callback);
 
 	// test collision
 	bool TestCollisionWithObstacles(const Point2& dxy)const;

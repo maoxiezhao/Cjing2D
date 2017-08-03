@@ -17,7 +17,6 @@ public:
 		Hidden,
 		InVisible
 	};
-
 	enum class ReDrawAction
 	{
 		Full,
@@ -51,8 +50,8 @@ private:
 	std::weak_ptr<Widget> mParent;	
 
 	bool mIsDirty;
-
 	Visiblility mVisible;
+	ReDrawAction mReDrawAction;
 
 	/*** *** *** *** *** layout and size. *** *** *** *** ***/
 public:

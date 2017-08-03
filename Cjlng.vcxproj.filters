@@ -32,6 +32,9 @@
     <Filter Include="movments">
       <UniqueIdentifier>{fc058d36-6977-4403-9e97-cc326a14756a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{de4d3070-63ca-4229-ae28-9a14afb1a68f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -198,6 +201,18 @@
     </ClCompile>
     <ClCompile Include="src\entity\camera.cpp">
       <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\setting.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\mapData.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\EntityData.cpp">
+      <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,6 +383,15 @@
     </ClInclude>
     <ClInclude Include="src\entity\camera.h">
       <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\mapData.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\EntityData.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

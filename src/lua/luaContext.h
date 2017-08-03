@@ -19,6 +19,9 @@ class InputEvent;
 class Sprite;
 class Drawable;
 class AnimationSprite;
+class Movement;
+class StraightMovement;
+class TargetMovement;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -70,6 +73,7 @@ public:
 	// modules
 	void RegisterModules();
 	void RegisterMainModule();
+	void RegisterGameModule();
 	void RegisterTimeModule();
 	void RegisterMenuModule();
 	void RegisterVideoModule();
@@ -96,6 +100,9 @@ public:
 		// drawable
 		drawable_api_get_pos,
 		drawable_api_set_pos,
+		drawable_api_run_movement,
+		drawable_api_get_movement,
+		drawable_api_stop_movment,
 		drawable_meta_api_gc,
 		// sprite
 		sprite_api_create,
@@ -105,9 +112,6 @@ public:
 		sprite_api_get_blend,
 		sprite_api_set_rotation,
 		sprite_api_get_rotation,
-		sprite_api_run_movement,
-		sprite_api_get_movement,
-		sprite_api_stop_movment,
 		sprite_api_set_opacity,
 		sprite_api_get_opacity,
 		sprite_api_draw,
@@ -120,6 +124,25 @@ public:
 		animation_api_draw,
 		// movement
 		movement_api_create,
+		movement_api_start,
+		movement_api_stop,
+		movement_api_set_pos,
+		movement_api_get_pos,
+		movement_api_api_gc,
+		// straight movement
+		movement_straight_api_create,
+		movement_straight_api_set_speed,
+		movement_straight_api_get_speed,
+		movement_straight_api_set_angle,
+		movement_straight_api_get_angle,
+		movement_straight_api_set_max_distance,
+		movement_straight_api_get_max_distance,
+		// target movement
+		movement_target_api_create,
+		movement_target_api_set_target,
+		movement_target_api_get_target,
+		movement_target_api_set_speed,
+		movement_target_api_get_speed,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -193,6 +216,7 @@ public:
 	static void PushDrawable(lua_State*l, Drawable& drawable);
 	static void PushSprite(lua_State*l, Sprite& sprite);
 	static void PushAnimation(lua_State*l, AnimationSprite& animation);
+	static void PushMovement(lua_State*l, Movement& movement);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -201,19 +225,26 @@ public:
 	static bool IsSprite(lua_State*l, int index);
 	static std::shared_ptr<AnimationSprite> CheckAnimation(lua_State*l, int index);
 	static bool IsAnimation(lua_State*l, int index);
+	static std::shared_ptr<Movement> CheckMovement(lua_State*l, int index);
+	static bool IsMovement(lua_State*l, int index);
+	static std::shared_ptr<StraightMovement> CheckStraightMovement(lua_State*l, int index);
+	static bool IsStraightMovement(lua_State*l, int index);
+	static std::shared_ptr<TargetMovement> CheckTargetMovement(lua_State*l, int index);
+	static bool IsTargetMovement(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
+	// base modules name
 	static const string module_main_name;
+	static const string module_game_name;
 	static const string module_map_name;
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;
-
 	// movement modules name
 	static const string module_movement_name;
-	static const string module_straight_movment_name;
-
+	static const string module_straight_movement_name;
+	static const string module_target_movement_name;
 	// drawable
 	static const string module_drawable_name;
 	static const string module_sprite_name;

@@ -18,6 +18,8 @@ public:
 		bool ingoreObstacles
 	);
 
+	virtual void SetDrawable(Drawable* drawable);
+
 	void SetTarget(const EntityPtr& entity, const Point2& pos);
 	Point2 GetTargetPos()const;
 
@@ -26,7 +28,7 @@ public:
 
 	virtual void Update();
 	virtual bool IsFinished()const;
-	virtual const string GetLuaObjectName()const override;
+	virtual const string GetLuaObjectName()const;
 
 private:
 	void RefreshMovment();

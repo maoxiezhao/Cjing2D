@@ -9,7 +9,6 @@
 #include"game\animationSprite.h"
 #include"game\game.h"
 #include"entity\player.h"
-#include"movements\movement.h"
 
 /**
 *	\brief 程序的主循环
@@ -41,9 +40,6 @@ private:
 
 	bool mExiting;
 
-	// test
-	AnimationSpritePtr testAnimation;
-	MovementPtr testMovement;
 };
 
 #endif

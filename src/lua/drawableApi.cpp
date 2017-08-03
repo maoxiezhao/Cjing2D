@@ -20,7 +20,7 @@ DrawablePtr LuaContext::CheckDrawable(lua_State*l, int index)
 
 bool LuaContext::IsDrawable(lua_State*l, int index)
 {
-	return IsSprite(l, index);
+	return IsSprite(l, index) || IsAnimation(l, index);
 }
 
 void LuaContext::PushDrawable(lua_State*l, Drawable& drawable)
@@ -109,5 +109,32 @@ int LuaContext::drawable_meta_api_gc(lua_State*l)
 		userdata_meta_gc(l);
 
 		return 0;
+	});
+}
+
+int LuaContext::drawable_api_run_movement(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+
+
+		return 1;
+	});
+}
+
+int LuaContext::drawable_api_get_movement(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+
+
+		return 1;
+	});
+}
+
+int LuaContext::drawable_api_stop_movment(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+
+
+		return 1;
 	});
 }

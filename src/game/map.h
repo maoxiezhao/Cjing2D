@@ -54,6 +54,11 @@ public:
 	void SetTileset(const string& tilesetID);
 	const string& getTilesetID()const;
 
+	// test collison
+	bool TestCollison();
+	
+
+
 private:
 	string mMapID;
 	int mWidth;

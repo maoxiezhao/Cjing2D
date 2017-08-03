@@ -1,6 +1,11 @@
 -- global setting
 package.path = package.path .. ";data/?.lua"
 
+local circlePosX = 200
+local circlePosY = 100
+local circleRadis = 50
+local currStep = 1
+
 function cjing.Main:onStarted()
 	print "Main:onStarted normal."
 
@@ -14,14 +19,16 @@ function cjing.Main:onStarted()
 		sprite:setSize(index * 50,index * 50)
 		sprite:setPos((index - 1)* 100,(index - 1) * 80)
 		sprite:setRotation(22 * index)
-		sprite:setOpacity(index * 50)
+		--sprite:setOpacity(index * 50)
 		self._sprite[index] = sprite
 	end 
 	
 	-- test anmiation --
 	local animation = cjing.Animation.create("explosion")
 	if animation then 
-		animation:setPos(200,100)
+		animation:setPos(circlePosX,circlePosY)
+		animation:setOpacity(255)
+		animation:start()
 		self._animation = animation
 	end 
 	
@@ -33,13 +40,40 @@ function cjing.Main:onStarted()
 	end
 	
 	-- test time --
-	cjing.Timer.start(self, 5000, function()  
-		if self._animation then 
-			self._animation:setOpacity(0)
-		end 
-	end)
+	-- cjing.Timer.start(self, 5000, function()  
+		-- if self._animation then 
+			-- self._animation:setOpacity(0)
+		-- end 
+	-- end)
+	
+	-- test movement	
+	local targetX = circlePosX + circleRadis * math.cos(math.rad(currStep))
+	local targetY = circlePosY + circleRadis * math.sin(math.rad(currStep))
+	local movement = cjing.TargetMovement.create()
+	if movement then 
+		movement:setSpeed(50)
+		movement:setTarget(targetX,targetY)
+		movement:start(animation,function()  
+			--self:TestMovementCallBack()
+		end)
+	end 
 	
 end
+
+function cjing.Main:TestMovementCallBack()
+	print "movement call back."
+	currStep = currStep + 10
+	local targetX = circlePosX + circleRadis * math.cos(math.rad(currStep))
+	local targetY = circlePosY + circleRadis * math.sin(math.rad(currStep))
+	local movement = cjing.TargetMovement.create()
+	if movement then 
+		movement:start(self._animation,function()  
+			self:TestMovementCallBack()
+		end)
+		movement:setSpeed(50)
+		movement:setTarget(targetX,targetY)
+	end 
+end 
 
 function cjing.Main:TestTime()
 	print "time out!"

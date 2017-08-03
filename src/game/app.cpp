@@ -35,11 +35,6 @@ App::App():
 	mLuaContext->Initialize();
 
 	// test
-	//testAnimation = std::make_shared<AnimationSprite>("sprites/explosion.dat");
-	//testAnimation->SetPos(Point2(0, 0));
-	//
-	//testMovement = std::make_shared<TargetMovement>(nullptr, Point2(300, 300), 25, false);
-	//testAnimation->StartMovement(testMovement);
 }
 
 App::~App()

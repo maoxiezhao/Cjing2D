@@ -103,6 +103,7 @@ void Drawable::StartMovement(const std::shared_ptr<Movement>& movement)
 	mMovement = movement;
 	mMovement->SetDrawable(this);
 	mMovement->SetSuspended(IsSuspended());
+	mMovement->Start();
 }
 
 const std::shared_ptr<Movement>& Drawable::GetMovement()

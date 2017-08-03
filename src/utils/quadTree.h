@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"utils\rectangle.h"
+#include<set>
 #include<array>
 
 template <typename T>
@@ -11,12 +12,12 @@ class QuadTree
 public:
 	QuadTree();
 
-	bool Add(const T& element, const Rectangle& boundingBox);	   // 添加element
+	bool Add(const T& element, const Rect& boundingBox);	   // 添加element
 	bool Move();   // 移动element
 	bool Remove();
 
-	Rectangle GetSpace()const;
-	std::vector<T> GetElements(const Rectangle& region)const;
+	Rect GetSpace()const;
+	std::vector<T> GetElements(const Rect& region)const;
 	bool Contain(const T& element)const;
 
 	static const int MaxElementsInCell = 8;	// 大于这个需要split
@@ -28,11 +29,11 @@ private:
 	public:
 		Node();
 
-		void Add(const T& element, const Rectangle& boundingBox);
-		void Remove(const T& element, const Rectangle& boundingBox);
-		void GetElements(const Rectangle&region, std::set<T>& result);
+		void Add(const T& element, const Rect& boundingBox);
+		void Remove(const T& element, const Rect& boundingBox);
+		void GetElements(const Rect&region, std::set<T>& result);
 
-		Rectangle GetCell()const;
+		Rect GetCell()const;
 		bool Remove(const T& element);
 	
 	private:
@@ -40,7 +41,7 @@ private:
 		void Split();
 		void Merge();
 
-		std::vector<std::pair<T, Rectangle>> mElements;
+		std::vector<std::pair<T, Rect>> mElements;
 		std::array<std::unique_ptr<Node>, 4> mChilds;
 
 	};

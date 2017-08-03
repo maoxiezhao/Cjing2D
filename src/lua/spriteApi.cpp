@@ -24,9 +24,9 @@ void LuaContext::RegisterSpriteModule()
 		{"draw", sprite_api_draw},
 		{"getPos", drawable_api_get_pos},
 		{"setPos", drawable_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
-		{"runMovement", sprite_api_run_movement },
-		{"getMovment", sprite_api_get_movement },
-		{"stopMovement", sprite_api_stop_movment },
+		{"runMovement", drawable_api_run_movement },
+		{"getMovment", drawable_api_get_movement },
+		{"stopMovement", drawable_api_stop_movment },
 		{nullptr, nullptr}
 	};
 
@@ -182,33 +182,6 @@ int LuaContext::sprite_api_draw(lua_State*l)
 		sprite.Draw();
 
 		return 0;
-	});
-}
-
-int LuaContext::sprite_api_run_movement(lua_State*l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-
-
-		return 1;
-	});
-}
-
-int LuaContext::sprite_api_get_movement(lua_State*l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-
-
-		return 1;
-	});
-}
-
-int LuaContext::sprite_api_stop_movment(lua_State*l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-
-
-		return 1;
 	});
 }
 

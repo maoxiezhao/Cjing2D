@@ -1,7 +1,9 @@
 #include "handler.h"
 #include"core\debug.h"
+#include"core\inputEvent.h"
 #include"gui\widget\widget.h"
 #include"gui\core\dispatcher.h"
+
 
 namespace gui
 {
@@ -24,6 +26,15 @@ public:
 	void Disconnect(Dispatcher* Dispatcher);
 
 	void Active();
+	void HandleEvent(const InputEvent& event);
+
+	/** 触发各类事件 */
+	void KeyBoardKeyDown(const InputEvent& event);
+	void KeyBoardKeyUp(const InputEvent& event);
+
+	void Mouse(const ui_event event, const Point2& pos);
+	void MouseButtonDown(const Point2& pos, const InputEvent::MouseButton button);
+	void MouseButtonUp(const Point2& pos, const InputEvent::MouseButton button);
 
 private:
 	std::vector<Dispatcher*> mDispatcher;
@@ -70,7 +81,107 @@ void EventHandler::Active()
 	}
 }
 
-/***** 全局函数 *****/
+/**
+*	\brief 处理分发事件
+*/
+void EventHandler::HandleEvent(const InputEvent& event)
+{
+	InputEvent::KeyEvent keyEvent = event.GetKeyEvent();
+	switch (keyEvent.type)
+	{
+	case InputEvent::EVENT_KEYBOARD_KEYDOWN:
+		KeyBoardKeyDown(event);
+		break;
+	case InputEvent::EVENT_KEYBOARD_KEYUP:
+		KeyBoardKeyUp(event);
+		break;
+	case InputEvent::EVENT_MOUSE_BUTTONDOWN:
+		MouseButtonDown({ keyEvent.motion.x, keyEvent.motion.y }, keyEvent.mousebutton);
+		break;
+	case InputEvent::EVENT_MOUSE_BUTTONUP:
+		MouseButtonUp({ keyEvent.motion.x, keyEvent.motion.y }, keyEvent.mousebutton);
+		break;
+	case InputEvent::EVENT_MOUSE_MOTION:
+		Mouse(UI_EVENT_MOUSE_MOTION, { keyEvent.motion.x, keyEvent.motion.y });
+		break;
+	default:
+		break;
+	}
+}
+
+/**
+*	\brief 键盘按下事件
+*/
+void EventHandler::KeyBoardKeyDown(const InputEvent& event)
+{
+}
+
+/**
+*	\brief 键盘松开事件
+*/
+void EventHandler::KeyBoardKeyUp(const InputEvent& event)
+{
+}
+
+/**
+*	\brief 鼠标事件处理
+*/
+void EventHandler::Mouse(const ui_event event, const Point2& pos)
+{
+	std::vector<Dispatcher*> reverseDispatchers;
+	std::reverse_copy(mDispatcher.begin(), mDispatcher.end(), reverseDispatchers.begin());
+
+	for (auto& dispatcher : reverseDispatchers)
+	{
+
+
+		// 如果widget在pos中，则触发事件
+		if (dispatcher->IsAt(pos))
+		{
+			dispatcher->Fire(event, dynamic_cast<Widget&>(*dispatcher), pos);
+		}
+	}
+}
+
+/**
+*	\brief 鼠标按下事件
+*/
+void EventHandler::MouseButtonDown(const Point2& pos, const InputEvent::MouseButton button)
+{
+	switch (button)
+	{
+	case InputEvent::MOUSE_BUTTON_LEFT:
+		Mouse(UI_EVENT_MOUSE_LEFT_BUTTON_DOWN, pos);
+		break;
+	case InputEvent::MOUSE_BUTTON_MIDDLE:
+		Mouse(UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN, pos);
+		break;
+	case InputEvent::MOUSE_BUTTON_RIGHT:
+		Mouse(UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN, pos);
+		break;
+	}
+}
+
+/**
+*	\brief 鼠标松开事件
+*/
+void EventHandler::MouseButtonUp(const Point2& pos, const InputEvent::MouseButton button)
+{
+	switch (button)
+	{
+	case InputEvent::MOUSE_BUTTON_LEFT:
+		Mouse(UI_EVENT_MOUSE_LEFT_BUTTON_UP, pos);
+		break;
+	case InputEvent::MOUSE_BUTTON_MIDDLE:
+		Mouse(UI_EVENT_MOUSE_MIDDLE_BUTTON_UP, pos);
+		break;
+	case InputEvent::MOUSE_BUTTON_RIGHT:
+		Mouse(UI_EVENT_MOUSE_RIGHT_BUTTON_UP, pos);
+		break;
+	}
+}
+
+/************ 全局函数 *************/
 void ConnectDispatcher(Dispatcher * dispatcher)
 {
 	Debug::CheckAssertion(mHandler != nullptr, 

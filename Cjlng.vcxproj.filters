@@ -414,6 +414,9 @@
     <ClInclude Include="src\gui\widget\widget.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
+    <ClInclude Include="src\hero\heroState.h">
+      <Filter>hero</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -186,6 +186,7 @@
     <ClInclude Include="src\gui\core\dispatcher.h" />
     <ClInclude Include="src\gui\core\handler.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
+    <ClInclude Include="src\hero\heroState.h" />
     <ClInclude Include="src\lua\luaObject.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />

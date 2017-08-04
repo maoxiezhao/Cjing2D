@@ -8,7 +8,8 @@ namespace gui
 Dispatcher::Dispatcher() :
 	mSignalQueue(),
 	mSignalMouseQueue(),
-	mIsConnected(false)
+	mIsConnected(false),
+	mMouseBehavior(none)
 {
 }
 

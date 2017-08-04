@@ -140,12 +140,15 @@ InputEvent::KeyEvent InputEvent::GetKeyEvent()const
 
 bool InputEvent::IsKeyBoardEvent() const
 {
-	return mKeyEvent.type == KEYBOARD_INPUT_TYPE;
+	return mKeyEvent.type == EVENT_KEYBOARD_KEYDOWN ||
+		   mKeyEvent.type == EVENT_KEYBOARD_KEYUP;
 }
 
 bool InputEvent::IsMouseEvent() const
 {
-	return mKeyEvent.type == MOUSE_INPUT_TYPE;
+	return mKeyEvent.type == EVENT_MOUSE_MOTION ||
+		   mKeyEvent.type == EVENT_MOUSE_BUTTONDOWN ||
+		   mKeyEvent.type == EVENT_MOUSE_BUTTONUP;
 }
 
 /**
@@ -166,11 +169,12 @@ void InputEvent::key_callback(GLFWwindow * window, int key_in, int scancode, int
 	{
 		KeyboardKey key = static_cast<KeyboardKey>(key_in);
 		ent.key = key;
-		ent.type = KEYBOARD_INPUT_TYPE;
 		if (action == GLFW_PRESS)
 		{	// 按键按下时，需要判断是否是一直按住的
 			ent.repeat = false;
 			ent.state = KEYDOWN;
+			ent.type = EVENT_KEYBOARD_KEYDOWN;
+
 			if (!mKeyPressed.insert(key).second)
 				ent.repeat = 1;	// 重复按键
 		}
@@ -178,16 +182,37 @@ void InputEvent::key_callback(GLFWwindow * window, int key_in, int scancode, int
 		{
 			ent.repeat = 0;
 			ent.state = KEYUP;
+			ent.type = EVENT_KEYBOARD_KEYUP;
+
 			if (mKeyPressed.erase(key) == 0)
 				ent.repeat = 1;	// 重复按键
 		}
 		else
 		{
+			ent.type = EVENT_KEYBOARD_KEYDOWN;
 			ent.state = KEYDOWN;
 			ent.repeat = 1;
 		}
 		mEventQueue.push(ent);
 	}
+}
+
+/**
+*	\brief 鼠标移动回调函数，供glfw调用
+*/
+void InputEvent::mouse_motion_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	KeyEvent ent;
+	mEventQueue.push(ent);
+}
+
+/**
+*	\brief 鼠标点击回调函数，供glfw调用
+*/
+void InputEvent::mouse_button_callback(GLFWwindow* window, int button, int action, int modes)
+{
+	KeyEvent ent;
+	mEventQueue.push(ent);
 }
 
 InputEvent::InputEvent(const KeyEvent& ent) :
@@ -269,4 +294,9 @@ bool InputEvent::IsWithKeyShift() const
 bool InputEvent::IsWindowClosing()const
 {
 	return (mKeyEvent.key == KEY_ESCAPE);
+}
+
+InputEvent::EventType InputEvent::GetEventType()const
+{
+	return mKeyEvent.type;
 }

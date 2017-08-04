@@ -33,9 +33,13 @@ public:
 
 	void Connect();
 
+	virtual bool IsAt(const Point2& pos)const = 0;
+
 	/**  触发各类事件 */
 
 	void Fire(const ui_event event, Widget& widget);
+
+	void Fire(const ui_event event, Widget& widget, const Point2& pos);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置
@@ -144,7 +148,16 @@ public:
 	};
 
 
+	/** 鼠标处理行为,决定该dispathcer对鼠标event的响应行为*/
+	enum mouse_behavior
+	{
+		all,
+		none,
+	};
+
 private:
+	mouse_behavior mMouseBehavior;
+
 	/** 对应信号的事件队列 */
 	SignalQueue<SignalFunction> mSignalQueue;
 

@@ -1,11 +1,13 @@
 #ifndef _INPUT_EVENT_H_
 #define _INPUT_EVENT_H_
 
-#include"common\common.h"
-#include"game\enumInfo.h"
 #include<GLFW\glfw3.h>
 #include<set>
 #include<queue>
+
+#include"common\common.h"
+#include"game\enumInfo.h"
+#include"utils\point.h"
 
 /**
 *	\brief 封装GLFW输入
@@ -13,6 +15,18 @@
 class InputEvent
 {
 public:
+	/** 事件类型 */
+	enum EventType
+	{
+		EVENT_UNKNOW,
+		EVENT_KEYBOARD_KEYDOWN,
+		EVENT_KEYBOARD_KEYUP,
+		EVENT_MOUSE_MOTION,
+		EVENT_MOUSE_BUTTONDOWN,
+		EVENT_MOUSE_BUTTONUP
+	};
+
+	/** 键盘键值 */
 	enum KeyboardKey
 	{
 		KEY_NONE = GLFW_KEY_UNKNOWN,
@@ -111,7 +125,7 @@ public:
 
 	enum MouseButton
 	{
-		MOUSE_BUTTON_NOE = -1,
+		MOUSE_BUTTON_NONE = -1,
 		MOUSE_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
 		MOUSE_BUTTON_MIDDLE= GLFW_MOUSE_BUTTON_MIDDLE,
 		MOUSE_BUTTON_RIGHT= GLFW_MOUSE_BUTTON_RIGHT
@@ -122,19 +136,30 @@ public:
 		KEYDOWN,
 		KEYUP
 	};
-	enum InputType  // 当前输入类型
-	{
-		UNKNOW_INPUT_TYPE,
-		KEYBOARD_INPUT_TYPE,
-		MOUSE_INPUT_TYPE
-	};
+
+	/**
+	*	\brief 通用的事件描述
+	*
+	*	存储了所有事件所需要的参数，根据eventType来取对应参数使用
+	*/
 	struct KeyEvent
 	{
-		KeyboardKey key;
-		KeyState state;
-		InputType type;
-		bool repeat;
-		KeyEvent() :key(KEY_NONE), state(UNKNOW), type(UNKNOW_INPUT_TYPE),repeat(false) {}
+		EventType type;	        /** 事件类型 */
+		KeyboardKey key;		/** 键盘枚举键值 */
+		KeyState state;			/** 键盘或者鼠标按键状态 */		
+		bool repeat;			/** 是否重复按下 */
+		Point2 motion;			/** 鼠标的坐标 */
+		MouseButton mousebutton;/** 鼠标的按键*/
+
+		KeyEvent() :
+			type(EVENT_UNKNOW),
+			key(KEY_NONE), 
+			state(UNKNOW), 
+			repeat(false),
+			motion({0,0}),
+			mousebutton(MOUSE_BUTTON_NONE),
+		{
+		}
 	};
 
 public:
@@ -146,10 +171,11 @@ public:
 	KeyEvent GetKeyEvent()const;
 	bool IsKeyBoardEvent()const;
 	bool IsMouseEvent()const;
+	EventType GetEventType()const;
 
 	// callback
 	static void key_callback(GLFWwindow* window, int key_in, int scancode, int action, int mode);
-	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+	static void mouse_motion_callback(GLFWwindow* window, double xpos, double ypos);
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int modes);
 
 	// keyboard
@@ -174,8 +200,8 @@ private:
 
 	static std::set<KeyboardKey> mKeyPressed;
 	static std::queue<KeyEvent> mEventQueue;
+	
 	KeyEvent mKeyEvent;
-
 };
 
 // 用于获取key枚举值对应的字符

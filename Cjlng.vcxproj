@@ -116,7 +116,9 @@
     <ClCompile Include="src\game\setting.cpp" />
     <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
-    <ClCompile Include="src\gui\widget.cpp" />
+    <ClCompile Include="src\gui\core\dispatcher.cpp" />
+    <ClCompile Include="src\gui\core\handler.cpp" />
+    <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
     <ClCompile Include="src\lua\drawableApi.cpp" />
     <ClCompile Include="src\lua\gameApi.cpp" />
@@ -181,7 +183,9 @@
     <ClInclude Include="src\game\sprite.h" />
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\timer.h" />
-    <ClInclude Include="src\gui\widget.h" />
+    <ClInclude Include="src\gui\core\dispatcher.h" />
+    <ClInclude Include="src\gui\core\handler.h" />
+    <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\lua\luaObject.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />

@@ -38,6 +38,12 @@ namespace Debug{
 			abort();
 	}
 
+	void CheckAssertion(bool asertion)
+	{
+		if (!asertion)
+			std::abort();
+	}
+
 	void Debug::CheckAssertion(bool assertion, const string & errorMsg)
 	{
 		if (!assertion)

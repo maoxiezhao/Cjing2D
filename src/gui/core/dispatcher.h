@@ -17,18 +17,25 @@ class Widget;
 class Dispatcher;
 
 /** 事件对应的回调函数 */
-using SignalMouseFunction = std::function<void(Dispatcher& dispatcher)>;
+using SignalFunction = std::function<void(Dispatcher& dispatcher, const ui_event event, bool&handle, bool& hald)>;
+
+using SignalMouseFunction = std::function<void(Dispatcher& dispatcher, const ui_event event, bool&handle, bool& hald ,
+											const Point2& coords)>;
 
 /**
-*	\brief
+*	\brief widget的基类
 */
-class Dispathcer
+class Dispatcher
 {
 public:
-	Dispathcer();
-	~Dispathcer();
+	Dispatcher();
+	~Dispatcher();
 
 	void Connect();
+
+	/**  触发各类事件 */
+
+	void Fire(const ui_event event, Widget& widget);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置
@@ -45,7 +52,16 @@ public:
 
 	/** 对应信号的链接函数 */
 	template<ui_event E>
-	std::enable_if<std::is_same()
+	void ConnectSignal(const SignalFunction& signal, const queue_position position = back_child)
+	{
+		mSignalQueue.ConnectSignal(E, position, signal);
+	}
+
+	template<ui_event E>
+	void DisconnectSignal(const SignalFunction& signal, const queue_position position = back_child)
+	{
+		mSignalQueue.DisconnectSignal(E, position, signal);
+	}
 
 	/**
 	*	\brief 信号类型
@@ -127,8 +143,14 @@ public:
 		}
 	};
 
+
+private:
 	/** 对应信号的事件队列 */
+	SignalQueue<SignalFunction> mSignalQueue;
+
 	SignalQueue<SignalMouseFunction> mSignalMouseQueue;
+
+	bool mIsConnected;
 
 };
 

@@ -1,6 +1,9 @@
 #include "widget.h"
 
-Widget::Widget():
+namespace gui
+{
+
+Widget::Widget() :
 	mID(0),
 	mParent(),
 	mIsDirty(false),
@@ -94,6 +97,7 @@ void Widget::SetID(const string & id)
 const string & Widget::GetID() const
 {
 	// TODO: 在此处插入 return 语句
+	return mID;
 }
 
 /**
@@ -140,4 +144,6 @@ Widget::Visiblility Widget::GetVisibility() const
 void Widget::SetVisibility(const Visiblility & visibility)
 {
 	mVisible = visibility;
+}
+
 }

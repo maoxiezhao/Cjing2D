@@ -3,11 +3,15 @@
 #include"common\common.h"
 #include"game\sprite.h"
 #include"utils\point.h"
+#include"gui\core\dispatcher.h"
+
+namespace gui
+{
 
 /**
 *	\brief widget»ùÀà
 */
-class Widget
+class Widget : public Dispatcher
 {
 	/*** *** *** *** *** property. *** *** *** *** ***/
 public:
@@ -45,9 +49,9 @@ public:
 	void SetVisibility(const Visiblility& visibility);
 
 private:
-	string mID;		
+	string mID;
 
-	std::weak_ptr<Widget> mParent;	
+	std::weak_ptr<Widget> mParent;
 
 	bool mIsDirty;
 	Visiblility mVisible;
@@ -77,3 +81,5 @@ private:
 	Size mSize;
 
 };
+
+}

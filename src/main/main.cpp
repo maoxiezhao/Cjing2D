@@ -14,14 +14,19 @@
 #include"utils\rectangle.h"
 #include"utils\matrix4.h"
 
+#include"gui\core\dispatcher.h"
+
 int main(int argc,char** argv)
 {
 	Debug::SetAbortOnDie(true);
 
 	//Test();
-	App().Run();
+//	App().Run();
 
-//	system("Pause");
+	// test gui
+	gui::Dispatcher mDispatcher;
+
+	system("Pause");
 	return 0;
 }
 

@@ -35,6 +35,15 @@
     <Filter Include="gui">
       <UniqueIdentifier>{de4d3070-63ca-4229-ae28-9a14afb1a68f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gui\core">
+      <UniqueIdentifier>{9ca96c2d-e463-4883-8ab6-bd1993b536ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\widget">
+      <UniqueIdentifier>{c3d94762-de08-4a8c-8698-2813e9e34947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\lua">
+      <UniqueIdentifier>{303e3fb6-4964-4ab6-8f8f-bb1a443398d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -202,9 +211,6 @@
     <ClCompile Include="src\entity\camera.cpp">
       <Filter>entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\widget.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\setting.cpp">
       <Filter>game</Filter>
     </ClCompile>
@@ -213,6 +219,15 @@
     </ClCompile>
     <ClCompile Include="src\game\EntityData.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\core\dispatcher.cpp">
+      <Filter>gui\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\core\handler.cpp">
+      <Filter>gui\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\widget.cpp">
+      <Filter>gui\widget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,14 +399,20 @@
     <ClInclude Include="src\entity\camera.h">
       <Filter>entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\widget.h">
-      <Filter>gui</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\mapData.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\EntityData.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\core\dispatcher.h">
+      <Filter>gui\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\core\handler.h">
+      <Filter>gui\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\widget.h">
+      <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

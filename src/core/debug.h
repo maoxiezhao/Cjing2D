@@ -14,6 +14,7 @@ namespace Debug
 
 	void Warning(const string& warningMsg);
 	void Error(const string& errorMsg);
+	void CheckAssertion(bool asertion);
 	void CheckAssertion(bool assertion, const string& errorMsg);
 	void Die(const string& dieMsg);
 }

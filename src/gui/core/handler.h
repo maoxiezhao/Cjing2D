@@ -1,12 +1,21 @@
 #pragma once
 
 #include"common\common.h"
+#include"core\inputEvent.h"
 
 namespace gui
 {
 
 class Widget;
 class Dispatcher;
+
+class GUIManager
+{
+public:
+	GUIManager();
+	~GUIManager();
+	void HandleEvent(const InputEvent& event);
+};
 
 enum ui_event
 {

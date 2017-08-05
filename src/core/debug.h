@@ -8,10 +8,12 @@
 */
 namespace Debug
 {
+	void SetDebugStringEnable(bool t);
 	void SetDieOnError(bool t);
 	void SetPopBoxOnDie(bool t);
 	void SetAbortOnDie(bool t);
 
+	void DebugString(const string& warningMsg);
 	void Warning(const string& warningMsg);
 	void Error(const string& errorMsg);
 	void CheckAssertion(bool asertion);

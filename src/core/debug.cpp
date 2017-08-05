@@ -6,9 +6,15 @@
 namespace Debug{
 	namespace
 	{
+		bool debugStringEnabled = false;
 		bool ShowMsgBox = false; 
 		bool AbortOnDie = false;
 		bool DieOnError = false;
+	}
+
+	void SetDebugStringEnable(bool t)
+	{
+		debugStringEnabled = t;
 	}
 
 	void SetDieOnError(bool t)
@@ -24,6 +30,14 @@ namespace Debug{
 	void SetAbortOnDie(bool t)
 	{
 		AbortOnDie = t;
+	}
+
+	void DebugString(const string & warningMsg)
+	{
+		if (debugStringEnabled)
+		{
+			Logger::Debug(warningMsg);
+		}
 	}
 
 	void Debug::Warning(const string & warningMsg)

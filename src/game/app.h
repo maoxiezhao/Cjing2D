@@ -10,6 +10,9 @@
 #include"game\game.h"
 #include"entity\player.h"
 
+// test
+#include"gui\core\handler.h"
+
 /**
 *	\brief 程序的主循环
 */
@@ -33,12 +36,15 @@ private:
 	void Render();
 	void NotifyInput(const InputEvent& ent);
 
-	std::unique_ptr<LuaContext> mLuaContext;
-	
-	std::unique_ptr<Game> mCurrGame;   
-	Game* mNextGame;
-
 	bool mExiting;
+
+	std::unique_ptr<LuaContext> mLuaContext;		/** 脚本管理者 */
+	
+	std::unique_ptr<Game> mCurrGame;				/** 当前游戏 */
+
+	Game* mNextGame;								/** 下一个游戏，用于切换游戏 */
+							
+	std::unique_ptr<gui::GUIManager> mGUI;
 
 };
 

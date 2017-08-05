@@ -1,13 +1,13 @@
 #ifndef _INPUT_EVENT_H_
 #define _INPUT_EVENT_H_
 
-#include<GLFW\glfw3.h>
-#include<set>
-#include<queue>
-
 #include"common\common.h"
 #include"game\enumInfo.h"
 #include"utils\point.h"
+
+#include<GLFW\glfw3.h>
+#include<set>
+#include<queue>
 
 /**
 *	\brief 封装GLFW输入
@@ -127,8 +127,8 @@ public:
 	{
 		MOUSE_BUTTON_NONE = -1,
 		MOUSE_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
-		MOUSE_BUTTON_MIDDLE= GLFW_MOUSE_BUTTON_MIDDLE,
-		MOUSE_BUTTON_RIGHT= GLFW_MOUSE_BUTTON_RIGHT
+		MOUSE_BUTTON_RIGHT= GLFW_MOUSE_BUTTON_RIGHT,
+		MOUSE_BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE
 	};
 	enum KeyState	// 当前按键状态
 	{
@@ -157,7 +157,7 @@ public:
 			state(UNKNOW), 
 			repeat(false),
 			motion({0,0}),
-			mousebutton(MOUSE_BUTTON_NONE),
+			mousebutton(MOUSE_BUTTON_NONE)
 		{
 		}
 	};
@@ -198,10 +198,12 @@ public:
 private:
 	InputEvent(const KeyEvent& ent);
 
-	static std::set<KeyboardKey> mKeyPressed;
+	static std::set<MouseButton> mMousePressed;		/** 记录当前按住的鼠标button */
+	static std::set<KeyboardKey> mKeyPressed;		/** 记录当前按下的keyborad的key值 */
 	static std::queue<KeyEvent> mEventQueue;
 	
 	KeyEvent mKeyEvent;
+
 };
 
 // 用于获取key枚举值对应的字符

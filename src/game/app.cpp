@@ -35,6 +35,8 @@ App::App():
 	mLuaContext->Initialize();
 
 	// test
+	// init gui system
+	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 }
 
 App::~App()
@@ -47,6 +49,11 @@ App::~App()
 	if (mLuaContext != nullptr)
 	{
 		mLuaContext->Exit();
+	}
+
+	if (mGUI)
+	{
+		mGUI.reset(nullptr);
 	}
 
 	FileData::CloseData();
@@ -115,7 +122,7 @@ void App::Update()
 	{
 		mCurrGame->Update();
 	}
-	mLuaContext->Update();
+	//mLuaContext->Update();
 	System::Update();
 
 	if (mNextGame != mCurrGame.get())
@@ -183,6 +190,10 @@ void App::NotifyInput(const InputEvent & ent)
 	if ( mCurrGame != nullptr)
 	{
 		mCurrGame->NotifyInput(ent);
+	}
+	if (mGUI != nullptr)
+	{
+		mGUI->HandleEvent(ent);
 	}
 }
 

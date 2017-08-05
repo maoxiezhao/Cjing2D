@@ -6,6 +6,7 @@
 #include<map>
 
 #include"common\common.h"
+#include"core\inputEvent.h"
 #include"utils\point.h"
 #include"utils\size.h"
 #include"gui\core\handler.h"
@@ -17,11 +18,22 @@ class Widget;
 class Dispatcher;
 
 /** 事件对应的回调函数 */
-using SignalFunction = std::function<void(Dispatcher& dispatcher, const ui_event event, bool&handle, bool& hald)>;
+using SignalFunction = std::function<void(Dispatcher& dispatcher, 
+										const ui_event event, 
+										bool&handle, 
+										bool& halt)>;
 
-using SignalMouseFunction = std::function<void(Dispatcher& dispatcher, const ui_event event, bool&handle, bool& hald ,
-											const Point2& coords)>;
+using SignalMouseFunction = std::function<void(Dispatcher& dispatcher, 
+												const ui_event event, 
+												bool&handle,
+												bool& halt ,
+												const Point2& coords)>;
 
+using SignalKeyboardFunction = std::function<void(Dispatcher& dispatcher,
+												const ui_event event,
+												bool& handle,
+												bool& halt,
+												const InputEvent::KeyboardKey key)>;
 /**
 *	\brief widget的基类
 */
@@ -33,13 +45,27 @@ public:
 
 	void Connect();
 
-	virtual bool IsAt(const Point2& pos)const = 0;
+	virtual bool IsAt(const Point2& pos);
+
+	/**  set/get **/
+
+	bool GetWantKeyboard()const
+	{
+		return mWantKeyboard;
+	}
+
+	void SetWantKeyboard(bool wantKeyboard)
+	{
+		mWantKeyboard = wantKeyboard;
+	}
 
 	/**  触发各类事件 */
 
 	void Fire(const ui_event event, Widget& widget);
 
 	void Fire(const ui_event event, Widget& widget, const Point2& pos);
+
+	void Fire(const ui_event event, Widget& widget, const InputEvent::KeyboardKey key, const string & unicode);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置
@@ -156,6 +182,10 @@ public:
 	};
 
 private:
+	bool mIsConnected;
+
+	bool mWantKeyboard;
+
 	mouse_behavior mMouseBehavior;
 
 	/** 对应信号的事件队列 */
@@ -163,7 +193,7 @@ private:
 
 	SignalQueue<SignalMouseFunction> mSignalMouseQueue;
 
-	bool mIsConnected;
+	SignalQueue<SignalKeyboardFunction> mSignalKeyboardQueue;
 
 };
 

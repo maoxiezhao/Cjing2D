@@ -28,7 +28,10 @@ public:
 	void Active();
 	void HandleEvent(const InputEvent& event);
 
+	Dispatcher* GetKeyboardDispathcer();
+
 	/** 触发各类事件 */
+	void Keyboard(const ui_event event, const InputEvent::KeyboardKey key, const string& unicode);
 	void KeyBoardKeyDown(const InputEvent& event);
 	void KeyBoardKeyUp(const InputEvent& event);
 
@@ -110,10 +113,43 @@ void EventHandler::HandleEvent(const InputEvent& event)
 }
 
 /**
+*	\brief 获取能够监听键盘输入的dispathcer
+*
+*	键盘监听事件为抢断式，从最外从开始拦获事件
+*/
+Dispatcher * EventHandler::GetKeyboardDispathcer()
+{
+	std::vector<Dispatcher*> reverseDispatchers;
+	std::reverse_copy(mDispatcher.begin(), mDispatcher.end(), reverseDispatchers.begin());
+
+	for (auto& dispatcher : mDispatcher)
+	{
+		if (dispatcher->GetWantKeyboard())
+		{
+			return dispatcher;
+		}
+	}
+
+	return nullptr;
+}
+
+void EventHandler::Keyboard(const ui_event event, const InputEvent::KeyboardKey key, const string & unicode)
+{
+	Dispatcher* dispathcer = GetKeyboardDispathcer();
+	if (dispathcer)
+	{
+		dispathcer->Fire(event, dynamic_cast<Widget&>(*dispathcer), key, unicode);
+	}
+}
+
+/**
 *	\brief 键盘按下事件
 */
 void EventHandler::KeyBoardKeyDown(const InputEvent& event)
 {
+	InputEvent::KeyboardKey key = event.GetKeyBoardKey();
+	const string unicode = EnumToString(key);
+	Keyboard(UI_EVENT_KEY_DOWN, key, unicode);
 }
 
 /**
@@ -121,6 +157,9 @@ void EventHandler::KeyBoardKeyDown(const InputEvent& event)
 */
 void EventHandler::KeyBoardKeyUp(const InputEvent& event)
 {
+	InputEvent::KeyboardKey key = event.GetKeyBoardKey();
+	const string unicode = EnumToString(key);
+	Keyboard(UI_EVENT_KEY_UP, key, unicode);
 }
 
 /**
@@ -199,6 +238,26 @@ void DisconnectDispatcher(Dispatcher * dispatcher)
 		"the Dispatcher disconnect to event handler is null.");
 	mHandler->Disconnect(dispatcher);
 }
+
+/************ GUI MANAGER *************/
+GUIManager::GUIManager()
+{
+	mHandler.reset(new EventHandler());
+}
+
+GUIManager::~GUIManager()
+{
+	mHandler.reset(nullptr);
+}
+
+void GUIManager::HandleEvent(const InputEvent& event)
+{
+	if (mHandler != nullptr)
+	{
+		mHandler->HandleEvent(event);
+	}
+}
+
 
 
 }

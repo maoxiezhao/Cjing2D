@@ -50,10 +50,11 @@ void Video::Initialize()
 	// 设置输入回调函数
 	Debug::CheckAssertion(!InputEvent::IsInitialized(), "The input must Initialized before video.");
 	glfwSetKeyCallback(mainWindow, InputEvent::key_callback);
+
 	if(!visibleCursor)// shadow the cursor
 		glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	
-	//glfwSetCursorPosCallback(window, InputEvent::mouse_callback);
-	//glfwSetMouseButtonCallback(window, InputEvent::mouse_button_callback);
+	glfwSetCursorPosCallback(mainWindow, InputEvent::mouse_motion_callback);
+	glfwSetMouseButtonCallback(mainWindow, InputEvent::mouse_button_callback);
 
 	// 初始化glew
 	glewExperimental = GL_TRUE;

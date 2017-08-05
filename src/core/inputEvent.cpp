@@ -1,6 +1,7 @@
 #include "inputEvent.h"
 
 std::set<InputEvent::KeyboardKey> InputEvent::mKeyPressed;
+std::set<InputEvent::MouseButton> InputEvent::mMousePressed;
 std::queue<InputEvent::KeyEvent> InputEvent::mEventQueue;
 
 const string EnumInfoTraits<InputEvent::KeyboardKey>::prettyName = "keyboard key";
@@ -203,6 +204,8 @@ void InputEvent::key_callback(GLFWwindow * window, int key_in, int scancode, int
 void InputEvent::mouse_motion_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	KeyEvent ent;
+	ent.type = EVENT_MOUSE_MOTION;
+	ent.motion = {(int)xpos, (int)ypos};
 	mEventQueue.push(ent);
 }
 
@@ -211,8 +214,37 @@ void InputEvent::mouse_motion_callback(GLFWwindow* window, double xpos, double y
 */
 void InputEvent::mouse_button_callback(GLFWwindow* window, int button, int action, int modes)
 {
-	KeyEvent ent;
-	mEventQueue.push(ent);
+	if (button >= MOUSE_BUTTON_LEFT && button <= MOUSE_BUTTON_MIDDLE)
+	{
+		KeyEvent ent;
+		ent.mousebutton = static_cast<MouseButton>(button);
+		if (action == GLFW_PRESS)
+		{	// 按键按下时，需要判断是否是一直按住的
+			ent.repeat = false;
+			ent.state = KEYDOWN;
+			ent.type = EVENT_MOUSE_BUTTONDOWN;
+
+			if (!mMousePressed.insert(ent.mousebutton).second)
+				ent.repeat = 1;	// 重复按键
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			ent.repeat = 0;
+			ent.state = KEYUP;
+			ent.type = EVENT_MOUSE_BUTTONUP;
+
+			if (mMousePressed.erase(ent.mousebutton) == 0)
+				ent.repeat = 1;	// 重复按键
+		}
+		else
+		{
+			ent.type = EVENT_MOUSE_BUTTONDOWN;
+			ent.state = KEYDOWN;
+			ent.repeat = 1;
+		}
+
+		mEventQueue.push(ent);
+	}
 }
 
 InputEvent::InputEvent(const KeyEvent& ent) :
@@ -284,6 +316,11 @@ bool InputEvent::IsWithKeyAlt() const
 bool InputEvent::IsWithKeyShift() const
 {
 	return  IsKeyBoardEvent() && IsKeyBoardRepeatPressed(KEY_SHIFT);
+}
+
+InputEvent::MouseButton InputEvent::GetMouseButton() const
+{
+	return mKeyEvent.mousebutton;
 }
 
 /**

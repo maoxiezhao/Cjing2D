@@ -119,8 +119,8 @@ void EventHandler::HandleEvent(const InputEvent& event)
 */
 Dispatcher * EventHandler::GetKeyboardDispathcer()
 {
-	std::vector<Dispatcher*> reverseDispatchers;
-	std::reverse_copy(mDispatcher.begin(), mDispatcher.end(), reverseDispatchers.begin());
+	std::vector<Dispatcher*> reverseDispatchers = mDispatcher;
+	std::reverse(reverseDispatchers.begin(), reverseDispatchers.end());
 
 	for (auto& dispatcher : mDispatcher)
 	{
@@ -167,8 +167,8 @@ void EventHandler::KeyBoardKeyUp(const InputEvent& event)
 */
 void EventHandler::Mouse(const ui_event event, const Point2& pos)
 {
-	std::vector<Dispatcher*> reverseDispatchers;
-	std::reverse_copy(mDispatcher.begin(), mDispatcher.end(), reverseDispatchers.begin());
+	std::vector<Dispatcher*> reverseDispatchers = mDispatcher;
+	std::reverse(reverseDispatchers.begin(), reverseDispatchers.end());
 
 	for (auto& dispatcher : reverseDispatchers)
 	{

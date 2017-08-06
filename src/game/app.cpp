@@ -37,6 +37,8 @@ App::App():
 	// test
 	// init gui system
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+	widget.Connect();
+	widget.SetWantKeyboard(true);
 }
 
 App::~App()
@@ -49,11 +51,6 @@ App::~App()
 	if (mLuaContext != nullptr)
 	{
 		mLuaContext->Exit();
-	}
-
-	if (mGUI)
-	{
-		mGUI.reset(nullptr);
 	}
 
 	FileData::CloseData();

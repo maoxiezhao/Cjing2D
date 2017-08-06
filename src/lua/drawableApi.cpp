@@ -89,7 +89,7 @@ int LuaContext::drawable_api_set_pos(lua_State*l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		DrawablePtr drawable = CheckDrawable(l, 1);
 		int x = LuaTools::CheckInt(l, 2);
-		int y = LuaTools::CheckInt(l, 2);
+		int y = LuaTools::CheckInt(l, 3);
 		drawable->SetPos(Point2(x, y));
 
 		return 0;

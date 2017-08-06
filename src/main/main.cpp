@@ -15,6 +15,21 @@
 #include"utils\matrix4.h"
 
 //#include"gui\core\dispatcher.h"
+#include"utils\typeSet.h"
+
+enum test_event
+{
+	event_1,
+	event_2,
+	event_3,
+	event_4
+};
+template<typename T, test_event V>
+using int_ = std::integral_constant<T, V>;
+
+using MouseEventSet = util::typeset<int_<int, event_1>,
+	int_<int, event_2>,
+	int_<int, event_3 >> ;
 
 int main(int argc,char** argv)
 {
@@ -25,6 +40,7 @@ int main(int argc,char** argv)
 
 	// test gui
 	//gui::Dispatcher mDispatcher;
+	//bool existed = util::typeset_exist<MouseEventSet, int_<int, event_4>>::value;
 
 	system("Pause");
 	return 0;

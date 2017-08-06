@@ -23,13 +23,13 @@ using SignalFunction = std::function<void(Dispatcher& dispatcher,
 										bool&handle, 
 										bool& halt)>;
 
-using SignalMouseFunction = std::function<void(Dispatcher& dispatcher, 
+using SignalFunctionMouse = std::function<void(Dispatcher& dispatcher, 
 												const ui_event event, 
 												bool&handle,
 												bool& halt ,
 												const Point2& coords)>;
 
-using SignalKeyboardFunction = std::function<void(Dispatcher& dispatcher,
+using SignalFunctionKeyboard = std::function<void(Dispatcher& dispatcher,
 												const ui_event event,
 												bool& handle,
 												bool& halt,
@@ -39,6 +39,7 @@ using SignalKeyboardFunction = std::function<void(Dispatcher& dispatcher,
 */
 class Dispatcher
 {
+	friend struct Dispatcher_implementation;
 public:
 	Dispatcher();
 	~Dispatcher();
@@ -47,19 +48,35 @@ public:
 
 	virtual bool IsAt(const Point2& pos);
 
-	/**  set/get **/
+	/** 鼠标处理行为,决定该dispathcer对鼠标event的响应行为*/
+	enum mouse_behavior
+	{
+		all,
+		none,
+	};
+
+	/******  set/get *******/
 
 	bool GetWantKeyboard()const
 	{
 		return mWantKeyboard;
 	}
-
 	void SetWantKeyboard(bool wantKeyboard)
 	{
 		mWantKeyboard = wantKeyboard;
 	}
 
-	/**  触发各类事件 */
+	mouse_behavior GetMouseBehavior()const
+	{
+		return  mMouseBehavior;
+	}
+
+	void SetMouseBehavior(const mouse_behavior mouseBehavior)
+	{
+		mMouseBehavior = mouseBehavior;
+	}
+
+	/******  触发各类事件 *******/
 
 	void Fire(const ui_event event, Widget& widget);
 
@@ -101,7 +118,7 @@ public:
 	template<typename T>
 	struct SignalType
 	{
-		SignalType() :mPostChild(), mChild(), mPostChild(){}
+		SignalType() :mPreChild(), mChild(), mPostChild(){}
 
 		std::list<T> mPreChild;
 		std::list<T> mChild;
@@ -173,13 +190,13 @@ public:
 		}
 	};
 
-
-	/** 鼠标处理行为,决定该dispathcer对鼠标event的响应行为*/
-	enum mouse_behavior
+	enum event_queue_type
 	{
-		all,
-		none,
+		pre = 1,
+		child = 2,
+		post = 4
 	};
+	bool HasEvent(const ui_event event, const event_queue_type type);
 
 private:
 	bool mIsConnected;
@@ -189,11 +206,11 @@ private:
 	mouse_behavior mMouseBehavior;
 
 	/** 对应信号的事件队列 */
-	SignalQueue<SignalFunction> mSignalQueue;
+	SignalQueue<SignalFunction> mQueueSignal;
 
-	SignalQueue<SignalMouseFunction> mSignalMouseQueue;
+	SignalQueue<SignalFunctionMouse> mQueueSignalMouse;
 
-	SignalQueue<SignalKeyboardFunction> mSignalKeyboardQueue;
+	SignalQueue<SignalFunctionKeyboard> mQueueSignalKeyboard;
 
 };
 

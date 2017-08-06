@@ -41,6 +41,8 @@ public:
 	void DrawForeground();
 	void DrawChildren();
 
+	/******  setter/ getter *******/
+
 	void SetIsDirty(bool isDirty);
 	bool IsDirty()const;
 	const Rect GetDirtyRect()const;
@@ -48,10 +50,13 @@ public:
 	Visiblility GetVisibility()const;
 	void SetVisibility(const Visiblility& visibility);
 
+	Widget* GetParent();
+
 private:
 	string mID;
 
-	std::weak_ptr<Widget> mParent;
+	//std::weak_ptr<Widget> mParent;
+	Widget* mParent;
 
 	bool mIsDirty;
 	Visiblility mVisible;

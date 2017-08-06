@@ -62,6 +62,9 @@ void Video::Initialize()
 	glViewport(0, 0, wantedWindowSize.width, wantedWindowSize.height);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_POINT_SMOOTH);				// ¿¹¾â³Ý
+	//glEnable(GL_LINE_SMOOTH);
+	//glEnable(GL_POLYGON_SMOOTH);
 	initialized = true;
 
 	// ³õÊ¼»¯äÖÈ¾Ä£¿é

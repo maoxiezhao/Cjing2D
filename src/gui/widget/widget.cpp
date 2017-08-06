@@ -4,8 +4,7 @@ namespace gui
 {
 
 Widget::Widget() :
-	mID(0),
-	mParent(),
+	mParent(nullptr),
 	mIsDirty(false),
 	mVisible(Visiblility::Visible),
 	mPosition(),
@@ -144,6 +143,11 @@ Widget::Visiblility Widget::GetVisibility() const
 void Widget::SetVisibility(const Visiblility & visibility)
 {
 	mVisible = visibility;
+}
+
+Widget * Widget::GetParent()
+{
+	return mParent;
 }
 
 }

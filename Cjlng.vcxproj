@@ -184,6 +184,7 @@
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
+    <ClInclude Include="src\gui\core\dispatcher_private.h" />
     <ClInclude Include="src\gui\core\handler.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\hero\heroState.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\utils\quadTree.h" />
     <ClInclude Include="src\utils\rectangle.h" />
     <ClInclude Include="src\utils\size.h" />
+    <ClInclude Include="src\utils\typeSet.h" />
     <ClInclude Include="src\utils\vec2.h" />
     <ClInclude Include="src\utils\vec3.h" />
     <ClInclude Include="src\utils\xxhash.h" />

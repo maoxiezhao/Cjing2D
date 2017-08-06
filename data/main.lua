@@ -14,12 +14,11 @@ function cjing.Main:onStarted()
 	self._animation = nil
 	
 	-- test sprite --
-	for index = 1, 4 do
+	for index = 1, 64 do
 		local sprite = cjing.Sprite.create("sprites/duck.png")
-		sprite:setSize(index * 50,index * 50)
-		sprite:setPos((index - 1)* 100,(index - 1) * 80)
-		sprite:setRotation(22 * index)
-		--sprite:setOpacity(index * 50)
+		sprite:setSize(50, 50)
+		sprite:setPos(((index - 1) % 8)* 70,math.floor(index / 8) * 70)	
+		sprite:setRotation(index * 2);
 		self._sprite[index] = sprite
 	end 
 	
@@ -87,14 +86,14 @@ function cjing.Main:StartExit()
 end
 
 function cjing.Main:onDraw()
-	for index = 1, 4 do
+	for index = 1, 64 do
 		if self._sprite[index] then 
 			self._sprite[index]:draw()
 		end 
 	end 
 	
 	if self._animation then 
-		self._animation:draw()
+		--self._animation:draw()
 	end 
 end 
 

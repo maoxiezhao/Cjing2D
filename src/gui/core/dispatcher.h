@@ -33,7 +33,8 @@ using SignalFunctionKeyboard = std::function<void(Dispatcher& dispatcher,
 												const ui_event event,
 												bool& handle,
 												bool& halt,
-												const InputEvent::KeyboardKey key)>;
+												const InputEvent::KeyboardKey key,
+												const string & unicode)>;
 /**
 *	\brief widgetµÄ»ùÀà
 */

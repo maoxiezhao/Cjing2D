@@ -102,6 +102,10 @@ template<typename Typeset, typename T>
 struct typeset_exist : std::integral_constant<bool, (typeset_find<Typeset, T>::value != -1)>
 {};
 
+template<typename Typeset,typename T>
+using typeset_next = typeset_at<Typeset, typeset_find<Typeset, T>::value + 1>;
+
+
 
 }
 

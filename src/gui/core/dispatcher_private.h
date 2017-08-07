@@ -109,8 +109,8 @@ namespace gui
 		template<bool done = true>
 		struct Find
 		{
-			template< class E, class F>
-			static bool execute(const ui_event event, F function)
+			template<typename EventSet, typename itor, typename end, class E, class F>
+			static bool execute(itor*, end*, const ui_event event, F function)
 			{
 				return false;
 			}
@@ -120,14 +120,23 @@ namespace gui
 		template<>
 		struct Find<false>
 		{
-			template< class E, class F>
-			static bool execute(const ui_event event, F function)
+			template<typename EventSet, typename itor, typename end, class E, class F>
+			static bool execute(itor*, end*, const ui_event event, F function)
 			{
-				// 步进
-
-
-				return implementation::Find<std::is_same<begin, end>::value>::execute(
-					event, func);
+				using currItor = util::typeset_next<EventSet, itor>::type;
+				if (currItor::value == event)
+				{
+					return function.operator()<currItor>(event);
+				}
+				else
+				{
+					return implementation::Find<std::is_same<currItor, end>::value>
+						::execute<EventSet, currItor, end, E, F>(
+							static_cast<currItor*>(nullptr),
+							static_cast<end*>(nullptr),
+							event,
+							function);
+				}
 			}
 		};
 	}
@@ -147,8 +156,12 @@ namespace gui
 		}
 		else
 		{
-			return implementation::Find<std::is_same<begin, end>::value>::execute(
-				event, func);
+			return implementation::Find<std::is_same<begin, end>::value>
+				::execute<EventSet, begin, end, E, F>(
+				static_cast<begin*>(nullptr),
+				static_cast<end*>(nullptr), 
+				event, 
+				func);
 		}
 	}
 
@@ -193,16 +206,102 @@ namespace gui
 			return eventChain;
 		}
 
-		template<typename T, typename... Args>
-		inline bool FireEvent(const ui_event event, std::vector<std::pair<Widget*, ui_event> >& eventChain, Dispatcher*dispatcher, Widget* w, F&&... params)
+		template<typename T, typename... F>
+		inline bool FireEvent(const ui_event event, std::vector<std::pair<Widget*, ui_event> >& eventChain, 
+					Widget*dispatcher, Widget* w, F&&... params)
 		{
+			bool handle = false;		// 拦截标记
+			bool halt = false;			// 停止标记
+
+			std::vector<std::pair<Widget*, ui_event> > reverseEventChain = eventChain;
+			std::reverse(reverseEventChain.begin(), reverseEventChain.end());
+
+			/****** pre ****/
+			/**
+			*	\从顶端开始往下遍历处理preChild的信号
+			*/
+			for (auto& widget_kvp : reverseEventChain)
+			{
+				Dispatcher::SignalType<T>& signalType =
+					Dispatcher_implementation::EventSinal<T>(*widget_kvp.first, widget_kvp.second);
+
+				for (auto& preFunc : signalType.mPreChild)
+				{
+					// Func Define:
+					// std::function<void(Dispatcher& dispatcher,const ui_event event,bool&handle,bool& halt)>;
+					preFunc(*dispatcher, widget_kvp.second, handle, halt, std::forward<F>(params)...);
+					if (halt)
+					{
+						break;
+					}
+				}
+
+				if (handle)
+				{
+					return true;
+				}
+			}
+
+			/****** child ****/
+			if (w->HasEvent(event, Dispatcher::child))
+			{
+				Dispatcher::SignalType<T>& signalType = 
+					Dispatcher_implementation::EventSinal<T>(*w, event);
+
+				for (auto& func : signalType.mChild)
+				{
+					// Func Define:
+					// std::function<void(Dispatcher& dispatcher,const ui_event event,bool&handle,bool& halt)>;
+					func(*dispatcher, event, handle, halt, std::forward<F>(params)...);
+					if (halt)
+					{
+						break;
+					}
+				}
+				if (handle)
+				{
+					return true;
+				}
+			}
+
+			/****** post ****/
+			for (auto& widget_kvp : eventChain)
+			{
+				Dispatcher::SignalType<T>& signalType =
+					Dispatcher_implementation::EventSinal<T>(*widget_kvp.first, widget_kvp.second);
+
+				for (auto& postFunc : signalType.mPostChild)
+				{
+					// Func Define:
+					// std::function<void(Dispatcher& dispatcher,const ui_event event,bool&handle,bool& halt)>;
+					postFunc(*dispatcher, widget_kvp.second, handle, halt, std::forward<F>(params)...);
+					if (halt)
+					{
+						break;
+					}
+				}
+				if (handle)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
 	template<typename T, typename... F>
 	inline bool FireEvent(const ui_event event, Dispatcher*dispatcher, Widget* w, F&&... params)
 	{
-		return true;
+		if (dispatcher == nullptr || w == nullptr)
+		{
+			return false;;
+		}
+
+		Widget* dispatcherW = dynamic_cast<Widget*>(dispatcher);
+		std::vector<std::pair<Widget*, ui_event> > eventChain =
+			implementation::BuildEventChain<T>(event, dispatcherW, w);
+
+		return implementation::FireEvent<T>(event, eventChain, dispatcherW, w, std::forward<F>(params)...);
 	}
 
 }

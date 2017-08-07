@@ -40,7 +40,7 @@ int main(int argc,char** argv)
 
 	// test gui
 	//gui::Dispatcher mDispatcher;
-	//bool existed = util::typeset_exist<MouseEventSet, int_<int, event_4>>::value;
+
 
 	system("Pause");
 	return 0;

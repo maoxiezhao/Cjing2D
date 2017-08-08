@@ -47,7 +47,7 @@ public:
 
 	void Connect();
 
-	virtual bool IsAt(const Point2& pos);
+	virtual bool IsAt(const Point2& pos)const;
 
 	/** 鼠标处理行为,决定该dispathcer对鼠标event的响应行为*/
 	enum mouse_behavior

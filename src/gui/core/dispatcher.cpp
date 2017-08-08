@@ -33,7 +33,7 @@ void Dispatcher::Connect()
 	}
 }
 
-bool Dispatcher::IsAt(const Point2 & pos)
+bool Dispatcher::IsAt(const Point2 & pos)const
 {
 	return false;
 }

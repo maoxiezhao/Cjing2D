@@ -4,7 +4,6 @@
 #include"gui\widget\widget.h"
 #include"gui\core\dispatcher.h"
 
-
 namespace gui
 {
 
@@ -172,12 +171,22 @@ void EventHandler::Mouse(const ui_event event, const Point2& pos)
 
 	for (auto& dispatcher : reverseDispatchers)
 	{
+		if (dispatcher->GetMouseBehavior() == Dispatcher::all)
+		{
+			dispatcher->Fire(event, dynamic_cast<Widget&>(*dispatcher), pos);
+			break;
+		}
 
+		if (dispatcher->GetMouseBehavior() == Dispatcher::none)
+		{
+			continue;
+		}
 
 		// 如果widget在pos中，则触发事件
 		if (dispatcher->IsAt(pos))
 		{
 			dispatcher->Fire(event, dynamic_cast<Widget&>(*dispatcher), pos);
+			break;
 		}
 	}
 }

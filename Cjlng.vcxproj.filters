@@ -229,6 +229,12 @@
     <ClCompile Include="src\gui\widget\widget.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\core\builderWindow.cpp">
+      <Filter>gui\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\window.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -422,6 +428,18 @@
     </ClInclude>
     <ClInclude Include="src\utils\typeSet.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\window.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\core\builderWindow.h">
+      <Filter>gui\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\core\widgetDefinition.h">
+      <Filter>gui\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\grid.h">
+      <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

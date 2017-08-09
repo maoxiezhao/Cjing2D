@@ -46,6 +46,7 @@ public:
 	void DrawBackground(const Point2& offset);
 	void DrawForeground(const Point2& offset);
 	void DrawChildren(const Point2& offset);
+	void DrawDebugGround();
 
 private:
 	virtual void ImplDrawBackground();
@@ -110,11 +111,12 @@ public:
 	virtual Widget* Find(string& id, const bool activited);
 	virtual const Widget* Find(string& id, const bool activied)const;
 	virtual bool HasWidget(const Widget& widget)const;
-
-private:
 	virtual bool IsAt(const Point2& pos)const;
 
 
 };
+
+using WidgetPtr = std::shared_ptr<Widget>;
+using WidgetConstPtr = std::shared_ptr<const Widget>;
 
 }

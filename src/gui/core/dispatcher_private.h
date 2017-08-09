@@ -1,5 +1,7 @@
 #pragma once
 
+// gui core/8.8.2017 zy
+
 #include"common\common.h"
 #include"core\inputEvent.h"
 #include"core\debug.h"

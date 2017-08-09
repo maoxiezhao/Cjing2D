@@ -39,6 +39,7 @@ App::App():
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 	widget.Connect();
 	widget.SetWantKeyboard(true);
+	widget.SetMouseBehavior(gui::Dispatcher::all);
 }
 
 App::~App()

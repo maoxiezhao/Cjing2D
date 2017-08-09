@@ -1,12 +1,16 @@
 #include "widget.h"
+#include "window.h"
 
 namespace gui
 {
 
 Widget::Widget() :
+	mID(""),
 	mParent(nullptr),
-	mIsDirty(false),
+	mIsDirty(true),
 	mVisible(Visiblility::Visible),
+	mReDrawAction(ReDrawAction::Full),
+	mLinkedGroup(""),
 	mPosition(),
 	mSize()
 {
@@ -14,7 +18,64 @@ Widget::Widget() :
 
 Widget::~Widget()
 {
+	// 通知父类widget,该widget清除
+	Widget* parent = GetParent();
+	while (parent)
+	{
+		parent->Fire(gui::EVENT_NOTIFY_REMOVE, *parent);
+		parent = parent->GetParent();
+	}
+
+	// link group ???
+	if (!mLinkedGroup.empty())
+	{
+
+	}
 }
+
+/**
+*	\brief 设置widget ID
+*	\param id 唯一id值
+*/
+void Widget::SetID(const string & id)
+{
+	mID = id;
+}
+
+const string & Widget::GetID() const
+{
+	return mID;
+}
+
+Widget * Widget::GetParent()
+{
+	return mParent;
+}
+
+/**
+*	\brief 获取层级窗体
+*/
+Window * Widget::GetWindow()
+{
+	Widget* result = this;
+	while (result->GetParent() != nullptr)
+	{
+		result = result->GetParent();
+	}
+	return dynamic_cast<Window*>(result);
+}
+
+const Window * Widget::GetWindow() const
+{
+	const Widget* result = this;
+	while (result->mParent != nullptr)
+	{
+		result = result->mParent;
+	}
+	return dynamic_cast<const Window*>(result);
+}
+
+/***** ****** ****** Layout and size  ****** ****** *******/
 
 const Point2 & Widget::GetPositon() const
 {
@@ -46,16 +107,24 @@ int Widget::GetHeight() const
 	return mSize.height;
 }
 
+void Widget::Place(const Point2 & pos, const Size & size)
+{
+	mPosition = pos;
+	mSize = size;
+}
+
 /**
 *	\brief 位移当前widget
 *	\param offset 偏移量
 */
 void Widget::Move(const Point2 & offset)
 {
+	mPosition += offset;
 }
 
 void Widget::Move(const int xoffset, const int yoffset)
 {
+	mPosition += Point2(xoffset, yoffset);
 }
 
 /**
@@ -86,37 +155,42 @@ void Widget::SetVerticalAlignment()
 }
 
 /**
-*	\brief 设置widget ID
-*	\param id 唯一id值
-*/
-void Widget::SetID(const string & id)
-{
-}
-
-const string & Widget::GetID() const
-{
-	// TODO: 在此处插入 return 语句
-	return mID;
-}
-
-/**
 *	\brief 绘制背景图
 */
-void Widget::DrawBackground()
+void Widget::DrawBackground(const Point2& offset)
 {
 }
 
 /**
 *	\brief 绘制前景图
 */
-void Widget::DrawForeground()
+void Widget::DrawForeground(const Point2& offset)
 {
 }
 
 /**
 *	\bref 绘制children
 */
-void Widget::DrawChildren()
+void Widget::DrawChildren(const Point2& offset)
+{
+}
+
+/**
+*	\brief 在debug模式下绘制轮廓或者填充
+*/
+void Widget::DrawDebugGround()
+{
+}
+
+void Widget::ImplDrawBackground()
+{
+}
+
+void Widget::ImplDrawForeground()
+{
+}
+
+void Widget::ImplDrawChildren()
 {
 }
 
@@ -145,9 +219,32 @@ void Widget::SetVisibility(const Visiblility & visibility)
 	mVisible = visibility;
 }
 
-Widget * Widget::GetParent()
+void Widget::SetParend(Widget * parent)
 {
-	return mParent;
+}
+
+void Widget::SetLinkGrounp(const std::string & linkedGroup)
+{
+}
+
+Widget* Widget::Find(string& id, const bool activited)
+{
+	return nullptr;
+}
+
+const Widget* Widget::Find(string& id, const bool activied)const
+{
+	return nullptr;
+}
+
+bool Widget::HasWidget(const Widget& widget)const
+{
+	return false;
+}
+
+bool Widget::IsAt(const Point2& pos)const
+{
+	return false;
 }
 
 }

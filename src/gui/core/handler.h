@@ -1,10 +1,13 @@
 #pragma once
 
+// gui core/8.8.2017 zy
+
 #include"common\common.h"
 #include"core\inputEvent.h"
 #include"utils\typeSet.h"
 
 #include<set>
+
 
 namespace gui
 {
@@ -46,7 +49,11 @@ enum ui_event
 	UI_EVENT_KEY_UP,
 
 	EVENT_KEYBOARD_KEYDOWN,
-	EVENT_KEYBOARD_KEYUP
+	EVENT_KEYBOARD_KEYUP,
+
+	EVENT_NOTIFY_REMOVE,
+	EVENT_NOTIFY_MODIFIED
+
 
 
 };
@@ -57,12 +64,12 @@ using int_ = std::integral_constant<int, V>;
 using setEvent = util::typeset< int_<UI_EVENT_ACTIVATE>,
 								int_<UI_EVENT_DRAW>,
 								int_<UI_EVENT_CLOSEWINDOW>,
-								int_<UI_EVENT_MOUSE_LEAVE>,
-								int_<UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>,
-								int_<UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN>,
-								int_< UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN >> ;
+								int_<UI_EVENT_MOUSE_LEAVE>> ;
 	
-using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>> ;
+using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>,
+									int_<UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>,
+									int_<UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN>,
+									int_<UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN >> ;
 
 using setEventKeyboard = util::typeset<int_<UI_EVENT_KEY_DOWN>,int_<UI_EVENT_KEY_UP>>;
 

@@ -98,7 +98,6 @@ private:
 	{
 	public:
 		Children();
-		~Children();
 
 		const string GetID()const;
 
@@ -146,8 +145,8 @@ private:
 	int mRows;							/** 当前行数 */
 	int mCols;							/** 当前列数 */
 
-	std::vector<int> mRowsHeight;		/** 每行网格的高度 */
-	std::vector<int> mColsWidth;		/** 每列网格的宽度 */
+	mutable std::vector<int> mRowsHeight;		/** 每行网格的高度 */
+	mutable std::vector<int> mColsWidth;		/** 每列网格的宽度 */
 
 	std::vector<Children> mChilds;		/** 以数组形式划分存储当前所有widget*/
 

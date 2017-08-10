@@ -1,6 +1,9 @@
 #include"grid.h"
 #include"widget.h"
 
+#include<algorithm>
+#include<numeric>
+
 namespace gui
 {
 
@@ -13,7 +16,7 @@ Grid::Grid(int row, int col) :
 	mNamedChilds()
 {
 	ConnectSignal<gui::EVENT_REQUEST_PLACEMENT>(
-		std::bind(&Grid::RequesetPlacement, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+		std::bind(&Grid::RequesetPlacement, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 		gui::Dispatcher::back_pre_child);
 }
 
@@ -161,12 +164,48 @@ void Grid::SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, co
 	children->SetFlag(flag);
 }
 
+Grid::Children::Children()
+{
+}
+
+const string Grid::Children::GetID() const
+{
+	return string();
+}
+
+void Grid::Children::InitLayout()
+{
+}
+
 /**
 *	\brief 获取该子节点的最佳大小
 */
 Size Grid::Children::GetBestSize()const
 {
 	return Size(0,0);
+}
+
+void Grid::Children::SetFlag(const unsigned int flag)
+{
+}
+
+unsigned int Grid::Children::GetFlag() const
+{
+	return 0;
+}
+
+void Grid::Children::SetWidget(const WidgetPtr & widget)
+{
+}
+
+WidgetPtr Grid::Children::GetWidget()
+{
+	return WidgetPtr();
+}
+
+const WidgetPtr Grid::Children::GetWidget() const
+{
+	return WidgetPtr();
 }
 
 /**** **** **** **** *** Layout *** **** **** **** ****/
@@ -262,9 +301,36 @@ void Grid::Move(const int xoffset, const int yoffset)
 
 /**
 *	\brief 计算最佳大小
+*
+*	通过计算每个子节点的最佳大小
 */
 Size Grid::CalculateBestSize()const
 {
+	mColsWidth.clear();
+	mColsWidth.resize(mCols, 0);
+	mRowsHeight.clear();
+	mRowsHeight.resize(mRows, 0);
+
+	for (int row = 0; row < mRows; row++)
+	{
+		for (int col = 0; col < mCols; col++)
+		{
+			Size bestSize = GetChildren(row, col).GetBestSize();
+			if (bestSize.width > mColsWidth[col])
+			{
+				mColsWidth[col] = bestSize.width;
+			}
+			if (bestSize.height > mRowsHeight[row])
+			{
+				mRowsHeight[row] = bestSize.height;
+			}
+		}
+	}
+	// 求和计算总的大小
+	Size bestSize(std::accumulate(mColsWidth.begin(), mColsWidth.end(), 0),
+				  std::accumulate(mRowsHeight.begin(), mRowsHeight.end(), 0));
+
+	return bestSize;
 }
 
 void Grid::ImplDrawBackground()
@@ -287,6 +353,26 @@ void Grid::ImplDrawChildren()
 void Grid::RequesetPlacement(Dispatcher&, const gui::ui_event, bool&handle, bool& halt)
 {
 
+}
+
+Widget* Grid::Find(string& id, const bool activited)
+{
+	return nullptr;
+}
+
+const Widget* Grid::Find(string& id, const bool activied)const
+{
+	return nullptr;
+}
+
+bool Grid::HasWidget(const Widget& widget)const
+{
+	return false;
+}
+
+bool Grid::IsAt(const Point2& pos)const
+{
+	return false;
 }
 
 }

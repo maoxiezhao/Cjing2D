@@ -47,8 +47,13 @@ namespace gui
 								  SignalFunction##TYPE, \
 								  mQueueSignal##TYPE)
 
+			/**
+			*	\brief 添加的事件需要在这里实现
+			*/
 			IMPLEMENT_EVENT_SIGNAL_WRAPPER(Mouse)
 			IMPLEMENT_EVENT_SIGNAL_WRAPPER(Keyboard)
+			IMPLEMENT_EVENT_SIGNAL_WRAPPER(Message)
+			
 
 #undef IMPLEMENT_EVENT_SIGNAL_WRAPPER
 #undef IMPLEMENT_EVENT_SIGNA

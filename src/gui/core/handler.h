@@ -73,6 +73,8 @@ using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>,
 
 using setEventKeyboard = util::typeset<int_<UI_EVENT_KEY_DOWN>,int_<UI_EVENT_KEY_UP>>;
 
+using setEventMessage = util::typeset<int_<EVENT_REQUEST_PLACEMENT> >;
+
 /**
 *	\brief 将一个dispatcher链接到event handlder
 */

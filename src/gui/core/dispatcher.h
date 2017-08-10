@@ -12,6 +12,7 @@
 #include"utils\point.h"
 #include"utils\size.h"
 #include"gui\core\handler.h"
+#include"gui\core\message.h"
 
 namespace gui
 {
@@ -37,6 +38,13 @@ using SignalFunctionKeyboard = std::function<void(Dispatcher& dispatcher,
 												bool& halt,
 												const InputEvent::KeyboardKey key,
 												const string & unicode)>;
+
+using SignalFunctionMessage = std::function<void(Dispatcher& dispatcher,
+												const ui_event event,
+												bool& handle,
+												bool& halt,
+												Message& message)>;
+
 /**
 *	\brief widget的基类
 */
@@ -101,17 +109,40 @@ public:
 	};
 
 	/** 对应信号的链接函数 */
+
+	/**
+	*	\brief set event 信号处理
+	*/
 	template<ui_event E>
-	void ConnectSignal(const SignalFunction& signal, const queue_position position = back_child)
+	std::enable_if_t<util::typeset_exist<setEvent, int_<E> >::value>
+	ConnectSignal(const SignalFunction& signal, const queue_position position = back_child)
 	{
-		mSignalQueue.ConnectSignal(E, position, signal);
+		mQueueSignal.ConnectSignal(E, position, signal);
 	}
 
 	template<ui_event E>
-	void DisconnectSignal(const SignalFunction& signal, const queue_position position = back_child)
+	std::enable_if_t<util::typeset_exist<setEvent, int_<E> >::value>
+	DisconnectSignal(const SignalFunction& signal, const queue_position position = back_child)
 	{
-		mSignalQueue.DisconnectSignal(E, position, signal);
+		mQueueSignal.DisconnectSignal(E, position, signal);
 	}
+
+	/**
+	*	\brief message event 信号处理
+	*/
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventMessage, int_<E> >::value>
+	ConnectSignal(const SignalFunctionMessage& signal, const queue_position position = back_child)
+	{
+		mQueueSignalMessage.ConnectSignal(E, position, signal);
+	}
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventMessage, int_<E> >::value>
+	DisconnectSignal(const SignalFunctionMessage& signal, const queue_position position = back_child)
+	{
+		mQueueSignalMessage.DisconnectSignal(E, position, signal);
+	}
+
 
 	/**
 	*	\brief 信号类型
@@ -143,7 +174,7 @@ public:
 		std::map<ui_event, SignalType<T> > mQueue;
 
 		/** 添加一个对应信号的回调 */
-		void ConnectSignal(const ui_event event, const queue_position position, const T& singal)
+		void ConnectSignal(const ui_event event, const queue_position position, const T& signal)
 		{
 			switch (position)
 			{
@@ -215,6 +246,7 @@ private:
 
 	SignalQueue<SignalFunctionKeyboard> mQueueSignalKeyboard;
 
+	SignalQueue<SignalFunctionMessage> mQueueSignalMessage;
 };
 
 

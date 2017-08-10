@@ -235,6 +235,12 @@
     <ClCompile Include="src\gui\widget\window.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\grid.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\styledwidget.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -439,6 +445,9 @@
       <Filter>gui\core</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\widget\grid.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\styledwidget.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>

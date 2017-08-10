@@ -119,6 +119,8 @@
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
+    <ClCompile Include="src\gui\widget\grid.cpp" />
+    <ClCompile Include="src\gui\widget\styledwidget.cpp" />
     <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\gui\widget\window.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="src\gui\core\handler.h" />
     <ClInclude Include="src\gui\core\widgetDefinition.h" />
     <ClInclude Include="src\gui\widget\grid.h" />
+    <ClInclude Include="src\gui\widget\styledwidget.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\gui\widget\window.h" />
     <ClInclude Include="src\hero\heroState.h" />

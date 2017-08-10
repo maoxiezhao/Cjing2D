@@ -219,7 +219,7 @@ void Widget::SetVisibility(const Visiblility & visibility)
 	mVisible = visibility;
 }
 
-void Widget::SetParend(Widget * parent)
+void Widget::SetParent(Widget * parent)
 {
 }
 
@@ -245,6 +245,11 @@ bool Widget::HasWidget(const Widget& widget)const
 bool Widget::IsAt(const Point2& pos)const
 {
 	return false;
+}
+
+Size Widget::CalculateBestSize()const
+{
+	return Size();
 }
 
 }

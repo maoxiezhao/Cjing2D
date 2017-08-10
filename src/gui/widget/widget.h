@@ -63,7 +63,7 @@ public:
 	Visiblility GetVisibility()const;
 	void SetVisibility(const Visiblility& visibility);
 
-	void SetParend(Widget* parent);
+	void SetParent(Widget* parent);
 	Widget* GetParent();
 
 	Window* GetWindow();
@@ -99,6 +99,8 @@ public:
 
 	virtual void InitLayout();
 	virtual Size GetBestSize()const;
+
+	virtual Size CalculateBestSize()const;
 
 	virtual void SetHorizontalAlignment();
 	virtual void SetVerticalAlignment();

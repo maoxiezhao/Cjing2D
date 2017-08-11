@@ -14,14 +14,14 @@ namespace gui
 	// 垂直对齐方式
 	static const unsigned int ALIGN_VERTICAL_SHIFT = 0;
 	static const unsigned int ALIGN_VERTICAL_TOP = 1 << ALIGN_VERTICAL_SHIFT;
-	static const unsigned int ALIGN_VERTICAL_CENETER = 2 << ALIGN_VERTICAL_SHIFT;
+	static const unsigned int ALIGN_VERTICAL_CENTER = 2 << ALIGN_VERTICAL_SHIFT;
 	static const unsigned int ALIGN_VERTICAL_BOTTOM = 4 << ALIGN_VERTICAL_SHIFT;
 	static const unsigned int ALIGN_VERTICAL_MASK = 7 << ALIGN_VERTICAL_SHIFT;
 
 	// 水平对齐方式
 	static const unsigned int ALIGN_HORIZONTAL_SHIFT = 3;
 	static const unsigned int ALIGN_HORIZONTAL_TOP = 1 << ALIGN_HORIZONTAL_SHIFT;
-	static const unsigned int ALIGN_HORIZONTAL_CENETER = 2 << ALIGN_HORIZONTAL_SHIFT;
+	static const unsigned int ALIGN_HORIZONTAL_CENTER = 2 << ALIGN_HORIZONTAL_SHIFT;
 	static const unsigned int ALIGN_HORIZONTAL_BOTTOM = 4 << ALIGN_HORIZONTAL_SHIFT;
 	static const unsigned int ALIGN_HORIZONTAL_MASK = 7 << ALIGN_HORIZONTAL_SHIFT;
 
@@ -71,9 +71,17 @@ public:
 	virtual void InitLayout();
 
 	virtual void Place(const Point2& pos, const Size& size);
-	virtual void Move(const Point2& offset);
-	virtual void Move(const int xoffset, const int yoffset);
+	virtual void SetPosition(const Point2& position);
 
+	void ReduceWidth(const int maxnumWidth);
+	virtual void RequestReduceWidth(const int maxnumWidth);
+	virtual void DemandReduceWidth(const int maxnumWidth);
+
+	void ReduceHeight(const int maxnumHeight);
+	virtual void RequestReduceHeight(const int maxnumHeight);
+	virtual void DemandReduceHeight(const int maxnumHeight);
+
+	virtual void Layout(const Point2& origin);
 	virtual void LayoutChildren(const Point2& origin);
 
 	virtual Widget* Find(string& id, const bool activited);
@@ -102,16 +110,41 @@ private:
 		const string GetID()const;
 
 		void InitLayout();
+		void Place(const Point2& pos, const Size& size);
 		Size GetBestSize()const;
+		Size GetBorderSpace()const;
 
-		void SetFlag(const unsigned int flag);
-		unsigned int GetFlag()const;
-
-		void SetWidget(const WidgetPtr& widget);
-		WidgetPtr GetWidget();
-		const WidgetPtr GetWidget()const;
+		void SetFlag(const unsigned int flag)
+		{
+			mFlag = flag;
+		}
+		unsigned int GetFlag()const
+		{
+			return mFlag;
+		}
+		void SetWidget(const WidgetPtr& widget)
+		{
+			mWidget = widget;
+		}
+		int GetBorderSize()const
+		{
+			return mBorderSize;
+		}
+		void SetBorderSize(int borderSize)
+		{
+			mBorderSize = borderSize;
+		}
+		WidgetPtr GetWidget()
+		{
+			return mWidget;
+		}
+		const WidgetPtr GetWidget()const
+		{
+			return mWidget;
+		}
 	private:
 		unsigned int mFlag;
+		int mBorderSize;
 		WidgetPtr mWidget;
 	};
 

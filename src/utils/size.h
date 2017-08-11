@@ -23,6 +23,8 @@ public:
 
 constexpr bool operator==(const Size& lhs, const Size& rhs);
 constexpr bool operator!=(const Size& lhs, const Size& rhs);
+constexpr bool operator<=(const Size& lhs, const Size& rhs);
+constexpr bool operator>=(const Size& lhs, const Size& rhs);
 
 constexpr Size operator+(const Size& lhs,const Size& rhs);
 constexpr Size operator-(const Size& lhs, const Size& rhs);

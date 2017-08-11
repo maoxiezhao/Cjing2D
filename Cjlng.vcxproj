@@ -120,6 +120,7 @@
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
     <ClCompile Include="src\gui\widget\grid.cpp" />
+    <ClCompile Include="src\gui\widget\styledwidget.cpp" />
     <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\gui\widget\window.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="src\gui\core\message.h" />
     <ClInclude Include="src\gui\core\widgetDefinition.h" />
     <ClInclude Include="src\gui\widget\grid.h" />
+    <ClInclude Include="src\gui\widget\styledwidget.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\gui\widget\window.h" />
     <ClInclude Include="src\hero\heroState.h" />
@@ -220,7 +222,6 @@
     <ClInclude Include="src\utils\xxhash.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\lua\luaTools.inl" />

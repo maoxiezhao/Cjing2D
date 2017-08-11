@@ -238,6 +238,9 @@
     <ClCompile Include="src\gui\widget\grid.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\styledwidget.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -447,6 +450,9 @@
     <ClInclude Include="src\gui\core\message.h">
       <Filter>gui\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\gui\widget\styledwidget.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -477,7 +483,6 @@
     <None Include="src\utils\rectangle.inl">
       <Filter>utils</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="src\lua\luaTools.inl">
       <Filter>lua</Filter>
     </None>

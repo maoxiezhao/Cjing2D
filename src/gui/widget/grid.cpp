@@ -164,48 +164,162 @@ void Grid::SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, co
 	children->SetFlag(flag);
 }
 
-Grid::Children::Children()
+Grid::Children::Children():
+	mFlag(0),
+	mWidget(nullptr)
 {
 }
 
 const string Grid::Children::GetID() const
 {
-	return string();
+	string result;
+	if (mWidget != nullptr)
+	{
+		result = mWidget->GetID();
+	}
+	return result;
 }
 
 void Grid::Children::InitLayout()
 {
+	Debug::CheckAssertion(mWidget != nullptr);
+
+	if (mWidget->GetVisibility() != Widget::Visiblility::InVisible)
+	{
+		mWidget->InitLayout();
+	}
+}
+
+void Grid::Children::Place(const Point2& pos, const Size& size)
+{
+	if (mWidget == nullptr || mWidget->GetVisibility() == Widget::Visiblility::InVisible)
+	{
+		return;
+	}
+	Point2 adjustedPos(pos);
+	Size   adjustedSize(size);
+
+	// 调整边界距离
+	if (mBorderSize > 0)
+	{
+		if (mFlag & BORDER_TOP)
+		{
+			adjustedPos.y += mBorderSize;
+			adjustedSize.height -= mBorderSize;
+		}
+		if (mFlag & BORDER_LEFT)
+		{
+			adjustedPos.x += mBorderSize;
+			adjustedSize.width -= mBorderSize;
+		}
+		if (mFlag & BORDER_BOTTOM)
+		{
+			adjustedSize.height -= mBorderSize;
+		}
+		if (mFlag & BORDER_RIGHT)
+		{
+			adjustedSize.width -= mBorderSize;
+		}
+	}
+
+	const Size bestSize = mWidget->GetBestSize();
+	if (size <= bestSize)
+	{
+		mWidget->Place(adjustedPos, adjustedSize);
+	}
+
+	// 当设置大小大于bestSize时，则需要根据对齐方式调整位子
+	Point2 widgetPos = adjustedPos;
+	Size widgetSize = Size(min(size.width, bestSize.width), min(size.height, bestSize.height));
+
+	int vertialFlag = mFlag & ALIGN_VERTICAL_MASK;
+	if (vertialFlag & ALIGN_VERTICAL_TOP)
+	{
+		// 默认已经顶部对齐,do nothing
+		Debug::DebugString("The widget id:" + GetID() + " aligned to vertical top.");
+	}
+	else if (vertialFlag & ALIGN_VERTICAL_CENTER)
+	{
+		widgetPos.y += (size.height - widgetSize.height) / 2;
+		Debug::DebugString("The widget id:" + GetID() + " aligned to vertical center.");
+	}
+	else if (vertialFlag & ALIGN_VERTICAL_BOTTOM)
+	{
+		widgetPos.y += (size.height - widgetSize.height);
+		Debug::DebugString("The widget id:" + GetID() + " aligned to vertical bottom.");
+	}
+	else
+	{
+		Debug::Die("Invaild vertical align parameter.");
+	}
+
+	int horizontalFlag = mFlag & ALIGN_HORIZONTAL_MASK;
+	if (horizontalFlag & ALIGN_HORIZONTAL_TOP)
+	{
+		// 默认已经顶部对齐,do nothing
+		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal top.");
+	}
+	else if (horizontalFlag & ALIGN_HORIZONTAL_CENTER)
+	{
+		widgetPos.x += (size.width - widgetSize.width) / 2;
+		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal center.");
+	}
+	else if (horizontalFlag & ALIGN_HORIZONTAL_TOP)
+	{
+		widgetPos.x += (size.width - widgetSize.width) / 2;
+		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal bottom.");
+	}
+	else
+	{
+		Debug::Die("Invaild horizontal align parameter.");
+	}
+
+	mWidget->Place(widgetPos, widgetSize);
+}
+
+Size Grid::Children::GetBorderSpace()const
+{
+	Size size(0, 0);
+	if (mBorderSize > 0)
+	{
+		if (mFlag & BORDER_TOP)
+		{
+			size.height += mBorderSize;
+		}
+		if (mFlag & BORDER_LEFT)
+		{
+			size.width += mBorderSize;
+		}
+		if (mFlag & BORDER_BOTTOM)
+		{
+			size.height += mBorderSize;
+		}
+		if (mFlag & BORDER_RIGHT)
+		{
+			size.width += mBorderSize;
+		}
+	}
+	return size;
 }
 
 /**
 *	\brief 获取该子节点的最佳大小
+*
+*	如果不存在widget则直接返回
 */
 Size Grid::Children::GetBestSize()const
 {
-	return Size(0,0);
-}
+	if (mWidget == nullptr)
+	{
+		return GetBorderSpace();
+	}
 
-void Grid::Children::SetFlag(const unsigned int flag)
-{
-}
+	if (mWidget->GetVisibility() == Widget::Visiblility::InVisible)
+	{
+		return Size(0, 0);
+	}
 
-unsigned int Grid::Children::GetFlag() const
-{
-	return 0;
-}
-
-void Grid::Children::SetWidget(const WidgetPtr & widget)
-{
-}
-
-WidgetPtr Grid::Children::GetWidget()
-{
-	return WidgetPtr();
-}
-
-const WidgetPtr Grid::Children::GetWidget() const
-{
-	return WidgetPtr();
+	return  mWidget->GetBestSize() + GetBorderSpace();
 }
 
 /**** **** **** **** *** Layout *** **** **** **** ****/
@@ -233,7 +347,30 @@ void Grid::LayoutChildren(const Point2& origin)
 			WidgetPtr widget = GetChildren(row, col).GetWidget();
 			if (widget != nullptr)
 			{
-				widget->Place(pos, size);
+				GetChildren(row, col).Place(pos, size);
+			}
+			pos.x += mColsWidth[col];
+		}
+		pos.x = origin.x;
+		pos.y += mRowsHeight[row];
+	}
+}
+
+/**
+*	\brief 布局所有子节点
+*/
+void Grid::Layout(const Point2& origin)
+{
+	Point2 pos = origin;
+	for (int row = 0; row < mRows; row++)
+	{
+		for (int col = 0; col < mCols; col++)
+		{
+			const Size size(mColsWidth[col], mRowsHeight[row]);
+			WidgetPtr widget = GetChildren(row, col).GetWidget();
+			if (widget != nullptr)
+			{
+				GetChildren(row, col).Place(pos, size);
 			}
 			pos.x += mColsWidth[col];
 		}
@@ -287,16 +424,20 @@ void Grid::Place(const Point2& pos, const Size& size)
 	{
 		ResizeGridCell(size.height - bestSize.height, mRowsHeight);
 	}
-	
 	LayoutChildren(pos);
 }
 
-void Grid::Move(const Point2& offset)
+void Grid::SetPosition(const Point2& position)
 {
-}
+	Widget::SetPosition(position);
 
-void Grid::Move(const int xoffset, const int yoffset)
-{
+	for (auto& child : mChilds)
+	{
+		if (child.GetWidget() != nullptr)
+		{
+			child.GetWidget()->SetPosition(position);
+		}
+	}
 }
 
 /**
@@ -332,6 +473,71 @@ Size Grid::CalculateBestSize()const
 
 	return bestSize;
 }
+
+/**
+*	\brief 减少当前宽度
+*
+*	当减少到的宽度小于bestSize时，会调用requestReduceSize
+*/
+void Grid::ReduceWidth(const int maxnumWidth)
+{
+	const Size bestSize = GetBestSize();
+	if (bestSize.width <=  maxnumWidth)
+	{
+		return;
+	}
+	// reduce width friendly
+	RequestReduceWidth(maxnumWidth);
+	
+	const Size bestSizeAfterReduce = GetBestSize();
+	if (bestSizeAfterReduce.width <=  maxnumWidth)
+	{
+		return;
+	}
+	// 请求较少空间失败
+	Debug::Error("Failed to reduce width.");
+}
+
+void Grid::RequestReduceWidth(const int maxnumWidth)
+{
+}
+
+void Grid::DemandReduceWidth(const int maxnumWidth)
+{
+}
+
+/**
+*	\brief 减少当前高度
+*
+*	当减少到的宽度小于bestSize时，会调用requestReduceSize
+*/
+void Grid::ReduceHeight(const int maxnumHeight)
+{
+	const Size bestSize = GetBestSize();
+	if (bestSize.height <= maxnumHeight)
+	{
+		return;
+	}
+	// reduce width friendly
+	RequestReduceHeight(maxnumHeight);
+
+	const Size bestSizeAfterReduce = GetBestSize();
+	if (bestSizeAfterReduce.height <= maxnumHeight)
+	{
+		return;
+	}
+	// 请求较少空间失败
+	Debug::Error("Failed to reduce width.");
+}
+
+void Grid::RequestReduceHeight(const int maxnumHeight)
+{
+}
+
+void Grid::DemandReduceHeight(const int maxnumHeight)
+{
+}
+
 
 void Grid::ImplDrawBackground()
 {

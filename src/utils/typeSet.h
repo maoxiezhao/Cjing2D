@@ -6,7 +6,10 @@
 namespace util
 {
 /**
-*	\brief 类型列表
+*	\brief 类型集合结构
+*
+*	类型集合结构提供一种编译器的集合结构，对已有类型列表
+*	提供增删查接口，用于在编译期特化使用的函数
 */
 template<typename ...>
 struct  typeset
@@ -110,20 +113,20 @@ using typeset_next = typeset_at<Typeset, typeset_find<Typeset, T>::value + 1>;
 }
 
 
-	//enum test_event
-	//{
-	//	event_1,
-	//	event_2,
-	//	event_3
-	//};
-	//template<typename T, test_event V>
-	//using int_ = std::integral_constant<T, V>;
+//enum test_event
+//{
+//	event_1,
+//	event_2,
+//	event_3
+//};
+//template<typename T, test_event V>
+//using int_ = std::integral_constant<T, V>;
 
-	//using MouseEventSet = util::typeset<int_<int, event_1>,
-	//	int_<int, event_2>,
-	//	int_<int, event_3 >> ;
-	//util::checkTypeset<MouseEventSet>();
-	//auto length = util::typeset_size<MouseEventSet>::value;
-	//bool empty = util::typeset_empty<MouseEventSet>::value;
-	//using newType = util::typeset_end<MouseEventSet>::type;
-	//auto value = newType::value;
+//using MouseEventSet = util::typeset<int_<int, event_1>,
+//	int_<int, event_2>,
+//	int_<int, event_3 >> ;
+//util::checkTypeset<MouseEventSet>();
+//auto length = util::typeset_size<MouseEventSet>::value;
+//bool empty = util::typeset_empty<MouseEventSet>::value;
+//using newType = util::typeset_end<MouseEventSet>::type;
+//auto value = newType::value;

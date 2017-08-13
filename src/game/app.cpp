@@ -37,11 +37,28 @@ App::App():
 	// test
 	// init gui system
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
-	widget = std::make_shared<gui::Widget>();
-	widget->Connect();
-	widget->SetWantKeyboard(true);
-	widget->SetMouseBehavior(gui::Dispatcher::all);
-	widget->Place(Point2(100, 100), Size(100, 100));
+	mGrid = std::make_shared<gui::Grid>(3, 3);
+	mGrid->Connect();
+
+	mWidget1 = std::make_shared<gui::Widget>();
+	mWidget1->Connect();
+	mWidget1->SetWantKeyboard(true);
+	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
+	mWidget1->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget2 = std::make_shared<gui::Widget>();
+	mWidget2->Connect();
+	mWidget2->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget3 = std::make_shared<gui::Widget>();
+	mWidget3->Connect();
+	mWidget3->Place(Point2(0, 0), Size(100, 100));
+
+	// grid
+	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->Place(Point2(0, 0), Size(640, 480));
 }
 
 App::~App()
@@ -180,7 +197,9 @@ void App::Render()
 	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
 	mGUI->HandleEvent(*ent);
 
-	widget->DrawBackground();
+	mWidget1->DrawBackground();
+	mWidget2->DrawBackground();
+	mWidget3->DrawBackground();
 	Video::Rendercanvas();
 }
 

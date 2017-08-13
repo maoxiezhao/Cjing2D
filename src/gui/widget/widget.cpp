@@ -3,6 +3,8 @@
 #include "gui\widget\styledwidget.h"
 #include "gui\widget\grid.h"
 
+#include "core\random.h"
+
 namespace gui
 {
 
@@ -17,7 +19,7 @@ Widget::Widget() :
 	mSize(),
 	mLayoutSize()
 {
-	mDebugSprite = std::make_shared<Sprite>(Color4B::YELLOW, Size(0, 0));
+	mDebugSprite = std::make_shared<Sprite>(Color4B(rand()%(255), rand() % (255), rand() % (255),255), Size(0, 0));
 }
 
 Widget::Widget(const BuilderWidget & builder):
@@ -196,8 +198,8 @@ Size Widget::GetBestSize() const
 */
 Size Widget::CalculateBestSize()const
 {
-	// nothing
-	return Size();
+	// nothing.PS ´¦ÓÚDEBUG¿¼ÂÇ£¬·µ»Øsize
+	return mSize;
 }
 
 /**

@@ -23,6 +23,17 @@ Grid::Grid(int row, int col) :
 Grid::~Grid()
 {
 	mNamedChilds.clear();
+	/**
+	*	临时措施：设置每个child的parent为nullptr,因为同时维护智能指针
+	*	和普通指针，不久之后将要修改
+	*/
+	for (auto& child : mChilds)
+	{
+		if (child.GetWidget() != nullptr)
+		{
+			child.GetWidget()->SetParent(nullptr);
+		}
+	}
 	mChilds.clear();
 }
 
@@ -265,9 +276,9 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 		widgetPos.x += (size.width - widgetSize.width) / 2;
 		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal center.");
 	}
-	else if (horizontalFlag & ALIGN_HORIZONTAL_TOP)
+	else if (horizontalFlag & ALIGN_HORIZONTAL_BOTTOM)
 	{
-		widgetPos.x += (size.width - widgetSize.width) / 2;
+		widgetPos.x += (size.width - widgetSize.width) ;
 		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal bottom.");
 	}
 	else
@@ -390,10 +401,10 @@ void Grid::Place(const Point2& pos, const Size& size)
 {
 	Widget::Place(pos, size);
 
+	Size bestSize = CalculateBestSize();
 	Debug::CheckAssertion(mRowsHeight.size() == mRows);
 	Debug::CheckAssertion(mColsWidth.size() == mCols);
 
-	Size bestSize = GetBestSize();
 	if (bestSize == size)
 	{
 		LayoutChildren(pos);
@@ -520,7 +531,7 @@ void Grid::RequestReduceWidth(const int maxnumWidth)
 	*/
 	const int reduceWidth = bestSize.width - maxnumWidth;
 	int appendWidth = 0;			
-	for (size_t col = 0; col < mCols; col++)
+	for (int col = 0; col < mCols; col++)
 	{
 		if (reduceWidth - appendWidth >= mColsWidth[col])
 		{
@@ -621,7 +632,7 @@ void Grid::RequestReduceHeight(const int maxnumHeight)
 	*/
 	const int reduceHeight = bestSize.height - maxnumHeight;
 	int appendHeight = 0;
-	for (size_t row = 0; row < mRows; row++)
+	for (int row = 0; row < mRows; row++)
 	{
 		if (reduceHeight - appendHeight >= mRowsHeight[row])
 		{
@@ -652,7 +663,7 @@ void Grid::DemandReduceHeight(const int maxnumHeight)
 int Grid::RequestReduceRowHeight(int row, const int maxnumWidth)
 {
 	int requiredHeight = 0;
-	for (size_t col = 0; col < mCols; col++)
+	for (int col = 0; col < mCols; col++)
 	{
 		Children& cell = GetChildren(row, col);
 		RequestReduceCellHeight(cell, maxnumWidth);

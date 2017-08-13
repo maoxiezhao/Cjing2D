@@ -13,6 +13,7 @@
 // test
 #include"gui\core\handler.h"
 #include"gui\widget\widget.h"
+#include"gui\widget\grid.h"
 
 /**
 *	\brief 程序的主循环
@@ -46,7 +47,11 @@ private:
 	Game* mNextGame;								/** 下一个游戏，用于切换游戏 */
 							
 	std::unique_ptr<gui::GUIManager> mGUI;
-	std::shared_ptr<gui::Widget> widget;
+	std::shared_ptr<gui::Widget> mWidget1;
+	std::shared_ptr<gui::Widget> mWidget2;
+	std::shared_ptr<gui::Widget> mWidget3;
+
+	std::shared_ptr<gui::Grid> mGrid;
 };
 
 #endif

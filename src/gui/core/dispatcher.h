@@ -89,11 +89,17 @@ public:
 
 	/******  触发各类事件 *******/
 
+	/** 通用事件 */
 	void Fire(const ui_event event, Widget& widget);
 
+	/** 鼠标事件 */
 	void Fire(const ui_event event, Widget& widget, const Point2& pos);
 
+	/** 键盘事件 */
 	void Fire(const ui_event event, Widget& widget, const InputEvent::KeyboardKey key, const string & unicode);
+
+	/** 消息事件 */
+	void Fire(const ui_event event, Widget& widget, Message& message);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置

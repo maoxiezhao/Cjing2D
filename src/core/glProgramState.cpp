@@ -2,6 +2,7 @@
 #include "debug.h"
 
 const string GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME = "normal_sprite_state";
+const string GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME = "color_sprite_state";
 const string GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME = "normal_text_state";
 
 UniformValue::UniformValue() :

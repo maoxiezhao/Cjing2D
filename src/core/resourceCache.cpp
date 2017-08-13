@@ -31,12 +31,19 @@ void ResourceCache::Clear()
 */
 void ResourceCache::LoadDefaultProgram()
 {
-	// 加载默认的sprite program
-	auto program = std::make_shared<GLProgram>();
-	program->InitWithFileNames(GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME + ".vs",
+	// 加载默认的normal sprite program
+	auto normalProgram = std::make_shared<GLProgram>();
+	normalProgram->InitWithFileNames(GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME + ".vs",
 		GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME + ".frag");
-	program->Link();
-	mPrograms[GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME] = program;
+	normalProgram->Link();
+	mPrograms[GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME] = normalProgram;
+
+	// 记载默认的color sprite program
+	auto colorProgram = std::make_shared<GLProgram>();
+	colorProgram->InitWithFileNames(GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME + ".frag");
+	colorProgram->Link();
+	mPrograms[GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME] = colorProgram;
 
 	// 加载默认的字体program
 
@@ -70,7 +77,8 @@ GLProgramPtr ResourceCache::GetGLProgram(const string & key)
 /**
 *	\brief 加载默认的ProgramState
 *
-*	 保证DefaultProgram已经加载好
+*	 保证DefaultProgram已经加载好,这里分布加载normal_sprite和
+*	 color_sprite
 */
 void ResourceCache::LoadDefaultProgramState()
 {
@@ -78,6 +86,11 @@ void ResourceCache::LoadDefaultProgramState()
 	auto newProgramState = std::make_shared<GLProgramState>();
 	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME));
 	mProgramStates[GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的color sprite program state 
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME] = newProgramState;
 }
 
 /**

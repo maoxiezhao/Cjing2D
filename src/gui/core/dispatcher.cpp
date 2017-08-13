@@ -49,7 +49,7 @@ public:
 };
 
 /**
-*	\brief
+*	\brief 触发一个通用事件
 */
 void Dispatcher::Fire(const ui_event event, Widget & widget)
 {
@@ -74,6 +74,14 @@ void Dispatcher::Fire(const ui_event event, Widget & widget, const InputEvent::K
 		FireEvent<SignalFunctionKeyboard>(event, this, &widget, key, unicode);
 	}
 	
+}
+
+void Dispatcher::Fire(const ui_event event, Widget & widget, Message & message)
+{
+	if (Find<setEventMessage>(event, EventInSet()) )
+	{
+		FireEvent<SignalFunctionMessage>(event, this, &widget, message);
+	}
 }
 
 /**

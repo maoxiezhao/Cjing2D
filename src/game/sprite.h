@@ -33,7 +33,8 @@ public:
 	void SetTextureCroods(const Rect& rect);
 	void SetSize(const Size& size);
 	void SetColor(const Color4B&color);
-	void SetDefaultState();
+	void SetDefaultNormalState();
+	void SetDefaultColorProgramState();
 	void SetProgramState(GLProgramStatePtr programstate);
 	void SetDirty(bool dirty);
 	void SetAnchor(const Point2& anchor);

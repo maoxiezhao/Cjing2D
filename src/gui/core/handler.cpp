@@ -38,6 +38,8 @@ public:
 	void MouseButtonDown(const Point2& pos, const InputEvent::MouseButton button);
 	void MouseButtonUp(const Point2& pos, const InputEvent::MouseButton button);
 
+	void Draw();
+
 private:
 	std::vector<Dispatcher*> mDispatcher;
 
@@ -105,6 +107,9 @@ void EventHandler::HandleEvent(const InputEvent& event)
 		break;
 	case InputEvent::EVENT_MOUSE_MOTION:
 		Mouse(UI_EVENT_MOUSE_MOTION, { keyEvent.motion.x, keyEvent.motion.y });
+		break;
+	case InputEvent::EVENT_DRAW:
+		Draw();
 		break;
 	default:
 		break;
@@ -226,6 +231,17 @@ void EventHandler::MouseButtonUp(const Point2& pos, const InputEvent::MouseButto
 	case InputEvent::MOUSE_BUTTON_RIGHT:
 		Mouse(UI_EVENT_MOUSE_RIGHT_BUTTON_UP, pos);
 		break;
+	}
+}
+
+/**
+*	\brief »æÖÆÊÂ¼þ
+*/
+void EventHandler::Draw()
+{
+	for (auto& dispatcher : mDispatcher)
+	{	
+		
 	}
 }
 

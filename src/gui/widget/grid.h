@@ -39,6 +39,7 @@ namespace gui
 */
 class Grid : public Widget
 {
+	class Children;
 public:
 	Grid(int row, int col);
 	~Grid();
@@ -89,11 +90,15 @@ public:
 	virtual bool HasWidget(const Widget& widget)const;
 	virtual bool IsAt(const Point2& pos)const;
 	virtual Size CalculateBestSize()const;
+	virtual Size ReCalculateBestSize();
 
 private:
-	virtual void ImplDrawBackground();
-	virtual void ImplDrawForeground();
-	virtual void ImplDrawChildren();
+	int RequestReduceColWidth(int col, const int maxnumWidth);
+	void RequestReduceCellWidth(Children& child, const int maxnumWidth);
+	int RequestReduceRowHeight(int row, const int maxnumHeight);
+	void RequestReduceCellHeight(Children& child, const int maxnumHeight);
+
+	virtual void ImplDrawChildren(const Point2& offset);
 
 	void RequesetPlacement(Dispatcher&, const gui::ui_event, bool&handle, bool& halt);
 
@@ -150,11 +155,10 @@ private:
 
 public:
 	void SetChildren(Widget* widget, int row, int col, const unsigned int flat);		// 是否使用智能指针
-	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag);
+	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag, int borderSize);
 	void RemoveChildren(int row, int col);
 	void RemoveChildren(const string& id);
 	void SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, const unsigned int modeMask);
-	//void SwapChildren(const string& id, const WidgetPtr& widget);
 
 	Children* GetChildren(const WidgetPtr& widget);
 	Children& GetChildren(int row, int col)

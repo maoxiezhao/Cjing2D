@@ -23,7 +23,8 @@ public:
 		EVENT_KEYBOARD_KEYUP,
 		EVENT_MOUSE_MOTION,
 		EVENT_MOUSE_BUTTONDOWN,
-		EVENT_MOUSE_BUTTONUP
+		EVENT_MOUSE_BUTTONUP,
+		EVENT_DRAW,
 	};
 
 	/** ¼üÅÌ¼üÖµ */
@@ -167,6 +168,7 @@ public:
 	static void Quit();
 	static bool IsInitialized();
 
+	static std::unique_ptr<InputEvent> GetSingleEvent(const EventType type);
 	static std::unique_ptr<InputEvent> GetEvent();
 	KeyEvent GetKeyEvent()const;
 	bool IsKeyBoardEvent()const;

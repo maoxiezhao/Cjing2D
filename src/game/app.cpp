@@ -37,9 +37,11 @@ App::App():
 	// test
 	// init gui system
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
-	widget.Connect();
-	widget.SetWantKeyboard(true);
-	widget.SetMouseBehavior(gui::Dispatcher::all);
+	widget = std::make_shared<gui::Widget>();
+	widget->Connect();
+	widget->SetWantKeyboard(true);
+	widget->SetMouseBehavior(gui::Dispatcher::all);
+	widget->Place(Point2(100, 100), Size(100, 100));
 }
 
 App::~App()
@@ -168,12 +170,17 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
+	// game draw
 	if (mCurrGame != nullptr)
 	{
 		mCurrGame->Draw();
 	}
 	mLuaContext->OnMainDraw();
 
+	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
+	mGUI->HandleEvent(*ent);
+
+	widget->DrawBackground();
 	Video::Rendercanvas();
 }
 

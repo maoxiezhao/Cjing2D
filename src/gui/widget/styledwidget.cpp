@@ -47,6 +47,11 @@ void StyledWidget::SetMembers(const StringMap& data)
 	}
 }
 
+bool StyledWidget::GetActivite() const
+{
+	return false;
+}
+
 Size StyledWidget::GetConfigMinSize()const
 {
 	Debug::CheckAssertion(mConfig != nullptr);
@@ -83,9 +88,33 @@ ResolutionDefinitionPtr StyledWidget::GetConfig()
 	return mConfig;
 }
 
+void StyledWidget::InitLayout()
+{
+}
+
+Size StyledWidget::GetBestSize() const
+{
+	return Size();
+}
+
 void StyledWidget::Place(const Point2& pos, const Size& size)
 {
 	Widget::Place(pos, size);
+}
+
+Widget * StyledWidget::Find(string & id, const bool activited)
+{
+	return nullptr;
+}
+
+const Widget * StyledWidget::Find(string & id, const bool activied) const
+{
+	return nullptr;
+}
+
+bool StyledWidget::HasWidget(const Widget & widget) const
+{
+	return false;
 }
 
 /**
@@ -102,6 +131,32 @@ void StyledWidget::LoadConfig()
 
 void StyledWidget::LoadDefinitionConfig(const string& controlType)
 {
+}
+
+void StyledWidget::ImplDrawBackground()
+{
+}
+
+void StyledWidget::ImplDrawForeground()
+{
+}
+
+void StyledWidget::ImplDrawChildren()
+{
+}
+
+implementation::BuilderStyledWidget::BuilderStyledWidget(const Config & config):
+	BuilderWidget(config)
+{
+}
+
+void implementation::BuilderStyledWidget::InitControl(StyledWidget * styledWidget) const
+{
+}
+
+Widget * gui::implementation::BuilderStyledWidget::Build() const
+{
+	return nullptr;
 }
 
 }

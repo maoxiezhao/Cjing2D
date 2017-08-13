@@ -46,7 +46,7 @@ private:
 	Game* mNextGame;								/** 下一个游戏，用于切换游戏 */
 							
 	std::unique_ptr<gui::GUIManager> mGUI;
-	gui::Widget widget;
+	std::shared_ptr<gui::Widget> widget;
 };
 
 #endif

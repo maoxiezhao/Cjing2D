@@ -16,7 +16,7 @@ Sprite::Sprite():
 	mBlendFunc(),
 	mSuspended(false)
 {
-	SetDefaultState();
+	SetDefaultNormalState();
 }
 
 /**
@@ -31,7 +31,7 @@ Sprite::Sprite(const std::string & name):
 	mBlendFunc()
 {
 	InitWithFile(name);
-	SetDefaultState();
+	SetDefaultNormalState();
 }
 
 /**
@@ -46,7 +46,7 @@ Sprite::Sprite(TexturePtr & tex):
 	mBlendFunc()
 {
 	InitWithTexture(mTexture);
-	SetDefaultState();
+	SetDefaultNormalState();
 }
 
 /**
@@ -64,6 +64,7 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 {
 	SetSize(size);
 	SetColor(color);
+	SetDefaultColorProgramState();
 }
 
 Sprite::~Sprite()
@@ -214,11 +215,21 @@ void Sprite::SetColor(const Color4B & color)
 }
 
 /**
-*	\brief 设置为默认的精灵状态,包括着色器，变换矩阵
+*	\brief 设置为默认的精灵正常着色器状态,包括着色器，变换矩阵
 */
-void Sprite::SetDefaultState()
+void Sprite::SetDefaultNormalState()
 {
 	mProgramState =  ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME);
+	mModelView = Renderer::GetInstance().GetCameraMatrix();
+}
+
+
+/**
+*	\brief 设置为默认的精灵仅包含颜色着色器状态,包括着色器，变换矩阵
+*/
+void Sprite::SetDefaultColorProgramState()
+{
+	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME);
 	mModelView = Renderer::GetInstance().GetCameraMatrix();
 }
 

@@ -4,6 +4,7 @@
 #include"game\sprite.h"
 #include"utils\point.h"
 #include"gui\core\dispatcher.h"
+#include"gui\core\builderWindow.h"
 
 namespace gui
 {
@@ -14,7 +15,7 @@ class Grid;
 /**
 *	\brief widget基类
 */
-class Widget : public Dispatcher
+class Widget : public Dispatcher, public std::enable_shared_from_this<Widget>
 {
 	/*** *** *** *** *** property. *** *** *** *** ***/
 public:
@@ -29,12 +30,14 @@ public:
 	/** 重绘动作 */
 	enum class ReDrawAction
 	{
-		Full,
-		None
+		Full,		// 完整绘制
+		Partly,		// 部分绘制,目前不支持
+		None	
 	};
 
 public:
 	Widget();
+	Widget(const BuilderWidget& builder);
 	virtual ~Widget();
 
 	Widget(const Widget&) = delete;
@@ -43,15 +46,18 @@ public:
 	void SetID(const string& id);
 	const string& GetID()const;
 
+	void DrawBackground();
+	void DrawForeground();
+
 	void DrawBackground(const Point2& offset);
 	void DrawForeground(const Point2& offset);
 	void DrawChildren(const Point2& offset);
 	void DrawDebugGround();
 
 private:
-	virtual void ImplDrawBackground();
-	virtual void ImplDrawForeground();
-	virtual void ImplDrawChildren();
+	virtual void ImplDrawBackground(const Point2& offset);
+	virtual void ImplDrawForeground(const Point2& offset);
+	virtual void ImplDrawChildren(const Point2& offset);
 
 public:
 	/******  setter/ getter *******/
@@ -63,11 +69,22 @@ public:
 	Visiblility GetVisibility()const;
 	void SetVisibility(const Visiblility& visibility);
 
+	ReDrawAction GetReDrawAction()const
+	{
+		return mReDrawAction;
+	}
+	void SetReDrawAction(const ReDrawAction& action)
+	{
+		mReDrawAction = action;
+	}
+
 	void SetParent(Widget* parent);
 	Widget* GetParent();
 
 	Window* GetWindow();
 	const Window* GetWindow()const;
+
+	Grid* GetParentGrid();
 
 	void SetLinkGrounp(const std::string& linkedGroup);
 private:
@@ -92,6 +109,21 @@ public:
 	int GetWidth()const;
 	int GetHeight()const;
 
+	Size GetLayoutSize()const
+	{
+		return mLayoutSize;
+	}
+	void SetLayoutSize(const Size& layoutSize)
+	{
+		mLayoutSize = layoutSize;
+	}
+
+	virtual void RequestReduceWidth(const int maxnumWidth);
+	virtual void DemandReduceWidth(const int maxnumWidth);
+
+	virtual void RequestReduceHeight(const int maxnumHeight);
+	virtual void DemandReduceHeight(const int maxnumHeight);
+
 	virtual void Place(const Point2& pos, const Size& size);
 
 	virtual void Move(const Point2& offset);
@@ -99,15 +131,19 @@ public:
 
 	virtual void InitLayout();
 	virtual Size GetBestSize()const;
-
 	virtual Size CalculateBestSize()const;
+	virtual Size ReCalculateBestSize();
 
-	virtual void SetHorizontalAlignment();
-	virtual void SetVerticalAlignment();
+	virtual void SetHorizontalAlignment(const unsigned int align);
+	virtual void SetVerticalAlignment(const unsigned int align);
 
 private:
 	Point2 mPosition;
 	Size mSize;
+	Size mLayoutSize;
+
+	// debug sprite
+	SpritePtr mDebugSprite;
 
 public:
 	virtual Widget* Find(string& id, const bool activited);

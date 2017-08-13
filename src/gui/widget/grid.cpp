@@ -77,7 +77,7 @@ void Grid::SetRowCols(int row, int col)
 *	\param row,col 指定的网格
 *	\param flag    子节点的对齐模式
 */
-void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag)
+void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag,int borderSize)
 {
 	Debug::CheckAssertion(row < mRows && col < mCols);
 	Debug::CheckAssertion(flag & ALIGN_VERTICAL_MASK);
@@ -92,6 +92,7 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 
 	children.SetFlag(flag);
 	children.SetWidget(widget);
+	children.SetBorderSize(borderSize);
 	if (children.GetWidget() != nullptr)
 	{
 		children.GetWidget()->SetParent(this);
@@ -474,6 +475,13 @@ Size Grid::CalculateBestSize()const
 	return bestSize;
 }
 
+Size Grid::ReCalculateBestSize()
+{
+	Size size = CalculateBestSize();
+	SetLayoutSize(size);
+	return size;
+}
+
 /**
 *	\brief 减少当前宽度
 *
@@ -500,10 +508,79 @@ void Grid::ReduceWidth(const int maxnumWidth)
 
 void Grid::RequestReduceWidth(const int maxnumWidth)
 {
+	Size bestSize = GetBestSize();
+	if (bestSize.width <= maxnumWidth)
+	{
+		return;
+	}
+	
+	/**
+	*	当bestSize 大于请求的大小时，需要进行网格缩减
+	*	即遍历每一列网格，将每个子网格大小减少到合适程度
+	*/
+	const int reduceWidth = bestSize.width - maxnumWidth;
+	int appendWidth = 0;			
+	for (size_t col = 0; col < mCols; col++)
+	{
+		if (reduceWidth - appendWidth >= mColsWidth[col])
+		{
+			continue;
+		}
+
+		const int wantedWidth = mColsWidth[col] - (reduceWidth - appendWidth);
+		int width = 0;
+		if (width < mColsWidth[col] )
+		{
+			int reduction = mColsWidth[col] - width;
+			appendWidth += reduction;
+			bestSize.width -= reduction;
+		}
+
+		if (bestSize.width <= maxnumWidth)
+		{
+			break;
+		}
+	}
+	SetLayoutSize(CalculateBestSize());
 }
 
 void Grid::DemandReduceWidth(const int maxnumWidth)
 {
+
+}
+
+/**
+*	\brief 请求减少指定网格宽度
+*/
+int Grid::RequestReduceColWidth(int col, const int maxnumWidth)
+{
+	int requiredWidth = 0;
+	for (size_t row = 0; row < mRowsHeight.size(); row++)
+	{
+		Children& cell = GetChildren(row, col);
+		RequestReduceCellWidth(cell, maxnumWidth);
+		const Size size = cell.GetBestSize();
+
+		if (requiredWidth == 0 || size.width > requiredWidth)
+		{
+			requiredWidth = size.width;
+		}
+	}
+
+	return requiredWidth;
+}
+
+void Grid::RequestReduceCellWidth(Children & child, const int maxnumWidth)
+{
+	if (child.GetWidget() != nullptr)
+	{
+		if (child.GetWidget()->GetVisibility() == Widget::Visiblility::InVisible)
+		{
+			return;
+		}
+
+		child.GetWidget()->RequestReduceWidth(maxnumWidth - child.GetBorderSpace().width);
+	}
 }
 
 /**
@@ -532,24 +609,97 @@ void Grid::ReduceHeight(const int maxnumHeight)
 
 void Grid::RequestReduceHeight(const int maxnumHeight)
 {
+	Size bestSize = GetBestSize();
+	if (bestSize.height <= maxnumHeight)
+	{
+		return;
+	}
+
+	/**
+	*	当bestSize 大于请求的大小时，需要进行网格缩减
+	*	即遍历每一列网格，将每个子网格大小减少到合适程度
+	*/
+	const int reduceHeight = bestSize.height - maxnumHeight;
+	int appendHeight = 0;
+	for (size_t row = 0; row < mRows; row++)
+	{
+		if (reduceHeight - appendHeight >= mRowsHeight[row])
+		{
+			continue;
+		}
+
+		const int wantedHeight = mRowsHeight[row] - (reduceHeight - appendHeight);
+		int height = 0;
+		if (height < mRowsHeight[row])
+		{
+			int reduction = mRowsHeight[row] - height;
+			appendHeight += reduction;
+			bestSize.height -= reduction;
+		}
+
+		if (bestSize.height <= maxnumHeight)
+		{
+			break;
+		}
+	}
+	SetLayoutSize(CalculateBestSize());
 }
 
 void Grid::DemandReduceHeight(const int maxnumHeight)
 {
 }
 
-
-void Grid::ImplDrawBackground()
+int Grid::RequestReduceRowHeight(int row, const int maxnumWidth)
 {
+	int requiredHeight = 0;
+	for (size_t col = 0; col < mCols; col++)
+	{
+		Children& cell = GetChildren(row, col);
+		RequestReduceCellHeight(cell, maxnumWidth);
+	
+		const Size size = cell.GetBestSize();
+		if (requiredHeight == 0 || size.height > requiredHeight)
+		{
+			requiredHeight = size.height;
+		}
+	}
+	return requiredHeight;
 }
 
-void Grid::ImplDrawForeground()
+void Grid::RequestReduceCellHeight(Children & child, const int maxnumHeight)
 {
+	if (child.GetWidget() != nullptr)
+	{
+		if (child.GetWidget()->GetVisibility() == Visiblility::InVisible )
+		{
+			return;
+		}
+		child.GetWidget()->RequestReduceHeight(maxnumHeight);
+	}
 }
 
-void Grid::ImplDrawChildren()
+void Grid::ImplDrawChildren(const Point2 & offset)
 {
+	Debug::CheckAssertion(GetVisibility() == Widget::Visiblility::Visible);
+	SetIsDirty(false);
+
+	for (auto& child : mChilds)
+	{
+		auto widget = child.GetWidget();
+		if (widget == nullptr || 
+			widget->GetVisibility() != Widget::Visiblility::Visible ||
+			widget->GetReDrawAction() == Widget::ReDrawAction::None)
+		{
+			continue;
+		}
+
+		widget->DrawBackground(offset);
+		widget->DrawChildren(offset);
+		widget->DrawForeground(offset);
+		widget->SetIsDirty(false);
+	}
 }
+
 
 /**
 *	\brief 请求设置问题
@@ -558,7 +708,17 @@ void Grid::ImplDrawChildren()
 */
 void Grid::RequesetPlacement(Dispatcher&, const gui::ui_event, bool&handle, bool& halt)
 {
-
+	Size size = GetSize();
+	Size bestSize = GetBestSize();
+	if (size >= bestSize)
+	{
+		Place(GetPositon(), size);
+		handle = true;
+		return;
+	}
+	ReCalculateBestSize();
+	
+	// 当空间不够需要重新布局
 }
 
 Widget* Grid::Find(string& id, const bool activited)

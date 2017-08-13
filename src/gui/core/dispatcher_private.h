@@ -6,6 +6,7 @@
 #include"core\inputEvent.h"
 #include"core\debug.h"
 #include"utils\typeSet.h"
+#include"gui\core\message.h"
 
 #include<type_traits>
 

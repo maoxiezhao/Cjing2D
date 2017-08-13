@@ -26,6 +26,7 @@ public:
 	virtual ~GLProgram();
 
 	static const string DEFAULT_SPRITE_NORMAL_PROGRAM_NAME;
+	static const string DEFAULT_SPRITE_COLOR_PROGRAM_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAM_NAME;
 
 	bool InitWithChars(const GLchar* vsChars, const GLchar* fsChars);

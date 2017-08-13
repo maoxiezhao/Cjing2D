@@ -117,6 +117,18 @@ bool InputEvent::IsInitialized()
 	return false;
 }
 
+
+/**
+*	\brief 用于获取单事件，不用于生产鼠标或者键盘输入事件
+*/
+std::unique_ptr<InputEvent> InputEvent::GetSingleEvent(const EventType type)
+{
+	KeyEvent ent;
+	ent.type = type;
+	InputEvent* result = new InputEvent(ent);
+	return std::unique_ptr<InputEvent>(result);
+}
+
 /**
 *	\brief 获取当前的输入事件
 *

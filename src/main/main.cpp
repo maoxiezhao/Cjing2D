@@ -42,7 +42,7 @@ int main(int argc,char** argv)
 	//gui::Dispatcher mDispatcher;
 
 
-	system("Pause");
+	//system("Pause");
 	return 0;
 }
 

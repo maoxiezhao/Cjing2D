@@ -86,15 +86,15 @@ function cjing.Main:StartExit()
 end
 
 function cjing.Main:onDraw()
-	for index = 1, 64 do
-		if self._sprite[index] then 
-			self._sprite[index]:draw()
-		end 
-	end 
+	--for index = 1, 64 do
+	--	if self._sprite[index] then 
+	--		self._sprite[index]:draw()
+	--	end 
+	--end 
 	
-	if self._animation then 
+	--if self._animation then 
 		--self._animation:draw()
-	end 
+	--end 
 end 
 
 -- notify input --

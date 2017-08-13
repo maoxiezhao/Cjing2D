@@ -79,6 +79,7 @@ public:
 	void SetUniformMatrix4(const string& name, const Matrix4& mat);
 
 	static const string DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME;
+	static const string DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME;
 
 private:

@@ -508,7 +508,7 @@ void Grid::ReduceWidth(const int maxnumWidth)
 	// reduce width friendly
 	RequestReduceWidth(maxnumWidth);
 	
-	const Size bestSizeAfterReduce = GetBestSize();
+	const Size bestSizeAfterReduce = ReCalculateBestSize();
 	if (bestSizeAfterReduce.width <=  maxnumWidth)
 	{
 		return;
@@ -539,7 +539,7 @@ void Grid::RequestReduceWidth(const int maxnumWidth)
 		}
 
 		const int wantedWidth = mColsWidth[col] - (reduceWidth - appendWidth);
-		int width = 0;
+		int width = RequestReduceColWidth(col, wantedWidth);
 		if (width < mColsWidth[col] )
 		{
 			int reduction = mColsWidth[col] - width;
@@ -609,7 +609,7 @@ void Grid::ReduceHeight(const int maxnumHeight)
 	// reduce width friendly
 	RequestReduceHeight(maxnumHeight);
 
-	const Size bestSizeAfterReduce = GetBestSize();
+	const Size bestSizeAfterReduce = ReCalculateBestSize();
 	if (bestSizeAfterReduce.height <= maxnumHeight)
 	{
 		return;
@@ -640,7 +640,7 @@ void Grid::RequestReduceHeight(const int maxnumHeight)
 		}
 
 		const int wantedHeight = mRowsHeight[row] - (reduceHeight - appendHeight);
-		int height = 0;
+		int height = RequestReduceRowHeight(row, wantedHeight);
 		if (height < mRowsHeight[row])
 		{
 			int reduction = mRowsHeight[row] - height;

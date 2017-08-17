@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\debug.cpp" />
     <ClCompile Include="src\core\fileData.cpp" />
+    <ClCompile Include="src\core\font.cpp" />
     <ClCompile Include="src\core\glProgram.cpp" />
     <ClCompile Include="src\core\glProgramState.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="src\core\configData.h" />
     <ClInclude Include="src\core\debug.h" />
     <ClInclude Include="src\core\fileData.h" />
+    <ClInclude Include="src\core\font.h" />
     <ClInclude Include="src\core\glProgram.h" />
     <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />

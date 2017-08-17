@@ -241,6 +241,9 @@
     <ClCompile Include="src\gui\widget\styledwidget.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\font.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -452,6 +455,9 @@
     </ClInclude>
     <ClInclude Include="src\gui\widget\styledwidget.h">
       <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\font.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

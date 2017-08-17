@@ -5,11 +5,18 @@
 #include"core\glProgram.h"
 #include"core\glProgramState.h"
 #include"core\texture.h"
+#include"core\font.h"
+
 #include<map>
 #include<unordered_map>
 
 /**
 *	\brief 以单例模式实现渲染类资源的存储
+*	目前支持资源：
+*		program
+*		programState
+*		texture
+*		font
 */
 class ResourceCache
 {
@@ -35,11 +42,13 @@ public:
 	TexturePtr LoadTexture2D(const string& texname);
 	TexturePtr GetTexture2D(const string& texnname);
 
+	// font
+
 private:
 	std::unordered_map<std::string, GLProgramPtr> mPrograms;
 	std::unordered_map<std::string, GLProgramStatePtr> mProgramStates;
 	std::unordered_map<std::string, TexturePtr> mTextures;
-
+	std::unordered_map<std::string, font::FontPtr> mFonts;
 };
 
 

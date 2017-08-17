@@ -24,6 +24,7 @@ void ResourceCache::Clear()
 	mPrograms.clear();
 	mProgramStates.clear();
 	mTextures.clear();
+	mFonts.clear();
 }
 
 /**

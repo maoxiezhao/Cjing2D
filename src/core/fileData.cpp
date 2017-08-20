@@ -43,6 +43,25 @@ namespace FileData
 	{
 		return PHYSFS_exists(name.c_str());
 	}
+
+	char * ReadFileBytes(const string & name)
+	{
+		// 确保文件存在
+		Debug::CheckAssertion(PHYSFS_exists(name.c_str()),
+			string("the file:") + name + " isn't exits.");
+
+		PHYSFS_file* file = PHYSFS_openRead(name.c_str());
+		Debug::CheckAssertion(file != nullptr,
+			string("the file:") + name + " loaded failed.");
+
+		size_t size = static_cast<size_t>(PHYSFS_fileLength(file));
+		vector<char> buffer(size);
+
+		PHYSFS_read(file, buffer.data(), 1, (PHYSFS_uint32)size);
+		PHYSFS_close(file);
+
+		return buffer.data();
+	}
 	
 
 	string ReadFile(const string& name)

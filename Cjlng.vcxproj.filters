@@ -244,6 +244,9 @@
     <ClCompile Include="src\core\font.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\fontAtlas.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -457,6 +460,12 @@
       <Filter>gui\widget</Filter>
     </ClInclude>
     <ClInclude Include="src\core\font.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\fontAtlas.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\asyncLoad.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

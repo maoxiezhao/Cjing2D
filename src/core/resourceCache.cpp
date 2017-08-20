@@ -47,7 +47,11 @@ void ResourceCache::LoadDefaultProgram()
 	mPrograms[GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME] = colorProgram;
 
 	// 加载默认的字体program
-
+	auto fontProgram = std::make_shared<GLProgram>();
+	fontProgram->InitWithFileNames(GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME + ".frag");
+	fontProgram->Link();
+	mPrograms[GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME] = fontProgram;
 }
 
 /**
@@ -92,6 +96,11 @@ void ResourceCache::LoadDefaultProgramState()
 	newProgramState = std::make_shared<GLProgramState>();
 	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME));
 	mProgramStates[GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的font program state
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME] = newProgramState;
 }
 
 /**

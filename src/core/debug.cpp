@@ -67,8 +67,8 @@ namespace Debug{
 	void Debug::Die(const string & dieMsg)
 	{
 		Logger::Fatal(dieMsg);
-		if(ShowMsgBox)
-			MessageBox(NULL, TEXT(dieMsg.c_str()), NULL, MB_OK);
+		//if(ShowMsgBox)
+			//MessageBox(NULL, TEXT(dieMsg.c_str()), NULL, MB_OK);
 		if (AbortOnDie)
 			std::abort();
 	}

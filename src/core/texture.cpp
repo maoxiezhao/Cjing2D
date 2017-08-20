@@ -83,6 +83,12 @@ Size Texture2D::GetSize() const
 	return Size(mWidth,mHeight);
 }
 
+void Texture2D::SetSize(const Size & size)
+{
+	mWidth = size.width;
+	mHeight = size.height;
+}
+
 void Texture2D::SetInternalFormat(GLuint format)
 {
 	mImageFormat = format;

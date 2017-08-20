@@ -59,6 +59,9 @@ App::App():
 	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->Place(Point2(0, 0), Size(640, 480));
+
+	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
+	mFont->LoadFont();
 }
 
 App::~App()
@@ -197,9 +200,11 @@ void App::Render()
 	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
 	mGUI->HandleEvent(*ent);
 
-	mWidget1->DrawBackground();
-	mWidget2->DrawBackground();
-	mWidget3->DrawBackground();
+	mFont->RenderText();
+
+	//mWidget1->DrawBackground();
+	//mWidget2->DrawBackground();
+	//mWidget3->DrawBackground();
 	Video::Rendercanvas();
 }
 

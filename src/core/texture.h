@@ -19,6 +19,7 @@ public:
 
 	GLuint GetTextureID()const;
 	Size GetSize()const;
+	void SetSize(const Size& size);
 	void SetInternalFormat(GLuint format);
 	void SetImageFormat(GLuint format);
 

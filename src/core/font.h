@@ -8,7 +8,13 @@
 #include"utils\rectangle.h"
 #include"core\renderer.h"
 
+#include"ft2build.h"
+#include"freetype.h"
+#define FT_FREETYPE_H
+
 namespace font{
+
+struct FontConfig;
 
 /**
 *	\brief Font 字体基类
@@ -23,6 +29,14 @@ namespace font{
 class Font
 {
 public:
+	enum
+	{
+		FONT_CODE_LATIN_START = 0x0021,
+		FONT_CODE_LATIN_END   = 0x00A6,
+		FONT_CODE_CHINESE_START = 0x4E00,
+		FONT_CODE_CHINESE_END  = 0x9FA5,
+	};
+
 	Font();
 	Font(const string& font);
 	~Font();
@@ -30,31 +44,83 @@ public:
 	Font(const Font& other) = delete;
 	Font& operator=(const Font& other) = delete;	
 
-	void RenderText();
-	void ReaderText(float size, const Point2& pos, int cols, const Rect& clipRect, const string& renderText);
-	
-private:
-	/*** *** ***  Glyph *** *** ***/
-	struct Glyph
-	{
-	public:
-		Glyph();
+	void UnLoad();
+	void Flush();
+	void LoadFont();
+	void BuildLookupTable();
 
+	void RenderText();
+	void RenderText(float size, const Point2& pos, int cols, const Rect& clipRect, const string& renderText);
+	
+	/**** **** ****  setter/gettter **** **** ****/
+	bool IsLoaded()const
+	{
+		return mIsLoaded;
+	}
+	bool IsDirty()const
+	{
+		return mIsDirty;
+	}
+
+private:
+	/**** **** ****  Glyph **** **** ****/
+	/*
+	*	\brief 字形结构，描述了字形在纹理中的位置
+	*	以及绘制的相关信息
+	*/
+	struct Glyph
+	{		
+		wchar charCode;
+		GLenum chanel;
+		float advance;		// 字的起点到下一个字的起点
+		float u0, v0, u1, v1;
 	};
 
-	Glyph* FindGlyph();
-	const Glyph* FindGlyph()const;
+	float mFontSize;
+	float mScale;
+	float mAdvance;
+	float mAscent;			// baseline之上至字符最高处的距离
+	float mDescent;			// baseline之下至字符最低处的距离
+
+	std::map<wchar, Glyph> mGlyphs;
+
+	string mFontName;
+	FontConfig* mConfig;
+	FT_Library ft;
+	FT_Face face;
 
 public:
+	Glyph* FindGlyph(wchar code);
+	const Glyph* FindGlyph(wchar code)const;
+	void InsertGlyph(const Glyph& glyph);
 
+	void SetFontColor(const Color4B& color);
+	const Color4B GetFontColor()const;
 
+	void SetDynamicLoadTexture(bool isDynamicLoad , const Size& size);
+	bool IsDynamicLoadTexture()const;
 private:
+	/**** **** ****  Render **** **** ****/
+	void InitRender();
+	void CalcTextureRect(int width, int height);
+	void SetCharSize(const Size& size);
+	void SetCharTexs(float u0, float v0, float u1, float v1);
+	void SetCharScale(float scale);
+
+	void Render(const Point2 & pos, const Size& size, float rotate);
 	void Render(Renderer& renderer, const Matrix4& transform);
 
 	Quad mQuad;					
-	QuadCommand mQuadCommmand; 
+	QuadCommand mQuadCommand;
 	TexturePtr mTexture;	
+	GLProgramStatePtr mProgramState;
+	BlendFunc mBlendFunc;
+	Matrix4 mModelView;
 
+	bool mIsDynamicLoad;			// 是否全部加载
+	Size mFontTextureSize;
+	bool mIsDirty;
+	bool mIsLoaded;
 };
 
 using FontPtr = std::shared_ptr<Font>;

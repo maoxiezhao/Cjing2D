@@ -8,6 +8,5 @@ uniform sampler2D Texture0;
 
 void main()
 {   
-	vec4 sampled = vec4(1.0,1.0,1.0,texture(Texture0,TexCoords).g);
-	color = ourColor * sampled;
+	color = ourColor;
 }

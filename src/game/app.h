@@ -14,6 +14,7 @@
 #include"gui\core\handler.h"
 #include"gui\widget\widget.h"
 #include"gui\widget\grid.h"
+#include"core\font.h"
 
 /**
 *	\brief 程序的主循环
@@ -52,6 +53,8 @@ private:
 	std::shared_ptr<gui::Widget> mWidget3;
 
 	std::shared_ptr<gui::Grid> mGrid;
+
+	std::shared_ptr<font::Font> mFont;
 };
 
 #endif

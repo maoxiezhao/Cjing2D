@@ -50,8 +50,9 @@ public:
 	void BuildLookupTable();
 
 	void RenderText();
-	void RenderText(float size, const Point2& pos, int cols, const Rect& clipRect, const string& renderText);
-	
+	void RenderText(float size, const Point2& pos, const Rect& clipRect, const string& renderText);
+	void RenderText(float size, const Point2 & pos, float wrapWidth, const Rect & clipRect, const char* textBegin, const char* textEnd);
+
 	/**** **** ****  setter/gettter **** **** ****/
 	bool IsLoaded()const
 	{
@@ -82,7 +83,9 @@ private:
 	float mAscent;			// baseline之上至字符最高处的距离
 	float mDescent;			// baseline之下至字符最低处的距离
 
-	std::map<wchar, Glyph> mGlyphs;
+	std::map<wchar, Glyph> mGlyphs;	// 存储所有的glyph
+
+	std::map<Glyph, uint32_t> mTimesGlyphs;	// LRU的方式维护该表，表中存储有调用次数
 
 	string mFontName;
 	FontConfig* mConfig;

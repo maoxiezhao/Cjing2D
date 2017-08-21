@@ -52,8 +52,11 @@ void Font::UnLoad()
 {
 	if (IsLoaded())
 	{
-		//FT_Done_Face(face);
-		//FT_Done_FreeType(ft);
+		mGlyphs.clear();
+		mTimesGlyphs.clear();
+
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
 	}
 }
 
@@ -210,6 +213,15 @@ void Font::LoadFont()
 	{
 		// 动态维护纹理信息，需要指定纹理大小或默认纹理大小，通过LRU方法维护
 		// 未来版本将会添加
+
+		// 在使用动态版本之前，需要设置纹理大小，否则使用默认的纹理大小
+		if (mFontTextureSize.width == 0 || mFontTextureSize.height == 0)
+		{
+			mFontTextureSize = Size(mFontTextureSize.width, mFontTextureSize.height);
+		}
+		mTexture->SetSize(mFontTextureSize);
+		mTexture->InitWithChars(nullptr);
+
 		for (uint32_t code = FONT_CODE_CHINESE_START; code <= FONT_CODE_CHINESE_END; code ++)
 		{
 			if (FT_Load_Char(face, code, FT_LOAD_RENDER))
@@ -245,15 +257,51 @@ void Font::RenderText()
 *	\param clipRect 裁剪矩形
 *	\param renderText 渲染文字
 */
-void Font::RenderText(float size, const Point2 & pos, int cols, const Rect & clipRect, const string & renderText)
+void Font::RenderText(float size, const Point2 & pos, float wrapWidth, const Rect & clipRect, const char* textBegin, const char* textEnd)
 {
-	// test code
+	// init
 	Render({100,100}, {100,100}, 0);
 
-	float scale = size / mFontSize;
-	// encode
+	float posX = (float)pos.x;
+	float posY = (float)pos.y;
 
-	// render
+	if (posY >= (float)(clipRect.y + clipRect.height))
+		return;
+
+	float scale = size / mFontSize;
+	float lineHeight = size;
+	bool wrapEnabled = (wrapWidth > 0.0f);
+	const char* curCharPtr = textBegin;
+
+	// encode
+	while (curCharPtr < textEnd)
+	{
+		// 计算换行的位子
+		if (wrapEnabled)
+		{
+
+		}
+
+		// 根据0x8判断是单字节还是多字节
+		const int curChar = *curCharPtr;
+		if (curChar < 0x80)
+		{
+			curCharPtr += 1;
+		}
+		else
+		{	// 处理utf8
+			if (curChar == 0)
+				break;
+			
+
+		}
+
+		float charWidth = 0.0f;
+
+
+
+		posX += charWidth;
+	}
 }
 
 /***** ***** *****  Glyph ***** ***** *****/
@@ -387,6 +435,7 @@ void Font::SetCharTexs(float u0, float v0, float u1, float v1)
 */
 void Font::SetCharScale(float scale)
 {
+	mScale = scale;	
 }
 
 

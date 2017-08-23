@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\asyncLoader.cpp" />
     <ClCompile Include="src\core\debug.cpp" />
     <ClCompile Include="src\core\fileData.cpp" />
     <ClCompile Include="src\core\font.cpp" />
@@ -156,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h" />
-    <ClInclude Include="src\core\asyncLoad.h" />
+    <ClInclude Include="src\core\asyncLoader.h" />
     <ClInclude Include="src\core\configData.h" />
     <ClInclude Include="src\core\debug.h" />
     <ClInclude Include="src\core\fileData.h" />

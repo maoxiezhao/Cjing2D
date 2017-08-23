@@ -1,6 +1,6 @@
 animation{
   name = "explosion",
-  src_image = "explosion.png",
+  src_image = "test/explosion.png",
   frame_delay = 50,
   frame_loop = 0,
   directions = {

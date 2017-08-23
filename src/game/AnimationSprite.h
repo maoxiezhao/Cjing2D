@@ -35,6 +35,8 @@ public:
 	uint32_t GetFrameDelay()const;
 	int GetNextFrame()const;
 	int GetNumFrames()const;
+	void SetSize(const Size& size);// size兼容问题
+	Size GetSize()const;
 
 	virtual void SetSuspended(bool suspended);
 
@@ -70,6 +72,7 @@ private:
 	string mCurrAnimationName;
 	Animation* mCurrAnimation;	// 保存的是mCurrAnimationSet中的animation指针，这里无需管理
 
+	Size     mSize;
 	uint32_t mFrameDelay;
 	uint32_t mNextFrameDate;
 	int      mFrameLoop;

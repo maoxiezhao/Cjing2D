@@ -247,6 +247,9 @@
     <ClCompile Include="src\core\fontAtlas.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\asyncLoader.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -465,7 +468,7 @@
     <ClInclude Include="src\core\fontAtlas.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\asyncLoad.h">
+    <ClInclude Include="src\core\asyncLoader.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

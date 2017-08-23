@@ -35,6 +35,7 @@ public:
 	Animation();
 	Animation(const string& imageName, uint32_t frameDelay, int frameLoop, const std::deque<AnimationDirection>& directions);
 
+	/***** ***** ****** getter/setter ****** ***** *****/
 	string GetImageName()const;
 	TexturePtr GetTexture()const;
 	uint32_t GetFrameDelay()const;
@@ -63,6 +64,7 @@ inline const AnimationDirection& Animation::GetDirection(int direction)const
 		"Invalid animation direction.");
 	return mDirections[direction];
 }
+
 
 
 #endif

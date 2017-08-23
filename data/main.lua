@@ -15,7 +15,7 @@ function cjing.Main:onStarted()
 	
 	-- test sprite --
 	for index = 1, 64 do
-		local sprite = cjing.Sprite.create("sprites/duck.png")
+		local sprite = cjing.Sprite.create("sprites/test/duck.png")
 		sprite:setSize(50, 50)
 		sprite:setPos(((index - 1) % 8)* 70,math.floor(index / 8) * 70)	
 		sprite:setRotation(index * 2);
@@ -23,7 +23,7 @@ function cjing.Main:onStarted()
 	end 
 	
 	-- test anmiation --
-	local animation = cjing.Animation.create("explosion")
+	local animation = cjing.Animation.create("test/explosion")
 	if animation then 
 		animation:setPos(circlePosX,circlePosY)
 		animation:setOpacity(255)
@@ -86,11 +86,11 @@ function cjing.Main:StartExit()
 end
 
 function cjing.Main:onDraw()
-	--for index = 1, 64 do
-	--	if self._sprite[index] then 
-	--		self._sprite[index]:draw()
-	--	end 
-	--end 
+	-- for index = 1, 64 do
+		-- if self._sprite[index] then 
+			-- self._sprite[index]:draw()
+		-- end 
+	-- end 
 	
 	--if self._animation then 
 		--self._animation:draw()

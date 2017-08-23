@@ -41,6 +41,7 @@ public:
 	//TexturePtr LoadTextureAllTime(const string& texname);
 	TexturePtr LoadTexture2D(const string& texname);
 	TexturePtr GetTexture2D(const string& texnname);
+	TexturePtr CreateTexture2DBySize(const string& texname, const Size& size);
 
 	// font
 

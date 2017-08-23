@@ -10,22 +10,30 @@
 //test
 #include"movements\targetMovement.h"
 
-App::App():
+namespace {
+	HDC hDC = NULL;
+	HGLRC hRC = NULL;
+	HGLRC hRCShareing = NULL;
+}
+
+App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr)
+	mNextGame(nullptr),
+	mAsyncLoaded(false)
 {
 	Logger::Info("Cjing start initializing.");
-	
+
 	Logger::Info("Open data file");
 	string dataPath = ".";
 	if (!FileData::OpenData("", dataPath))
 		Debug::Die("No data file was found int the direcion:" + dataPath);
-	
+
 	// initialize system
 	Logger::Info("Initialize system modules");
 	System::Initialize();
+
 
 	// initialize render
 	Logger::Info("Initialize render system");
@@ -34,34 +42,18 @@ App::App():
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
 
-	// test
-	// init gui system
-	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
-	mGrid = std::make_shared<gui::Grid>(3, 3);
-	mGrid->Connect();
+	// 异步加载资源
+	// 可异步的资源为字体、除default之外的纹理、音频、动画
 
-	mWidget1 = std::make_shared<gui::Widget>();
-	mWidget1->Connect();
-	mWidget1->SetWantKeyboard(true);
-	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
-	mWidget1->Place(Point2(0, 0), Size(100, 100));
+	mLoadingAnimate = std::make_shared<AnimationSprite>("menus/loading");
+	mLoadingAnimate->SetSize({ 120,120 });
+	mLoadingAnimate->SetPos({ (DEFAULT_WINDOW_WIDTH - mLoadingAnimate->GetSize().width )/ 2, (DEFAULT_WINDOW_HEIGHT - mLoadingAnimate->GetSize().height) / 2});
+	mLoadingAnimate->StartAnimation();
 
-	mWidget2 = std::make_shared<gui::Widget>();
-	mWidget2->Connect();
-	mWidget2->Place(Point2(0, 0), Size(100, 100));
+	mAsyncLoader.AddTask(std::bind(&App::AsyncLoading, this));
+	mAsyncLoader.SetFinishCallBack(std::bind(&App::LoadingFinishCallBack, this));
+	mAsyncLoader.Run();
 
-	mWidget3 = std::make_shared<gui::Widget>();
-	mWidget3->Connect();
-	mWidget3->Place(Point2(0, 0), Size(100, 100));
-
-	// grid
-	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->Place(Point2(0, 0), Size(640, 480));
-
-	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
-	mFont->LoadFont();
 }
 
 App::~App()
@@ -117,7 +109,7 @@ void App::Run()
 		int updates = 0;
 		while (lag >= System::timeStep && updates < 10 && !IsExiting())
 		{
-			Update();
+			Step();
 			lag -= System::timeStep;
 			++updates;
 		}
@@ -135,6 +127,22 @@ void App::Run()
 	Logger::Info("Simulation finished");
 }
 
+/**
+*	\brief 为了支持异步加载
+*
+*	目前因为游戏场景主要由lua逻辑来构建，所以异步加载的逻辑目前只能
+*	耦合在app中
+*/
+void App::Step()
+{
+	if (!mAsyncLoaded)
+	{
+		mLoadingAnimate->Update();
+		mAsyncLoader.Update();
+	}
+	Update();
+}
+
 void App::Update()
 {
 	// game update
@@ -142,7 +150,7 @@ void App::Update()
 	{
 		mCurrGame->Update();
 	}
-	//mLuaContext->Update();
+	mLuaContext->Update();
 	System::Update();
 
 	if (mNextGame != mCurrGame.get())
@@ -190,21 +198,30 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
-	// game draw
-	if (mCurrGame != nullptr)
+	// async loader
+	if (!mAsyncLoaded)
 	{
-		mCurrGame->Draw();
+		mLoadingAnimate->Draw();
 	}
-	mLuaContext->OnMainDraw();
+	else
+	{	// game draw
+		if (mCurrGame != nullptr)
+		{
+			mCurrGame->Draw();
+		}
+		//mLuaContext->OnMainDraw();
 
-	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
-	mGUI->HandleEvent(*ent);
+		//std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
+		//mGUI->HandleEvent(*ent);
 
-	mFont->RenderText();
+		//mWidget1->DrawBackground();
+		//mWidget2->DrawBackground();
+		//mWidget3->DrawBackground();
 
-	//mWidget1->DrawBackground();
-	//mWidget2->DrawBackground();
-	//mWidget3->DrawBackground();
+
+		mFont->RenderText();
+	}
+
 	Video::Rendercanvas();
 }
 
@@ -224,6 +241,53 @@ void App::NotifyInput(const InputEvent & ent)
 	{
 		mGUI->HandleEvent(ent);
 	}
+}
+
+/**
+*	\brief 动态加载执行的函数
+*/
+void App::AsyncLoading()
+{
+	Logger::Info("Async load font");
+	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
+	mFont->LoadFont();
+	Logger::Info("Async load font succeed");
+
+	// test
+	// init gui system
+	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+	mGrid = std::make_shared<gui::Grid>(3, 3);
+	mGrid->Connect();
+
+	mWidget1 = std::make_shared<gui::Widget>();
+	mWidget1->Connect();
+	mWidget1->SetWantKeyboard(true);
+	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
+	mWidget1->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget2 = std::make_shared<gui::Widget>();
+	mWidget2->Connect();
+	mWidget2->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget3 = std::make_shared<gui::Widget>();
+	mWidget3->Connect();
+	mWidget3->Place(Point2(0, 0), Size(100, 100));
+
+	//// grid
+	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->Place(Point2(0, 0), Size(640, 480));
+
+}
+
+/**
+*	\brief 动态加载成功后的回调函数
+*/
+void App::LoadingFinishCallBack()
+{
+	mAsyncLoaded = true;
+	Logger::Info("Async load Finished.");
 }
 
 /**

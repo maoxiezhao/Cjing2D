@@ -42,7 +42,7 @@ public:
 	Rect& operator &=(const Rect& rect);
 	Rect& operator |=(const Rect& rect);
 
-private:
+public:
 	int x, y;
 	int width, height;
 

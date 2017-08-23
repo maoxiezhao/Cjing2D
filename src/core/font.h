@@ -82,6 +82,8 @@ private:
 	float mAscent;			// baseline之上至字符最高处的距离
 	float mDescent;			// baseline之下至字符最低处的距离
 
+	Glyph mFallbackChar;	// 当需要渲染的字不存在时，使用该字符
+
 	std::map<wchar, Glyph> mGlyphs;
 
 	string mFontName;
@@ -112,8 +114,8 @@ private:
 
 	Quad mQuad;					
 	QuadCommand mQuadCommand;
-	TexturePtr mTexture;	
 	GLProgramStatePtr mProgramState;
+	TexturePtr mTexture;	
 	BlendFunc mBlendFunc;
 	Matrix4 mModelView;
 

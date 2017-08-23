@@ -41,7 +41,10 @@ public:
 	void SetBlendFunc(const BlendFunc& blendFunc);
 	void SetModelView(const Matrix4& modelView);
 	void SetOpacity(int opacity);
-
+	void SetScale(float s);
+	void SetScaleX(float x);
+	void SetScaleY(float y);
+	void SetScale(float x, float y);
 	virtual void SetSuspended(bool suspended);
 
 	TexturePtr GetTexture()const;
@@ -81,6 +84,7 @@ protected:
 	Point2 mAnchor;
 	BlendFunc mBlendFunc;
 	Matrix4 mModelView;
+	float scaleX, scaleY;
 
 	bool mVisible;
 	bool mDirty;

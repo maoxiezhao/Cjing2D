@@ -180,7 +180,7 @@ void Sprite::SetTextureCroods(const Rect & rect)
 	float left = orgin.x / width;
 	float right = (orgin.x + size.width) / width;
 	float top = orgin.y / height;
-	float bottom = (orgin.y + height) / height;
+	float bottom = (orgin.y + size.height) / height;
 
 	mQuad.lt.texs.u = left;
 	mQuad.lt.texs.v = bottom;
@@ -283,6 +283,27 @@ void Sprite::SetOpacity(int opacity)
 	mQuad.lb.colors.SetAlpha(opacity);
 	mQuad.rb.colors.SetAlpha(opacity);
 	mQuad.rt.colors.SetAlpha(opacity);
+}
+
+void Sprite::SetScale(float s)
+{
+	SetScale(s, s);
+}
+
+void Sprite::SetScaleX(float x)
+{
+	SetScale(x, scaleY);
+}
+
+void Sprite::SetScaleY(float y)
+{
+	SetScale(scaleX, y);
+}
+
+void Sprite::SetScale(float x, float y)
+{
+	scaleX = x;
+	scaleY = y;
 }
 
 /**

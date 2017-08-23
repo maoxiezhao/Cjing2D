@@ -14,6 +14,7 @@
 AnimationSprite::AnimationSprite(const string & id) :
 	Sprite(),	// 默认的构造函数只创建programState和cameraMatrix
 	mCurrAnimationSet(GetAnimationSet(id)),
+	mSize(),
 	mFrameDelay(0),
 	mFrameLoop(0),
 	mFrameNum(0),
@@ -160,6 +161,8 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 		SetFrameChanged(true);
 		
 		InitWithTexture(mTexture);
+		Rect rect = mCurrAnimation->GetAniamtionRect(mCurrFrame, mCurrDirection);
+		mSize = Size(rect.width, rect.height);
 
 		// luaContext可能会存在一些操作
 		// 如onFrameChanged 或 onDirectionChanged
@@ -209,6 +212,16 @@ int AnimationSprite::GetNumFrames() const
 	if (mCurrAnimation == nullptr)
 		return 0;
 	return mCurrAnimation->GetDirection(mCurrDirection).GetNumFrames();
+}
+
+void AnimationSprite::SetSize(const Size & size)
+{
+	mSize = size;
+}
+
+Size AnimationSprite::GetSize() const
+{
+	return mSize;
 }
 
 /**
@@ -347,5 +360,6 @@ void AnimationSprite::UpdateFramedChanged()
 {
 	Rect rect = mCurrAnimation->GetAniamtionRect(mCurrFrame,mCurrDirection);
 	SetTextureRect(rect, true);	
+	Sprite::SetSize(mSize);
 	SetFrameChanged(false);
 }

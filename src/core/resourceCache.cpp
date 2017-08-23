@@ -158,4 +158,16 @@ TexturePtr ResourceCache::GetTexture2D(const string & texnname)
 	return nullptr;
 }
 
+/**
+*	\brief 创建一个指定大小的空白纹理
+*/
+TexturePtr ResourceCache::CreateTexture2DBySize(const string & texname, const Size & size)
+{
+	auto newTex = std::make_shared<Texture2D>();
+	newTex->SetSize(size);
+	newTex->InitWithChars(nullptr);
+	mTextures[texname] = newTex;
+	return newTex;
+}
+
 

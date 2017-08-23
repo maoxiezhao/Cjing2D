@@ -99,15 +99,13 @@ void Font::LoadFont()
 	FT_Set_Pixel_Sizes(face, 0, 18);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	
-	mTexture = std::make_shared<Texture2D>();
 	int ammount = 0;
 	if (!IsDynamicLoadTexture())
 	{
 		// 当未开启动态加载字体的时候，加载全部字模，并输出到纹理RGBA四个通道
 		// 速度过于慢，建议使用异步加载
+		mTexture = ResourceCache::GetInstance().CreateTexture2DBySize("mFontName", { MAX_FONT_TEXTURE_WIDTH, MAX_FONT_TEXTURE_HEIGHT });
 
-		mTexture->SetSize({MAX_FONT_TEXTURE_WIDTH, MAX_FONT_TEXTURE_HEIGHT});
-		mTexture->InitWithChars(nullptr);
 		glBindTexture(GL_TEXTURE_2D, mTexture->GetTextureID());
 		GLenum curFormat = GL_RED;
 		Point2 startPos = Point2(0, 0);
@@ -115,8 +113,8 @@ void Font::LoadFont()
 		for (uint32_t code = FONT_CODE_CHINESE_START; code <= FONT_CODE_CHINESE_END; code+=4)
 		{
 			std::vector<unsigned int> mDstColor;
-			int maxCharWidth = 0;
-			int maxCharHeight = 0;
+			unsigned int maxCharWidth = 0;
+			unsigned int maxCharHeight = 0;
 			for (int i = 0; i < 4; i++)
 			{
 				ammount++;
@@ -125,7 +123,7 @@ void Font::LoadFont()
 					Debug::Warning("failed to load char.");
 					continue;
 				}
-				if (face->glyph->bitmap.pitch > maxCharWidth)
+				if ((unsigned int)face->glyph->bitmap.pitch > maxCharWidth)
 				{
 					maxCharWidth = face->glyph->bitmap.pitch;
 				}
@@ -234,7 +232,7 @@ void Font::BuildLookupTable()
 
 void Font::RenderText()
 {
-	Render({ 0,0 }, { 100,100 }, 0);
+	Render({ 100,300 }, { 100,100 }, 0);
 }
 
 /**
@@ -248,7 +246,7 @@ void Font::RenderText()
 void Font::RenderText(float size, const Point2 & pos, int cols, const Rect & clipRect, const string & renderText)
 {
 	// test code
-	Render({100,100}, {100,100}, 0);
+	Render({100,200}, {100,100}, 0);
 
 	float scale = size / mFontSize;
 	// encode

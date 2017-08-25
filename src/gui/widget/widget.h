@@ -137,6 +137,11 @@ public:
 	virtual void SetHorizontalAlignment(const unsigned int align);
 	virtual void SetVerticalAlignment(const unsigned int align);
 
+	/** 
+	*	能否换行，该属性影响requestReduceWidth操作是否可以进行
+	*/
+	virtual bool CanWrap() const;
+
 private:
 	Point2 mPosition;
 	Size mSize;

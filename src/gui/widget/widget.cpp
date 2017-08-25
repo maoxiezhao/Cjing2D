@@ -239,6 +239,11 @@ void Widget::SetVerticalAlignment(const unsigned int align)
 	parentGrid->SetChildrenAlignment(this->shared_from_this(), align, gui::ALIGN_VERTICAL_MASK);
 }
 
+bool Widget::CanWrap() const
+{
+	return false;
+}
+
 void Widget::RequestReduceWidth(const int maxnumWidth)
 {
 	// nothing

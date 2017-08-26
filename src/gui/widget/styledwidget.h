@@ -11,6 +11,7 @@
 namespace gui
 {
 class Config;
+class Font;
 
 namespace implementation
 {
@@ -19,6 +20,10 @@ namespace implementation
 
 using StringMap = std::map<string, string>;
 
+/**
+*	\brief styledWidget 
+*	包含了更多样式信息包括lable信息和定义信息
+*/
 class StyledWidget : public Widget
 {
 public:
@@ -38,13 +43,24 @@ public:
 	void SetLabel(const string& label);
 	string GetLable()const;
 
+	void SetTextAlignment(const string& textAlignment);
+	string GetTextAlignment()const;
+
 	ResolutionDefinitionPtr GetConfig();
 
 /*** *** *** *** *** layout and size. *** *** *** *** ***/
 
-	virtual void InitLayout();
-	virtual Size GetBestSize()const;
+	virtual Size GetBestTextSize(const Size& minSize, const Size& maxSize)const;
+	virtual Size CalculateBestSize()const;
+	virtual Size ReCalculateBestSize();
+
 	virtual void Place(const Point2& pos, const Size& size);
+
+	virtual void RequestReduceWidth(const int maxnumWidth);
+	virtual void DemandReduceWidth(const int maxnumWidth);
+
+	virtual void RequestReduceHeight(const int maxnumHeight);
+	virtual void DemandReduceHeight(const int maxnumHeight);
 
 public:
 	virtual Widget* Find(string& id, const bool activited);
@@ -67,6 +83,11 @@ protected:
 	virtual void ImplDrawBackground();
 	virtual void ImplDrawForeground();
 	virtual void ImplDrawChildren();
+
+	/*** *** Font *** ***/
+	std::shared_ptr<Font> mFont;
+	int mTextMaxWidth;
+	string mTextAlignment;
 
 };
 

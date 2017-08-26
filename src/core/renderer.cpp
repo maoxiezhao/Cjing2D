@@ -47,8 +47,25 @@ void RenderQueue::Sort()
 
 void RenderQueue::Clear()
 {
-	mQueuePosZ.clear();
+	for (auto& command : mQueueNegZ)
+	{
+		if (command)
+			delete command;
+	}
+	mQueueNegZ.clear();
+
+	for (auto& command : mQueue0)
+	{
+		if (command)
+			delete command;
+	}
 	mQueue0.clear();
+	
+	for (auto& command : mQueuePosZ)
+	{
+		if (command)
+			delete command;
+	}
 	mQueuePosZ.clear();
 }
 

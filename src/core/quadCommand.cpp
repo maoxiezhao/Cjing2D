@@ -7,7 +7,7 @@ QuadCommand::QuadCommand():
 	RenderCommand(COMMAND_QUAD,0.0f),
 	mTextureID(0),
 	mQuadCounts(0),
-	mQuads(nullptr),
+	mQuads(),
 	mShadeState(0)
 {
 }
@@ -19,7 +19,7 @@ QuadCommand::~QuadCommand()
 /**
 *	\brief ≥ı ºªØquadCommand
 */
-void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad * quads, int quadCounts, 
+void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad quads, int quadCounts, 
 									const BlendFunc & blendFunc, const Matrix4& transfomr, const Matrix4& modelView)
 {
 	Debug::CheckAssertion(programState != nullptr, "Invalid programState in QuadCommand::Init().");
@@ -65,7 +65,7 @@ int QuadCommand::GetQuadCounts() const
 
 const Quad* QuadCommand::GetQuads() const
 {
-	return mQuads;
+	return &mQuads;
 }
 
 uint32_t QuadCommand::GetShadeState() const

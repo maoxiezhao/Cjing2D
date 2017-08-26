@@ -35,7 +35,7 @@ public:
 		FONT_CODE_LATIN_END   = 0x00A6,
 		FONT_CODE_CHINESE_START = 0x4E00,
 		FONT_CODE_CHINESE_END  = 0x9FA5,
-	};
+	};	
 
 	Font();
 	Font(const string& font);
@@ -50,8 +50,9 @@ public:
 	void BuildLookupTable();
 
 	void RenderText();
-	void RenderText(float size, const Point2& pos, int cols, const Rect& clipRect, const string& renderText);
-	
+	void RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText);
+	void RenderText(float size, const Point2& pos, const Rect& clipRect, float wrapWidth, const char* textBegin, const char* textEnd = nullptr);
+
 	/**** **** ****  setter/gettter **** **** ****/
 	bool IsLoaded()const
 	{
@@ -63,6 +64,19 @@ public:
 	}
 
 private:
+	/**
+	*	\brief 加载的字符范围，主要用于非动态加载
+	*/
+	struct FontCodeRange
+	{
+		unsigned int codeBegin;
+		unsigned int codeEnd;
+
+		FontCodeRange(unsigned int begin, unsigned int end) :codeBegin(begin), codeEnd(end) {}
+	};
+
+	std::vector<FontCodeRange> mFontCodeRanges;
+
 	/**** **** ****  Glyph **** **** ****/
 	/*
 	*	\brief 字形结构，描述了字形在纹理中的位置
@@ -72,15 +86,20 @@ private:
 	{		
 		wchar charCode;
 		GLenum chanel;
-		float advance;		// 字的起点到下一个字的起点
+		int    advance;		// 字的起点到下一个字的起点
+		Size   bearing;
+		Size   size;
 		float u0, v0, u1, v1;
+
+		Glyph() :charCode(0), chanel(0), advance(0), bearing(), size(), u0(0), v0(0), u1(0), v1(0) {}
 	};
 
-	float mFontSize;
+	int   mFontSize;
 	float mScale;
 	float mAdvance;
-	float mAscent;			// baseline之上至字符最高处的距离
-	float mDescent;			// baseline之下至字符最低处的距离
+	int   mAscent;			// baseline之上至字符最高处的距离
+	int   mDescent;			// baseline之下至字符最低处的距离
+	int   mLetterSpacing;	// 字间距
 
 	Glyph mFallbackChar;	// 当需要渲染的字不存在时，使用该字符
 
@@ -98,6 +117,10 @@ public:
 
 	void SetFontColor(const Color4B& color);
 	const Color4B GetFontColor()const;
+	void SetFontSize(int size);
+	int GetFontSize()const;
+	void SetLetterSpacing(int spacing);
+	int GetLetterSpacing()const;
 
 	void SetDynamicLoadTexture(bool isDynamicLoad , const Size& size);
 	bool IsDynamicLoadTexture()const;
@@ -108,6 +131,7 @@ private:
 	void SetCharSize(const Size& size);
 	void SetCharTexs(float u0, float v0, float u1, float v1);
 	void SetCharScale(float scale);
+	void SetCharChanel(float chanel);
 
 	void Render(const Point2 & pos, const Size& size, float rotate);
 	void Render(Renderer& renderer, const Matrix4& transform);
@@ -127,5 +151,12 @@ private:
 
 using FontPtr = std::shared_ptr<Font>;
 using FontConstPtr = std::shared_ptr<const Font>;
+
+namespace implementation
+{
+	int ParsedUtf8(unsigned int& outChar, const char* textBegin, const char* textEnd);
+
+	const char* GetWordWraoPosition(const char * textBegin, const char * textEnd,float scale, float wrapWidth);
+}
 
 }

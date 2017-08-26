@@ -9,14 +9,16 @@ namespace font {
 
 namespace {
 	const int MAX_FONT_TEXTURE_WIDTH = 2048;
-	const int MAX_FONT_TEXTURE_HEIGHT = 1024;
+	const int MAX_FONT_TEXTURE_HEIGHT = 1536;
+	const int BEARING_STANDARD_HEIGHT_CODE = 0x4E09;	// 用"三"做基准线
 }
 
 Font::Font():
-	mFontSize(0.0f),
+	mFontSize(0),
 	mScale(1.0f),
-	mAscent(0.0f),
-	mDescent(0.0f),
+	mAscent(0),
+	mDescent(0),
+	mLetterSpacing(0),
 	mConfig(nullptr),
 	mTexture(nullptr),
 	mProgramState(nullptr),
@@ -29,10 +31,11 @@ Font::Font():
 
 Font::Font(const string & font):
 	mFontName(font),
-	mFontSize(0.0f),
+	mFontSize(0),
 	mScale(1.0f),
-	mAscent(0.0f),
-	mDescent(0.0f),
+	mAscent(0),
+	mDescent(0),
+	mLetterSpacing(0),
 	mConfig(nullptr),
 	mTexture(nullptr),
 	mProgramState(nullptr),
@@ -52,9 +55,13 @@ void Font::UnLoad()
 {
 	if (IsLoaded())
 	{
-		//FT_Done_Face(face);
-		//FT_Done_FreeType(ft);
+		if (IsDynamicLoadTexture())
+		{
+			FT_Done_Face(face);
+			FT_Done_FreeType(ft);
+		}
 	}
+	mGlyphs.clear();
 }
 
 /**
@@ -96,9 +103,29 @@ void Font::LoadFont()
 		Debug::Error("Failed to create new font face.");
 	}
 	FT_Select_Charmap(face, FT_ENCODING_UNICODE);
-	FT_Set_Pixel_Sizes(face, 0, 18);
+	FT_Set_Pixel_Sizes(face, 0, mFontSize);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	
+	mAscent = face->ascender >> 6;
+	mDescent = face->descender >> 6;
+	
+	// 特殊统一处理不可见字符（小于33）
+	for (unsigned int code = 0; code < 33; code++)
+	{
+		if (FT_Load_Char(face, code , FT_LOAD_RENDER))
+		{
+			Debug::Warning("failed to load char.");
+			continue;
+		}
+		Glyph glyph;
+		glyph.advance = face->glyph->advance.x;
+		glyph.charCode = code;
+		glyph.size = Size(face->glyph->bitmap.width, face->glyph->bitmap.rows);
+		glyph.bearing = Size(face->glyph->bitmap_left, face->glyph->bitmap_top);
+
+		mGlyphs[code] = glyph;
+	}
+
 	int ammount = 0;
 	if (!IsDynamicLoadTexture())
 	{
@@ -107,96 +134,112 @@ void Font::LoadFont()
 		mTexture = ResourceCache::GetInstance().CreateTexture2DBySize("mFontName", { MAX_FONT_TEXTURE_WIDTH, MAX_FONT_TEXTURE_HEIGHT });
 
 		glBindTexture(GL_TEXTURE_2D, mTexture->GetTextureID());
-		GLenum curFormat = GL_RED;
 		Point2 startPos = Point2(0, 0);
 		const int advanceStep = 5;
-		for (uint32_t code = FONT_CODE_CHINESE_START; code <= FONT_CODE_CHINESE_END; code+=4)
-		{
-			std::vector<unsigned int> mDstColor;
-			unsigned int maxCharWidth = 0;
-			unsigned int maxCharHeight = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				ammount++;
-				if (FT_Load_Char(face, code + i, FT_LOAD_RENDER))
-				{
-					Debug::Warning("failed to load char.");
-					continue;
-				}
-				if ((unsigned int)face->glyph->bitmap.pitch > maxCharWidth)
-				{
-					maxCharWidth = face->glyph->bitmap.pitch;
-				}
-				if (face->glyph->bitmap.rows > maxCharHeight)
-				{
-					maxCharHeight = face->glyph->bitmap.rows;
-				}
-			}
-			if ( maxCharHeight == 0 || maxCharWidth == 0)
-			{
-				continue;
-			}
 
-			mDstColor.resize(maxCharWidth * maxCharHeight);
-			auto ToRGBA = [maxCharWidth, maxCharHeight](GLenum curFormat, const unsigned char* src, 
-						std::vector<unsigned int>& dst, int srcPitch, int srcRow)
+		// 全部加载默认加载全部拉丁字符和中文字符
+		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_LATIN_START, FONT_CODE_LATIN_END));
+		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_CHINESE_START, FONT_CODE_CHINESE_END));
+
+		for (const auto& fontCodeRange : mFontCodeRanges)
+		{
+			for (uint32_t code = fontCodeRange.codeBegin; code <= fontCodeRange.codeEnd; code += 4)
 			{
-				for (int row = 0; row < srcRow; row++)
+				std::vector<unsigned int> mDstColor;
+				unsigned int maxCharWidth = 0;
+				unsigned int maxCharHeight = 0;
+				for (int i = 0; i < 4; i++)
 				{
-					for (int col = 0; col < srcPitch; col++)
+					ammount++;
+					if (FT_Load_Char(face, code + i, FT_LOAD_RENDER))
 					{
-						switch (curFormat)
-						{
-						case GL_RED:
-							dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 0;
-							break;
-						case GL_GREEN:
-							dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 8;
-							break;
-						case GL_BLUE:
-							dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 16;
-							break;
-						case GL_ALPHA:
-							dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 24;
-						default:
-							break;
-						}
+						Debug::Warning("failed to load char.");
+						continue;
+					}
+					if ((unsigned int)face->glyph->bitmap.pitch > maxCharWidth)
+					{
+						maxCharWidth = face->glyph->bitmap.pitch;
+					}
+					if (face->glyph->bitmap.rows > maxCharHeight)
+					{
+						maxCharHeight = face->glyph->bitmap.rows;
 					}
 				}
-			};
-
-			for (int i = 0; i < 4; i++)
-			{
-				if (FT_Load_Char(face, code + i, FT_LOAD_RENDER))
+				if (maxCharHeight == 0 || maxCharWidth == 0)
 				{
-					Debug::Warning("failed to load char.");
 					continue;
 				}
-				ToRGBA(GL_RED + i, face->glyph->bitmap.buffer, mDstColor, face->glyph->bitmap.pitch, face->glyph->bitmap.rows);
 
-				Glyph glyph;
-				glyph.advance = (float)face->glyph->advance.x;
-				glyph.charCode = code;
-				glyph.chanel = GL_RED + i;
-				glyph.u0 = (float)(startPos.x / MAX_FONT_TEXTURE_WIDTH);
-				glyph.v0 = (float)(startPos.y / MAX_FONT_TEXTURE_HEIGHT);
-				glyph.u1 = (float)(startPos.x + face->glyph->bitmap.width) / MAX_FONT_TEXTURE_WIDTH;
-				glyph.v1 = (float)(startPos.y + face->glyph->bitmap.rows) / MAX_FONT_TEXTURE_HEIGHT;
-				mGlyphs[code] = glyph;
-			}
-
-			if (startPos.x + maxCharWidth >= MAX_FONT_TEXTURE_WIDTH)
-			{
-				startPos.x = 0;
-				if (startPos.y + maxCharHeight > MAX_FONT_TEXTURE_HEIGHT)
+				mDstColor.resize(maxCharWidth * maxCharHeight);
+				auto ToRGBA = [maxCharWidth, maxCharHeight](GLenum curFormat, const unsigned char* src,
+					std::vector<unsigned int>& dst, int srcPitch, int srcRow)
 				{
-					break;
+					for (int row = 0; row < srcRow; row++)
+					{
+						for (int col = 0; col < srcPitch; col++)
+						{
+							switch (curFormat)
+							{
+							case GL_RED:
+								dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 0;
+								break;
+							case GL_GREEN:
+								dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 8;
+								break;
+							case GL_BLUE:
+								dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 16;
+								break;
+							case GL_ALPHA:
+								dst[row * maxCharWidth + col] |= src[row * srcPitch + col] << 24;
+							default:
+								break;
+							}
+						}
+					}
+				};
+
+				for (int i = 0; i < 4; i++)
+				{
+					if (FT_Load_Char(face, code + i, FT_LOAD_RENDER))
+					{
+						Debug::Warning("failed to load char.");
+						continue;
+					}
+
+					Glyph glyph;
+					glyph.advance = face->glyph->advance.x;
+					glyph.charCode = code + i;
+					glyph.chanel = i;
+					glyph.size = Size(face->glyph->bitmap.width, face->glyph->bitmap.rows);
+					glyph.bearing = Size(face->glyph->bitmap_left, face->glyph->bitmap_top);
+
+					float u0 = (float(startPos.x) / MAX_FONT_TEXTURE_WIDTH);
+					float v0 = (float(startPos.y) / MAX_FONT_TEXTURE_HEIGHT);
+					float u1 = (float(startPos.x + face->glyph->bitmap.width)) / MAX_FONT_TEXTURE_WIDTH;
+					float v1 = (float(startPos.y + face->glyph->bitmap.rows)) / MAX_FONT_TEXTURE_HEIGHT;
+					glyph.u0 = u0;
+					glyph.v0 = v0;
+					glyph.u1 = u1;
+					glyph.v1 = v1;
+					mGlyphs[code + i] = glyph;
+
+					ToRGBA(GL_RED + i, face->glyph->bitmap.buffer, mDstColor, face->glyph->bitmap.pitch, face->glyph->bitmap.rows);
+
 				}
-				startPos.y += maxCharHeight + advanceStep;
+
+				if (startPos.x + maxCharWidth >= MAX_FONT_TEXTURE_WIDTH)
+				{
+					startPos.x = 0;
+					if (startPos.y + maxCharHeight > MAX_FONT_TEXTURE_HEIGHT)
+					{
+						break;
+					}
+					startPos.y += maxCharHeight + advanceStep;
+				}
+				unsigned char* pixels = (unsigned char*)mDstColor.data();
+				glTexSubImage2D(GL_TEXTURE_2D, 0, startPos.x, startPos.y, maxCharWidth, maxCharHeight, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+				startPos.x += (face->glyph->advance.x >> 6) + advanceStep;
 			}
-			unsigned char* pixels = (unsigned char*)mDstColor.data();
-			glTexSubImage2D(GL_TEXTURE_2D, 0, startPos.x, startPos.y, maxCharWidth, maxCharHeight, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-			startPos.x += (face->glyph->advance.x >> 6) + advanceStep;
 		}
 		
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -216,7 +259,7 @@ void Font::LoadFont()
 				continue;
 			}
 			Glyph glyph;
-			glyph.advance = (float)face->glyph->advance.x;
+			glyph.advance = face->glyph->advance.x;
 			glyph.charCode = code;
 			glyph.chanel = GL_RED;
 			mGlyphs[code] = glyph;
@@ -236,33 +279,153 @@ void Font::RenderText()
 }
 
 /**
-*	\brief 渲染文字
+*	\brief 渲染文字到指定位置
 *	\param size 子号
 *	\param pos  位置
 *	\param cols 列数
 *	\param clipRect 裁剪矩形
 *	\param renderText 渲染文字
 */
-void Font::RenderText(float size, const Point2 & pos, int cols, const Rect & clipRect, const string & renderText)
+void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText)
 {
-	// test code
-	Render({100,200}, {100,100}, 0);
+	if (renderText.empty())
+	{
+		return;
+	}
+
+	const char* textBegin = renderText.c_str();
+	RenderText(size, pos, clipRect, wrapWidth, textBegin);
+}
+
+/**
+*	\brief 渲染文字到指定位置
+*	\param size 子号
+*	\param pos  位置
+*	\param cols 列数
+*	\param clipRect 裁剪矩形
+*	\param renderText 渲染文字
+*/
+void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const char * textBegin, const char * textEnd)
+{
+	int posX = pos.x;
+	int posY = pos.y;
+
+	if (posY >= clipRect.height + clipRect.y)
+	{
+		return;
+	}
 
 	float scale = size / mFontSize;
-	// encode
+	int lineHeight = (int)size;
+	bool wrapEnabled = (wrapWidth > 0);
+	const char* wrapChar = nullptr;
+	const char* curCharPtr = textBegin;
 
-	// render
+	if (textEnd == nullptr)
+	{
+		textEnd = textBegin + strlen(textBegin);
+	}
+
+	// 循环遍历字符，先解码后渲染
+	while (curCharPtr < textEnd)
+	{
+		// 处理换行
+		if (wrapEnabled)
+		{
+			if (wrapChar == nullptr)
+			{
+				wrapChar = implementation::GetWordWraoPosition(curCharPtr, textEnd, scale, wrapWidth - (posX - pos.x));
+			}
+			if (curCharPtr >= wrapChar)
+			{
+				posX = pos.x;
+				posY += lineHeight;
+				wrapChar = nullptr;
+
+				continue;
+			}
+		}
+		unsigned int curChar = (unsigned int)(*curCharPtr);
+		if (curChar < 0x80)
+		{	// 单字节
+			curCharPtr++;
+		}
+		else
+		{	// 多字节
+			curCharPtr += implementation::ParsedUtf8(curChar, curCharPtr, textEnd);
+			if (curChar == 0)
+			{
+				Debug::Warning(string("Invalid text to render. ") + textBegin);
+				break;
+			}
+		}
+		// 处理转移符
+		if (curChar < 32)
+		{
+			if (curChar == '\n')
+			{
+				posX = pos.x;
+				posY += lineHeight;
+				if (posY >= clipRect.height + clipRect.y)
+				{
+					break;
+				}
+				if (!wrapEnabled && posY + lineHeight < clipRect.y)
+				{
+					while (curCharPtr < textEnd && *curCharPtr != '\n')
+						curCharPtr++;
+				}
+				continue;
+			}
+		}
+
+
+		// render
+		int charWidth = 0;
+		if (const Glyph* glyph = FindGlyph(curChar))
+		{
+			charWidth = (glyph->advance >> 6);
+
+			// 对于空格符和制表符则直接不进行渲染操作
+			if (curChar != ' ' && curChar != '\t')
+			{
+				const Size charSize = Size(int(glyph->size.width * scale),
+					int(glyph->size.height * scale));
+
+				SetCharTexs(glyph->u0, glyph->v0, glyph->u1, glyph->v1);
+				SetCharSize(charSize);
+				if (!IsDynamicLoadTexture())
+					SetCharChanel((float)glyph->chanel);
+
+				int x = posX + (int)(glyph->bearing.width * scale);
+				int y = posY + (mAscent - (int)glyph->bearing.height);
+
+				Render(Point2(x, y), charSize, 0);
+			}
+		}
+		posX += (int)(charWidth * scale) + mLetterSpacing;
+	}
 }
 
 /***** ***** *****  Glyph ***** ***** *****/
 
 Font::Glyph* Font::FindGlyph(wchar code)
 {
+	auto itor = mGlyphs.find(code);
+	if (itor != mGlyphs.end())
+	{
+		return &itor->second;
+	}
 	return nullptr;
 }
 
 const Font::Glyph* Font::FindGlyph(wchar code) const
 {
+	auto itor = mGlyphs.find(code);
+	if (itor != mGlyphs.end())
+	{
+		return &itor->second;
+	}
 	return nullptr;
 }
 
@@ -282,6 +445,26 @@ void Font::SetFontColor(const Color4B & color)
 const Color4B Font::GetFontColor() const
 {
 	return mQuad.rb.colors;
+}
+
+void Font::SetFontSize(int size)
+{
+	mFontSize = size;
+}
+
+int Font::GetFontSize() const
+{
+	return mFontSize;
+}
+
+void Font::SetLetterSpacing(int spacing)
+{
+	mLetterSpacing = spacing;
+}
+
+int Font::GetLetterSpacing() const
+{
+	return mLetterSpacing;
 }
 
 void Font::SetDynamicLoadTexture(bool isLoadAll, const Size & size)
@@ -305,9 +488,12 @@ bool Font::IsDynamicLoadTexture() const
 */
 void Font::InitRender()
 {
+	// test init
 	SetCharSize({ 512, 480 });
 	SetCharTexs(0.0f, 0.0f, 1.0f, 1.0f);
+	SetFontSize(16);
 	SetFontColor(Color4B::WHITE);
+	SetLetterSpacing(0);
 
 	// 初始化渲染状态
 	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME);
@@ -325,11 +511,15 @@ void Font::Render(Renderer & renderer, const Matrix4 & transform)
 {
 	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Font::Rener().");
 
-	mQuadCommand.Init(0, mProgramState,
-		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
-		&mQuad, 1, mBlendFunc, transform, mModelView);
+	// 为了生成多个quadCommand，且为了支持多态，这里创建只能指针传递,手动管理内存
+	// 未来需要考虑更简洁的传递方式
+	auto quadCommand = new QuadCommand();
 
-	renderer.PushCommand(&mQuadCommand);
+	quadCommand->Init(0, mProgramState,
+		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
+		mQuad, 1, mBlendFunc, transform, mModelView);
+
+	renderer.PushCommand(quadCommand);
 }
 
 /**
@@ -385,8 +575,132 @@ void Font::SetCharTexs(float u0, float v0, float u1, float v1)
 */
 void Font::SetCharScale(float scale)
 {
+	mScale = scale;
+}
+
+/**
+*	\brief 设置当前字符的渲染所处的通道
+*
+*	当使用全部加载的时候使用
+*/
+void Font::SetCharChanel(float chanel)
+{
+	mQuad.lb.vertices.z = chanel;
+	mQuad.lt.vertices.z = chanel;
+	mQuad.rb.vertices.z = chanel;
+	mQuad.rt.vertices.z = chanel;
+}
+
+/**
+*	\brief 解析utf8编码字符
+*	\param outChar 解码后的字符值
+*	\param textBegin 解码开始的位置
+*	\param textEnd 解码结束的位置
+*	\return utf8的字节个数
+*
+*	10xxxxxx
+*	110xxxxx 10xxxxxx
+*	1110xxxx 10xxxxxx 10xxxxxx
+*	11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+*/
+int implementation::ParsedUtf8(unsigned int& outChar, const char * textBegin, const char * textEnd)
+{
+	unsigned int result = (unsigned int)-1;
+	const unsigned char* curChar = (const unsigned char*)textBegin;
+
+	// 单字节
+	if ((*curChar & 0xc0) == 0x80)
+	{
+		result = (unsigned int)(*curChar++);
+		outChar = result;
+		return 1;
+	}
+	// 2字节 
+	if ((*curChar & 0xe0) == 0xc0)
+	{
+		result = (unsigned int)((*curChar++ & 0x1F) << 6);
+		if ((*curChar & 0xc0) != 0x80)
+			return 2;
+		result += (unsigned int)(*curChar++ & 0x3f);
+		outChar = result;
+		return 2;
+	}
+
+	// 3字节
+	if ((*curChar & 0xf0) == 0xe0)
+	{
+		result = (unsigned int)((*curChar++ & 0x0F) << 12);
+		if ((*curChar & 0xc0) != 0x80)
+			return 3;
+		result += (unsigned int)((*curChar++ & 0x3f) << 6);
+		if ((*curChar & 0xc0) != 0x80)
+			return 3;
+		result += (unsigned int)(*curChar++ & 0x3f);
+		outChar = result;
+		return 3;
+	}
+
+	// 4字节
+	if ((*curChar & 0xf8) == 0xf0)
+	{
+		result = (unsigned int)((*curChar++ & 0x07) << 18);
+		if ((*curChar & 0xc0) != 0x80)
+			return 4;
+		result += (unsigned int)((*curChar++ & 0x3f) << 12);
+		if ((*curChar & 0xc0) != 0x80)
+			return 4;
+		result += (unsigned int)((*curChar++ & 0x3f) << 6);
+		if ((*curChar & 0xc0) != 0x80)
+			return 4;
+		result += (unsigned int)(*curChar++ & 0x3f);
+		outChar = result;
+		return 4;
+	}
+	outChar = 0;
+	return 0;
+}
+
+/**
+*	\brief 计算换行的字符
+*/
+const char* implementation::GetWordWraoPosition(const char * textBegin, const char * textEnd, float scale, float wrapWidth)
+{
+	float wordWidth = 0.0f;
+	const char* curCharPtr = textBegin;
+	const char* nextCharPtr = nullptr;
+
+	// 需要考虑utf8单字节和多字节情况
+	while (curCharPtr < textEnd)
+	{
+		unsigned int curChar = (unsigned int)*curCharPtr;
+		if (curChar < 0x80)
+		{
+			nextCharPtr = curCharPtr + 1;
+		}
+		else
+		{
+			nextCharPtr = curCharPtr + implementation::ParsedUtf8(curChar, curCharPtr, textEnd);
+		}
+		if (curChar == 0)
+		{
+			break;
+		}
+		
+		const float charWidth = 0;
+		wordWidth += charWidth;
+
+		if (wordWidth >= wrapWidth)
+		{
+			return nextCharPtr;
+			break;
+		}
+		curCharPtr = nextCharPtr;
+
+	}
+
+	return curCharPtr;
+}
+
 }
 
 
-
-}

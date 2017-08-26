@@ -14,6 +14,21 @@ AsyncLoader::AsyncLoader():
 {
 }
 
+void AsyncLoader::Stop()
+{
+	if (mStartd && !mFinished)
+	{
+		std::future_status status = mFuture.wait_for(std::chrono::milliseconds(mUpdateStep / 2));
+		if (status != std::future_status::ready)
+		{
+			Debug::Warning("The future is be killed.");
+			mFuture.~future();
+		}
+		//Debug::Warning("The future is be killed.");
+		//mFuture.~future();
+	}
+}
+
 void AsyncLoader::Update()
 {
 	if (!mStartd || mFinished)

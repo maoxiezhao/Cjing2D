@@ -11,8 +11,8 @@
 #include"movements\targetMovement.h"
 
 namespace {
+	HWND hwnd = NULL;
 	HDC hDC = NULL;
-	HGLRC hRC = NULL;
 	HGLRC hRCShareing = NULL;
 }
 
@@ -42,8 +42,21 @@ App::App() :
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
 
-	// 异步加载资源
-	// 可异步的资源为字体、除default之外的纹理、音频、动画
+	/**** 异步加载资源,可异步的资源为字体、除default之外的纹理、音频、动画 */
+	// 目前异步加载动作耦合在app中，未来需要剥离出来
+
+	// 因为Opengl的渲染设备默认多线程会获取不到？？
+	// 所以需要创建一个渲染上下文(hRC)，共享之后在多线程中使用
+	hwnd = GetActiveWindow();
+	if (hwnd == NULL)
+		Debug::Die("Can not get the window's hwnd.");
+	hDC = GetDC(hwnd);
+	if (hDC == NULL)
+		Debug::Die("Can not get the window's dc.");
+	hRCShareing = wglCreateContext(hDC);
+	if (hRCShareing == NULL)
+		Debug::Die("Can not get the window's hrc.");
+	wglShareLists(wglGetCurrentContext(), hRCShareing);
 
 	mLoadingAnimate = std::make_shared<AnimationSprite>("menus/loading");
 	mLoadingAnimate->SetSize({ 120,120 });
@@ -58,6 +71,10 @@ App::App() :
 
 App::~App()
 {
+	// 首先停止异步加载器，未来如果加载器一直到lua场景中
+	// 则可不进行该操作
+	mAsyncLoader.Stop();
+
 	if (mCurrGame != nullptr)
 	{
 		mCurrGame->Stop();
@@ -209,17 +226,17 @@ void App::Render()
 		{
 			mCurrGame->Draw();
 		}
-		//mLuaContext->OnMainDraw();
+		mLuaContext->OnMainDraw();
 
-		//std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
-		//mGUI->HandleEvent(*ent);
+		std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
+		mGUI->HandleEvent(*ent);
 
-		//mWidget1->DrawBackground();
-		//mWidget2->DrawBackground();
-		//mWidget3->DrawBackground();
+		mWidget1->DrawBackground();
+		mWidget2->DrawBackground();
+		mWidget3->DrawBackground();
 
-
-		mFont->RenderText();
+		mFont->SetFontColor(Color4B::WHITE);
+		mFont->RenderText(18, Point2(100,100),Rect(0,0,300,300),0, u8"长段落测试：今天天气很好，因为去看了杀破狼2，感觉很神奇。");
 	}
 
 	Video::Rendercanvas();
@@ -248,6 +265,8 @@ void App::NotifyInput(const InputEvent & ent)
 */
 void App::AsyncLoading()
 {
+	wglMakeCurrent(hDC, hRCShareing);
+
 	Logger::Info("Async load font");
 	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
 	mFont->LoadFont();
@@ -279,6 +298,8 @@ void App::AsyncLoading()
 	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->Place(Point2(0, 0), Size(640, 480));
 
+	wglMakeCurrent(NULL, NULL);
+	wglDeleteContext(hRCShareing);
 }
 
 /**

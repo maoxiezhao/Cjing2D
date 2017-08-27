@@ -16,6 +16,12 @@ namespace font{
 
 struct FontConfig;
 
+static const unsigned int TEXT_ALIGN_SHIFT = 0;
+static const unsigned int TEXT_ALIGN_LEFT = 1 << TEXT_ALIGN_SHIFT;
+static const unsigned int TEXT_ALIGN_CENTER = 2 << TEXT_ALIGN_SHIFT;
+static const unsigned int TEXT_ALIGN_RIGHT = 4 << TEXT_ALIGN_SHIFT;
+static const unsigned int TEXT_ALIGN_MASK = 7 << TEXT_ALIGN_SHIFT;
+
 /**
 *	\brief Font 字体基类
 *
@@ -49,9 +55,9 @@ public:
 	void LoadFont();
 	void BuildLookupTable();
 
-	void RenderText();
-	void RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText);
-	void RenderText(float size, const Point2& pos, const Rect& clipRect, float wrapWidth, const char* textBegin, const char* textEnd = nullptr);
+	void RenderText(float size, const Point2 & pos, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);		/** 简化了的绘制接口 */
+	void RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);
+	void RenderText(float size, const Point2& pos, const Rect& clipRect, float wrapWidth, const char* textBegin, const char* textEnd = nullptr, unsigned int textAlign = TEXT_ALIGN_LEFT);
 
 	/**** **** ****  setter/gettter **** **** ****/
 	bool IsLoaded()const
@@ -100,6 +106,7 @@ private:
 	int   mAscent;			// baseline之上至字符最高处的距离
 	int   mDescent;			// baseline之下至字符最低处的距离
 	int   mLetterSpacing;	// 字间距
+	int   mLineHeight;		// 行间距
 
 	Glyph mFallbackChar;	// 当需要渲染的字不存在时，使用该字符
 
@@ -121,11 +128,14 @@ public:
 	int GetFontSize()const;
 	void SetLetterSpacing(int spacing);
 	int GetLetterSpacing()const;
+	void SetLineHeight(int lineHeight);
+	int GetLineHeight()const;
 
 	void SetDynamicLoadTexture(bool isDynamicLoad , const Size& size);
 	bool IsDynamicLoadTexture()const;
 private:
 	/**** **** ****  Render **** **** ****/
+	const char* GetWordWraoPosition(const char * textBegin, const char * textEnd, float scale, float wrapWidth);
 	void InitRender();
 	void CalcTextureRect(int width, int height);
 	void SetCharSize(const Size& size);
@@ -155,8 +165,6 @@ using FontConstPtr = std::shared_ptr<const Font>;
 namespace implementation
 {
 	int ParsedUtf8(unsigned int& outChar, const char* textBegin, const char* textEnd);
-
-	const char* GetWordWraoPosition(const char * textBegin, const char * textEnd,float scale, float wrapWidth);
 }
 
 }

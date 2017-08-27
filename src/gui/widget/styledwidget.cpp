@@ -211,10 +211,6 @@ Size StyledWidget::CalculateBestSize()const
 	return GetBestTextSize(minSize, maxSize);
 }
 
-Size StyledWidget::ReCalculateBestSize()
-{
-}
-
 Widget * StyledWidget::Find(string & id, const bool activited)
 {
 	return nullptr;

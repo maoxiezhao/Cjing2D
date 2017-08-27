@@ -52,7 +52,6 @@ public:
 
 	virtual Size GetBestTextSize(const Size& minSize, const Size& maxSize)const;
 	virtual Size CalculateBestSize()const;
-	virtual Size ReCalculateBestSize();
 
 	virtual void Place(const Point2& pos, const Size& size);
 

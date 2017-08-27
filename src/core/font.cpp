@@ -19,6 +19,7 @@ Font::Font():
 	mAscent(0),
 	mDescent(0),
 	mLetterSpacing(0),
+	mLineHeight(0),
 	mConfig(nullptr),
 	mTexture(nullptr),
 	mProgramState(nullptr),
@@ -36,6 +37,7 @@ Font::Font(const string & font):
 	mAscent(0),
 	mDescent(0),
 	mLetterSpacing(0),
+	mLineHeight(0),
 	mConfig(nullptr),
 	mTexture(nullptr),
 	mProgramState(nullptr),
@@ -140,6 +142,10 @@ void Font::LoadFont()
 		// 全部加载默认加载全部拉丁字符和中文字符
 		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_LATIN_START, FONT_CODE_LATIN_END));
 		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_CHINESE_START, FONT_CODE_CHINESE_END));
+
+		// 特殊处理中文特殊符号
+		mFontCodeRanges.emplace_back(FontCodeRange(0x3002, 0x3002));
+		mFontCodeRanges.emplace_back(FontCodeRange(0xFF0C, 0xFF0C));
 
 		for (const auto& fontCodeRange : mFontCodeRanges)
 		{
@@ -269,13 +275,30 @@ void Font::LoadFont()
 	Logger::Info("Load Font successed.");
 }
 
+/**
+*	\brief 建立动态查询表
+*/
 void Font::BuildLookupTable()
 {
 }
 
-void Font::RenderText()
+/**
+*	\brief 绘制文字，简化了的渲染接口
+*	\param size 子号
+*	\param pos  位置
+*	\param renderText 渲染文字
+*/
+void Font::RenderText(float size, const Point2 & pos, const string & renderText, unsigned int textAlign)
 {
-	Render({ 100,300 }, { 100,100 }, 0);
+	if (renderText.empty())
+	{
+		return;
+	}
+	const Rect clipRect = Rect(0, 0);
+	float wrapWidth = 0.0f;
+	const char* textBegin = renderText.c_str();
+
+	RenderText(size, pos, clipRect, wrapWidth, textBegin, nullptr, textAlign);
 }
 
 /**
@@ -286,7 +309,7 @@ void Font::RenderText()
 *	\param clipRect 裁剪矩形
 *	\param renderText 渲染文字
 */
-void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText)
+void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText, unsigned int textAlign)
 {
 	if (renderText.empty())
 	{
@@ -294,7 +317,7 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 	}
 
 	const char* textBegin = renderText.c_str();
-	RenderText(size, pos, clipRect, wrapWidth, textBegin);
+	RenderText(size, pos, clipRect, wrapWidth, textBegin, nullptr, textAlign);
 }
 
 /**
@@ -305,19 +328,22 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 *	\param clipRect 裁剪矩形
 *	\param renderText 渲染文字
 */
-void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const char * textBegin, const char * textEnd)
+void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, 
+				const char * textBegin, const char * textEnd, unsigned int textAlign)
 {
 	int posX = pos.x;
 	int posY = pos.y;
 
-	if (posY >= clipRect.height + clipRect.y)
+	float scale = size / mFontSize;
+	int lineHeight = (int)size < mLineHeight ? mLineHeight : (int)size;
+	bool wrapEnabled = (wrapWidth > 0);
+	bool clipEnabled = clipRect.width > 0 && clipRect.height > 0;
+
+	if (clipEnabled && posY >= clipRect.height + clipRect.y)
 	{
 		return;
 	}
 
-	float scale = size / mFontSize;
-	int lineHeight = (int)size;
-	bool wrapEnabled = (wrapWidth > 0);
 	const char* wrapChar = nullptr;
 	const char* curCharPtr = textBegin;
 
@@ -326,22 +352,77 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 		textEnd = textBegin + strlen(textBegin);
 	}
 
-	// 循环遍历字符，先解码后渲染
-	while (curCharPtr < textEnd)
+	auto RenderFuncion = [&](const std::vector<unsigned int>& charCodes, int maxWidth, unsigned int textAlign, int posY)
 	{
-		// 处理换行
+		// 根据最大长度和对齐方式计算开始位置
+		if (textAlign == TEXT_ALIGN_LEFT)
+		{
+			posX = pos.x;
+		}
+		else if (textAlign == TEXT_ALIGN_CENTER)
+		{
+			posX = pos.x - maxWidth / 2;
+		}
+		else if (textAlign == TEXT_ALIGN_RIGHT)
+		{
+			posX = pos.x - maxWidth;
+		}
+		// 遍历字符向量
+		for (const auto& curChar : charCodes)
+		{	// render
+			int charWidth = 0;
+			if (const Glyph* glyph = FindGlyph(curChar))
+			{
+				charWidth = (glyph->advance >> 6);
+
+				// 对于空格符和制表符则直接不进行渲染操作
+				if (curChar != ' ' && curChar != '\t')
+				{
+					int x = posX + (int)(glyph->bearing.width * scale);
+					int y = posY + (mAscent - (int)glyph->bearing.height);
+
+					if (!clipEnabled || (x >= clipRect.x && x + charWidth <= (clipRect.x + clipRect.width)))
+					{
+						const Size charSize = Size(int(glyph->size.width * scale),
+												   int(glyph->size.height * scale));
+
+						SetCharTexs(glyph->u0, glyph->v0, glyph->u1, glyph->v1);
+						SetCharSize(charSize);
+						if (!IsDynamicLoadTexture())
+							SetCharChanel((float)glyph->chanel);
+
+						Render(Point2(x, y), charSize, 0);
+					}
+				}
+			}
+			posX += (int)(charWidth * scale) + mLetterSpacing;
+		}
+	};
+
+	// 循环遍历字符，先解码后保存到队列
+	// 并计算最大高度和宽度
+	std::vector<unsigned int> charCodes;
+	int maxWidth = 0;
+	int maxHieght = lineHeight;
+	while (curCharPtr < textEnd)
+	{	// 处理换行
 		if (wrapEnabled)
 		{
+			// 计算需要换行的字符指针位置
 			if (wrapChar == nullptr)
 			{
-				wrapChar = implementation::GetWordWraoPosition(curCharPtr, textEnd, scale, wrapWidth - (posX - pos.x));
+				wrapChar = GetWordWraoPosition(curCharPtr, textEnd, scale, wrapWidth - (posX - pos.x));
 			}
 			if (curCharPtr >= wrapChar)
 			{
+				RenderFuncion(charCodes, maxWidth, textAlign, posY);
+
+				maxWidth = 0;
+				maxHieght += lineHeight;
 				posX = pos.x;
 				posY += lineHeight;
 				wrapChar = nullptr;
-
+				charCodes.clear();
 				continue;
 			}
 		}
@@ -364,9 +445,14 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 		{
 			if (curChar == '\n')
 			{
+				RenderFuncion(charCodes, maxWidth, textAlign, posY);
+
+				maxWidth = 0;
+				maxHieght += lineHeight;
 				posX = pos.x;
 				posY += lineHeight;
-				if (posY >= clipRect.height + clipRect.y)
+				charCodes.clear();
+				if (clipEnabled && posY >= clipRect.height + clipRect.y)
 				{
 					break;
 				}
@@ -378,35 +464,32 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 				continue;
 			}
 		}
-
-
-		// render
 		int charWidth = 0;
 		if (const Glyph* glyph = FindGlyph(curChar))
 		{
 			charWidth = (glyph->advance >> 6);
-
-			// 对于空格符和制表符则直接不进行渲染操作
-			if (curChar != ' ' && curChar != '\t')
-			{
-				const Size charSize = Size(int(glyph->size.width * scale),
-					int(glyph->size.height * scale));
-
-				SetCharTexs(glyph->u0, glyph->v0, glyph->u1, glyph->v1);
-				SetCharSize(charSize);
-				if (!IsDynamicLoadTexture())
-					SetCharChanel((float)glyph->chanel);
-
-				int x = posX + (int)(glyph->bearing.width * scale);
-				int y = posY + (mAscent - (int)glyph->bearing.height);
-
-				Render(Point2(x, y), charSize, 0);
-			}
 		}
-		posX += (int)(charWidth * scale) + mLetterSpacing;
+		maxWidth += (int)(charWidth * scale) + mLetterSpacing;
+		charCodes.push_back(curChar);
 	}
-}
 
+	RenderFuncion(charCodes, maxWidth, textAlign, posY);	
+}
+//if (curChar == '\n')
+//{
+//	posX = pos.x;
+//	posY += lineHeight;
+//	if (clipEnabled && posY >= clipRect.height + clipRect.y)
+//	{
+//		break;
+//	}
+//	if (!wrapEnabled && posY + lineHeight < clipRect.y)
+//	{
+//		while (curCharPtr < textEnd && *curCharPtr != '\n')
+//			curCharPtr++;
+//	}
+//	continue;
+//}
 /***** ***** *****  Glyph ***** ***** *****/
 
 Font::Glyph* Font::FindGlyph(wchar code)
@@ -493,7 +576,7 @@ void Font::InitRender()
 	SetCharTexs(0.0f, 0.0f, 1.0f, 1.0f);
 	SetFontSize(16);
 	SetFontColor(Color4B::WHITE);
-	SetLetterSpacing(0);
+	SetLetterSpacing(1);
 
 	// 初始化渲染状态
 	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME);
@@ -592,16 +675,76 @@ void Font::SetCharChanel(float chanel)
 }
 
 /**
+*	\brief 设置行间距
+*
+*	这里需要注意，设计上行间距的设置会始终大于等于fontSize
+*/
+void Font::SetLineHeight(int lineHeight)
+{
+	mLineHeight = lineHeight;
+}
+
+int Font::GetLineHeight() const
+{
+	return mLineHeight;
+}
+
+/**
+*	\brief 计算换行的字符
+*/
+const char* Font::GetWordWraoPosition(const char * textBegin, const char * textEnd, float scale, float wrapWidth)
+{
+	float wordWidth = 0.0f;
+	const char* curCharPtr = textBegin;
+	const char* nextCharPtr = nullptr;
+
+	// 需要考虑utf8单字节和多字节情况
+	while (curCharPtr < textEnd)
+	{
+		unsigned int curChar = (unsigned int)*curCharPtr;
+		if (curChar < 0x80)
+		{
+			nextCharPtr = curCharPtr + 1;
+		}
+		else
+		{
+			nextCharPtr = curCharPtr + implementation::ParsedUtf8(curChar, curCharPtr, textEnd);
+		}
+		if (curChar == 0)
+		{
+			break;
+		}
+		
+		float charWidth = 0;
+		if (const Glyph* glyph = FindGlyph(curChar))
+		{
+			charWidth = (float)(glyph->advance >> 6);
+		}
+		wordWidth += charWidth;
+
+		if (wordWidth >= wrapWidth)
+		{
+			return nextCharPtr;
+			break;
+		}
+		curCharPtr = nextCharPtr;
+
+	}
+
+	return curCharPtr;
+}
+
+/**
 *	\brief 解析utf8编码字符
 *	\param outChar 解码后的字符值
 *	\param textBegin 解码开始的位置
 *	\param textEnd 解码结束的位置
 *	\return utf8的字节个数
 *
-*	10xxxxxx
-*	110xxxxx 10xxxxxx
-*	1110xxxx 10xxxxxx 10xxxxxx
-*	11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+*	1字节  10xxxxxx
+*	2字节  110xxxxx 10xxxxxx
+*	3字节  1110xxxx 10xxxxxx 10xxxxxx
+*	4字节  11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 */
 int implementation::ParsedUtf8(unsigned int& outChar, const char * textBegin, const char * textEnd)
 {
@@ -660,47 +803,6 @@ int implementation::ParsedUtf8(unsigned int& outChar, const char * textBegin, co
 	return 0;
 }
 
-/**
-*	\brief 计算换行的字符
-*/
-const char* implementation::GetWordWraoPosition(const char * textBegin, const char * textEnd, float scale, float wrapWidth)
-{
-	float wordWidth = 0.0f;
-	const char* curCharPtr = textBegin;
-	const char* nextCharPtr = nullptr;
 
-	// 需要考虑utf8单字节和多字节情况
-	while (curCharPtr < textEnd)
-	{
-		unsigned int curChar = (unsigned int)*curCharPtr;
-		if (curChar < 0x80)
-		{
-			nextCharPtr = curCharPtr + 1;
-		}
-		else
-		{
-			nextCharPtr = curCharPtr + implementation::ParsedUtf8(curChar, curCharPtr, textEnd);
-		}
-		if (curChar == 0)
-		{
-			break;
-		}
-		
-		const float charWidth = 0;
-		wordWidth += charWidth;
-
-		if (wordWidth >= wrapWidth)
-		{
-			return nextCharPtr;
-			break;
-		}
-		curCharPtr = nextCharPtr;
-
-	}
-
-	return curCharPtr;
-}
 
 }
-
-

@@ -236,7 +236,7 @@ void App::Render()
 		mWidget3->DrawBackground();
 
 		mFont->SetFontColor(Color4B::WHITE);
-		mFont->RenderText(18, Point2(100,100),Rect(0,0,300,300),0, u8"长段落测试：今天天气很好，因为去看了杀破狼2，感觉很神奇。");
+		mFont->RenderText(16, Point2(320,240), u8"长段落换行测试，\n传说中的天空之剑啊。", font::TEXT_ALIGN_CENTER);
 	}
 
 	Video::Rendercanvas();
@@ -270,6 +270,7 @@ void App::AsyncLoading()
 	Logger::Info("Async load font");
 	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
 	mFont->LoadFont();
+	mFont->SetLineHeight(50);
 	Logger::Info("Async load font succeed");
 
 	// test
@@ -294,8 +295,8 @@ void App::AsyncLoading()
 
 	//// grid
 	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_CENTER | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->Place(Point2(0, 0), Size(640, 480));
 
 	wglMakeCurrent(NULL, NULL);

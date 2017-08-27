@@ -41,6 +41,7 @@ class Grid : public Widget
 {
 	class Children;
 public:
+	Grid();
 	Grid(int row, int col);
 	~Grid();
 

@@ -6,6 +6,15 @@
 
 namespace gui
 {
+Grid::Grid():
+	mRows(0),
+	mCols(0),
+	mRowsHeight(),
+	mColsWidth(),
+	mChilds(0),
+	mNamedChilds()
+{
+}
 
 Grid::Grid(int row, int col) :
 	mRows(row),

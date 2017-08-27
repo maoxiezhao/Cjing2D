@@ -16,6 +16,7 @@
 #include"gui\widget\widget.h"
 #include"gui\widget\grid.h"
 #include"core\font.h"
+#include"game\textDrawable.h"
 
 /**
 *	\brief 程序的主循环
@@ -62,7 +63,7 @@ private:
 	std::shared_ptr<gui::Widget> mWidget2;
 	std::shared_ptr<gui::Widget> mWidget3;
 	std::shared_ptr<gui::Grid> mGrid;
-	std::shared_ptr<font::Font> mFont;
+	std::shared_ptr<TextDrawable> mText;
 };
 
 #endif

@@ -5,6 +5,8 @@
 #include"core\fileData.h"
 #include"core\video.h"
 #include"core\renderer.h"
+#include"core\fontAtlas.h"
+
 #include<Windows.h>
 
 //test
@@ -235,8 +237,7 @@ void App::Render()
 		mWidget2->DrawBackground();
 		mWidget3->DrawBackground();
 
-		mFont->SetFontColor(Color4B::WHITE);
-		mFont->RenderText(16, Point2(320,240), u8"长段落换行测试，\n传说中的天空之剑啊。", font::TEXT_ALIGN_CENTER);
+		mText->Draw();
 	}
 
 	Video::Rendercanvas();
@@ -267,12 +268,18 @@ void App::AsyncLoading()
 {
 	wglMakeCurrent(hDC, hRCShareing);
 
-	Logger::Info("Async load font");
-	mFont = std::make_shared<font::Font>("fonts/msyh.ttf");
-	mFont->LoadFont();
-	mFont->SetLineHeight(50);
-	Logger::Info("Async load font succeed");
+	Logger::Info("Async load default font");
+	font::FontAtlas::GetInstance().LoadDefaultFont();
+	Logger::Info("Async load default font succeed");
 
+	// test 
+	mText = std::make_shared<TextDrawable>();
+	mText->SetFont(font::FontAtlas::GetInstance().GetDefaultFont());
+	mText->SetText(u8"苟且于生活\n带风流浪\n心没有归属\n流浪四方");
+	mText->SetTextHorizontalAlign(font::TEXT_ALIGN_CENTER);
+	mText->SetPos(Point2(300, 100));
+	mText->SetLineHeight(30);
+	mText->SetLetterSpacing(2);
 	// test
 	// init gui system
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());

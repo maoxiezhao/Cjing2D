@@ -2,11 +2,11 @@
 
 #include"common\common.h"
 #include"core\textureCache.h"
+#include"core\renderer.h"
 #include"game\sprite.h"
 #include"utils\point.h"
 #include"utils\size.h"
 #include"utils\rectangle.h"
-#include"core\renderer.h"
 
 #include"ft2build.h"
 #include"freetype.h"
@@ -15,6 +15,7 @@
 namespace font{
 
 struct FontConfig;
+struct FontCodeRange;
 
 static const unsigned int TEXT_ALIGN_SHIFT = 0;
 static const unsigned int TEXT_ALIGN_LEFT = 1 << TEXT_ALIGN_SHIFT;
@@ -38,38 +39,11 @@ public:
 	enum
 	{
 		FONT_CODE_LATIN_START = 0x0021,
-		FONT_CODE_LATIN_END   = 0x00A6,
+		FONT_CODE_LATIN_END = 0x00A6,
 		FONT_CODE_CHINESE_START = 0x4E00,
-		FONT_CODE_CHINESE_END  = 0x9FA5,
-	};	
+		FONT_CODE_CHINESE_END = 0x9FA5,
+	};
 
-	Font();
-	Font(const string& font);
-	~Font();
-
-	Font(const Font& other) = delete;
-	Font& operator=(const Font& other) = delete;	
-
-	void UnLoad();
-	void Flush();
-	void LoadFont();
-	void BuildLookupTable();
-
-	void RenderText(float size, const Point2 & pos, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);		/** 简化了的绘制接口 */
-	void RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);
-	void RenderText(float size, const Point2& pos, const Rect& clipRect, float wrapWidth, const char* textBegin, const char* textEnd = nullptr, unsigned int textAlign = TEXT_ALIGN_LEFT);
-
-	/**** **** ****  setter/gettter **** **** ****/
-	bool IsLoaded()const
-	{
-		return mIsLoaded;
-	}
-	bool IsDirty()const
-	{
-		return mIsDirty;
-	}
-
-private:
 	/**
 	*	\brief 加载的字符范围，主要用于非动态加载
 	*/
@@ -81,7 +55,30 @@ private:
 		FontCodeRange(unsigned int begin, unsigned int end) :codeBegin(begin), codeEnd(end) {}
 	};
 
-	std::vector<FontCodeRange> mFontCodeRanges;
+public:	
+
+	Font();
+	Font(const string& font);
+	~Font();
+
+	Font(const Font& other) = delete;
+	Font& operator=(const Font& other) = delete;	
+
+	void UnLoad();
+	void Flush();
+	void LoadFont(const string& fontData,const std::vector<FontCodeRange>& codeRanges);
+	void BuildLookupTable();
+
+	void RenderText(float size, const Point2 & pos, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);		/** 简化了的绘制接口 */
+	void RenderText(float size, const Point2 & pos, const Rect & clipRect, float wrapWidth, const string& renderText, unsigned int textAlign = TEXT_ALIGN_LEFT);
+	void RenderText(float size, const Point2& pos, const Rect& clipRect, float wrapWidth, const char* textBegin, const char* textEnd = nullptr, unsigned int textAlign = TEXT_ALIGN_LEFT);
+
+	bool IsLoaded()const;
+	bool IsDirty()const;
+
+	int GetTextWidth(const string& text)const;
+	int GetTextHeight(const string& text)const;
+private:
 
 	/**** **** ****  Glyph **** **** ****/
 	/*

@@ -250,6 +250,15 @@
     <ClCompile Include="src\core\asyncLoader.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\fontApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\containerBase.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\textDrawable.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -470,6 +479,12 @@
     </ClInclude>
     <ClInclude Include="src\core\asyncLoader.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\containerBase.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\textDrawable.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

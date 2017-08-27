@@ -121,16 +121,19 @@
     <ClCompile Include="src\game\savegame.cpp" />
     <ClCompile Include="src\game\setting.cpp" />
     <ClCompile Include="src\game\sprite.cpp" />
+    <ClCompile Include="src\game\textDrawable.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
+    <ClCompile Include="src\gui\widget\containerBase.cpp" />
     <ClCompile Include="src\gui\widget\grid.cpp" />
     <ClCompile Include="src\gui\widget\styledwidget.cpp" />
     <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\gui\widget\window.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
     <ClCompile Include="src\lua\drawableApi.cpp" />
+    <ClCompile Include="src\lua\fontApi.cpp" />
     <ClCompile Include="src\lua\gameApi.cpp" />
     <ClCompile Include="src\lua\luaContext.cpp" />
     <ClCompile Include="src\lua\luaData.cpp" />
@@ -195,6 +198,7 @@
     <ClInclude Include="src\game\setting.h" />
     <ClInclude Include="src\game\sprite.h" />
     <ClInclude Include="src\game\animationData.h" />
+    <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
@@ -202,6 +206,7 @@
     <ClInclude Include="src\gui\core\handler.h" />
     <ClInclude Include="src\gui\core\message.h" />
     <ClInclude Include="src\gui\core\widgetDefinition.h" />
+    <ClInclude Include="src\gui\widget\containerBase.h" />
     <ClInclude Include="src\gui\widget\grid.h" />
     <ClInclude Include="src\gui\widget\styledwidget.h" />
     <ClInclude Include="src\gui\widget\widget.h" />

@@ -79,7 +79,7 @@ void Font::Flush()
 /**
 *	\brief 加载字体文件
 */
-void Font::LoadFont()
+void Font::LoadFont(const string& fontData, const std::vector<FontCodeRange>& codeRanges)
 {
 	Logger::Info("Start loading Font.");
 
@@ -91,16 +91,11 @@ void Font::LoadFont()
 	{
 		Debug::Error("Faild to init FT_Library.");
 	}
-	if (!FileData::IsFileExists(mFontName))
-	{
-		Debug::Error("Font file is not existed.");
-	}
-	string data = FileData::ReadFile(mFontName);
-	if (data.empty())
+	if (fontData.empty())
 	{
 		Debug::Error("Failed to open font file.");
 	}
-	if (FT_New_Memory_Face(ft, (unsigned char*)data.c_str(), data.size(), 0, &face))
+	if (FT_New_Memory_Face(ft, (unsigned char*)fontData.c_str(), fontData.size(), 0, &face))
 	{
 		Debug::Error("Failed to create new font face.");
 	}
@@ -139,15 +134,7 @@ void Font::LoadFont()
 		Point2 startPos = Point2(0, 0);
 		const int advanceStep = 5;
 
-		// 全部加载默认加载全部拉丁字符和中文字符
-		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_LATIN_START, FONT_CODE_LATIN_END));
-		mFontCodeRanges.emplace_back(FontCodeRange(FONT_CODE_CHINESE_START, FONT_CODE_CHINESE_END));
-
-		// 特殊处理中文特殊符号
-		mFontCodeRanges.emplace_back(FontCodeRange(0x3002, 0x3002));
-		mFontCodeRanges.emplace_back(FontCodeRange(0xFF0C, 0xFF0C));
-
-		for (const auto& fontCodeRange : mFontCodeRanges)
+		for (const auto& fontCodeRange : codeRanges)
 		{
 			for (uint32_t code = fontCodeRange.codeBegin; code <= fontCodeRange.codeEnd; code += 4)
 			{
@@ -475,21 +462,42 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 
 	RenderFuncion(charCodes, maxWidth, textAlign, posY);	
 }
-//if (curChar == '\n')
-//{
-//	posX = pos.x;
-//	posY += lineHeight;
-//	if (clipEnabled && posY >= clipRect.height + clipRect.y)
-//	{
-//		break;
-//	}
-//	if (!wrapEnabled && posY + lineHeight < clipRect.y)
-//	{
-//		while (curCharPtr < textEnd && *curCharPtr != '\n')
-//			curCharPtr++;
-//	}
-//	continue;
-//}
+
+bool Font::IsLoaded() const
+{
+	return mIsLoaded;
+}
+
+bool Font::IsDirty() const
+{
+	return mIsDirty;
+}
+
+/**
+*	\brief 获取文本宽度
+*/
+int Font::GetTextWidth(const string& text) const
+{
+	if (!IsLoaded())
+	{
+		return 0;
+	}
+	return 0;
+}
+
+/**
+*	\brief 获取文本高度
+*/
+int Font::GetTextHeight(const string& text) const
+{
+	if (!IsLoaded())
+	{
+		return 0;
+	}
+
+	return 0;
+}
+
 /***** ***** *****  Glyph ***** ***** *****/
 
 Font::Glyph* Font::FindGlyph(wchar code)
@@ -577,6 +585,7 @@ void Font::InitRender()
 	SetFontSize(16);
 	SetFontColor(Color4B::WHITE);
 	SetLetterSpacing(1);
+	SetLineHeight(mFontSize);
 
 	// 初始化渲染状态
 	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME);

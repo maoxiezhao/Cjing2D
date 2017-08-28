@@ -12,6 +12,7 @@ function cjing.Main:onStarted()
 	-- data init --
 	self._sprite = {};
 	self._animation = nil
+	self._text = nil
 	
 	-- test sprite --
 	for index = 1, 64 do
@@ -55,6 +56,12 @@ function cjing.Main:onStarted()
 		movement:start(animation,function()  
 			--self:TestMovementCallBack()
 		end)
+	end 
+	
+	-- test text
+	local text = cjing.Text.create()
+	if text then 
+		self._text = text
 	end 
 	
 end

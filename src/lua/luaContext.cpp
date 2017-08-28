@@ -697,6 +697,7 @@ void LuaContext::RegisterModules()
 	RegisterMainModule();
 	RegisterGameModule();
 	RegisterVideoModule();
+	RegisterFontModule();
 	RegisterMenuModule();
 	RegisterTimeModule();
 	RegisterSpriteModule();

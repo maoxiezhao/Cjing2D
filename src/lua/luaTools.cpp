@@ -106,6 +106,75 @@ namespace LuaTools
 		return CheckFunction(l, index);
 	}
 
+	bool IsColor(lua_State*l, int index)
+	{
+		index = GetPositiveIndex(l, index);
+		if (lua_type(l, index) != LUA_TTABLE)
+		{
+			return false;
+		}
+
+		lua_rawgeti(l, index, 1);
+		lua_rawgeti(l, index, 2);
+		lua_rawgeti(l, index, 3);
+		lua_rawgeti(l, index, 4);
+		bool result = lua_isnumber(l, -4) &&
+					  lua_isnumber(l, -3) &&
+					  lua_isnumber(l, -2) &&
+					  lua_isnumber(l, -1);
+		return result;
+	}
+
+	Color4B CheckColor(lua_State*l, int index)
+	{
+		index = GetPositiveIndex(l, index);
+		CheckType(l, index, LUA_TTABLE);
+
+		lua_rawgeti(l, index, 1);
+		lua_rawgeti(l, index, 2);
+		lua_rawgeti(l, index, 3);
+		lua_rawgeti(l, index, 4);
+		Color4B color(				// {r g b a}
+			(GLubyte)CheckInt(l, -4),
+			(GLubyte)CheckInt(l, -3),
+			(GLubyte)CheckInt(l, -2),
+			(GLubyte)CheckInt(l, -1)
+		);
+		lua_pop(l, 4);
+		return color;
+	}
+
+	Color4B CheckFieldColor(lua_State*l, int tableIndex, const string& name)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!IsColor(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:color type,got ") + luaL_typename(l, -1));
+		}
+		const Color4B& color = CheckColor(l, -1);
+		lua_pop(l, 1);
+		return color;
+	}
+
+	Color4B CheckFieldColorByDefault(lua_State*l, int tableIndex, const string&name, const Color4B defaultValue)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (lua_isnil(l, -1))
+		{
+			lua_pop(l, 1);	// pop nil
+			return defaultValue;
+		}
+
+		if (!IsColor(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:color type,got ") + luaL_typename(l, -1));
+		}
+
+		const Color4B& color = CheckColor(l, -1);
+		lua_pop(l, 1);
+		return color;
+	}
+
 	/**
 	*	\brief 获取table中名字为name的int值
 	*/
@@ -128,6 +197,24 @@ namespace LuaTools
 	{
 		lua_getfield(l, tableIndex, name.c_str());
 		if (!lua_isstring(l,-1))
+		{
+			ArgError(l, tableIndex, string("Excepted:string,got ") + luaL_typename(l, -1));
+		}
+		const string& value = lua_tostring(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
+	string CheckFieldStringByDefault(lua_State*l, int tableIndex, const string& name, const string& defaultString)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (lua_isnil(l, -1))
+		{
+			lua_pop(l, 1); // pop nil
+			return defaultString;
+		}
+
+		if (!lua_isstring(l, -1))
 		{
 			ArgError(l, tableIndex, string("Excepted:string,got ") + luaL_typename(l, -1));
 		}

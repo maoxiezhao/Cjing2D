@@ -57,3 +57,5 @@ private:
 	int mTextLineHeight;
 	int mTextLetterSpacing;
 };
+
+using TextDrawablePtr = std::shared_ptr<TextDrawable>;

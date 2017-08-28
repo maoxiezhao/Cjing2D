@@ -22,6 +22,7 @@ class AnimationSprite;
 class Movement;
 class StraightMovement;
 class TargetMovement;
+class TextDrawable;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -80,6 +81,7 @@ public:
 	void RegisterMovementModule();
 	void RegisterSpriteModule();
 	void RegisterAnimationModule();
+	void RegisterFontModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -143,6 +145,20 @@ public:
 		movement_target_api_get_target,
 		movement_target_api_set_speed,
 		movement_target_api_get_speed,
+		// text 
+		text_api_create,
+		text_api_set_font,
+		text_api_get_font,
+		text_api_set_text,
+		text_api_get_text,
+		text_api_set_color,
+		text_api_get_color,
+		text_api_set_size,
+		text_api_get_size,
+		text_api_set_line_height,
+		text_api_set_letter_spacing,
+		text_api_draw,
+
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -217,7 +233,8 @@ public:
 	static void PushSprite(lua_State*l, Sprite& sprite);
 	static void PushAnimation(lua_State*l, AnimationSprite& animation);
 	static void PushMovement(lua_State*l, Movement& movement);
-
+	static void PushText(lua_State*l, TextDrawable& textDrawable);
+	
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
 	static bool IsDrawable(lua_State*l, int index);
@@ -231,6 +248,8 @@ public:
 	static bool IsStraightMovement(lua_State*l, int index);
 	static std::shared_ptr<TargetMovement> CheckTargetMovement(lua_State*l, int index);
 	static bool IsTargetMovement(lua_State*l, int index);
+	static std::shared_ptr<TextDrawable> CheckTextDrawable(lua_State*l, int index);
+	static bool IsTextDrawable(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
@@ -241,6 +260,7 @@ public:
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;
+	static const string module_font_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -263,7 +283,7 @@ private:
 	std::list<MenuData>mMenus;							/* 存储了菜单，每个菜单存有映射menu 
 															table的luaRef*/
 
-	std::set<std::shared_ptr<Drawable> >mDrawables;						/* 存储了由脚本创建的Drawable对象*/
+	std::set<std::shared_ptr<Drawable> >mDrawables;		/* 存储了由脚本创建的Drawable对象*/
 	std::set<std::shared_ptr<Drawable> >mDrawablesToRemove;
 
 };

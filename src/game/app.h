@@ -55,7 +55,7 @@ private:
 	void LoadingFinishCallBack();
 	AnimationSpritePtr mLoadingAnimate;	/** 加载时展示图片，当GUI实现后，考虑实现一个加载界面 */
 	bool mAsyncLoaded;
-	AsyncLoader mAsyncLoader;			
+	std::shared_ptr<AsyncLoader> mAsyncLoader;			
 
 	/***  测试用声明 **/
 	std::unique_ptr<gui::GUIManager> mGUI;

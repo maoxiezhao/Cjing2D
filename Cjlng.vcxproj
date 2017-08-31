@@ -132,6 +132,7 @@
     <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\gui\widget\window.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
+    <ClCompile Include="src\lua\asyncLoaderApi.cpp" />
     <ClCompile Include="src\lua\drawableApi.cpp" />
     <ClCompile Include="src\lua\fontApi.cpp" />
     <ClCompile Include="src\lua\gameApi.cpp" />

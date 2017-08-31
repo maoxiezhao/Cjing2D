@@ -59,10 +59,10 @@ function cjing.Main:onStarted()
 	end 
 	
 	-- test text
-	local text = cjing.Text.create()
-	if text then 
-		self._text = text
-	end 
+	-- local text = cjing.Text.create()
+	-- if text then 
+		-- self._text = text
+	-- end 
 	
 end
 

@@ -25,8 +25,6 @@ public:
 	static const Color4B MAGENTA;
 	static const Color4B BLACK;
 
-private:
-
 	friend constexpr bool operator==(const Color4B& lhs, const Color4B& rhs);
 	friend constexpr bool operator!=(const Color4B& lhs, const Color4B& rhs);
 

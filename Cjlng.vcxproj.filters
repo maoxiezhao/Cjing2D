@@ -259,6 +259,9 @@
     <ClCompile Include="src\game\textDrawable.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\asyncLoaderApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

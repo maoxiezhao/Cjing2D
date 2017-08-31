@@ -74,6 +74,7 @@ void LuaContext::Update()
 {
 	UpdateTimers();
 	UpdateDrawables();
+	UpdateAsyncLoaders();
 	UpdateMenus();
 
 	OnMainUpdate();
@@ -92,6 +93,7 @@ void LuaContext::Exit()
 		DestoryTimers();
 		DestoryMenus();
 		DestoryDrawables();
+		DestoryAsyncLoaders();
 		CloseUserdatas();
 
 		lua_close(l);

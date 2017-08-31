@@ -12,12 +12,6 @@
 //test
 #include"movements\targetMovement.h"
 
-namespace {
-	HWND hwnd = NULL;
-	HDC hDC = NULL;
-	HGLRC hRCShareing = NULL;
-}
-
 App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
@@ -44,30 +38,16 @@ App::App() :
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
 
-	/**** 异步加载资源,可异步的资源为字体、除default之外的纹理、音频、动画 */
-	// 目前异步加载动作耦合在app中，未来需要剥离出来,以menu在Luaz中处理
-
-	// 因为Opengl的渲染设备默认多线程会获取不到？？
-	// 所以需要创建一个渲染上下文(hRC)，共享之后在多线程中使用
-	hwnd = GetActiveWindow();
-	if (hwnd == NULL)
-		Debug::Die("Can not get the window's hwnd.");
-	hDC = GetDC(hwnd);
-	if (hDC == NULL)
-		Debug::Die("Can not get the window's dc.");
-	hRCShareing = wglCreateContext(hDC);
-	if (hRCShareing == NULL)
-		Debug::Die("Can not get the window's hrc.");
-	wglShareLists(wglGetCurrentContext(), hRCShareing);
 
 	mLoadingAnimate = std::make_shared<AnimationSprite>("menus/loading");
 	mLoadingAnimate->SetSize({ 120,120 });
 	mLoadingAnimate->SetPos({ (DEFAULT_WINDOW_WIDTH - mLoadingAnimate->GetSize().width )/ 2, (DEFAULT_WINDOW_HEIGHT - mLoadingAnimate->GetSize().height) / 2});
 	mLoadingAnimate->StartAnimation();
 
-	mAsyncLoader.AddTask(std::bind(&App::AsyncLoading, this));
-	mAsyncLoader.SetFinishCallBack(std::bind(&App::LoadingFinishCallBack, this));
-	mAsyncLoader.Run();
+	mAsyncLoader = std::make_shared<AsyncLoader>();
+	mAsyncLoader->AddTask(std::bind(&App::AsyncLoading, this));
+	mAsyncLoader->SetFinishCallBack(std::bind(&App::LoadingFinishCallBack, this));
+	mAsyncLoader->Run();
 
 }
 
@@ -75,7 +55,7 @@ App::~App()
 {
 	// 首先停止异步加载器，未来如果加载器一直到lua场景中
 	// 则可不进行该操作
-	mAsyncLoader.Stop();
+	mAsyncLoader->Stop();
 
 	if (mCurrGame != nullptr)
 	{
@@ -157,7 +137,7 @@ void App::Step()
 	if (!mAsyncLoaded)
 	{
 		mLoadingAnimate->Update();
-		mAsyncLoader.Update();
+		mAsyncLoader->Update();
 	}
 	Update();
 }
@@ -266,8 +246,6 @@ void App::NotifyInput(const InputEvent & ent)
 */
 void App::AsyncLoading()
 {
-	wglMakeCurrent(hDC, hRCShareing);
-
 	Logger::Info("Async load default font");
 	font::FontAtlas::GetInstance().LoadDefaultFont();
 	Logger::Info("Async load default font succeed");
@@ -305,9 +283,6 @@ void App::AsyncLoading()
 	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_CENTER | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
 	mGrid->Place(Point2(0, 0), Size(640, 480));
-
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(hRCShareing);
 }
 
 /**

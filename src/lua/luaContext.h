@@ -23,12 +23,16 @@ class Movement;
 class StraightMovement;
 class TargetMovement;
 class TextDrawable;
+class AsyncLoader;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
  *
  *  其中的提供的scripts包括main,sprite,map,entity等
  *  其中所有的script运行在同一个luaContext
+ *
+ *	2017.8.29 添加font接口
+ *	同时考虑未来优化绑定结构，能将绑定函数分离到各个模块
  */
 class LuaContext
 {
@@ -82,6 +86,7 @@ public:
 	void RegisterSpriteModule();
 	void RegisterAnimationModule();
 	void RegisterFontModule();
+	void RegisterAsyncLoaderModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -158,7 +163,11 @@ public:
 		text_api_set_line_height,
 		text_api_set_letter_spacing,
 		text_api_draw,
-
+		// asyncloader api
+		async_loader_api_create,
+		async_loader_api_add_task,
+		async_loader_api_set_callback,
+		async_loader_api_run,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -227,6 +236,13 @@ public:
 	bool HasDrawable(const std::shared_ptr<Drawable>& drawalbe);
 	void RemoveDrawable(const std::shared_ptr<Drawable>& drawable);
 
+	// asyncloader api
+	void UpdateAsyncLoaders();
+	void DestoryAsyncLoaders();
+	void AddAsyncLoaders(const std::shared_ptr<AsyncLoader>& asyncLoader);
+	bool HasAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader);
+	void RemoveAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader);
+
 	// push data
 	static void PushUserdata(lua_State*l, LuaObject& userData);
 	static void PushDrawable(lua_State*l, Drawable& drawable);
@@ -234,7 +250,8 @@ public:
 	static void PushAnimation(lua_State*l, AnimationSprite& animation);
 	static void PushMovement(lua_State*l, Movement& movement);
 	static void PushText(lua_State*l, TextDrawable& textDrawable);
-	
+	static void PushAsyncLoader(lua_State*l, AsyncLoader& asyncLoader);
+
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
 	static bool IsDrawable(lua_State*l, int index);
@@ -250,6 +267,8 @@ public:
 	static bool IsTargetMovement(lua_State*l, int index);
 	static std::shared_ptr<TextDrawable> CheckTextDrawable(lua_State*l, int index);
 	static bool IsTextDrawable(lua_State*l, int index);
+	static std::shared_ptr<AsyncLoader> CheckAsyncLoader(lua_State*l, int index);
+	static bool IsAsyncLoader(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
@@ -261,6 +280,7 @@ public:
 	static const string module_menu_name;
 	static const string module_video_name;
 	static const string module_font_name;
+	static const string module_async_loader_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -276,8 +296,7 @@ private:
 	static std::map<lua_State*, LuaContext*>mLuaContexts;/* 用于在lua APi中通过lua_state获取
 														    luaContext */
 
-	std::map<TimerPtr, TimerData>mTimers;				 /* 存储了定时器，每个定时器映射的对
-														    应的callback*/
+	std::map<TimerPtr, TimerData>mTimers;				 /* 存储了定时器，每个定时器映射的对应的callback*/
 	std::list<TimerPtr>mTimersToRemove;					 
 
 	std::list<MenuData>mMenus;							/* 存储了菜单，每个菜单存有映射menu 
@@ -286,6 +305,8 @@ private:
 	std::set<std::shared_ptr<Drawable> >mDrawables;		/* 存储了由脚本创建的Drawable对象*/
 	std::set<std::shared_ptr<Drawable> >mDrawablesToRemove;
 
+	std::set<std::shared_ptr<AsyncLoader> >mAsyncLoaders;	/** 存储了异步加载器 */
+	std::set<std::shared_ptr<AsyncLoader> >mAsyncLoaderToRemove;
 };
 
 #endif

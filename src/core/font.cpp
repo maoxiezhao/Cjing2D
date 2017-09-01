@@ -9,7 +9,7 @@ namespace font {
 
 namespace {
 	const int MAX_FONT_TEXTURE_WIDTH = 2048;
-	const int MAX_FONT_TEXTURE_HEIGHT = 1536;
+	const int MAX_FONT_TEXTURE_HEIGHT = 2048;
 	const int BEARING_STANDARD_HEIGHT_CODE = 0x4E09;	// 用"三"做基准线
 }
 

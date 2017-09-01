@@ -53,7 +53,7 @@ constexpr bool operator==(const Point2&lhs, const Point2& rhs)
 
 constexpr bool operator!=(const Point2&lhs, const Point2& rhs)
 {
-	return lhs.x != rhs.x || lhs.x != rhs.x;
+	return lhs.x != rhs.x || lhs.y != rhs.y;
 }
 
 constexpr Point2 operator+(const Point2&lhs, const Point2& rhs)

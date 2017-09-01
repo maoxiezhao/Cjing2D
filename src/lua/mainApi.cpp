@@ -52,6 +52,7 @@ void LuaContext::OnMainDraw()
 {
 	PushMain(l);
 	OnDraw();
+	OnMenuDraw(-1);
 	lua_pop(l, 1);
 }
 

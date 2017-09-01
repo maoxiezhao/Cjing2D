@@ -609,7 +609,7 @@ bool LuaContext::OnKeyPressed(const InputEvent & event)
 	bool handle = false;
 	if (FindMethod("onKeyPressed"))	// 注意FindMethod会将Ojb复制一份放于stack中
 	{								// obj method obj
-		string key = EnumToString(event.GetKeyBoardKey());
+		string key = EnumToString(event.GetKeyBoardKey(), "");
 		if (!key.empty())
 		{
 			lua_pushstring(l, key.c_str());
@@ -653,7 +653,7 @@ bool LuaContext::OnKeyReleased(const InputEvent & event)
 	bool handle = false;
 	if (FindMethod("onKeyReleased"))// 注意FindMethod会将Ojb复制一份放于stack中
 	{								// obj method obj
-		string key = EnumToString(event.GetKeyBoardKey());
+		string key = EnumToString(event.GetKeyBoardKey(), "");
 		if (!key.empty())
 		{
 			lua_pushstring(l, key.c_str());
@@ -705,6 +705,7 @@ void LuaContext::RegisterModules()
 	RegisterSpriteModule();
 	RegisterAnimationModule();
 	RegisterMovementModule();
+	RegisterAsyncLoaderModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

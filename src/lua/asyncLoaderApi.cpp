@@ -18,7 +18,7 @@ void LuaContext::RegisterAsyncLoaderModule()
 	};
 
 	static const luaL_Reg metamethods[] = {
-		{ "__gc", userdata_meta_gc },
+		{ "__gc", async_loader_meta_api_gc },
 		{ nullptr, nullptr }
 	};
 
@@ -30,8 +30,8 @@ void LuaContext::UpdateAsyncLoaders()
 	for (const auto& loader : mAsyncLoaders)
 	{
 		loader->Update();
-		if (loader->IsFinished())
-			mAsyncLoaderToRemove.insert(loader);
+		//if (loader->IsFinished())
+		//	mAsyncLoaderToRemove.insert(loader);
 	}
 
 	for (const std::shared_ptr<AsyncLoader>& loader : mAsyncLoaderToRemove)
@@ -51,6 +51,7 @@ void LuaContext::AddAsyncLoaders(const std::shared_ptr<AsyncLoader>& asyncLoader
 {
 	Debug::CheckAssertion(!HasAsyncLoader(asyncLoader),
 		"The asyncloader has already insert asyncloaders.");
+	mAsyncLoaders.insert(asyncLoader);
 }
 
 bool LuaContext::HasAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader)
@@ -88,6 +89,7 @@ bool LuaContext::IsAsyncLoader(lua_State*l, int index)
 int LuaContext::async_loader_api_create(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
+
 		std::shared_ptr<AsyncLoader> asyncLoader = std::make_shared<AsyncLoader>();
 		GetLuaContext(l).AddAsyncLoaders(asyncLoader);
 
@@ -134,6 +136,22 @@ int LuaContext::async_loader_api_run(lua_State*l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		AsyncLoader& asyncLoader = *CheckAsyncLoader(l, 1);
 		asyncLoader.Run();
+
+		return 0;
+	});
+}
+
+int LuaContext::async_loader_meta_api_gc(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaContext& luaContext = GetLuaContext(l);
+		std::shared_ptr<AsyncLoader> asyncLoader = CheckAsyncLoader(l, 1);
+
+		if (luaContext.HasAsyncLoader(asyncLoader))
+		{
+			luaContext.RemoveAsyncLoader(asyncLoader);
+		}
+		userdata_meta_gc(l);
 
 		return 0;
 	});

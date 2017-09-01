@@ -12,6 +12,16 @@ string EnumToString(E value)
 }
 
 template<typename E>
+string EnumToString(E value, const string& defaultValue)
+{
+	const auto& it = EnumInfoTraits<E>::names.find(value);
+	if (it == EnumInfoTraits<E>::names.end())
+		return defaultValue;
+	return it->second;
+}
+
+
+template<typename E>
 E StringToEnum(const string& name)
 {
 	for (auto&it : EnumInfoTraits<E>::names)

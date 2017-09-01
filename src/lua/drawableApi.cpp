@@ -20,7 +20,9 @@ DrawablePtr LuaContext::CheckDrawable(lua_State*l, int index)
 
 bool LuaContext::IsDrawable(lua_State*l, int index)
 {
-	return IsSprite(l, index) || IsAnimation(l, index);
+	return IsSprite(l, index) || 
+		   IsAnimation(l, index) ||
+		   IsTextDrawable(l, index);
 }
 
 void LuaContext::PushDrawable(lua_State*l, Drawable& drawable)

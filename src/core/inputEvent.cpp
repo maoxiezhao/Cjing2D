@@ -100,7 +100,7 @@ const EnumInfo<InputEvent::KeyboardKey>::nameType EnumInfoTraits<InputEvent::Key
 	{InputEvent::KEY_SHIFT,"shift" },
 	{InputEvent::KEY_CTRL,"ctrl" },
 	{InputEvent::KEY_ALT ,"alt" },
-	
+	{InputEvent::KEY_ENTER, "enter"},
 };
 
 

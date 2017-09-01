@@ -207,8 +207,20 @@ bool LuaContext::OnMenuInput(const InputEvent & event, const LuaRef & menuRef)
 
 void LuaContext::OnMenuDraw(int contextIndex)
 {
+	const void* context = lua_topointer(l, contextIndex);
+	std::list<LuaContext::MenuData>::reverse_iterator it;
+	for (it = mMenus.rbegin(); it != mMenus.rend(); ++it)
+	{
+		const LuaRef&menuRef = it->menuRef;
+		if (it->l == context)
+			OnMenuDraw(it->menuRef);
+	}
 }
 
 void LuaContext::OnMenuDraw(const LuaRef& menuRef)
 {
+	PushRef(l, menuRef);
+	OnMenuDraw(-1);
+	OnDraw();
+	lua_pop(l, 1);
 }

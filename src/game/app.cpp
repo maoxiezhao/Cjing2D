@@ -44,19 +44,33 @@ App::App() :
 	mLoadingAnimate->SetPos({ (DEFAULT_WINDOW_WIDTH - mLoadingAnimate->GetSize().width )/ 2, (DEFAULT_WINDOW_HEIGHT - mLoadingAnimate->GetSize().height) / 2});
 	mLoadingAnimate->StartAnimation();
 
-	mAsyncLoader = std::make_shared<AsyncLoader>();
-	mAsyncLoader->AddTask(std::bind(&App::AsyncLoading, this));
-	mAsyncLoader->SetFinishCallBack(std::bind(&App::LoadingFinishCallBack, this));
-	mAsyncLoader->Run();
+	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+	mGrid = std::make_shared<gui::Grid>(3, 3);
+	mGrid->Connect();
 
+	mWidget1 = std::make_shared<gui::Widget>();
+	mWidget1->Connect();
+	mWidget1->SetWantKeyboard(true);
+	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
+	mWidget1->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget2 = std::make_shared<gui::Widget>();
+	mWidget2->Connect();
+	mWidget2->Place(Point2(0, 0), Size(100, 100));
+
+	mWidget3 = std::make_shared<gui::Widget>();
+	mWidget3->Connect();
+	mWidget3->Place(Point2(0, 0), Size(100, 100));
+
+	//// grid
+	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_CENTER | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
+	mGrid->Place(Point2(0, 0), Size(640, 480));
 }
 
 App::~App()
 {
-	// 首先停止异步加载器，未来如果加载器一直到lua场景中
-	// 则可不进行该操作
-	mAsyncLoader->Stop();
-
 	if (mCurrGame != nullptr)
 	{
 		mCurrGame->Stop();
@@ -127,18 +141,10 @@ void App::Run()
 }
 
 /**
-*	\brief 为了支持异步加载
-*
-*	目前因为游戏场景主要由lua逻辑来构建，所以异步加载的逻辑目前只能
-*	耦合在app中
+*	\brief 步骤用于控制update过程
 */
 void App::Step()
 {
-	if (!mAsyncLoaded)
-	{
-		mLoadingAnimate->Update();
-		mAsyncLoader->Update();
-	}
 	Update();
 }
 
@@ -197,28 +203,19 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
-	// async loader
-	if (!mAsyncLoaded)
+	if (mCurrGame != nullptr)
 	{
-		mLoadingAnimate->Draw();
+		mCurrGame->Draw();
 	}
-	else
-	{	// game draw
-		if (mCurrGame != nullptr)
-		{
-			mCurrGame->Draw();
-		}
-		mLuaContext->OnMainDraw();
 
-		std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
-		mGUI->HandleEvent(*ent);
+	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
+	mGUI->HandleEvent(*ent);
 
-		mWidget1->DrawBackground();
-		mWidget2->DrawBackground();
-		mWidget3->DrawBackground();
+	mWidget1->DrawBackground();
+	mWidget2->DrawBackground();
+	mWidget3->DrawBackground();
 
-		mText->Draw();
-	}
+	mLuaContext->OnMainDraw();
 
 	Video::Rendercanvas();
 }
@@ -258,31 +255,7 @@ void App::AsyncLoading()
 	mText->SetPos(Point2(300, 100));
 	mText->SetLineHeight(30);
 	mText->SetLetterSpacing(2);
-	// test
-	// init gui system
-	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
-	mGrid = std::make_shared<gui::Grid>(3, 3);
-	mGrid->Connect();
 
-	mWidget1 = std::make_shared<gui::Widget>();
-	mWidget1->Connect();
-	mWidget1->SetWantKeyboard(true);
-	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
-	mWidget1->Place(Point2(0, 0), Size(100, 100));
-
-	mWidget2 = std::make_shared<gui::Widget>();
-	mWidget2->Connect();
-	mWidget2->Place(Point2(0, 0), Size(100, 100));
-
-	mWidget3 = std::make_shared<gui::Widget>();
-	mWidget3->Connect();
-	mWidget3->Place(Point2(0, 0), Size(100, 100));
-
-	//// grid
-	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_CENTER | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->Place(Point2(0, 0), Size(640, 480));
 }
 
 /**

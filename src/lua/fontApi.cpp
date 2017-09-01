@@ -16,6 +16,8 @@ void LuaContext::RegisterFontModule()
 {
 	static const luaL_Reg functions[] = {
 		{ "create",text_api_create },
+		{ "load",text_api_load_font},
+		{ "loadDefault",text_api_load_font_default},
 		{ nullptr,nullptr }
 	};
 
@@ -30,6 +32,7 @@ void LuaContext::RegisterFontModule()
 		{ "getFontSize", text_api_get_size },
 		{ "setLineHeight", text_api_set_line_height },
 		{ "setLetterSpacing", text_api_set_letter_spacing },
+		{ "setHorizontalAlign",text_api_set_horizontal_align },
 		{ "draw", text_api_draw },
 		{ "getPos", drawable_api_get_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
 		{ "setPos", drawable_api_set_pos },		
@@ -111,6 +114,40 @@ int LuaContext::text_api_create(lua_State* l)
 		PushText(l, *textDrawable);
 
 		return 1;
+	});
+}
+
+/**
+*	\brief 实现cjing.Text.create()
+*
+*	对于传入的第一个参数应为一个表，该表用于配置fontConfig
+*	{name, fontSize, letterSpacing, lineHeight, codeRanges}
+*    name 加载的字体名字
+*	 fontSize 加载的字体字号
+*	 letterSpacing 字间距
+*	 lineHeight 行高
+*	 codeRanges 加载utf8范围，该值为一个表
+*	   {{codeBegin, codeEnd},{codeBegin, codeEnd} ...}
+*/
+int LuaContext::text_api_load_font(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现cjing.Text.loadDefault()
+*
+*	加载默认字体，调用fontAltas::LoadDefaultFont
+*/
+int LuaContext::text_api_load_font_default(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		font::FontAtlas::GetInstance().LoadDefaultFont();
+
+		return 0;
 	});
 }
 
@@ -252,6 +289,26 @@ int LuaContext::text_api_set_letter_spacing(lua_State* l)
 		TextDrawable& textDrawable = *CheckTextDrawable(l, 1);
 		int letterSpacing = LuaTools::CheckInt(l, 2);
 		textDrawable.SetLetterSpacing(letterSpacing);
+
+		return 0;
+	});
+}
+
+int LuaContext::text_api_set_horizontal_align(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		TextDrawable& textDrawable = *CheckTextDrawable(l, 1);
+		const string& align = LuaTools::CheckString(l, 2);
+
+		unsigned int alignCode = font::TEXT_ALIGN_LEFT;
+		for (auto& kvp : horizontalAlignNames)
+		{
+			if (kvp.second == align)
+			{
+				alignCode = kvp.first;
+			}
+		}
+		textDrawable.SetTextHorizontalAlign(alignCode);
 
 		return 0;
 	});

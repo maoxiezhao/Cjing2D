@@ -16,6 +16,7 @@ void LuaContext::RegisterAnimationModule()
 	static const luaL_Reg methods[] = {
 		{"setAnimation", animation_api_set_animation},
 		{"setDirection", animation_api_set_direction},
+		{"setSize", animation_api_set_size},
 		{"start", animation_api_play_animation},
 		{"stop", animation_api_stop_animation},
 		{"draw", animation_api_draw },
@@ -84,6 +85,18 @@ int LuaContext::animation_api_set_direction(lua_State*l)
 
 		AnimationSprite& animation = *CheckAnimation(l, 1);
 		animation.SetCurrDirection(direction);
+
+		return 0;
+	});
+}
+
+int LuaContext::animation_api_set_size(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		AnimationSprite& animation = *CheckAnimation(l, 1);
+		int x = LuaTools::CheckInt(l, 2);
+		int y = LuaTools::CheckInt(l, 3);
+		animation.SetSize({ x, y });
 
 		return 0;
 	});

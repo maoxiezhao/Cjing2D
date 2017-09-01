@@ -7,12 +7,13 @@ local circleRadis = 50
 local currStep = 1
 
 function cjing.Main:onStarted()
-	print "Main:onStarted normal."
+	print "[lua] Main:onStarted normal."
 
 	-- data init --
 	self._sprite = {};
 	self._animation = nil
 	self._text = nil
+	self._asyncLoader = nil
 	
 	-- test sprite --
 	for index = 1, 64 do
@@ -33,11 +34,11 @@ function cjing.Main:onStarted()
 	end 
 	
 	-- test menu --
-	local menu = require("menus/menu")	
-	cjing.Menu.Start(self,menu)
-	menu.onFinished = function()
-		print "the menu is overd."
-	end
+	-- local menu = require("menus/menu")	
+	-- cjing.Menu.Start(self,menu)
+	-- menu.onFinished = function()
+		-- print "the menu is overd."
+	-- end
 	
 	-- test time --
 	-- cjing.Timer.start(self, 5000, function()  
@@ -53,21 +54,51 @@ function cjing.Main:onStarted()
 	if movement then 
 		movement:setSpeed(50)
 		movement:setTarget(targetX,targetY)
-		movement:start(animation,function()  
+		-- movement:start(animation,function()  
+			-- --self:TestMovementCallBack()
+		-- end)
+	end 
+	
+	-- loading scene
+	local loadingScene = require("menus/loading")	
+	if loadingScene then 
+		cjing.Menu.Start(self,loadingScene)
+		loadingScene.onFinished = function()
+			self:FinishedLoading()
+		end
+	end 
+end
+
+function cjing.Main:FinishedLoading()
+	print "[Lua] Loading Finished."
+	
+	local str =  [[
+你来了么，我的天使。
+我的爱人，
+我生命中的永恒。
+]]
+	-- test text
+	local text = cjing.Text.create({})
+	if text then 
+		text:setHorizontalAlign("center")
+		text:setText(str)
+		text:setPos(320, 440)
+		text:setLineHeight(25)
+		self._text = text
+	end
+	
+	local movement = cjing.TargetMovement.create()
+	if movement then 
+		movement:setSpeed(10)
+		movement:setTarget(320,10)
+		movement:start(text,function()  
 			--self:TestMovementCallBack()
 		end)
 	end 
-	
-	-- test text
-	-- local text = cjing.Text.create()
-	-- if text then 
-		-- self._text = text
-	-- end 
-	
 end
 
 function cjing.Main:TestMovementCallBack()
-	print "movement call back."
+	print "[lua] movement call back."
 	currStep = currStep + 10
 	local targetX = circlePosX + circleRadis * math.cos(math.rad(currStep))
 	local targetY = circlePosY + circleRadis * math.sin(math.rad(currStep))
@@ -102,6 +133,11 @@ function cjing.Main:onDraw()
 	--if self._animation then 
 		--self._animation:draw()
 	--end 
+	
+	-- test text
+	if self._text then 
+		self._text:draw()
+	end 
 end 
 
 -- notify input --

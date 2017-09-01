@@ -152,7 +152,7 @@ void EventHandler::Keyboard(const ui_event event, const InputEvent::KeyboardKey 
 void EventHandler::KeyBoardKeyDown(const InputEvent& event)
 {
 	InputEvent::KeyboardKey key = event.GetKeyBoardKey();
-	const string unicode = EnumToString(key);
+	const string unicode = EnumToString(key, "");
 	Keyboard(UI_EVENT_KEY_DOWN, key, unicode);
 }
 
@@ -162,7 +162,7 @@ void EventHandler::KeyBoardKeyDown(const InputEvent& event)
 void EventHandler::KeyBoardKeyUp(const InputEvent& event)
 {
 	InputEvent::KeyboardKey key = event.GetKeyBoardKey();
-	const string unicode = EnumToString(key);
+	const string unicode = EnumToString(key, "");
 	Keyboard(UI_EVENT_KEY_UP, key, unicode);
 }
 

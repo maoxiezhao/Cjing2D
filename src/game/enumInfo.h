@@ -32,6 +32,14 @@ template<typename E>
 string EnumToString(E value);
 
 /**
+*	\brief 从enum得到string
+*
+*	 如果找到则返回提供defaultValue
+*/
+template<typename E>
+string EnumToString(E value, const string& defaultValue);
+
+/**
 *	\brief 从string得到enum
 */
 template<typename E>

@@ -44,6 +44,12 @@ void FontAtlas::LoadDefaultFont()
 
 void FontAtlas::LoadFontFromTTF(const string & filename, const std::vector<Font::FontCodeRange>& range, const FontConfig * fontConfig)
 {
+	if (mFonts.find(filename) != mFonts.end())
+	{
+		Debug::Warning("The Font loaded has already existed.");
+		return;
+	}
+
 	string fontfile = "fonts/" + filename;
 	if (!FileData::IsFileExists(fontfile))
 	{

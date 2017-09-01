@@ -32,7 +32,9 @@ class AsyncLoader;
  *  其中所有的script运行在同一个luaContext
  *
  *	2017.8.29 添加font接口
+ *
  *	同时考虑未来优化绑定结构，能将绑定函数分离到各个模块
+ *	或者使用luabind库
  */
 class LuaContext
 {
@@ -128,6 +130,7 @@ public:
 		animation_api_set_direction,
 		animation_api_play_animation,
 		animation_api_stop_animation,
+		animation_api_set_size,
 		animation_api_draw,
 		// movement
 		movement_api_create,
@@ -152,6 +155,8 @@ public:
 		movement_target_api_get_speed,
 		// text 
 		text_api_create,
+		text_api_load_font,
+		text_api_load_font_default,
 		text_api_set_font,
 		text_api_get_font,
 		text_api_set_text,
@@ -162,12 +167,14 @@ public:
 		text_api_get_size,
 		text_api_set_line_height,
 		text_api_set_letter_spacing,
+		text_api_set_horizontal_align,
 		text_api_draw,
 		// asyncloader api
 		async_loader_api_create,
 		async_loader_api_add_task,
 		async_loader_api_set_callback,
 		async_loader_api_run,
+		async_loader_meta_api_gc,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,

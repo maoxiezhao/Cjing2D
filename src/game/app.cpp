@@ -16,8 +16,7 @@ App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr),
-	mAsyncLoaded(false)
+	mNextGame(nullptr)
 {
 	Logger::Info("Cjing start initializing.");
 
@@ -37,12 +36,6 @@ App::App() :
 	// initialize lua
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
-
-
-	mLoadingAnimate = std::make_shared<AnimationSprite>("menus/loading");
-	mLoadingAnimate->SetSize({ 120,120 });
-	mLoadingAnimate->SetPos({ (DEFAULT_WINDOW_WIDTH - mLoadingAnimate->GetSize().width )/ 2, (DEFAULT_WINDOW_HEIGHT - mLoadingAnimate->GetSize().height) / 2});
-	mLoadingAnimate->StartAnimation();
 
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 	mGrid = std::make_shared<gui::Grid>(3, 3);
@@ -236,35 +229,6 @@ void App::NotifyInput(const InputEvent & ent)
 	{
 		mGUI->HandleEvent(ent);
 	}
-}
-
-/**
-*	\brief 动态加载执行的函数
-*/
-void App::AsyncLoading()
-{
-	Logger::Info("Async load default font");
-	font::FontAtlas::GetInstance().LoadDefaultFont();
-	Logger::Info("Async load default font succeed");
-
-	// test 
-	mText = std::make_shared<TextDrawable>();
-	mText->SetFont(font::FontAtlas::GetInstance().GetDefaultFont());
-	mText->SetText(u8"苟且于生活\n带风流浪\n心没有归属\n流浪四方");
-	mText->SetTextHorizontalAlign(font::TEXT_ALIGN_CENTER);
-	mText->SetPos(Point2(300, 100));
-	mText->SetLineHeight(30);
-	mText->SetLetterSpacing(2);
-
-}
-
-/**
-*	\brief 动态加载成功后的回调函数
-*/
-void App::LoadingFinishCallBack()
-{
-	mAsyncLoaded = true;
-	Logger::Info("Async load Finished.");
 }
 
 /**

@@ -49,14 +49,7 @@ private:
 	std::unique_ptr<Game> mCurrGame;		/** 当前游戏 */
 
 	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */
-					
-	/** 用于异步加载资源 */
-	void AsyncLoading();
-	void LoadingFinishCallBack();
-	AnimationSpritePtr mLoadingAnimate;	/** 加载时展示图片，当GUI实现后，考虑实现一个加载界面 */
-	bool mAsyncLoaded;
-	std::shared_ptr<AsyncLoader> mAsyncLoader;			
-
+						
 	/***  测试用声明 **/
 	std::unique_ptr<gui::GUIManager> mGUI;
 	std::shared_ptr<gui::Widget> mWidget1;

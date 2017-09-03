@@ -501,6 +501,9 @@
     <ClInclude Include="src\gui\widget\button.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
+    <ClInclude Include="aboutGUI.h">
+      <Filter>gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -534,5 +537,6 @@
     <None Include="src\lua\luaTools.inl">
       <Filter>lua</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,9 @@
+animation{
+  name = "loading",
+  src_image = "menus/loading.png",
+  frame_delay = 50,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 50, frame_height = 50, origin_x = 25, origin_y = 25, num_frames = 63, num_columns = 8 },
+  },
+}

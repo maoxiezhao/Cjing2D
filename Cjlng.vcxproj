@@ -162,6 +162,7 @@
     <ClCompile Include="src\utils\xxhash.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aboutGUI.h" />
     <ClInclude Include="src\common\common.h" />
     <ClInclude Include="src\core\asyncLoader.h" />
     <ClInclude Include="src\core\configData.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="src\utils\xxhash.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\lua\luaTools.inl" />

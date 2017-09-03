@@ -14,6 +14,7 @@
 // test
 #include"gui\core\handler.h"
 #include"gui\widget\window.h"
+#include"gui\widget\button.h"
 
 /**
 *	\brief 程序的主循环
@@ -51,7 +52,7 @@ private:
 
 	/***  测试用声明 **/
 	std::shared_ptr<gui::Window> mWindow;
-	std::shared_ptr<gui::Widget> mWidget1;
+	std::shared_ptr<gui::Button> mButton;
 };
 
 #endif

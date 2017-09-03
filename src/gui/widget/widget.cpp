@@ -290,7 +290,7 @@ void Widget::DrawBackground(const Point2& offset)
 	}
 	else if (mReDrawAction == ReDrawAction::Partly)
 	{
-		DrawDebugGround();
+		//DrawDebugGround();
 		ImplDrawBackground(offset);
 	}
 }

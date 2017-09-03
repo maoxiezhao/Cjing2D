@@ -22,9 +22,7 @@ public:
 	~Window();
 
 	void Show();
-
 	void Draw();
-	
 	void UnDraw();
 
 	/** ´°ÌåµÄ×´Ì¬ */
@@ -46,6 +44,9 @@ public:
 	}
 
 	void Layout();
+
+	// capture event
+	void MouseCaptrue(bool mouseCpatured);
 
 private:
 	status mStatus;

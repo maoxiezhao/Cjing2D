@@ -207,6 +207,7 @@ private:
 	
 	KeyEvent mKeyEvent;
 
+	static Point2 mMousePos;
 };
 
 // 用于获取key枚举值对应的字符

@@ -215,6 +215,8 @@ Size StyledWidget::GetBestTextSize(const Size& minSize, const Size& maxSize)cons
 */
 Size StyledWidget::CalculateBestSize()const
 {
+	return Widget::CalculateBestSize();
+
 	const Size minSize = GetConfigMinSize();
 	const Size maxSize = GetConfigMaxSize();
 

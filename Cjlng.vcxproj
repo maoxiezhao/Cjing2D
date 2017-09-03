@@ -162,7 +162,6 @@
     <ClCompile Include="src\utils\xxhash.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aboutGUI.h" />
     <ClInclude Include="src\common\common.h" />
     <ClInclude Include="src\core\asyncLoader.h" />
     <ClInclude Include="src\core\configData.h" />
@@ -204,6 +203,7 @@
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
+    <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
     <ClInclude Include="src\gui\core\dispatcher_private.h" />

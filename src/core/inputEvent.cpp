@@ -103,6 +103,7 @@ const EnumInfo<InputEvent::KeyboardKey>::nameType EnumInfoTraits<InputEvent::Key
 	{InputEvent::KEY_ENTER, "enter"},
 };
 
+Point2 InputEvent::mMousePos = Point2(0, 0);
 
 void InputEvent::Initialize()
 {
@@ -215,9 +216,10 @@ void InputEvent::key_callback(GLFWwindow * window, int key_in, int scancode, int
 */
 void InputEvent::mouse_motion_callback(GLFWwindow* window, double xpos, double ypos)
 {
+	mMousePos = Point2((int)xpos, (int)ypos);
 	KeyEvent ent;
 	ent.type = EVENT_MOUSE_MOTION;
-	ent.motion = {(int)xpos, (int)ypos};
+	ent.motion = mMousePos;
 	mEventQueue.push(ent);
 }
 
@@ -254,7 +256,7 @@ void InputEvent::mouse_button_callback(GLFWwindow* window, int button, int actio
 			ent.state = KEYDOWN;
 			ent.repeat = 1;
 		}
-
+		ent.motion = mMousePos;
 		mEventQueue.push(ent);
 	}
 }

@@ -37,6 +37,11 @@ MouseMotion::~MouseMotion()
 {
 }
 
+void MouseMotion::MouseCaptrue(bool captrued)
+{
+	mMouseCaptured = captrued;
+}
+
 void MouseMotion::MouseEnter(Widget * widget)
 {
 	Debug::CheckAssertion(widget);
@@ -74,7 +79,10 @@ void MouseMotion::SignalHandleMouseMotion(const ui_event event, bool & handle, c
 
 	if (mMouseCaptured)
 	{
-
+		if (mMouseFocus)
+		{
+			mOwner.Fire(event, *mMouseFocus, coords);
+		}
 	}
 	else
 	{	// 找到鼠标位置所在widget，fire对应事件
@@ -113,7 +121,8 @@ void MouseMotion::SignalHandleMouseMotion(const ui_event event, bool & handle, c
 
 
 Distributor::Distributor(Widget& widget, Dispatcher::queue_position position):
-	MouseMotion(widget, position)
+	MouseMotion(widget, position),
+	MouseButtonLeft(widget, position)
 {
 }
 
@@ -121,5 +130,114 @@ Distributor::~Distributor()
 {
 }
 
+template<typename T>
+MouseButton<T>::MouseButton(Widget & widget, Dispatcher::queue_position position):
+	MouseMotion(widget, position),
+	mSignalHandlerButtonDownEntered(false),
+	mSignalHandlerButtonUpEntered(false),
+	mIsDown(false),
+	mFocus(nullptr)
+{
+	widget.ConnectSignal<T::buttonDownEvent>(
+		std::bind(&MouseButton::mSignalHandlerButtonDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5), position);
+
+	widget.ConnectSignal<T::buttonUpEvent>(
+		std::bind(&MouseButton::mSignalHandlerButtonUp, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5), position);
+
+}
+
+template<typename T>
+void MouseButton<T>::mSignalHandlerButtonDown(const ui_event event, bool & handle, const Point2 & coords)
+{
+	if (mSignalHandlerButtonDownEntered)
+	{
+		return;
+	}
+	ResourceLocker locker(mSignalHandlerButtonDownEntered);
+
+	// 只触发一次点击事件
+	if (mIsDown)
+	{
+		return;
+	}
+	mIsDown = true;
+
+	if (mMouseCaptured)
+	{
+		mFocus = mMouseFocus;
+	}
+	else
+	{
+		Widget* widget = mOwner.FindAt(coords);
+		if (!widget)
+		{
+			return;
+		}
+		if (mMouseFocus != widget)
+		{
+			mMouseFocus = widget;
+		}
+		mFocus = widget;
+		mOwner.Fire(event, *mMouseFocus, coords);
+	}
+	handle = true;
+}
+
+template<typename T>
+void MouseButton<T>::mSignalHandlerButtonUp(const ui_event event, bool & handle, const Point2 & coords)
+{
+	if (mSignalHandlerButtonUpEntered)
+	{
+		return;
+	}
+	ResourceLocker locker(mSignalHandlerButtonDownEntered);
+
+	// 只触发一次松开事件
+	if (!mIsDown)
+	{
+		return;
+	}
+	mIsDown = false;
+
+	// 如果存在点击的widget，则触发up事件
+	if (mFocus)
+	{
+		mOwner.Fire(event, *mMouseFocus, coords);
+	}
+
+	Widget* widget = mOwner.FindAt(coords);
+	if (mMouseCaptured)
+	{
+		mMouseCaptured = false;
+		if (mMouseFocus == widget)
+		{
+			MouseButtonClick(widget);
+		}
+		else if (!mMouseCaptured)
+		{
+			// 如果不是在当前widget松开，则触发MouseLeave
+			// 如果是其他widget则执行MouseEnter
+			MouseLeave();
+			if (widget)
+			{
+				MouseEnter(widget);
+			}
+		}
+	}
+	else if (mFocus && mFocus == widget)
+	{
+		// 如果松开时，还在上一次点击的widget上，则视为触发
+		// click点击事件
+		MouseButtonClick(widget);
+	}
+	mFocus = nullptr;
+	handle = true;
+}
+
+template<typename T>
+void MouseButton<T>::MouseButtonClick(Widget * widget)
+{
+	mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+}
 
 }

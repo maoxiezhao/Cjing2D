@@ -154,6 +154,15 @@ void Window::Layout()
 {
 }
 
+/**
+*	\brief 捕获鼠标事件
+*/
+void Window::MouseCaptrue(bool mouseCpatured)
+{
+	Debug::CheckAssertion(mDistributor != nullptr, "The Distributor is nullptr.");
+	mDistributor->MouseCaptrue(mouseCpatured);
+}
+
 
 
 }

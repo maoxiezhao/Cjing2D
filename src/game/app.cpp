@@ -39,13 +39,13 @@ App::App() :
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
 	// test
-	mWidget1 = std::make_shared<gui::Widget>();
-	mWidget1->Connect();
-	mWidget1->Place(Point2(0, 0), Size(100, 100));
+	mButton = std::make_shared<gui::Button>();
+	mButton->Connect();
+	mButton->Place(Point2(0, 0), Size(100, 100));
 
 	mWindow = std::make_shared<gui::Window>(100, 50, 200, 200);
 	mWindow->Show();
-	mWindow->SetChildren(mWidget1, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_CENTER, 0);
+	mWindow->SetChildren(mButton, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_CENTER, 0);
 }
 
 App::~App()

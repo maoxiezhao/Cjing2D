@@ -4,6 +4,9 @@
 
 namespace gui
 {
+/**
+*	\brief widget button
+*/
 
 class Button : public StyledWidget
 {
@@ -14,16 +17,38 @@ public:
 	virtual bool GetActivite()const;
 	virtual unsigned int GetState()const;
 
+
+
 private:
 	enum State
 	{
 		ENABLED,
-		DISABLED
+		DISABLED,
+		FOCUSED,
+		PRESSED,
 	};
 
-	void SetState(const State state);
+	void SetState(const State state)
+	{
+		mState = state;
+	}
 
-	State mState;
+	State mState;	// 当前按钮状态
+
+	/** 绘制 */
+	virtual void ImplDrawBackground(const Point2& offset);
+	virtual void ImplDrawForeground(const Point2& offset);
+
+	// test sprite
+	SpritePtr mTestSprite;
+
+	/** 信号回调函数 */
+	void SignalHandlerMouseEnter(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeave(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonDown(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonUp(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonClick(const  ui_event event, bool&handle);
+
 };
 
 

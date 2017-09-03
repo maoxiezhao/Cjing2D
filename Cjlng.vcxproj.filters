@@ -501,7 +501,7 @@
     <ClInclude Include="src\gui\widget\button.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
-    <ClInclude Include="aboutGUI.h">
+    <ClInclude Include="src\gui\aboutGUI.h">
       <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,30 +12,86 @@ namespace gui
 
 class Widget;
 
+/**
+*	\brief 鼠标移动事件
+*/
 class MouseMotion 
 {
 public:
 	MouseMotion(Widget& widget, Dispatcher::queue_position position);
 	~MouseMotion();
 
+	void MouseCaptrue(bool captrued = true);
 
 protected:
 	void MouseEnter(Widget* widget);
 	void MouseLeave();
 	void MouseHover(Widget* widget, const Point2& coords);
 
-private:
-	void SignalHandleMouseMotion(const ui_event event, bool&handle, const Point2& coords);
-
 	Widget& mOwner;
 	Widget* mMouseFocus;
+
+	void SignalHandleMouseMotion(const ui_event event, bool&handle, const Point2& coords);
 
 	bool mMouseCaptured;
 	bool mSignalHandelMouseMotionEntered;
 
 };
 
-class Distributor : public MouseMotion
+template<ui_event buttonDown,
+		 ui_event buttonUp,
+		 ui_event buttonClick>
+struct mouseButtonEventWrapper
+{
+	static const ui_event buttonDownEvent = buttonDown;
+	static const ui_event buttonUpEvent = buttonUp;
+	static const ui_event buttonClickEvent = buttonClick;
+};
+
+/**
+*	\brief 鼠标点击事件
+*/
+template<typename T>
+class MouseButton : public virtual MouseMotion
+{
+public:
+	MouseButton(Widget& widget, Dispatcher::queue_position position);
+
+private:
+	bool mSignalHandlerButtonDownEntered;
+	void mSignalHandlerButtonDown(const ui_event event, bool&handle, const Point2& coords);
+	
+	bool mSignalHandlerButtonUpEntered;
+	void mSignalHandlerButtonUp(const ui_event event, bool&handle, const Point2& coords);
+
+	void MouseButtonClick(Widget* widget);
+
+	bool mIsDown;
+	Widget* mFocus;		// 上一次点击的widget
+};
+
+using MouseButtonLeft = MouseButton<
+	mouseButtonEventWrapper<
+	UI_EVENT_MOUSE_LEFT_BUTTON_DOWN,
+	UI_EVENT_MOUSE_LEFT_BUTTON_UP,
+	UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>
+>;
+
+using MouseButtonMiddle = MouseButton<
+	mouseButtonEventWrapper<
+	UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN,
+	UI_EVENT_MOUSE_MIDDLE_BUTTON_UP,
+	UI_EVENT_MOUSE_MIDDLE_BUTTON_CLICK>
+>;
+
+using MouseButtonRight = MouseButton<
+	mouseButtonEventWrapper<
+	UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN,
+	UI_EVENT_MOUSE_RIGHT_BUTTON_UP,
+	UI_EVENT_MOUSE_RIGHT_BUTTON_CLICK>
+>;
+
+class Distributor : public MouseButtonLeft
 {
 public:
 	Distributor(Widget& widget, Dispatcher::queue_position position);

@@ -410,6 +410,11 @@ void Grid::Place(const Point2& pos, const Size& size)
 {
 	Widget::Place(pos, size);
 
+	if (mRows == 0 || mCols == 0)
+	{
+		return;
+	}
+
 	Size bestSize = CalculateBestSize();
 	Debug::CheckAssertion(mRowsHeight.size() == mRows);
 	Debug::CheckAssertion(mColsWidth.size() == mCols);
@@ -759,6 +764,30 @@ bool Grid::HasWidget(const Widget& widget)const
 bool Grid::IsAt(const Point2& pos)const
 {
 	return false;
+}
+
+/**
+*	\brief 查找指定坐标下的widget
+*
+*	遍历每个子节点调用findAt方法
+*/
+Widget * Grid::FindAt(const Point2 & pos)
+{
+	for (auto& child : mChilds)
+	{
+		auto widget = child.GetWidget();
+		if (widget == nullptr)
+		{
+			continue;
+		}
+		
+		auto result = widget->FindAt(pos);
+		if (result)
+		{
+			return result;
+		}
+	}
+	return nullptr;
 }
 
 }

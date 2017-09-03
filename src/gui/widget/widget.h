@@ -142,6 +142,14 @@ public:
 	*/
 	virtual bool CanWrap() const;
 
+	/**
+	*	能否鼠标处理
+	*/
+	virtual bool CanMouseFocus()const 
+	{
+		return true;
+	}
+
 private:
 	Point2 mPosition;
 	Size mSize;
@@ -155,6 +163,7 @@ public:
 	virtual const Widget* Find(string& id, const bool activied)const;
 	virtual bool HasWidget(const Widget& widget)const;
 	virtual bool IsAt(const Point2& pos)const;
+	virtual Widget* FindAt(const Point2& pos);
 
 
 };

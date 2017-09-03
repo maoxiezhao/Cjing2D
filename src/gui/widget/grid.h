@@ -90,6 +90,7 @@ public:
 	virtual const Widget* Find(string& id, const bool activied)const;
 	virtual bool HasWidget(const Widget& widget)const;
 	virtual bool IsAt(const Point2& pos)const;
+	virtual Widget* FindAt(const Point2& pos);
 	virtual Size CalculateBestSize()const;
 	virtual Size ReCalculateBestSize();
 
@@ -179,6 +180,54 @@ public:
 		return GetChildren(row, col).GetWidget();
 	}
 
+	/****** Iterator for child item. ******/
+	class iterator
+	{
+	public:
+		iterator(std::vector<Children>::iterator itor) :mItor(itor) {};
+
+		iterator operator ++()
+		{
+			return iterator(++mItor);
+		}
+
+		iterator operator --()
+		{
+			return iterator(--mItor);
+		}
+
+		WidgetPtr operator *()
+		{
+			return mItor->GetWidget();
+		}
+
+		WidgetPtr operator ->()
+		{
+			return mItor->GetWidget();
+		}
+
+		bool operator==(const iterator& it)const
+		{
+			return it.mItor == mItor;
+		}
+
+		bool operator!=(const iterator& it)const
+		{
+			return it.mItor != mItor;
+		}
+	private:
+		std::vector<Children>::iterator mItor;
+	};
+
+	iterator begin()
+	{
+		return iterator(mChilds.begin());
+	}
+
+	iterator end()
+	{
+		return iterator(mChilds.end());
+	}
 private:
 	int mRows;							/** 当前行数 */
 	int mCols;							/** 当前列数 */

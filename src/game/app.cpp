@@ -29,37 +29,23 @@ App::App() :
 	Logger::Info("Initialize system modules");
 	System::Initialize();
 
-
-	// initialize render
-	Logger::Info("Initialize render system");
-
 	// initialize lua
+	Logger::Info("Initialize Lua context");
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(this));
 	mLuaContext->Initialize();
 
+	// initialize gui manager
+	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
-	mGrid = std::make_shared<gui::Grid>(3, 3);
-	mGrid->Connect();
 
+	// test
 	mWidget1 = std::make_shared<gui::Widget>();
 	mWidget1->Connect();
-	mWidget1->SetWantKeyboard(true);
-	mWidget1->SetMouseBehavior(gui::Dispatcher::all);
 	mWidget1->Place(Point2(0, 0), Size(100, 100));
 
-	mWidget2 = std::make_shared<gui::Widget>();
-	mWidget2->Connect();
-	mWidget2->Place(Point2(0, 0), Size(100, 100));
-
-	mWidget3 = std::make_shared<gui::Widget>();
-	mWidget3->Connect();
-	mWidget3->Place(Point2(0, 0), Size(100, 100));
-
-	//// grid
-	mGrid->SetChildren(mWidget1, 1, 0, gui::ALIGN_HORIZONTAL_BOTTOM | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget2, 1, 1, gui::ALIGN_HORIZONTAL_CENTER | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->SetChildren(mWidget3, 1, 2, gui::ALIGN_HORIZONTAL_TOP | gui::ALIGN_VERTICAL_CENTER, 0);
-	mGrid->Place(Point2(0, 0), Size(640, 480));
+	mWindow = std::make_shared<gui::Window>(100, 50, 200, 200);
+	mWindow->Show();
+	mWindow->SetChildren(mWidget1, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_CENTER, 0);
 }
 
 App::~App()
@@ -203,10 +189,6 @@ void App::Render()
 
 	std::unique_ptr<InputEvent> ent = InputEvent::GetSingleEvent(InputEvent::EVENT_DRAW);
 	mGUI->HandleEvent(*ent);
-
-	mWidget1->DrawBackground();
-	mWidget2->DrawBackground();
-	mWidget3->DrawBackground();
 
 	mLuaContext->OnMainDraw();
 

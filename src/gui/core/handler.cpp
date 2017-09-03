@@ -241,7 +241,7 @@ void EventHandler::Draw()
 {
 	for (auto& dispatcher : mDispatcher)
 	{	
-		
+		dispatcher->Fire(ui_event::UI_EVENT_DRAW, dynamic_cast<Widget&>(*dispatcher));
 	}
 }
 

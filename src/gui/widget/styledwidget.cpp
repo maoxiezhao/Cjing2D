@@ -60,9 +60,19 @@ void StyledWidget::SetMembers(const StringMap& data)
 	}
 }
 
+void StyledWidget::SetActivite(const bool activite) const
+{
+	// do nothing
+}
+
 bool StyledWidget::GetActivite() const
 {
 	return false;
+}
+
+unsigned int StyledWidget::GetState() const
+{
+	return 0;
 }
 
 Size StyledWidget::GetConfigMinSize()const

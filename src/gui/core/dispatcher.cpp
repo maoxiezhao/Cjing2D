@@ -2,6 +2,7 @@
 #include"gui\core\handler.h"
 #include"gui\core\dispatcher_private.h"
 #include"gui\widget\widget.h"
+#include"core\debug.h"
 
 namespace gui
 {
@@ -12,7 +13,7 @@ Dispatcher::Dispatcher() :
 	mQueueSignalKeyboard(),
 	mIsConnected(false),
 	mWantKeyboard(false),
-	mMouseBehavior(none)
+	mMouseBehavior(hit)
 {
 }
 
@@ -51,37 +52,40 @@ public:
 /**
 *	\brief 触发一个通用事件
 */
-void Dispatcher::Fire(const ui_event event, Widget & widget)
+bool Dispatcher::Fire(const ui_event event, Widget & widget)
 {
 	if (Find<setEvent>(event, EventInSet()))
 	{
-		FireEvent<SignalFunction>(event, this, &widget);
+		return	FireEvent<SignalFunction>(event, this, &widget);
 	}
+	return true;
 }
 
-void Dispatcher::Fire(const ui_event event, Widget & widget, const Point2 & pos)
+bool Dispatcher::Fire(const ui_event event, Widget & widget, const Point2 & pos)
 {
 	if (Find<setEventMouse>(event, EventInSet()))
 	{
-		FireEvent<SignalFunctionMouse>(event, this, &widget, pos);
+		return FireEvent<SignalFunctionMouse>(event, this, &widget, pos);
 	}
+	return true;
 }
 
-void Dispatcher::Fire(const ui_event event, Widget & widget, const InputEvent::KeyboardKey key, const string & unicode)
+bool Dispatcher::Fire(const ui_event event, Widget & widget, const InputEvent::KeyboardKey key, const string & unicode)
 {
 	if (Find<setEventKeyboard>(event, EventInSet()))
 	{
-		FireEvent<SignalFunctionKeyboard>(event, this, &widget, key, unicode);
+		return FireEvent<SignalFunctionKeyboard>(event, this, &widget, key, unicode);
 	}
-	
+	return true;
 }
 
-void Dispatcher::Fire(const ui_event event, Widget & widget, Message & message)
+bool Dispatcher::Fire(const ui_event event, Widget & widget, Message & message)
 {
 	if (Find<setEventMessage>(event, EventInSet()) )
 	{
-		FireEvent<SignalFunctionMessage>(event, this, &widget, message);
+		return FireEvent<SignalFunctionMessage>(event, this, &widget, message);
 	}
+	return true;
 }
 
 /**

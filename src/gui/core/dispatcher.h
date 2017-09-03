@@ -63,6 +63,7 @@ public:
 	enum mouse_behavior
 	{
 		all,
+		hit,
 		none,
 	};
 
@@ -90,16 +91,16 @@ public:
 	/******  触发各类事件 *******/
 
 	/** 通用事件 */
-	void Fire(const ui_event event, Widget& widget);
+	bool Fire(const ui_event event, Widget& widget);
 
 	/** 鼠标事件 */
-	void Fire(const ui_event event, Widget& widget, const Point2& pos);
+	bool Fire(const ui_event event, Widget& widget, const Point2& pos);
 
 	/** 键盘事件 */
-	void Fire(const ui_event event, Widget& widget, const InputEvent::KeyboardKey key, const string & unicode);
+	bool Fire(const ui_event event, Widget& widget, const InputEvent::KeyboardKey key, const string & unicode);
 
 	/** 消息事件 */
-	void Fire(const ui_event event, Widget& widget, Message& message);
+	bool Fire(const ui_event event, Widget& widget, Message& message);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置
@@ -131,6 +132,22 @@ public:
 	DisconnectSignal(const SignalFunction& signal, const queue_position position = back_child)
 	{
 		mQueueSignal.DisconnectSignal(E, position, signal);
+	}
+	/**
+	*	\brief mouse event 信号处理
+	*/
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventMouse, int_<E> >::value>
+		ConnectSignal(const SignalFunctionMouse& signal, const queue_position position = back_child)
+	{
+		mQueueSignalMouse.ConnectSignal(E, position, signal);
+	}
+
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventMouse, int_<E> >::value>
+		DisconnectSignal(const SignalFunctionMouse& signal, const queue_position position = back_child)
+	{
+		mQueueSignalMouse.DisconnectSignal(E, position, signal);
 	}
 
 	/**
@@ -191,16 +208,16 @@ public:
 				mQueue[event].mPreChild.push_back(signal);
 				break;
 			case front_child:
-				mQueue[event].mPreChild.push_front(signal);
+				mQueue[event].mChild.push_front(signal);
 				break;
 			case back_child:
-				mQueue[event].mPreChild.push_back(signal);
+				mQueue[event].mChild.push_back(signal);
 				break;
 			case front_post_child:
-				mQueue[event].mPreChild.push_front(signal);
+				mQueue[event].mPostChild.push_front(signal);
 				break;
 			case back_post_child:
-				mQueue[event].mPreChild.push_back(signal);
+				mQueue[event].mPostChild.push_back(signal);
 				break;
 			}
 		}

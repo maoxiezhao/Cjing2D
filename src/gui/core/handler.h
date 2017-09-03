@@ -64,7 +64,8 @@ using int_ = std::integral_constant<int, V>;
 using setEvent = util::typeset< int_<UI_EVENT_ACTIVATE>,
 								int_<UI_EVENT_DRAW>,
 								int_<UI_EVENT_CLOSEWINDOW>,
-								int_<UI_EVENT_MOUSE_LEAVE>> ;
+								int_<UI_EVENT_MOUSE_LEAVE>,
+								int_<UI_EVENT_MOUSE_ENTER> > ;
 	
 using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>,
 									int_<UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>,

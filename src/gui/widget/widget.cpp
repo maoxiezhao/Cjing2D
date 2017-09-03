@@ -433,8 +433,13 @@ bool Widget::IsAt(const Point2& pos)const
 {
 	return  pos.x >= mPosition.x &&
 			pos.y >= mPosition.y &&
-			pos.y <= (mPosition.x + mSize.width) &&
+			pos.x <= (mPosition.x + mSize.width) &&
 			pos.y <= (mPosition.y + mSize.height);
+}
+
+Widget * Widget::FindAt(const Point2 & pos)
+{
+	return IsAt(pos) ? this : nullptr;
 }
 
 

@@ -21,6 +21,7 @@
 int main(int argc,char** argv)
 {
 	Debug::SetAbortOnDie(true);
+	Debug::SetDebugStringEnable(false);
 
 	//Test();
 	App().Run();

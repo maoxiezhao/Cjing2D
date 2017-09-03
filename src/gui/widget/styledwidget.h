@@ -32,9 +32,9 @@ public:
 	virtual~StyledWidget();
 
 	void SetMembers(const StringMap& data);
-	virtual void SetActivite(const bool activite)const = 0;
+	virtual void SetActivite(const bool activite)const;
 	virtual bool GetActivite()const;
-	virtual unsigned int GetState()const = 0;
+	virtual unsigned int GetState()const;
 
 	Size GetConfigMinSize()const;
 	Size GetConfigMaxSize()const;

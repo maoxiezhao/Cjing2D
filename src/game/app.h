@@ -13,10 +13,7 @@
 
 // test
 #include"gui\core\handler.h"
-#include"gui\widget\widget.h"
-#include"gui\widget\grid.h"
-#include"core\font.h"
-#include"game\textDrawable.h"
+#include"gui\widget\window.h"
 
 /**
 *	\brief 程序的主循环
@@ -50,13 +47,11 @@ private:
 
 	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */
 						
-	/***  测试用声明 **/
 	std::unique_ptr<gui::GUIManager> mGUI;
+
+	/***  测试用声明 **/
+	std::shared_ptr<gui::Window> mWindow;
 	std::shared_ptr<gui::Widget> mWidget1;
-	std::shared_ptr<gui::Widget> mWidget2;
-	std::shared_ptr<gui::Widget> mWidget3;
-	std::shared_ptr<gui::Grid> mGrid;
-	std::shared_ptr<TextDrawable> mText;
 };
 
 #endif

@@ -1,50 +1,67 @@
 #pragma once
 
 #include"common\common.h"
+#include"gui\core\distributor.h"
 #include"gui\widget\widget.h"
+#include"gui\widget\containerBase.h"
 
 /**
-*	\brief 窗体
+*	\brief 窗体基类
 */
 
 namespace gui
 {
 class Widget;
+class Distributor;
 
-class Window : public Widget
+class Window : public ContainerBase
 {
 public:
 	Window();
+	Window(int x, int y, int w, int h);
 	~Window();
 
+	void Show();
+
+	void Draw();
+	
+	void UnDraw();
+
+	/** 窗体的状态 */
+	enum status 
+	{
+		NEW,
+		SHOWING,
+		REQUEST_CLOSE,
+		CLOSED
+	};
+
+	Window* GetWindow()
+	{
+		return this;
+	}
+	const Window* GetWindow()const
+	{
+		return this;
+	}
+
+	void Layout();
+
 private:
-	virtual void ImplDrawBackground();
-	virtual void ImplDrawForeground();
-	virtual void ImplDrawChildren();
+	status mStatus;
 
-public:
-	virtual void SetPosition(const Point2& position);
-	virtual void SetSize(const Size& size);
+	int mPosX;
+	int mPosY;
+	int mWidth;
+	int mHeight;
 
-	virtual void Place(const Point2& pos, const Size& size);
-	virtual void Move(const Point2& offset);
-	virtual void Move(const int xoffset, const int yoffset);
+	bool mSuspendDrawing;
+	bool mNeedLayout;
 
-	virtual void InitLayout();
-	virtual Size GetBestSize()const;
-
-	virtual void SetHorizontalAlignment();
-	virtual void SetVerticalAlignment();
+	std::unique_ptr<Distributor> mDistributor;
 
 private:
-	Point2 mPosition;
-	Size mSize;
-
-public:
-	virtual Widget* Find(string& id, const bool activited);
-	virtual const Widget* Find(string& id, const bool activied)const;
-	virtual bool HasWidget(const Widget& widget)const;
-	virtual bool IsAt(const Point2& pos)const;
+	/******** ******* signal handlers ******* ********/
 
 };
 

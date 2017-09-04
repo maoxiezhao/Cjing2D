@@ -163,6 +163,12 @@ void Window::MouseCaptrue(bool mouseCpatured)
 	mDistributor->MouseCaptrue(mouseCpatured);
 }
 
+void Window::AddToKeyboardFocusChain(Widget * widget)
+{
+	Debug::CheckAssertion(mDistributor != nullptr, "The Distributor is nullptr.");
+	mDistributor->AddToKeyBoardFocusChain(widget);
+}
+
 
 
 }

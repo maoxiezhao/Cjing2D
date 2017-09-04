@@ -26,7 +26,6 @@ Button::Button():
 	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>(
 		std::bind(&Button::SignalHandlerMouseLeftButtonClick, this, std::placeholders::_2, std::placeholders::_3));
 
-
 	mTestSprite = std::make_shared<Sprite>(testFocusColor, Size(400, 400));
 }
 
@@ -111,5 +110,6 @@ void Button::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & hand
 {
 	std::cout << "Click Event" << endl;
 }
+
 
 }

@@ -48,6 +48,8 @@ public:
 	// capture event
 	void MouseCaptrue(bool mouseCpatured);
 
+	void AddToKeyboardFocusChain(Widget* widget);
+
 private:
 	status mStatus;
 

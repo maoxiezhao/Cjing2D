@@ -151,6 +151,23 @@ public:
 	}
 
 	/**
+	*	\brief keyborad event 信号处理
+	*/
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventKeyboard, int_<E> >::value>
+		ConnectSignal(const SignalFunctionKeyboard& signal, const queue_position position = back_child)
+	{
+		mQueueSignalKeyboard.ConnectSignal(E, position, signal);
+	}
+
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventKeyboard, int_<E> >::value>
+		DisconnectSignal(const SignalFunctionKeyboard& signal, const queue_position position = back_child)
+	{
+		mQueueSignalKeyboard.DisconnectSignal(E, position, signal);
+	}
+
+	/**
 	*	\brief message event 信号处理
 	*/
 	template<ui_event E>
@@ -225,23 +242,22 @@ public:
 		/** 删除一个对应信号的回调 */
 		void DisconnectSignal(const ui_event event, const queue_position position, const T& singal)
 		{
-			SignalType<T>& signalType = queue[event];
 			switch (position)
 			{
 			case front_pre_child:
 			case back_pre_child:
 				mQueue[event].mPreChild.remove_if(
-					[&singal](T& element){return singal == element; });
+					[&singal](T& element){return singal.target_type() == element.target_type(); });
 				break;
 			case front_child:
 			case back_child:
 				mQueue[event].mChild.remove_if(
-					[&singal](T& element){return singal == element; });
+					[&singal](T& element){return singal.target_type() == element.target_type(); });
 				break;
 			case front_post_child:
 			case back_post_child:
 				mQueue[event].mPostChild.remove_if(
-					[&singal](T& element){return singal == element; });
+					[&singal](T& element){return singal.target_type() == element.target_type(); });
 				break;
 			}
 		}

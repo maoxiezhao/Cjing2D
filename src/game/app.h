@@ -52,7 +52,6 @@ private:
 
 	/***  ²âÊÔÓÃÉùÃ÷ **/
 	std::shared_ptr<gui::Window> mWindow;
-	std::shared_ptr<gui::Button> mButton;
 };
 
 #endif

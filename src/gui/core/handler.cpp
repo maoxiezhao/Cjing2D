@@ -126,7 +126,7 @@ Dispatcher * EventHandler::GetKeyboardDispathcer()
 	std::vector<Dispatcher*> reverseDispatchers = mDispatcher;
 	std::reverse(reverseDispatchers.begin(), reverseDispatchers.end());
 
-	for (auto& dispatcher : mDispatcher)
+	for (auto& dispatcher : reverseDispatchers)
 	{
 		if (dispatcher->GetWantKeyboard())
 		{

@@ -265,6 +265,9 @@
     <ClCompile Include="src\gui\core\distributor.cpp">
       <Filter>gui\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\selections.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
     <ClCompile Include="src\gui\widget\button.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
@@ -503,6 +506,12 @@
     </ClInclude>
     <ClInclude Include="src\gui\aboutGUI.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\selections.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\selections_private.h">
+      <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

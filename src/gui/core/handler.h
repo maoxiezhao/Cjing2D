@@ -24,6 +24,7 @@ public:
 };
 
 /***** ui事件类型和相关集合  **/
+/** 其中UI_EVENT为传递时间，EVENT_为handle处理事件 */
 enum ui_event
 {
 	UI_EVENT_UNKNOW,

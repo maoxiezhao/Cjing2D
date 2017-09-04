@@ -11,6 +11,8 @@
 
 //test
 #include"movements\targetMovement.h"
+#include"gui\widget\selections.h"
+#include"gui\widget\selections_private.h"
 
 App::App() :
 	mLuaContext(nullptr),
@@ -39,13 +41,24 @@ App::App() :
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
 	// test
-	mButton = std::make_shared<gui::Button>();
-	mButton->Connect();
-	mButton->Place(Point2(0, 0), Size(100, 100));
+	auto button = std::make_shared<gui::Button>();
+	button->Connect();
+	button->Place(Point2(0, 0), Size(50, 50));
+
+	auto button1 = std::make_shared<gui::Button>();
+	button1->Connect();
+	button1->Place(Point2(0, 0), Size(50, 50));
+
+	auto selections = std::make_shared<gui::Selections>(new gui::HorizontalList);
+	selections->Connect();
+	selections->Place(Point2(0, 0), Size(200, 50));
+	selections->AddItem(button);
+	selections->AddItem(button1);
 
 	mWindow = std::make_shared<gui::Window>(100, 50, 200, 200);
 	mWindow->Show();
-	mWindow->SetChildren(mButton, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_CENTER, 0);
+	mWindow->SetChildren(selections, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_TOP, 0);
+	mWindow->AddToKeyboardFocusChain(selections.get());
 }
 
 App::~App()

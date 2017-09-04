@@ -12,7 +12,7 @@ Dispatcher::Dispatcher() :
 	mQueueSignalMouse(),
 	mQueueSignalKeyboard(),
 	mIsConnected(false),
-	mWantKeyboard(false),
+	mWantKeyboard(true),
 	mMouseBehavior(all)
 {
 }

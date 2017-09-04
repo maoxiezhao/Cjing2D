@@ -4,8 +4,9 @@
 
 
 /**
-*	\brief distributor 用于处理处理产生特定于widget的高层事件
-*	例如鼠标进入事件，鼠标悬停事件等
+*	\brief distributor 
+*	用于处理处理产生特定于widget的高层事件,例如鼠标进入事件，鼠标悬停事件等
+*	主要用于容器主体上将事件分发给各个子widget
 */
 namespace gui
 {	
@@ -97,8 +98,15 @@ public:
 	Distributor(Widget& widget, Dispatcher::queue_position position);
 	~Distributor();
 
+	void AddToKeyBoardFocusChain(Widget* widget);
+	void RemoveKeyBoardFocusChain(Widget* widget);
 
+private:
+	std::vector<Widget*> mKeyboradFocusChain;
 
+	void SignalHandlerKeyboradDown(const InputEvent::KeyboardKey key,const string & unicode);
+
+	Widget* mKeyboardFocus;
 };
 
 }

@@ -118,18 +118,6 @@ void MouseMotion::SignalHandleMouseMotion(const ui_event event, bool & handle, c
 	}
 }
 
-
-
-Distributor::Distributor(Widget& widget, Dispatcher::queue_position position):
-	MouseMotion(widget, position),
-	MouseButtonLeft(widget, position)
-{
-}
-
-Distributor::~Distributor()
-{
-}
-
 template<typename T>
 MouseButton<T>::MouseButton(Widget & widget, Dispatcher::queue_position position):
 	MouseMotion(widget, position),
@@ -238,6 +226,62 @@ template<typename T>
 void MouseButton<T>::MouseButtonClick(Widget * widget)
 {
 	mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+}
+
+Distributor::Distributor(Widget& widget, Dispatcher::queue_position position) :
+	MouseMotion(widget, position),
+	MouseButtonLeft(widget, position),
+	mKeyboardFocus(nullptr),
+	mKeyboradFocusChain()
+{
+	widget.ConnectSignal<ui_event::UI_EVENT_KEY_DOWN>(
+		std::bind(&Distributor::SignalHandlerKeyboradDown, this, std::placeholders::_5, std::placeholders::_6));
+}
+
+Distributor::~Distributor()
+{
+	mOwner.DisconnectSignal<ui_event::UI_EVENT_KEY_DOWN>(
+		std::bind(&Distributor::SignalHandlerKeyboradDown, this, std::placeholders::_5, std::placeholders::_6));
+}
+
+/**
+*	\brief 添加widget到键盘响应链中
+*/
+void Distributor::AddToKeyBoardFocusChain(Widget * widget)
+{
+	Debug::CheckAssertion(std::find(mKeyboradFocusChain.begin(),
+		mKeyboradFocusChain.end(), widget) == mKeyboradFocusChain.end(),
+		"The widget has already exists in keyboard focus chain.");
+	mKeyboradFocusChain.push_back(widget);
+}
+
+void Distributor::RemoveKeyBoardFocusChain(Widget * widget)
+{
+	auto removedWidget = std::find(mKeyboradFocusChain.begin(),
+		mKeyboradFocusChain.end(), widget);
+
+	if (removedWidget != mKeyboradFocusChain.end())
+	{
+		mKeyboradFocusChain.erase(removedWidget);
+	}
+}
+
+/**
+*	\brife 处理键盘信号回调
+*/
+void Distributor::SignalHandlerKeyboradDown(const InputEvent::KeyboardKey key, const string & unicode)
+{
+	for (auto ritor = mKeyboradFocusChain.rbegin(); ritor != mKeyboradFocusChain.rend(); ++ritor)
+	{
+		if (*ritor == mKeyboardFocus)
+		{
+			continue;
+		}
+		if (mOwner.Fire(ui_event::UI_EVENT_KEY_DOWN, **ritor, key, unicode))
+		{
+			return;
+		}
+	}
 }
 
 }

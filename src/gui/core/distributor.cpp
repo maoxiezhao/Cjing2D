@@ -1,6 +1,7 @@
 #include "distributor.h"
 #include "gui\widget\widget.h"
 #include "core\debug.h"
+#include "core\system.h"
 
 namespace gui
 {
@@ -124,7 +125,9 @@ MouseButton<T>::MouseButton(Widget & widget, Dispatcher::queue_position position
 	mSignalHandlerButtonDownEntered(false),
 	mSignalHandlerButtonUpEntered(false),
 	mIsDown(false),
-	mFocus(nullptr)
+	mFocus(nullptr),
+	mLastClickWidget(nullptr),
+	mLastClickTime(0)
 {
 	widget.ConnectSignal<T::buttonDownEvent>(
 		std::bind(&MouseButton::mSignalHandlerButtonDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5), position);
@@ -225,7 +228,20 @@ void MouseButton<T>::mSignalHandlerButtonUp(const ui_event event, bool & handle,
 template<typename T>
 void MouseButton<T>::MouseButtonClick(Widget * widget)
 {
-	mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+	uint32_t curTime = System::Now();
+	if (mLastClickTime + System::doubleClickDeltaTime >= curTime &&
+		 widget == mLastClickWidget)
+	{
+		mLastClickWidget = nullptr;
+		mLastClickTime = 0;
+		mOwner.Fire(T::buttonDoubleClickEvent, *mMouseFocus);
+	}
+	else
+	{
+		mLastClickWidget = widget;
+		mLastClickTime = curTime;
+		mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+	}
 }
 
 Distributor::Distributor(Widget& widget, Dispatcher::queue_position position) :

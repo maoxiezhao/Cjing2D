@@ -41,12 +41,14 @@ protected:
 
 template<ui_event buttonDown,
 		 ui_event buttonUp,
-		 ui_event buttonClick>
+		 ui_event buttonClick,
+		 ui_event buttonDoubleClick>
 struct mouseButtonEventWrapper
 {
 	static const ui_event buttonDownEvent = buttonDown;
 	static const ui_event buttonUpEvent = buttonUp;
 	static const ui_event buttonClickEvent = buttonClick;
+	static const ui_event buttonDoubleClickEvent = buttonDoubleClick;
 };
 
 /**
@@ -68,28 +70,33 @@ private:
 	void MouseButtonClick(Widget* widget);
 
 	bool mIsDown;
-	Widget* mFocus;		// 上一次点击的widget
+	Widget* mFocus;		// 捕获事件的widget
+	Widget* mLastClickWidget;
+	uint32_t mLastClickTime;
 };
 
 using MouseButtonLeft = MouseButton<
 	mouseButtonEventWrapper<
 	UI_EVENT_MOUSE_LEFT_BUTTON_DOWN,
 	UI_EVENT_MOUSE_LEFT_BUTTON_UP,
-	UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>
+	UI_EVENT_MOUSE_LEFT_BUTTON_CLICK,
+	UI_EVENT_MOUSE_LEFT_BUTTON_DOUBLE_CLICK>
 >;
 
 using MouseButtonMiddle = MouseButton<
 	mouseButtonEventWrapper<
 	UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN,
 	UI_EVENT_MOUSE_MIDDLE_BUTTON_UP,
-	UI_EVENT_MOUSE_MIDDLE_BUTTON_CLICK>
+	UI_EVENT_MOUSE_MIDDLE_BUTTON_CLICK,
+	UI_EVENT_MOUSE_MIDDLE_BUTTON_DOUBLE_CLICK>
 >;
 
 using MouseButtonRight = MouseButton<
 	mouseButtonEventWrapper<
 	UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN,
 	UI_EVENT_MOUSE_RIGHT_BUTTON_UP,
-	UI_EVENT_MOUSE_RIGHT_BUTTON_CLICK>
+	UI_EVENT_MOUSE_RIGHT_BUTTON_CLICK,
+	UI_EVENT_MOUSE_RIGHT_BUTTON_DOUBLE_CLICK>
 >;
 
 class Distributor : public MouseButtonLeft

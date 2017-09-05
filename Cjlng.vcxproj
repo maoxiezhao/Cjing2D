@@ -131,7 +131,9 @@
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
     <ClCompile Include="src\gui\widget\grid.cpp" />
     <ClCompile Include="src\gui\widget\selections.cpp" />
+    <ClCompile Include="src\gui\widget\selections_private.cpp" />
     <ClCompile Include="src\gui\widget\styledwidget.cpp" />
+    <ClCompile Include="src\gui\widget\toggleButton.cpp" />
     <ClCompile Include="src\gui\widget\widget.cpp" />
     <ClCompile Include="src\gui\widget\window.cpp" />
     <ClCompile Include="src\lua\animationApi.cpp" />
@@ -215,9 +217,11 @@
     <ClInclude Include="src\gui\widget\button.h" />
     <ClInclude Include="src\gui\widget\containerBase.h" />
     <ClInclude Include="src\gui\widget\grid.h" />
+    <ClInclude Include="src\gui\widget\selectableItem.h" />
     <ClInclude Include="src\gui\widget\selections.h" />
     <ClInclude Include="src\gui\widget\selections_private.h" />
     <ClInclude Include="src\gui\widget\styledwidget.h" />
+    <ClInclude Include="src\gui\widget\toggleButton.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\gui\widget\window.h" />
     <ClInclude Include="src\hero\heroState.h" />

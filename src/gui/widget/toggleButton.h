@@ -1,6 +1,7 @@
 #pragma once
 
 #include"gui\widget\styledwidget.h"
+#include"gui\widget\selectableItem.h"
 
 namespace gui
 {
@@ -8,16 +9,18 @@ namespace gui
 *	\brief widget button
 */
 
-class Button : public StyledWidget
+class ToggleButton : public StyledWidget, public SelectableItem
 {
 public:
-	Button();
+	ToggleButton();
 
 	virtual void SetActivite(const bool activite)const;
 	virtual bool GetActivite()const;
 	virtual unsigned int GetState()const;
 
-
+	// inherited interface
+	virtual void SetSelected(bool selected);
+	virtual bool IsSelected()const;
 
 private:
 	enum State
@@ -25,7 +28,7 @@ private:
 		ENABLED,
 		DISABLED,
 		FOCUSED,
-		PRESSED,
+		SELECTED,
 	};
 
 	void SetState(const State state)

@@ -62,8 +62,8 @@ public:
 class HorizontalList : public Placement
 {
 public:
-	virtual void HandlerKeyUp(bool& handle);
-	virtual void HandlerKeyDown(bool& handle);
+	virtual void HandlerKeyLeft(bool& handle);
+	virtual void HandlerKeyRight(bool& handle);
 
 	virtual void Place(const Point2& pos, const Size& size);
 	virtual Widget* FindAt(const Point2& pos);
@@ -81,7 +81,7 @@ public:
 /**
 *	\brief 最多只能选择一个
 */
-class OneItem : public MaxmunSelection
+class MaxmumOneItem : public MaxmunSelection
 {
 public:
 	virtual void SelectItem(const unsigned int index, bool selected = true)
@@ -90,14 +90,56 @@ public:
 
 		if (mSelections->GetSelectedItemCount() == 1)
 		{
-			mSelections->DoSelectedItem(mSelections->GetSelectedItem());
+			mSelections->DoDeSelectedItem(mSelections->GetSelectedItem());
 		}
 		mSelections->DoSelectedItem(index);
 	}
 };
 
+/******* ******* ******* SelectionAction  ******* ******** ************/
 
-/////////////////////////////////////////////////////////////////////////////
+class SelectAction : public SelectionHelper
+{
+public:
+	virtual void SelectItem(Grid& grid, bool selected = true) = 0;
+};
+
+class Selected : public SelectAction
+{
+public:
+	virtual void SelectItem(Grid& grid, bool selected = true);
+};
+
+
+/******* ******* ******* MinmumSelection  ******* ******** ************/
+
+class MinmumSelection : public SelectionHelper
+{
+public:
+	/**
+	*	\brief 关闭某个选择项的选择状态
+	*	\return 如果关闭成功则返回true
+	*		    反之返回false（可能需要在返回false后做一些操作）
+	*/
+	virtual bool DeSelectItem(const unsigned int index) = 0;
+};
+
+/**
+*	\brief 最少只能选择一个
+*/
+class MinmumOneItem : public MinmumSelection
+{
+public:
+	virtual bool DeSelectItem(const unsigned int index)
+	{
+		if (mSelections->GetSelectedItemCount() > 1)
+		{
+			mSelections->DoDeSelectedItem(index);
+			return true;
+		}
+		return false;
+	}
+};
 
 }
 

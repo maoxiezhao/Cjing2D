@@ -27,6 +27,9 @@ Button::Button():
 		std::bind(&Button::SignalHandlerMouseLeftButtonClick, this, std::placeholders::_2, std::placeholders::_3));
 
 	mTestSprite = std::make_shared<Sprite>(testFocusColor, Size(400, 400));
+
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_DOUBLE_CLICK>(
+		std::bind(&Button::SignalHandlerMouseLeftButtonDoubleClick, this, std::placeholders::_2, std::placeholders::_3));
 }
 
 void Button::SetActivite(const bool activite) const
@@ -109,6 +112,11 @@ void Button::SignalHandlerMouseLeftButtonUp(const ui_event event, bool & handle)
 void Button::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & handle)
 {
 	std::cout << "Click Event" << endl;
+}
+
+void Button::SignalHandlerMouseLeftButtonDoubleClick(const ui_event event, bool & handle)
+{
+	std::cout << "Double Click Event" << endl;
 }
 
 

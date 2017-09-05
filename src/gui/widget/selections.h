@@ -9,6 +9,8 @@ namespace gui
 class SelectionHelper;
 class MaxmunSelection;
 class Placement;
+class SelectAction;
+class MinmumSelection;
 
 /**
 *	\brief selections以特定的形式维护网格集合
@@ -26,11 +28,17 @@ class Placement;
 class Selections : public Widget
 {
 public:
-	friend class OneItem;
+	friend class MinmumOneItem;
+	friend class MaxmumOneItem;
 	friend class HorizontalList;
+	friend class Selected;
+
 
 	Selections();
-	Selections(Placement* placement);
+	Selections(Placement* placement, 
+		SelectAction* selectAction,
+		MaxmunSelection* maxmumSelection,
+		MinmumSelection* minmumSelection);
 
 	~Selections();
 
@@ -63,6 +71,7 @@ protected:
 
 private:
 	int mSelectedItemCount;
+	int mLastSelectedItem;
 
 	/** children manager */
 	struct Child 
@@ -91,10 +100,9 @@ private:
 
 	/** 辅助组件 */
 	std::unique_ptr<Placement> mPlacement;
-	std::unique_ptr<SelectionHelper> mSelectionAction;
-	std::unique_ptr<SelectionHelper> mMinmumSelection;
+	std::unique_ptr<SelectAction> mSelectionAction;
 	std::unique_ptr<MaxmunSelection> mMaxmumSelection;
-
+	std::unique_ptr<MinmumSelection> mMinmumSelection;
 };
 
 }

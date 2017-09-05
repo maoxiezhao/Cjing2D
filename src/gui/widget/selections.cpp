@@ -1,21 +1,39 @@
 #include "selections.h"
 #include "gui\widget\selections_private.h"
+#include "gui\widget\styledwidget.h"
+#include "gui\widget\selectableItem.h"
 
 namespace gui
 {
 
 Selections::Selections():
-	mSelectedItemCount(0)
+	mSelectedItemCount(0),
+	mLastSelectedItem(-1)
 {
 	ConnectSignal<ui_event::UI_EVENT_KEY_DOWN>(
 		std::bind(&Selections::SignalHanderKeyDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5));
 }
 
-Selections::Selections(Placement * placement):
+Selections::Selections(Placement * placement, 
+			SelectAction* selectAction,
+			MaxmunSelection* maxmumSelection,
+			MinmumSelection* minmumSelection):
+
 	mPlacement(std::unique_ptr<Placement>(placement)),
-	mSelectedItemCount(0)
+	mSelectionAction(std::unique_ptr<SelectAction>(selectAction)),
+	mMaxmumSelection(std::unique_ptr<MaxmunSelection>(maxmumSelection)),
+	mMinmumSelection(std::unique_ptr<MinmumSelection>(minmumSelection)),
+	mSelectedItemCount(0),
+	mLastSelectedItem(-1)
 {
 	mPlacement->SetSelections(this);
+	mMaxmumSelection->SetSelections(this);
+	mSelectionAction->SetSelections(this);
+	mMinmumSelection->SetSelections(this);
+
+	ConnectSignal<ui_event::UI_EVENT_KEY_DOWN>(
+		std::bind(&Selections::SignalHanderKeyDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5));
+
 }
 
 Selections::~Selections()
@@ -32,7 +50,7 @@ void Selections::AddItem(WidgetPtr widget)
 		return;
 	}
 	Child* item = new Child;
-	item->mOrderedIndex = mSelectedItemCount++;
+	item->mOrderedIndex = mItems.size();
 	item->mGrid.SetRowCols(1, 1);
 	item->mGrid.SetChildren(widget, 0, 0, ALIGN_HORIZONTAL_CENTER | ALIGN_VERTICAL_TOP, 0);
 	item->mGrid.Place(Point2(0, 0), widget->GetSize());
@@ -46,14 +64,19 @@ void Selections::AddItem(WidgetPtr widget)
 void Selections::SelectItem(const unsigned int index, bool selected)
 {
 	Debug::CheckAssertion(index < GetItemCount(), "Invalid index in selecting item.");
+	Debug::CheckAssertion(mMaxmumSelection != nullptr, "The maxmumselection is empty.");
+	Debug::CheckAssertion(mMinmumSelection != nullptr, "The minmumselection is empty.");
 
 	if (selected && !IsSelected(index))
 	{	// 增加selected item
-		
+		mMaxmumSelection->SelectItem(index);
 	}
 	else if (IsSelected(index))
 	{	// 减少selected item
-
+		if (!mMinmumSelection->DeSelectItem(index))
+		{
+			Debug::Warning("DeSelect Item Failed in selecting item.");
+		}
 	}
 }
 
@@ -64,12 +87,40 @@ unsigned int Selections::GetItemCount() const
 
 int Selections::GetSelectedItemCount() const
 {
-	return 0;
+	return mSelectedItemCount;
 }
 
+/**
+*	\brief 返回选择的项的index
+*	\return -1 如果不存在已选择项
+*/
 int Selections::GetSelectedItem()
 {
-	return 0;
+	if (GetSelectedItemCount() == 0)
+	{
+		return -1;
+	}
+	else if (mLastSelectedItem != -1 && mLastSelectedItem < GetItemCount())
+	{
+		auto&grid = mItems[mLastSelectedItem]->mGrid;
+		auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
+		if (widget != nullptr && widget->IsSelected())
+		{
+			return mLastSelectedItem;
+		}
+	}
+	else
+	{
+		for (size_t i = GetItemCount() - 1; i >= 0; i--)
+		{
+			auto&grid = mItems[i]->mGrid;
+			auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
+			if (widget != nullptr && widget->IsSelected())
+			{
+				return i;
+			}
+		}
+	}
 }
 
 Grid & Selections::GetItemGrid(const unsigned int index)
@@ -131,10 +182,33 @@ Size Selections::CalculateBestSize() const
 
 void Selections::DoSelectedItem(unsigned int index)
 {
+	Debug::CheckAssertion(index < mItems.size(), "Invalid index in selections.");
+
+	mSelectedItemCount++;
+	SetItemSelected(index, true);
 }
 
 void Selections::DoDeSelectedItem(unsigned int index)
 {
+	Debug::CheckAssertion(index < mItems.size(), "Invalid index in selections.");
+
+	mSelectedItemCount--;
+	SetItemSelected(index, false);
+}
+
+/**
+*	\brief 设置item的selected状态
+*
+*	由doSelectItem和doDeSelectedItem调用，该接口调用selecteAction组件
+*/
+void Selections::SetItemSelected(const unsigned int index, bool selected)
+{
+	Debug::CheckAssertion(mSelectionAction != nullptr, "The Selection Action is empty.");
+
+	mItems[index]->mSelected = selected;
+	auto&grid = mItems[index]->mGrid;
+	
+	mSelectionAction->SelectItem(grid, selected);
 }
 
 /**
@@ -175,29 +249,107 @@ void Selections::SignalHanderKeyDown(const ui_event event, bool & handle, const 
 
 void Selections::HandlerKeyLeft(bool & handle)
 {
+	Debug::CheckAssertion(mPlacement != nullptr, "The Placement is empty.");
+	mPlacement->HandlerKeyLeft(handle);
 }
 
 void Selections::HandlerKeyRight(bool & handle)
 {
+	Debug::CheckAssertion(mPlacement != nullptr, "The Placement is empty.");
+	mPlacement->HandlerKeyRight(handle);
 }
 
 void Selections::HandlerKeyUp(bool & handle)
 {
+	Debug::CheckAssertion(mPlacement != nullptr, "The Placement is empty.");
+	mPlacement->HandlerKeyUp(handle);
 }
 
 void Selections::HandlerKeyDown(bool & handle)
 {
+	Debug::CheckAssertion(mPlacement != nullptr, "The Placement is empty.");
+	mPlacement->HandlerKeyDown(handle);
 }
 
 /******* ******* ******* Placement  ******* ******** ************/
 
 
-void HorizontalList::HandlerKeyUp(bool& handle)
+void HorizontalList::HandlerKeyLeft(bool& handle)
 {
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+	// 如果为选择任何选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = mSelections->GetItemCount() - 1; i >= 0; i--)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() - 1; i >= 0; i--)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
 }
 
-void HorizontalList::HandlerKeyDown(bool& handle)
+void HorizontalList::HandlerKeyRight(bool& handle)
 {
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+
+	// 如果未存在已选择选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = 0; i < mSelections->GetItemCount(); i++)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() + 1; i < mSelections->GetItemCount(); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
 }
 
 /**
@@ -207,7 +359,7 @@ void HorizontalList::Place(const Point2& pos, const Size& size)
 {
 	// 水平排列放置各个item
 	Point2 curOrigin = pos;
-	for (size_t i = 0; i < mSelections->GetItemCount(); i++)
+	for (int i = 0; i < mSelections->GetItemCount(); i++)
 	{
 		if (!mSelections->GetItemShow(i) )
 		{
@@ -224,7 +376,7 @@ void HorizontalList::Place(const Point2& pos, const Size& size)
 
 Widget * HorizontalList::FindAt(const Point2 & pos)
 {
-	for (size_t i = 0; i < mSelections->GetItemCount(); i++)
+	for (int i = 0; i < mSelections->GetItemCount(); i++)
 	{
 		if (!mSelections->GetItemShow(i))
 		{
@@ -245,7 +397,7 @@ Widget * HorizontalList::FindAt(const Point2 & pos)
 Size HorizontalList::CalculateBestSize() const
 {
 	Size result(0, 0);
-	for (size_t i = 0; i < mSelections->GetItemCount(); i++)
+	for (int i = 0; i < mSelections->GetItemCount(); i++)
 	{
 		if (!mSelections->GetItemShow(i))
 		{
@@ -263,5 +415,20 @@ Size HorizontalList::CalculateBestSize() const
 	}
 	return result;
 }
+
+/******* ******* ******* Selection Action  ******* ******** ************/
+
+void Selected::SelectItem(Grid& grid, bool selected )
+{
+	auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
+	Debug::CheckAssertion(widget != nullptr,
+		"The Selectable thing is empty in select item.");
+
+	widget->SetSelected(selected);
+}
+
+/******* ******* ******* Minmum Selection  ******* ******** ************/
+
+
 
 }

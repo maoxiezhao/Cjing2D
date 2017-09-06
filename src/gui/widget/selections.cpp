@@ -26,7 +26,7 @@ Selections::Selections(Placement * placement,
 	mMinmumSelection(std::unique_ptr<MinmumSelection>(minmumSelection)),
 	mSelectedItemCount(0),
 	mLastSelectedItem(-1),
-	mItemCols(1),
+	mItemCols(0),
 	mItemRows(1)
 {
 	mPlacement->SetSelections(this);
@@ -690,7 +690,7 @@ void TableList::HandlerKeyRight(bool & handle)
 
 void TableList::HandlerKeyUp(bool & handle)
 {
-	if (mSelections->GetItemCount() == 0)
+	if (mSelections->GetItemCount() == 0 || mSelections->mItemCols == 0)
 	{
 		return;
 	}
@@ -711,7 +711,7 @@ void TableList::HandlerKeyUp(bool & handle)
 	}
 	handle = true;
 	// 像做寻找可以选择项
-	for (int i = mSelections->GetSelectedItem() - 1; i >= 0; i--)
+	for (int i = mSelections->GetSelectedItem() - mSelections->mItemCols; i >= 0; i-= mSelections->mItemCols)
 	{
 		if (!mSelections->GetItemShow(i))
 			continue;
@@ -729,7 +729,7 @@ void TableList::HandlerKeyUp(bool & handle)
 
 void TableList::HandlerKeyDown(bool & handle)
 {
-	if (mSelections->GetItemCount() == 0)
+	if (mSelections->GetItemCount() == 0 || mSelections->mItemCols == 0)
 	{
 		return;
 	}
@@ -750,7 +750,7 @@ void TableList::HandlerKeyDown(bool & handle)
 	}
 	handle = true;
 	// 像做寻找可以选择项
-	for (int i = mSelections->GetSelectedItem() + 1; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	for (int i = mSelections->GetSelectedItem() + mSelections->mItemCols; i < static_cast<int>(mSelections->GetItemCount()); i+= mSelections->mItemCols)
 	{
 		if (!mSelections->GetItemShow(i))
 			continue;
@@ -770,6 +770,11 @@ void TableList::Place(const Point2 & pos, const Size & size)
 {
 	// 垂直排列放置各个item
 	Point2 curOrigin = pos;
+	int tmpCols = 0;
+
+	mSelections->mItemCols = 0;
+	mSelections->mItemRows = 1;
+	
 	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
 	{
 		if (!mSelections->GetItemShow(i))
@@ -783,10 +788,23 @@ void TableList::Place(const Point2 & pos, const Size & size)
 		{
 			curOrigin.x = pos.x;
 			curOrigin.y += bestSize.height;
+
+			mSelections->mItemRows++;
+			if (tmpCols > mSelections->mItemCols)
+			{
+				mSelections->mItemCols = tmpCols;
+			}
+
+			tmpCols = 0;
 		}
 
 		grid.Place(curOrigin, bestSize);
 		curOrigin.x += bestSize.width;
+		tmpCols++;
+	}
+	if (tmpCols > mSelections->mItemCols)
+	{
+		mSelections->mItemCols = tmpCols;
 	}
 }
 

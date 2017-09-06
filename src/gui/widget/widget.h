@@ -86,6 +86,8 @@ public:
 
 	Grid* GetParentGrid();
 
+	virtual const string GetControlType()const;
+
 	void SetLinkGrounp(const std::string& linkedGroup);
 private:
 	string mID;

@@ -2,6 +2,7 @@
 #include "gui\widget\selections_private.h"
 #include "gui\widget\styledwidget.h"
 #include "gui\widget\selectableItem.h"
+#include "gui\widget\toggleButton.h"
 
 namespace gui
 {
@@ -24,7 +25,9 @@ Selections::Selections(Placement * placement,
 	mMaxmumSelection(std::unique_ptr<MaxmunSelection>(maxmumSelection)),
 	mMinmumSelection(std::unique_ptr<MinmumSelection>(minmumSelection)),
 	mSelectedItemCount(0),
-	mLastSelectedItem(-1)
+	mLastSelectedItem(-1),
+	mItemCols(1),
+	mItemRows(1)
 {
 	mPlacement->SetSelections(this);
 	mMaxmumSelection->SetSelections(this);
@@ -33,7 +36,6 @@ Selections::Selections(Placement * placement,
 
 	ConnectSignal<ui_event::UI_EVENT_KEY_DOWN>(
 		std::bind(&Selections::SignalHanderKeyDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5));
-
 }
 
 Selections::~Selections()
@@ -55,6 +57,9 @@ void Selections::AddItem(WidgetPtr widget)
 	item->mGrid.SetChildren(widget, 0, 0, ALIGN_HORIZONTAL_CENTER | ALIGN_VERTICAL_TOP, 0);
 	item->mGrid.Place(Point2(0, 0), widget->GetSize());
 	item->mGrid.SetParent(this);
+
+	mPlacement->AddItem(*widget);
+	mSelectionAction->InitItem(widget.get());
 	mItems.push_back(std::unique_ptr<Child>(item));
 }
 
@@ -63,7 +68,7 @@ void Selections::AddItem(WidgetPtr widget)
 */
 void Selections::SelectItem(const unsigned int index, bool selected)
 {
-	Debug::CheckAssertion(index < GetItemCount(), "Invalid index in selecting item.");
+	Debug::CheckAssertion(index < static_cast<unsigned int>(GetItemCount()), "Invalid index in selecting item.");
 	Debug::CheckAssertion(mMaxmumSelection != nullptr, "The maxmumselection is empty.");
 	Debug::CheckAssertion(mMinmumSelection != nullptr, "The minmumselection is empty.");
 
@@ -80,9 +85,9 @@ void Selections::SelectItem(const unsigned int index, bool selected)
 	}
 }
 
-unsigned int Selections::GetItemCount() const
+int Selections::GetItemCount() const
 {
-	return mItems.size();
+	return static_cast<int>(mItems.size());
 }
 
 int Selections::GetSelectedItemCount() const
@@ -100,27 +105,28 @@ int Selections::GetSelectedItem()
 	{
 		return -1;
 	}
-	else if (mLastSelectedItem != -1 && mLastSelectedItem < GetItemCount())
+	else if (mLastSelectedItem != -1 && mLastSelectedItem < static_cast<int>(GetItemCount()))
 	{
 		auto&grid = mItems[mLastSelectedItem]->mGrid;
 		auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
-		if (widget != nullptr && widget->IsSelected())
+		if (widget != nullptr && widget->IsSelected() && mItems[mLastSelectedItem]->mSelected)
 		{
 			return mLastSelectedItem;
 		}
 	}
 	else
 	{
-		for (size_t i = GetItemCount() - 1; i >= 0; i--)
+		for (int i = GetItemCount() - 1; i >= 0; i--)
 		{
 			auto&grid = mItems[i]->mGrid;
 			auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
-			if (widget != nullptr && widget->IsSelected())
+			if (widget != nullptr && widget->IsSelected() && mItems[i]->mSelected)
 			{
 				return i;
 			}
 		}
 	}
+	return -1;
 }
 
 Grid & Selections::GetItemGrid(const unsigned int index)
@@ -137,7 +143,9 @@ bool Selections::GetItemShow(const unsigned int index) const
 
 bool Selections::IsSelected(const unsigned int index) const
 {
-	return false;
+	Debug::CheckAssertion(index < mItems.size(), "Invalid index in selections.");
+	
+	return mItems[index]->mSelected;
 }
 
 Widget * Selections::Find(string & id, const bool activited)
@@ -247,6 +255,40 @@ void Selections::SignalHanderKeyDown(const ui_event event, bool & handle, const 
 	}
 }
 
+/**
+*	\brief 当选项被鼠标事件点击时触发
+*
+*	当执行完后，本身也需要触发notifyMOdified事件
+*/
+void Selections::SignalHandlerNotifyModified(Dispatcher& dispatcher)
+{
+	auto widget = dynamic_cast<Widget*>(&dispatcher);
+	if (widget == nullptr)
+	{
+		return;
+	}
+
+	for (int i = 0; i < GetItemCount(); i++)
+	{
+		auto& grid = mItems[i]->mGrid;
+		if (grid.HasWidget(*widget))
+		{
+			auto toggle = dynamic_cast<ToggleButton*>(&dispatcher);
+			if (toggle != nullptr)
+			{
+				SelectItem(i, toggle->IsSelected());
+			}
+			else
+			{
+				SelectItem(i, true);
+			}
+			
+			Fire(ui_event::UI_EVENT_NOTIFY_MODIFIED, *this, nullptr);
+			return;
+		}
+	}
+}
+
 void Selections::HandlerKeyLeft(bool & handle)
 {
 	Debug::CheckAssertion(mPlacement != nullptr, "The Placement is empty.");
@@ -323,7 +365,149 @@ void HorizontalList::HandlerKeyRight(bool& handle)
 	// 如果未存在已选择选择项
 	if (mSelections->GetSelectedItemCount() == 0)
 	{
-		for (int i = 0; i < mSelections->GetItemCount(); i++)
+		for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() + 1; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+/**
+*	\brief 水平辅助辅助放置函数
+*/
+void HorizontalList::Place(const Point2& pos, const Size& size)
+{
+	// 水平排列放置各个item
+	Point2 curOrigin = pos;
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i) )
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		Size bestSize = grid.GetBestSize();
+		bestSize.height = size.height;
+		grid.Place(curOrigin, bestSize);
+
+		curOrigin.x += bestSize.width;
+	}
+}
+
+Widget * HorizontalList::FindAt(const Point2 & pos)
+{
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		Widget* widget = grid.FindAt(pos);
+
+		if (widget)
+		{
+			return widget;
+		}
+	}
+
+	return nullptr;
+}
+
+Size HorizontalList::CalculateBestSize() const
+{
+	Size result(0, 0);
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		const Size bestSize = grid.GetBestSize();
+
+		if (bestSize.height > result.height)
+		{
+			result.height = bestSize.height;
+		}
+
+		result.width += bestSize.width;
+	}
+	return result;
+}
+
+void VerticalList::HandlerKeyUp(bool& handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+	// 如果为选择任何选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = mSelections->GetItemCount() - 1; i >= 0; i--)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() - 1; i >= 0; i--)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+void VerticalList::HandlerKeyDown(bool & handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+
+	// 如果未存在已选择选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
 		{
 			if (mSelections->GetItemShow(i))
 			{
@@ -353,28 +537,28 @@ void HorizontalList::HandlerKeyRight(bool& handle)
 }
 
 /**
-*	\brief 水平辅助辅助放置函数
+*	\brief 垂直辅助辅助放置函数
 */
-void HorizontalList::Place(const Point2& pos, const Size& size)
+void VerticalList::Place(const Point2 & pos, const Size & size)
 {
-	// 水平排列放置各个item
+	// 垂直排列放置各个item
 	Point2 curOrigin = pos;
 	for (int i = 0; i < mSelections->GetItemCount(); i++)
 	{
-		if (!mSelections->GetItemShow(i) )
+		if (!mSelections->GetItemShow(i))
 		{
 			continue;
 		}
 		auto& grid = mSelections->GetItemGrid(i);
 		Size bestSize = grid.GetBestSize();
-		bestSize.height = size.height;
+		bestSize.width = size.width;
 		grid.Place(curOrigin, bestSize);
 
-		curOrigin.x += bestSize.width;
+		curOrigin.y += bestSize.height;
 	}
 }
 
-Widget * HorizontalList::FindAt(const Point2 & pos)
+Widget * VerticalList::FindAt(const Point2 & pos)
 {
 	for (int i = 0; i < mSelections->GetItemCount(); i++)
 	{
@@ -394,10 +578,249 @@ Widget * HorizontalList::FindAt(const Point2 & pos)
 	return nullptr;
 }
 
-Size HorizontalList::CalculateBestSize() const
+Size VerticalList::CalculateBestSize() const
 {
 	Size result(0, 0);
 	for (int i = 0; i < mSelections->GetItemCount(); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		const Size bestSize = grid.GetBestSize();
+
+		if (bestSize.width > result.width)
+		{
+			result.width = bestSize.width;
+		}
+
+		result.height += bestSize.height;
+	}
+	return result;
+}
+
+/**
+*	\brief 添加一个新项
+*
+*	目前不考虑不同享之间大小不同
+*/
+void TableList::AddItem(Widget & widget)
+{
+
+}
+
+void TableList::HandlerKeyLeft(bool& handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+	// 如果为选择任何选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = mSelections->GetItemCount() - 1; i >= 0; i--)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() - 1; i >= 0; i--)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+void TableList::HandlerKeyRight(bool & handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+
+	// 如果未存在已选择选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = 0; i < mSelections->GetItemCount(); i++)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() + 1; i < mSelections->GetItemCount(); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+void TableList::HandlerKeyUp(bool & handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+	// 如果为选择任何选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = mSelections->GetItemCount() - 1; i >= 0; i--)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() - 1; i >= 0; i--)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+void TableList::HandlerKeyDown(bool & handle)
+{
+	if (mSelections->GetItemCount() == 0)
+	{
+		return;
+	}
+
+	// 如果未存在已选择选择项
+	if (mSelections->GetSelectedItemCount() == 0)
+	{
+		for (int i = 0; i < mSelections->GetItemCount(); i++)
+		{
+			if (mSelections->GetItemShow(i))
+			{
+				handle = true;
+				mSelections->SelectItem(i, true);
+				break;
+			}
+		}
+		return;
+	}
+	handle = true;
+	// 像做寻找可以选择项
+	for (int i = mSelections->GetSelectedItem() + 1; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+			continue;
+
+		auto& grid = mSelections->GetItemGrid(i);
+		auto widget = std::dynamic_pointer_cast<StyledWidget>(grid.GetWidget(0, 0));
+
+		if (widget && widget->GetActivite())
+		{
+			mSelections->SelectItem(i, true);
+			return;
+		}
+	}
+}
+
+void TableList::Place(const Point2 & pos, const Size & size)
+{
+	// 垂直排列放置各个item
+	Point2 curOrigin = pos;
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		Size bestSize = grid.GetBestSize();
+
+		if (curOrigin.x + bestSize.width > pos.x + size.width)
+		{
+			curOrigin.x = pos.x;
+			curOrigin.y += bestSize.height;
+		}
+
+		grid.Place(curOrigin, bestSize);
+		curOrigin.x += bestSize.width;
+	}
+}
+
+Widget * TableList::FindAt(const Point2 & pos)
+{
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
+	{
+		if (!mSelections->GetItemShow(i))
+		{
+			continue;
+		}
+		auto& grid = mSelections->GetItemGrid(i);
+		Widget* widget = grid.FindAt(pos);
+
+		if (widget)
+		{
+			return widget;
+		}
+	}
+
+	return nullptr;
+}
+
+/**
+*	\brief 计算最佳大小
+*
+*	目前不考虑各个item不同大小对其他因素的影响
+*/
+Size TableList::CalculateBestSize() const
+{
+
+
+	Size result(0, 0);
+	for (int i = 0; i < static_cast<int>(mSelections->GetItemCount()); i++)
 	{
 		if (!mSelections->GetItemShow(i))
 		{
@@ -417,6 +840,17 @@ Size HorizontalList::CalculateBestSize() const
 }
 
 /******* ******* ******* Selection Action  ******* ******** ************/
+
+void Selected::InitItem(Widget* widget)
+{
+	if (widget && widget->GetControlType() == "ToggleButton")
+	{
+		auto modifiedCallback = std::function<void(Dispatcher& dispatcher)>(
+			std::bind(&Selections::SignalHandlerNotifyModified, mSelections, std::placeholders::_1));
+		
+		widget->ConnectSignal<ui_event::UI_EVENT_NOTIFY_MODIFIED>(std::bind(modifiedCallback, std::placeholders::_1));
+	}
+}
 
 void Selected::SelectItem(Grid& grid, bool selected )
 {

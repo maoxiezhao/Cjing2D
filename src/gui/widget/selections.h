@@ -11,18 +11,19 @@ class MaxmunSelection;
 class Placement;
 class SelectAction;
 class MinmumSelection;
+class VerticalList;
 
 /**
 *	\brief selections以特定的形式维护网格集合
 *	目前支持垂直列表、水平列表、以及网格的形式
-*	来维护
-*	slections是一个辅助管理的类，真正以widget显
-*	示的应该是包含selections的widget
+*	来维护。slections是一个辅助管理的类，真正
+*   以widget显示的应该是包含selections的widget
 *
 *	存在下列管理辅助类：
 *	placement 用于管理item的位置
 *	selecAction 用于管理选择操作
-*	
+*	minmumSelection 最少数量的deselection操作
+*	maxSelection 最大数量的selecion操作
 */
 
 class Selections : public Widget
@@ -32,7 +33,7 @@ public:
 	friend class MaxmumOneItem;
 	friend class HorizontalList;
 	friend class Selected;
-
+	friend class TableList;
 
 	Selections();
 	Selections(Placement* placement, 
@@ -49,7 +50,7 @@ public:
 	/** selection operator */
 	void SelectItem(const unsigned int index, bool selected = true); 
 	bool IsSelected(const unsigned int index)const;
-	unsigned int GetItemCount()const;
+	int GetItemCount()const;
 	int GetSelectedItemCount()const;
 	int GetSelectedItem();
 	Grid& GetItemGrid(const unsigned int index);
@@ -72,6 +73,8 @@ protected:
 private:
 	int mSelectedItemCount;
 	int mLastSelectedItem;
+	int mItemCols;
+	int mItemRows;
 
 	/** children manager */
 	struct Child 
@@ -92,6 +95,7 @@ private:
 
 	/** signal handler testing */
 	void SignalHanderKeyDown(const ui_event event,bool& handle,const InputEvent::KeyboardKey key);
+	void SignalHandlerNotifyModified(Dispatcher& dispatcher);
 
 	void HandlerKeyLeft(bool& handle);
 	void HandlerKeyRight(bool& handle);

@@ -42,7 +42,7 @@ Widget::~Widget()
 	Widget* parent = GetParent();
 	while (parent)
 	{
-		parent->Fire(gui::EVENT_NOTIFY_REMOVE, *parent);
+		parent->Fire(gui::UI_EVENT_NOTIFY_REMOVE, *parent);
 		parent = parent->GetParent();
 	}
 
@@ -103,6 +103,11 @@ Grid * Widget::GetParentGrid()
 		result = result->GetParent();
 	}
 	return result ? dynamic_cast<Grid*>(result) : nullptr;
+}
+
+const string Widget::GetControlType() const
+{
+	return "Widget";
 }
 
 /***** ****** ****** Layout and size  ****** ****** *******/
@@ -426,7 +431,7 @@ const Widget* Widget::Find(string& id, const bool activied)const
 
 bool Widget::HasWidget(const Widget& widget)const
 {
-	return false;
+	return this == &widget;
 }
 
 bool Widget::IsAt(const Point2& pos)const

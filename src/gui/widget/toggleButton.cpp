@@ -51,6 +51,11 @@ bool ToggleButton::IsSelected() const
 	return (mState == SELECTED);
 }
 
+const string ToggleButton::GetControlType() const
+{
+	return "ToggleButton";
+}
+
 void ToggleButton::ImplDrawBackground(const Point2 & offset)
 {
 	// test state drawing
@@ -113,18 +118,22 @@ void ToggleButton::SignalHandlerMouseLeftButtonDown(const ui_event event, bool &
 
 void ToggleButton::SignalHandlerMouseLeftButtonUp(const ui_event event, bool & handle)
 {
-	SetState(ENABLED);
-	handle = true;
+	//SetState(ENABLED);
+	//handle = true;
 }
 
 void ToggleButton::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & handle)
 {
 	SetSelected(true);
+	Fire(ui_event::UI_EVENT_NOTIFY_MODIFIED, *this, nullptr);
 	handle = true;
 }
 
 void ToggleButton::SignalHandlerMouseLeftButtonDoubleClick(const ui_event event, bool & handle)
 {
+	SetSelected(true);
+	Fire(ui_event::UI_EVENT_NOTIFY_MODIFIED, *this, nullptr);
+	handle = true;
 }
 
 }

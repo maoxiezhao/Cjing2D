@@ -235,7 +235,7 @@ const Widget * StyledWidget::Find(string & id, const bool activied) const
 
 bool StyledWidget::HasWidget(const Widget & widget) const
 {
-	return false;
+	return Widget::HasWidget(widget);
 }
 
 /**

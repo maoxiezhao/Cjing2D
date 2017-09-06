@@ -45,6 +45,8 @@ public:
 
 	void Layout();
 
+	virtual const string GetControlType()const;
+
 	// capture event
 	void MouseCaptrue(bool mouseCpatured);
 

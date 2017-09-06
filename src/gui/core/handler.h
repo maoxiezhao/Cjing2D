@@ -58,8 +58,8 @@ enum ui_event
 	EVENT_KEYBOARD_KEYDOWN,
 	EVENT_KEYBOARD_KEYUP,
 
-	EVENT_NOTIFY_REMOVE,
-	EVENT_NOTIFY_MODIFIED,
+	UI_EVENT_NOTIFY_REMOVE,
+	UI_EVENT_NOTIFY_MODIFIED,
 
 	EVENT_REQUEST_PLACEMENT				
 
@@ -91,6 +91,8 @@ using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>,
 using setEventKeyboard = util::typeset<int_<UI_EVENT_KEY_DOWN>,int_<UI_EVENT_KEY_UP>>;
 
 using setEventMessage = util::typeset<int_<EVENT_REQUEST_PLACEMENT> >;
+
+using setEventNotification = util::typeset<int_<UI_EVENT_NOTIFY_MODIFIED> >;
 
 /**
 *	\brief 将一个dispatcher链接到event handlder

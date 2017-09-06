@@ -28,6 +28,10 @@ protected:
 class Placement : public SelectionHelper
 {
 public:
+	virtual void AddItem(Widget& widget)
+	{
+	}
+
 	virtual void HandlerKeyLeft(bool& handle)
 	{
 		// do nothing
@@ -70,6 +74,33 @@ public:
 	virtual Size CalculateBestSize()const;
 };
 
+class VerticalList : public Placement
+{
+public:
+	virtual void HandlerKeyUp(bool& handle);
+	virtual void HandlerKeyDown(bool& handle);
+
+	virtual void Place(const Point2& pos, const Size& size);
+	virtual Widget* FindAt(const Point2& pos);
+	virtual Size CalculateBestSize()const;
+};
+
+class TableList : public Placement
+{
+public:
+	virtual void AddItem(Widget& widget);
+
+	virtual void HandlerKeyLeft(bool& handle);
+	virtual void HandlerKeyRight(bool& handle);
+	virtual void HandlerKeyUp(bool& handle);
+	virtual void HandlerKeyDown(bool& handle);
+
+	virtual void Place(const Point2& pos, const Size& size);
+	virtual Widget* FindAt(const Point2& pos);
+	virtual Size CalculateBestSize()const;
+};
+
+
 /******* ******* ******* MaxmumSelection  ******* ******** ************/
 
 class MaxmunSelection : public SelectionHelper
@@ -101,12 +132,14 @@ public:
 class SelectAction : public SelectionHelper
 {
 public:
+	virtual void InitItem(Widget* widget) = 0;
 	virtual void SelectItem(Grid& grid, bool selected = true) = 0;
 };
 
 class Selected : public SelectAction
 {
 public:
+	virtual void InitItem(Widget* widget);
 	virtual void SelectItem(Grid& grid, bool selected = true);
 };
 

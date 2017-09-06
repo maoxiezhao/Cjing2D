@@ -88,15 +88,25 @@ bool Dispatcher::Fire(const ui_event event, Widget & widget, Message & message)
 	return true;
 }
 
+bool Dispatcher::Fire(const ui_event event, Widget & widget, void*data)
+{
+	if (Find<setEventNotification>(event, EventInSet()))
+	{
+		return	FireEvent<SignalFunctionNotification>(event, this, &widget, nullptr);
+	}
+	return true;
+}
+
 /**
 *	\brief 判断是否可以操作event
 *	\param event 事件类型
 */
 bool Dispatcher::HasEvent(const ui_event event, const event_queue_type type)
 {
-	return  Find<gui::setEvent>(event, Dispatcher_implementation::HasHandler(type, *this)) ||
+	return  Find<gui::setEvent>(event,         Dispatcher_implementation::HasHandler(type, *this)) ||
 			Find<gui::setEventKeyboard>(event, Dispatcher_implementation::HasHandler(type, *this)) || 
-			Find<gui::setEventMouse>(event, Dispatcher_implementation::HasHandler(type, *this)) ;
+			Find<gui::setEventMouse>(event,    Dispatcher_implementation::HasHandler(type, *this)) ||
+		    Find<gui::setEventNotification>(event, Dispatcher_implementation::HasHandler(type, *this));
 }
 
 }

@@ -78,6 +78,16 @@ void LuaContext::Update()
 	UpdateMenus();
 
 	OnMainUpdate();
+
+	if (lua_gettop(l) != 0)
+	{
+		PrintLuaStack(l);
+		// 在异步加载的过程中可能会产生
+		// nil,这里是临时解决办法
+		lua_settop(l, 0);
+	}
+
+
 	Debug::CheckAssertion(lua_gettop(l) == 0,
 		"There are something in lua stack after update");
 }

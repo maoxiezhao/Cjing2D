@@ -22,6 +22,7 @@ public:
 	virtual void SetSelected(bool selected);
 	virtual bool IsSelected()const;
 
+	virtual const string GetControlType()const;
 private:
 	enum State
 	{

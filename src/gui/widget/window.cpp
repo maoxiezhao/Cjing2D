@@ -154,6 +154,11 @@ void Window::Layout()
 {
 }
 
+const string Window::GetControlType() const
+{
+	return "Window";
+}
+
 /**
 *	\brief 捕获鼠标事件
 */

@@ -758,6 +758,20 @@ const Widget* Grid::Find(string& id, const bool activied)const
 
 bool Grid::HasWidget(const Widget& widget)const
 {
+	for (auto& child : mChilds)
+	{
+		auto contanierWidget = child.GetWidget();
+		if (contanierWidget == nullptr)
+		{
+			continue;
+		}
+
+		auto result = contanierWidget->HasWidget(widget);
+		if (result)
+		{
+			return result;
+		}
+	}
 	return false;
 }
 

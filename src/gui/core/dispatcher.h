@@ -45,6 +45,11 @@ using SignalFunctionMessage = std::function<void(Dispatcher& dispatcher,
 												bool& halt,
 												Message& message)>;
 
+using SignalFunctionNotification = std::function<void(Dispatcher& dispatcher,
+												const ui_event event,
+												bool& handle,
+												bool& halt,
+											    void*)>;
 /**
 *	\brief widget的基类
 */
@@ -101,6 +106,9 @@ public:
 
 	/** 消息事件 */
 	bool Fire(const ui_event event, Widget& widget, Message& message);
+
+	/** 通知响应事件 */
+	bool Fire(const ui_event event, Widget& widget, void*data);
 
 	/**
 	*	\brief 信号添加到信号队列中的位置
@@ -181,6 +189,22 @@ public:
 	DisconnectSignal(const SignalFunctionMessage& signal, const queue_position position = back_child)
 	{
 		mQueueSignalMessage.DisconnectSignal(E, position, signal);
+	}
+
+	/**
+	*	\brief notification event 信号处理
+	*/
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventNotification, int_<E> >::value>
+		ConnectSignal(const SignalFunctionNotification& signal, const queue_position position = back_child)
+	{
+		mQueueSignalNotification.ConnectSignal(E, position, signal);
+	}
+	template<ui_event E>
+	std::enable_if_t<util::typeset_exist<setEventNotification, int_<E> >::value>
+		DisconnectSignal(const SignalFunctionNotification& signal, const queue_position position = back_child)
+	{
+		mQueueSignalNotification.DisconnectSignal(E, position, signal);
 	}
 
 
@@ -286,7 +310,14 @@ private:
 	SignalQueue<SignalFunctionKeyboard> mQueueSignalKeyboard;
 
 	SignalQueue<SignalFunctionMessage> mQueueSignalMessage;
+
+	SignalQueue<SignalFunctionNotification> mQueueSignalNotification;
 };
 
+
+inline void ConnectSignalHandleNotifyModified(Dispatcher& dispatcher, const SignalFunctionNotification& signal)
+{
+	dispatcher.ConnectSignal<ui_event::UI_EVENT_NOTIFY_MODIFIED>(signal);
+}
 
 }

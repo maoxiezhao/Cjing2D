@@ -274,7 +274,6 @@
     <ClCompile Include="src\gui\widget\toggleButton.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\widget\selections_private.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

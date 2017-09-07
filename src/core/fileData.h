@@ -14,6 +14,7 @@ namespace FileData
 	void CloseData();
 	bool IsOpen();
 
+	void SetDataWriteDir(const string& writeDir);
 	bool IsFileExists(const string& name);
 	char* ReadFileBytes(const string& name);
 	string ReadFile(const string& name);

@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\asyncLoader.cpp" />
+    <ClCompile Include="src\core\configData.cpp" />
     <ClCompile Include="src\core\debug.cpp" />
     <ClCompile Include="src\core\fileData.cpp" />
     <ClCompile Include="src\core\font.cpp" />

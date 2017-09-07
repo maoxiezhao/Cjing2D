@@ -5,8 +5,37 @@
 
 namespace FileData
 {
-	string dataPath_;
+	namespace
+	{
+		string dataPath_ = "";
+		string dataWriteDir_ = "";
+		string appWriteDir_ = "cjing";
 
+		// 设置app的写文件路径，一般设置在userdata/Documents路径下
+		void SetAppWriteDir(const string& appWriteDir)
+		{
+			Debug::CheckAssertion(!appWriteDir.empty(),
+				"The app write path is empty.");
+			
+			appWriteDir_ = "Documents/" + appWriteDir;
+			if (!PHYSFS_setWriteDir(PHYSFS_getUserDir()))
+			{
+				Debug::CheckAssertion(!appWriteDir.empty(),
+					"Can not set write dir in user dir.");
+			}
+			// 创建app文件夹
+			PHYSFS_mkdir(appWriteDir_.c_str());
+			string fullAppWriteDir = string(PHYSFS_getUserDir()) + "/" + appWriteDir_;
+			if (!PHYSFS_setWriteDir(fullAppWriteDir.c_str()))
+			{
+				Debug::CheckAssertion(!appWriteDir.empty(),
+					"Can not set write dir in user dir.");
+			}
+
+		}
+	}
+
+	// 打开对应资源目录，设置对应的搜寻路径，设置在user dir下的写路径
 	bool OpenData(const string&dataName, const string& dataPath)
 	{
 		if (IsOpen())
@@ -22,6 +51,9 @@ namespace FileData
 
 		const string&baseDir = PHYSFS_getBaseDir();
 		PHYSFS_addToSearchPath(dirDataPath.c_str(),1);
+		PHYSFS_addToSearchPath((baseDir + dirDataPath).c_str(), 1);
+
+		SetAppWriteDir(DEFAULT_APP_WRITE_DIR);
 
 		return true;
 	}
@@ -37,6 +69,33 @@ namespace FileData
 	bool IsOpen()
 	{
 		return !dataPath_.empty();
+	}
+
+	// 设置写路径,通过对userdata路径后添加自定义写路径
+	void SetDataWriteDir(const string & writeDir)
+	{
+		if (!dataWriteDir_.empty())
+		{
+			PHYSFS_removeFromSearchPath(PHYSFS_getWriteDir());
+		}
+		dataWriteDir_ = writeDir;
+		string fullWriteDir = string(PHYSFS_getUserDir()) + "/" + appWriteDir_;
+		if (!PHYSFS_setWriteDir(fullWriteDir.c_str()))
+		{
+			Debug::Die("Failed to set Write dir:" + appWriteDir_);
+		}
+		if (!dataWriteDir_.empty())
+		{
+			// 创建目录，设置写路径，添加searchpath
+			PHYSFS_mkdir(dataWriteDir_.c_str());
+			fullWriteDir = string(PHYSFS_getUserDir()) + "/" + appWriteDir_ + "/" + dataWriteDir_;
+			if (!PHYSFS_setWriteDir(fullWriteDir.c_str()))
+			{
+				Debug::Die("Failed to set Write dir:" + appWriteDir_);
+			}
+			PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
+		}
+
 	}
 
 	bool IsFileExists(const string& name)

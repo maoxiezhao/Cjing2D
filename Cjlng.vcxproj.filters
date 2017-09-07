@@ -274,6 +274,9 @@
     <ClCompile Include="src\gui\widget\toggleButton.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\configData.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -325,9 +328,6 @@
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\game\currentQuest.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\configData.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\core\renderer.h">
@@ -521,6 +521,9 @@
     </ClInclude>
     <ClInclude Include="src\gui\widget\toggleButton.h">
       <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\configData.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

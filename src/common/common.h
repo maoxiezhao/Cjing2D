@@ -26,4 +26,6 @@ using std::string;
 
 using wchar = unsigned int;
 
+#define DEFAULT_APP_WRITE_DIR "Cjing"
+
 #endif

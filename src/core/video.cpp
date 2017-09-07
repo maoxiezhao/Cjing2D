@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "utils\Size.h"
 #include "resourceCache.h"
+#include "configData.h"
 
 namespace
 {
@@ -26,7 +27,8 @@ namespace
 void Video::Initialize()
 {
 	Debug::CheckAssertion(!IsInitialized(), "The video already initialized.");
-	wantedWindowSize = {DEFAULT_WINDOW_WIDTH,DEFAULT_WINDOW_HEIGHT};
+	auto& configProperties = ConfigData::GetConfigProperties();
+	wantedWindowSize = configProperties.GetNormalSize();
 
 	// 初始化glfw
 	glfwInit();
@@ -36,7 +38,7 @@ void Video::Initialize()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// 创建窗口
-	tilename = "CJING v0.1";
+	tilename = configProperties.GetTitle();
 	mainMonitor = glfwGetPrimaryMonitor();
 	mainWindow = glfwCreateWindow(wantedWindowSize.width, wantedWindowSize.height, tilename.c_str(), fullScreenWindow ? mainMonitor : nullptr, nullptr);
 	Debug::CheckAssertion(mainWindow != nullptr, "Cannot create window.");

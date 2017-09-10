@@ -3,6 +3,7 @@
 #include"core\logger.h"
 #include"core\system.h"
 #include"core\fileData.h"
+#include"core\configData.h"
 #include"core\video.h"
 #include"core\renderer.h"
 #include"core\fontAtlas.h"
@@ -13,6 +14,7 @@
 #include"movements\targetMovement.h"
 #include"gui\widget\selections.h"
 #include"gui\widget\selections_private.h"
+#include"gui\widget\toggleButton.h"
 
 App::App() :
 	mLuaContext(nullptr),
@@ -26,6 +28,9 @@ App::App() :
 	string dataPath = ".";
 	if (!FileData::OpenData("", dataPath))
 		Debug::Die("No data file was found int the direcion:" + dataPath);
+
+	Logger::Info("Open Config.");
+	ConfigData::LoadConfig("config.dat");
 
 	// initialize system
 	Logger::Info("Initialize system modules");
@@ -41,19 +46,23 @@ App::App() :
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
 	// test
-	auto button = std::make_shared<gui::Button>();
-	button->Connect();
-	button->Place(Point2(0, 0), Size(50, 50));
+	auto selections = std::make_shared<gui::Selections>(
+		new gui::TableList, 
+		new gui::Selected,
+		new gui::MaxmumOneItem,
+		new gui::MinmumOneItem);
 
-	auto button1 = std::make_shared<gui::Button>();
-	button1->Connect();
-	button1->Place(Point2(0, 0), Size(50, 50));
-
-	auto selections = std::make_shared<gui::Selections>(new gui::HorizontalList);
 	selections->Connect();
-	selections->Place(Point2(0, 0), Size(200, 50));
-	selections->AddItem(button);
-	selections->AddItem(button1);
+	selections->Place(Point2(0, 0), Size(100, 100));
+
+	for (int i = 0; i < 16; i++)
+	{
+		auto button1 = std::make_shared<gui::ToggleButton>();
+		button1->Connect();
+		button1->Place(Point2(0, 0), Size(50, 50));
+
+		selections->AddItem(button1);
+	}
 
 	mWindow = std::make_shared<gui::Window>(100, 50, 200, 200);
 	mWindow->Show();

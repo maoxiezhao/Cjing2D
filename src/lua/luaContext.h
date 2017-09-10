@@ -24,6 +24,8 @@ class StraightMovement;
 class TargetMovement;
 class TextDrawable;
 class AsyncLoader;
+class Savegame;
+class Game;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -98,6 +100,11 @@ public:
 		// main
 		main_api_hello,
 		main_api_exit,
+		// game
+		game_api_load,
+		game_api_exists,
+		game_api_start,
+		game_api_save,
 		// time
 		time_api_start,
 		// menu
@@ -190,11 +197,11 @@ public:
 	bool OnMainInput(const InputEvent& event);
 
 	// game api
-	void OnGameStart();
-	void OnGameUpdate();
-	void OnGameFinish();
-	void OnGameDraw();
-	bool OnGameInput(const InputEvent& event);
+	void OnGameStart(Game& game);
+	void OnGameUpdate(Game& game);
+	void OnGameFinish(Game& game);
+	void OnGameDraw(Game& game);
+	bool OnGameInput(Game& game, const InputEvent& event);
 
 	// map api
 	void OnMapStart();
@@ -258,6 +265,7 @@ public:
 	static void PushMovement(lua_State*l, Movement& movement);
 	static void PushText(lua_State*l, TextDrawable& textDrawable);
 	static void PushAsyncLoader(lua_State*l, AsyncLoader& asyncLoader);
+	static void PushGame(lua_State*l, Savegame& saveGame);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -276,6 +284,8 @@ public:
 	static bool IsTextDrawable(lua_State*l, int index);
 	static std::shared_ptr<AsyncLoader> CheckAsyncLoader(lua_State*l, int index);
 	static bool IsAsyncLoader(lua_State*l, int index);
+	static std::shared_ptr<Savegame> CheckSavegame(lua_State*l, int index);
+	static bool IsSavegame(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;

@@ -14,6 +14,7 @@ function cjing.Main:onStarted()
 	self._animation = nil
 	self._text = nil
 	self._asyncLoader = nil
+	self._game = nil
 	
 	-- test sprite --
 	for index = 1, 64 do
@@ -95,6 +96,12 @@ function cjing.Main:FinishedLoading()
 			--self:TestMovementCallBack()
 		end)
 	end 
+	
+	-- 加载存档
+	local gameManager = require("menus/gameManager")
+	if gameManager then 
+		gameManager:startGame()
+	end
 end
 
 function cjing.Main:TestMovementCallBack()

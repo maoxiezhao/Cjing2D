@@ -21,7 +21,7 @@ public:
 	Game(const Game& game) = delete;
 	Game& operator=(const Game& game) = delete;
 	
-	// system
+	/** System */
 	void Start();
 	void Stop();
 	void Restart();
@@ -29,17 +29,18 @@ public:
 	void Draw();
 	
 	bool IsSuspended()const;
+	Savegame& GetSavegame();
 
-	// map
+	/** Map */
 	bool HasCurrentMap()const;
 	Map& GetCurrentMap();
 	void SetCurrentMap(const string& mapID);
 	void UpdateTransitoin();
 
-	// notify
+	/** Notify */
 	bool NotifyInput(const InputEvent & ent);
 
-	// lua
+	/** Lua */
 	LuaContext& GetLuaContext();
 
 
@@ -48,12 +49,10 @@ private:
 	bool mSuspended;
 
 	App& mApp;
-
+	std::shared_ptr<Savegame> mSavegame;
 	std::shared_ptr<Player> mPlayer;
-
 	std::shared_ptr<Map> mCurrentMap;
 	std::shared_ptr<Map> mNextMap;
-
 };
 
 

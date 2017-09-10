@@ -7,6 +7,8 @@
 
 Game::Game(App* app):	// test,no savegame
 	mStarted(false),
+	mSavegame(nullptr),
+	mPlayer(nullptr),
 	mApp(*app),
 	mCurrentMap(nullptr),
 	mNextMap(nullptr)
@@ -16,6 +18,8 @@ Game::Game(App* app):	// test,no savegame
 
 Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	mStarted(false),
+	mSavegame(savegame),
+	mPlayer(nullptr),
 	mApp(*app),
 	mCurrentMap(nullptr),
 	mNextMap(nullptr)
@@ -42,7 +46,7 @@ void Game::Start()
 	}
 
 	mStarted = true;
-	GetLuaContext().OnGameStart();
+	GetLuaContext().OnGameStart(*this);
 }
 
 void Game::Stop()
@@ -53,7 +57,7 @@ void Game::Stop()
 	}
 
 	mStarted = false;
-	GetLuaContext().OnGameFinish();
+	GetLuaContext().OnGameFinish(*this);
 }
 
 void Game::Restart()
@@ -73,8 +77,8 @@ void Game::Update()
 	{
 		return;
 	}
-	mCurrentMap->Update();	
-	GetLuaContext().OnGameUpdate();
+	//mCurrentMap->Update();	
+	GetLuaContext().OnGameUpdate(*this);
 }
 
 /**
@@ -88,14 +92,20 @@ void Game::Draw()
 	}
 	if (mCurrentMap != nullptr)
 	{
-		mCurrentMap->Draw();
-		GetLuaContext().OnGameDraw();
+		//mCurrentMap->Draw();
+		GetLuaContext().OnGameDraw(*this);
 	}
 }
 
 bool Game::IsSuspended() const
 {
 	return mSuspended;
+}
+
+Savegame & Game::GetSavegame()
+{
+	Debug::CheckAssertion(mSavegame != nullptr, "Invalid game without savegame.");
+	return *mSavegame;
 }
 
 bool Game::HasCurrentMap() const
@@ -130,10 +140,10 @@ bool Game::NotifyInput(const InputEvent & ent)
 {
 	if (mCurrentMap != nullptr)
 	{
-		bool handle = GetLuaContext().OnGameInput(ent);
+		bool handle = GetLuaContext().OnGameInput(*this, ent);
 		if (!handle)
 		{
-			handle = mCurrentMap->NotifyInput(ent);
+			//handle = mCurrentMap->NotifyInput(ent);
 			if (!handle)
 			{
 

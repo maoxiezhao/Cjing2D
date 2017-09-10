@@ -23,8 +23,18 @@ public:
 	string GetString(const string& key)const;
 	void SetBoolean(const string& key, bool value);
 	bool GetBoolean(const string& key);
-
+	void UnSet(const string& key);
 	virtual const string GetLuaObjectName()const;
+
+private:
+	/** lua newindex function */
+	static int LuaLoadConfig(lua_State* l);
+
+	void ImportFromFile(const string& filename);
+
+	void SetDefaultData();
+
+	static int LuaLoadFunction(lua_State* l);
 
 private:
 	struct SavedValue

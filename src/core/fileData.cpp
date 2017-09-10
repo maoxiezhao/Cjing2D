@@ -148,7 +148,7 @@ namespace FileData
 		if (file == nullptr)
 			Debug::Die(string("the file:") + name + " created failed.");
 
-		if (PHYSFS_write(file, buffer.data(), (PHYSFS_uint32)buffer.size(), 1))
+		if (!PHYSFS_write(file, buffer.data(), (PHYSFS_uint32)buffer.size(), 1))
 			Debug::Die(string("the file:") + name + "writed failed.");
 
 		PHYSFS_close(file);

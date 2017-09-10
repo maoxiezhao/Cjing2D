@@ -105,6 +105,8 @@ public:
 		game_api_exists,
 		game_api_start,
 		game_api_save,
+		game_api_set_value,
+		game_api_get_value,
 		// time
 		time_api_start,
 		// menu

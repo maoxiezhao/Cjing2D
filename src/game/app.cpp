@@ -31,6 +31,7 @@ App::App() :
 
 	Logger::Info("Open Config.");
 	ConfigData::LoadConfig("config.dat");
+	FileData::SetDataWriteDir(ConfigData::GetConfigProperties().GetWriteDir());
 
 	// initialize system
 	Logger::Info("Initialize system modules");

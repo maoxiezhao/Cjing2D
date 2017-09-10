@@ -17,6 +17,7 @@ void LuaContext::RegisterGameModule()
 	static const luaL_Reg methods[] = {
 		{ "start", game_api_start},
 		{ "save", game_api_save },
+		{ "setValue", game_api_set_value},
 		{ nullptr,nullptr }
 	};
 
@@ -117,7 +118,7 @@ int LuaContext::game_api_save(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Savegame& savegame = *CheckSavegame(l, 1);
-		savegame.SaveGame();
+		savegame.SaveGameToLocal();
 
 		return 0;
 	});
@@ -145,4 +146,36 @@ int LuaContext::game_api_start(lua_State*l)
 		return 0;
 	});
 }
+
+/**
+*	\brief  µœ÷game:saveValue(key, value)
+*/
+int LuaContext::game_api_set_value(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		const std::string& key = LuaTools::CheckString(l, 2);
+
+		switch (lua_type(l, 3))
+		{
+		case LUA_TBOOLEAN:
+			savegame.SetBoolean(key, LuaTools::CheckBoolean(l, 3));
+			break;
+		case LUA_TNUMBER:
+			savegame.SetInteger(key, LuaTools::CheckInt(l, 3));
+			break;
+		case LUA_TSTRING:
+			savegame.SetString(key, LuaTools::CheckString(l, 3));
+			break;
+		case LUA_TNIL:
+			savegame.UnSet(key);
+			break;
+		default:
+			LuaTools::Error(l, "Invalid value.");
+			break;
+		}
+		return 0;
+	});
+}
+
 

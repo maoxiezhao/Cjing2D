@@ -208,6 +208,111 @@ int LuaContext::userdata_meta_gc(lua_State*l)
 }
 
 /**
+*	\biref lua newindex元方法处理存储特殊数据
+*
+*	xxx = yyyy,newindex方法会将3个参数压栈,如果userdata_tables里已经
+*	存在tables，则直接存取，不然
+*/
+int LuaContext::userdata_meta_newindex(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaTools::CheckType(l, 1, LUA_TUSERDATA);
+		LuaTools::CheckAny(l, 2);
+		LuaTools::CheckAny(l, 3);
+
+		LuaContext& luaContext = GetLuaContext(l);
+		luaContext.PrintLuaStack(l);
+		const LuaObjectPtr& userdata = *static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
+		Debug::CheckAssertion(userdata->IsKnowToLua(), "Invalid userdata without binding lua.");
+
+		lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");
+		Debug::CheckAssertion(!lua_isnil(l, -1), "userdatas tables is not init.");
+								// userdata_table
+		if (!userdata->IsWithLuaTable())
+		{
+			userdata->SetWithLuaTable(true);
+			lua_newtable(l);	
+								// userdata_table usertable
+			lua_pushlightuserdata(l, userdata.get());
+								// userdata_table usertable userdata
+			lua_pushvalue(l, -2);
+								// userdata_table usertable userdata usertable
+			lua_settable(l, -4);
+								// userdata_table usertable
+		}
+		else
+		{
+			lua_pushlightuserdata(l, userdata.get());
+								// userdata_table userdata
+			lua_gettable(l, -2);
+		}
+								// userdata_table usertable
+		Debug::CheckAssertion(!lua_isnil(l, -1), "userdata tables is not init.");
+				
+								// userdata_table userdata table
+		lua_pushvalue(l, 2);
+								// userdata_table userdata table key
+		lua_pushvalue(l, 3);
+								// userdata_table userdata table key value
+		lua_settable(l, -3);
+		return 0;	
+	});
+}
+
+/**
+*	\biref lua index元方法处理存储特殊数据
+*/
+int LuaContext::userdata_meta_index(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaTools::CheckType(l, 1, LUA_TUSERDATA);
+		LuaTools::CheckAny(l, 2);
+
+		LuaContext& luaContext = GetLuaContext(l);
+		//luaContext.PrintLuaStack(l);
+		const LuaObjectPtr& userdata = *static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
+		if (userdata->IsWithLuaTable() && lua_isstring(l, 2))
+		{	
+			// 从userdata table中
+			lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");
+			Debug::CheckAssertion(!lua_isnil(l, -1), "userdatas tables is not init.");
+						// ... utabel
+			lua_pushlightuserdata(l, userdata.get());
+						// ... utable userdata
+			lua_rawget(l, -2);			// 不用lua_gettable(l, -2)，因为不需要从元表中找
+						// ... utabel table/uil
+			if (!lua_isnil(l, -1))
+			{
+						// ... utabel table
+				lua_pushvalue(l, 2);
+				lua_gettable(l, -2);
+						// ... utabel table value/nil
+				if (!lua_isnil(l, -1))
+				{
+					return 1;
+				}
+			}
+		}
+		// 从metatable中找
+		lua_pushvalue(l, 1);
+						// ... userdata
+		lua_getmetatable(l, -1);
+						// ... userdata meta
+		if (lua_isnil(l, -1))
+		{
+			LuaTools::Error(l, "Invalid userdata without metatable.");
+			lua_pop(l, 1);
+			return 0;
+		}
+		lua_pushvalue(l, 2);
+						// ... userdata meta key
+		lua_gettable(l, -2);
+						// ... userdata meta key value/nil
+		return 1;
+	});
+}
+
+/**
 *	\brief 响应userdata销毁
 *
 *	当userdata(shared_ptr)的引用计数为0时，析构函数调用该函数,主要用来释放

@@ -46,9 +46,9 @@ App::App() :
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
-	// test
+	// testing
 	auto selections = std::make_shared<gui::Selections>(
-		new gui::TableList, 
+		new gui::TableList,
 		new gui::Selected,
 		new gui::MaxmumOneItem,
 		new gui::MinmumOneItem);

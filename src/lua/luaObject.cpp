@@ -3,7 +3,6 @@
 
 LuaObject::LuaObject():
 	mKnowToLua(false),
-	mWithLuaTable(false),
 	mLuaContext(nullptr)
 {
 }

@@ -7,8 +7,7 @@ void LuaContext::RegisterMainModule()
 {
 	static const luaL_Reg functions[] = {
 		{"sayHello", main_api_hello},
-		{"Exit", main_api_exit}, 
-		{"loadFile", main_api_load_file },
+		{"Exit", main_api_exit},
 		{nullptr,nullptr }
 	};
 
@@ -96,20 +95,3 @@ void LuaContext::PushMain(lua_State*l)
 	lua_getfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
 }
 
-/**
-*	\brief 加载lua代码段并压栈,实现cjing.main.loadFile(fileName)
-*/
-int LuaContext::main_api_load_file(lua_State* l)
-{
-	return LuaTools::ExceptionBoundary(l, [&] {
-		LuaContext& luaContext = GetLuaContext(l);
-		const string& fileName = LuaTools::CheckString(l, 1);
-
-		if (!LoadFile(l, fileName))
-		{
-			Debug::Warning( "Failed to load lua file " + fileName);
-			lua_pushnil(l);
-		}
-		return 1;
-	});
-}

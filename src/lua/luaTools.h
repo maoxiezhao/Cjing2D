@@ -19,7 +19,6 @@ namespace LuaTools
 	bool CallFunction(lua_State*l,int arguments,int results,const string& functionName);
 	int  GetPositiveIndex(lua_State*l, int index);
 	void CheckType(lua_State*l, int index, int exceptedType);
-	void CheckAny(lua_State*l, int index);
 	bool CheckBoolean(lua_State*l, int index);
 	bool OptBoolean(lua_State*l, int index, bool defaultValue);
 	int  CheckInt(lua_State*l, int index);

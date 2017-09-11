@@ -48,8 +48,9 @@ private:
 
 	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */
 						
-	std::unique_ptr<gui::GUIManager> mGUI;	
+	std::unique_ptr<gui::GUIManager> mGUI;
 
+	/***  测试用声明 **/
 	std::shared_ptr<gui::Window> mWindow;
 };
 

@@ -22,8 +22,6 @@ void LuaContext::RegisterGameModule()
 	};
 
 	static const luaL_Reg metamethos[] = {
-		{ "__newindex", userdata_meta_newindex },
-		{ "__index", userdata_meta_index},
 		{ "__gc", userdata_meta_gc },
 		{nullptr, nullptr}
 	};

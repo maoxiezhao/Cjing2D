@@ -43,13 +43,6 @@ namespace LuaTools
 				" but get" + luaL_typename(l, index));
 	}
 
-	void CheckAny(lua_State * l, int index)
-	{
-		if (lua_type(l, index) == LUA_TNIL)
-			ArgError(l, index, string("excepted no nil,") +
-				" but get" + luaL_typename(l, index));
-	}
-
 	bool CheckBoolean(lua_State * l, int index)
 	{
 		if (!lua_isboolean(l, index))

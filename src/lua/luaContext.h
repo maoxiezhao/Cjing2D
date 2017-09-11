@@ -54,7 +54,7 @@ public:
 	// script
 	static LuaContext& GetLuaContext(lua_State* l);
 	bool DoFileIfExists(lua_State*l,const string& name);
-	static bool LoadFile(lua_State*l, const string& name);
+	bool LoadFile(lua_State*l, const string& name);
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
 	void RegisterFunction(const string& moduleName, const luaL_Reg* functions);
@@ -100,7 +100,6 @@ public:
 		// main
 		main_api_hello,
 		main_api_exit,
-		main_api_load_file,
 		// game
 		game_api_load,
 		game_api_exists,

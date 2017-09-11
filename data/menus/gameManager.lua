@@ -20,10 +20,10 @@ function GameManager:startGame()
 	
 	-- start game
 	if game then 
-		print("[lua] Start game.")
-		self._game = game
-		game:start()
+		cjing.Main:StartGame(game)
 	end
 end
+
+
 
 return GameManager

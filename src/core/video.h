@@ -2,7 +2,6 @@
 #define _VIDEO_H_
 
 #include"common\common.h"
-#include"utils\size.h"
 
 /**
 *	\brief 初始化OpenGL，并绘制窗体
@@ -21,7 +20,6 @@ public:
 	static void SetFullScreen(bool fullscreen);
 	static void SetWindowScreen();
 	static bool IsFullScreen();
-	static const Size& GetScreenSize();
 };
 
 #endif

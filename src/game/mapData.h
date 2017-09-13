@@ -4,13 +4,9 @@
 #include"lua\luaData.h"
 #include"utils\size.h"
 #include"utils\point.h"
-#include"entity\EntityData.h"
+#include"game\EntityData.h"
 
 #include<deque>
-
-/**
-*	\brief µØÍ¼Êý¾ÝÃèÊö
-*/
 
 using EntityDataList = std::deque<EntityData>;
 
@@ -21,22 +17,6 @@ public:
 
 	virtual bool ImportFromLua(lua_State*l);
 	virtual bool ExportToLua(lua_State*l);
-
-	/***** ***** ****** setter/getter ***** ***** ******/
-	void SetPosition(const Point2& pos);
-	const Point2& GetPosition()const;
-	void SetMinLayer(int minLayer);
-	int GetMinLayer()const;
-	void SetMaxLayer(int maxLayer);
-	int GetMaxLayer()const;
-	void SetSize(const Size& size);
-	Size GetSize()const;
-	void SetTitlesetID(const string& id);
-	const string& getTitlesetID()const;
-
-private:
-	static int LuaMapDataProperty(lua_State* l);
-	static int LuaAddEntity(lua_State* l);
 
 private:
 	string mMapName;

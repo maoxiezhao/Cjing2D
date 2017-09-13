@@ -45,6 +45,30 @@ App::App() :
 	// initialize gui manager
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+
+	// testing
+	auto selections = std::make_shared<gui::Selections>(
+		new gui::TableList,
+		new gui::Selected,
+		new gui::MaxmumOneItem,
+		new gui::MinmumOneItem);
+
+	selections->Connect();
+	selections->Place(Point2(0, 0), Size(100, 100));
+
+	for (int i = 0; i < 16; i++)
+	{
+		auto button1 = std::make_shared<gui::ToggleButton>();
+		button1->Connect();
+		button1->Place(Point2(0, 0), Size(50, 50));
+
+		selections->AddItem(button1);
+	}
+
+	mWindow = std::make_shared<gui::Window>(100, 50, 200, 200);
+	mWindow->Show();
+	mWindow->SetChildren(selections, 0, 0, gui::ALIGN_VERTICAL_CENTER | gui::ALIGN_HORIZONTAL_TOP, 0);
+	mWindow->AddToKeyboardFocusChain(selections.get());
 }
 
 App::~App()
@@ -59,7 +83,7 @@ App::~App()
 		mLuaContext->Exit();
 	}
 
-	FileData::CloseData(); 
+	FileData::CloseData();
 	System::Quit();
 }
 

@@ -168,11 +168,3 @@ bool Video::IsFullScreen()
 {
 	return fullScreenWindow;
 }
-
-/**
-*	\brief 返回当前屏幕适配大小
-*/
-const Size & Video::GetScreenSize()
-{
-	return wantedWindowSize;
-}

@@ -38,7 +38,6 @@ public:
 	void SetProgramState(GLProgramStatePtr programstate);
 	void SetDirty(bool dirty);
 	void SetAnchor(const Point2& anchor);
-	void SetAnchorFloat(float x, float y);
 	void SetBlendFunc(const BlendFunc& blendFunc);
 	void SetModelView(const Matrix4& modelView);
 	void SetOpacity(int opacity);

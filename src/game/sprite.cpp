@@ -261,6 +261,15 @@ void Sprite::SetAnchor(const Point2 & anchor)
 }
 
 /**
+*	\brief 设置当前锚点
+*/
+void Sprite::SetAnchorFloat(float x, float y)
+{
+	mAnchor = Point2((int)(-x*mSize.width),int(-y*mSize.height));
+	SetDirty(true);
+}
+
+/**
 *	\brief 设置混合模式
 */
 void Sprite::SetBlendFunc(const BlendFunc & blendFunc)

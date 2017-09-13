@@ -108,6 +108,8 @@
     <ClCompile Include="src\entity\camera.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
+    <ClCompile Include="src\entity\entityData.cpp" />
+    <ClCompile Include="src\entity\entityInfo.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
     <ClCompile Include="src\game\animation.cpp" />
     <ClCompile Include="src\game\animationData.cpp" />
@@ -115,7 +117,6 @@
     <ClCompile Include="src\game\animationSprite.cpp" />
     <ClCompile Include="src\game\app.cpp" />
     <ClCompile Include="src\game\drawable.cpp" />
-    <ClCompile Include="src\game\EntityData.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
@@ -188,6 +189,8 @@
     <ClInclude Include="src\entity\camera.h" />
     <ClInclude Include="src\entity\entities.h" />
     <ClInclude Include="src\entity\entity.h" />
+    <ClInclude Include="src\entity\entityData.h" />
+    <ClInclude Include="src\entity\entityInfo.h" />
     <ClInclude Include="src\entity\player.h" />
     <ClInclude Include="src\game\animation.h" />
     <ClInclude Include="src\game\animationSet.h" />
@@ -195,7 +198,6 @@
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\currentQuest.h" />
     <ClInclude Include="src\game\drawable.h" />
-    <ClInclude Include="src\game\EntityData.h" />
     <ClInclude Include="src\game\enumInfo.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\map.h" />

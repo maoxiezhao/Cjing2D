@@ -41,25 +41,45 @@ Map::~Map()
 
 /**
 *	\brief 加载地图
+*
+*	地图数据包括.dat数据和.lua脚本，.dat为地图所有entity数据
+*	在load时会加载，而.lua脚本则在start时从luaContext中加载
 */
 void Map::Load(Game * game)
 {
 	MapData mapData;
-	const string& mapFileName = string("maps/") + GetMapID();
+	const string& mapFileName = string("maps/") + GetMapID() + ".dat";
 	bool successed = mapData.ImportFromFile(mapFileName);
-
 	if (!successed)
 	{
 		Debug::Die("Failed to load map file '" + GetMapID() + "'.");
 	}
 
 	// 加载地图成功，则初始化地图数据
-
 	mEntities = nullptr;
 	mTileset = nullptr;
-
 	mGame = game;
 	mIsLoaded = true;
+}
+
+void Map::UnLoad()
+{
+}
+
+/**
+*	\brief 开始地图
+*/
+void Map::Start()
+{
+	mIsStarted = true;
+}
+
+/**
+*	\brief 离开地图
+*/
+void Map::Leave()
+{
+	mIsStarted = false;
 }
 
 /**

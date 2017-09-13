@@ -75,9 +75,14 @@ public:
 	void OnUpdate();
 	void OnFinish();
 	void OnDraw();
+	
+	// input event
 	bool OnInput(const InputEvent& event);
 	bool OnKeyPressed(const InputEvent& event);
 	bool OnKeyReleased(const InputEvent& event);
+	bool OnMousePressed(const InputEvent& event);
+	bool OnMouseReleased(const InputEvent& event);
+	bool OnMouseMotion(const InputEvent& event);
 
 	// modules
 	void RegisterModules();
@@ -116,6 +121,7 @@ public:
 		// video
 		video_api_setFullScreen,
 		video_api_isFullScreen,
+		video_api_get_wanted_size,
 		// drawable
 		drawable_api_get_pos,
 		drawable_api_set_pos,
@@ -133,6 +139,7 @@ public:
 		sprite_api_get_rotation,
 		sprite_api_set_opacity,
 		sprite_api_get_opacity,
+		sprite_api_set_anchor,
 		sprite_api_draw,
 		// animation
 		animation_api_create,

@@ -21,6 +21,7 @@ void LuaContext::RegisterSpriteModule()
 		{"getBlend", sprite_api_get_blend},
 		{"setOpacity", sprite_api_set_opacity},
 		{"getOpacity", sprite_api_get_opacity},
+		{"setAnchor", sprite_api_set_anchor},
 		{"draw", sprite_api_draw},
 		{"getPos", drawable_api_get_pos},
 		{"setPos", drawable_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
@@ -204,5 +205,17 @@ int LuaContext::sprite_api_get_rotation(lua_State*l)
 		lua_pushnumber(l, angle);
 
 		return 1;
+	});
+}
+
+int LuaContext::sprite_api_set_anchor(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		float x = LuaTools::CheckFloat(l, 2);
+		float y = LuaTools::CheckFloat(l, 3);
+		sprite.SetAnchorFloat(x, y );
+
+		return 0;
 	});
 }

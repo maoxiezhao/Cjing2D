@@ -29,6 +29,9 @@ public:
 
 	// system
 	virtual void Load(Game* game);
+	virtual void UnLoad();
+	virtual void Start();
+	virtual void Leave();
 	virtual void Update();
 	virtual bool NotifyInput(const InputEvent& event);
 	virtual void Draw();

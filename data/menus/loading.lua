@@ -30,7 +30,7 @@ function LoadingScene:loadingFunction()
 	print "Loading...."
 	
 	-- 加载默认字体
-	cjing.Text.loadDefault()
+	--cjing.Text.loadDefault()
 	
 end
 

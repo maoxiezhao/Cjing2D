@@ -217,9 +217,6 @@
     <ClCompile Include="src\game\mapData.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\EntityData.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui\core\dispatcher.cpp">
       <Filter>gui\core</Filter>
     </ClCompile>
@@ -276,6 +273,12 @@
     </ClCompile>
     <ClCompile Include="src\core\configData.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\entityInfo.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\entityData.cpp">
+      <Filter>entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -447,9 +450,6 @@
     <ClInclude Include="src\game\mapData.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\EntityData.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\gui\core\handler.h">
       <Filter>gui\core</Filter>
     </ClInclude>
@@ -524,6 +524,12 @@
     </ClInclude>
     <ClInclude Include="src\core\configData.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\entityInfo.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\entityData.h">
+      <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

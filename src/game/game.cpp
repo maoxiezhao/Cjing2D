@@ -30,10 +30,9 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	// mCommands = new Commands();
 	mPlayer = std::make_shared<Player>();
 
-	// 加载map
-	string mapID;
-	// string map_id = savegame->getStringMapId();
-	// string destination_name = savegame->getStringDestination();
+	// 加载map,now for testing.
+	string mapID = "test";      //savegame->getStringMapId();
+	string destination_name = ""; //savegame->getStringDestination();
 	
 	SetCurrentMap(mapID);
 }
@@ -118,10 +117,22 @@ Map & Game::GetCurrentMap()
 	return *mCurrentMap;
 }
 
+/**
+*	\brief 设置当前地图
+*
+*	设置的地图的会在unpdateTransition中更新
+*/
 void Game::SetCurrentMap(const string & mapID)
 {
-	auto newMap = std::make_shared<Map>();
-	mNextMap = newMap;	
+	if (mCurrentMap == nullptr || mNextMap->GetMapID() != mCurrentMap->GetMapID())
+	{
+		mNextMap = std::make_shared<Map>(mapID);
+		mNextMap->Load(this);
+	}
+	else
+	{
+		mNextMap = mCurrentMap;
+	}
 }
 
 void Game::UpdateTransitoin()

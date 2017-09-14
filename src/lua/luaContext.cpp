@@ -218,10 +218,10 @@ int LuaContext::userdata_meta_newindex(lua_State* l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		LuaTools::CheckType(l, 1, LUA_TUSERDATA);
 		LuaTools::CheckAny(l, 2);
-		LuaTools::CheckAny(l, 3);
+		//LuaTools::CheckAny(l, 3);
 
 		LuaContext& luaContext = GetLuaContext(l);
-		luaContext.PrintLuaStack(l);
+		//luaContext.PrintLuaStack(l);
 		const LuaObjectPtr& userdata = *static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
 		Debug::CheckAssertion(userdata->IsKnowToLua(), "Invalid userdata without binding lua.");
 
@@ -707,6 +707,10 @@ bool LuaContext::OnInput(const InputEvent & event)
 	}
 	else if (event.IsMouseEvent())
 	{	// 鼠标事件
+		if (event.GetEventType() == InputEvent::EVENT_MOUSE_MOTION)
+		{
+			handle = OnMouseMotion(event);
+		}
 	}		
 	return handle;;
 }
@@ -805,6 +809,31 @@ bool LuaContext::OnKeyReleased(const InputEvent & event)
 }
 
 /**
+*	\brief 响应鼠标移动事件
+*/
+bool LuaContext::OnMouseMotion(const InputEvent & event)
+{
+	bool handle = false;
+	if (FindMethod("onMouseMotion"))// 注意FindMethod会将Ojb复制一份放于stack中
+	{								// obj method obj
+		const Point2& mousePos = event.GetKeyEvent().motion;
+		lua_pushinteger(l, mousePos.x);
+		lua_pushinteger(l, mousePos.y);
+
+		bool success = LuaTools::CallFunction(l, 3, 1, "onMouseMotion");
+		if (!success)
+			handle = true;
+		else
+		{
+			handle = lua_toboolean(l, -1);
+			lua_pop(l, 1);
+		}
+		
+	}
+	return handle;
+}
+
+/**
 *	\brief 注册lua接口
 *
 *	对于有派生关系的module，需要保证正确的注册顺序
@@ -813,6 +842,7 @@ void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
 	RegisterGameModule();
+	RegisterMapModule();
 	RegisterVideoModule();
 	RegisterFontModule();
 	RegisterMenuModule();

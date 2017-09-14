@@ -30,6 +30,8 @@ namespace LuaTools
 	string  CheckFieldStringByDefault(lua_State*l, int tableIndex, const string& name, const string& defaultString);
 	int   CheckFieldIntByDefault(lua_State*l, int tableIndex, const string&name, int defaultValue);
 	string CheckString(lua_State*l,int index);
+	bool CheckFieldBool(lua_State*l, int tableIndex, const string& name);
+	bool CheckFieldBoolByDefault(lua_State*l, int tableIndex, const string& name, bool defaultValue);
 	LuaRef CheckFunction(lua_State*l, int index);
 	LuaRef OptFunction(lua_State*l, int index);
 	bool IsColor(lua_State*l, int index);

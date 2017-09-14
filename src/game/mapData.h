@@ -34,6 +34,9 @@ public:
 	void SetTitlesetID(const string& id);
 	const string& getTitlesetID()const;
 
+	bool IsValidLayer(int layer)const;
+	bool AddEntity(const EntityData& entityData);
+
 private:
 	static int LuaMapDataProperty(lua_State* l);
 	static int LuaAddEntity(lua_State* l);

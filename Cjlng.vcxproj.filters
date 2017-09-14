@@ -280,6 +280,9 @@
     <ClCompile Include="src\entity\entityData.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\tileset.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -529,6 +532,9 @@
       <Filter>entity</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\entityData.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\tileset.h">
       <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>

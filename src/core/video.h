@@ -21,6 +21,8 @@ public:
 	static void SetFullScreen(bool fullscreen);
 	static void SetWindowScreen();
 	static bool IsFullScreen();
+	static void SetFPS(uint32_t f);
+	static uint32_t GetFPS();
 	static const Size& GetScreenSize();
 };
 

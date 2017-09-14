@@ -18,6 +18,7 @@ void LuaContext::RegisterFontModule()
 		{ "create",text_api_create },
 		{ "load",text_api_load_font},
 		{ "loadDefault",text_api_load_font_default},
+		{ "loadDefaultEn", text_api_load_font_default_en },
 		{ nullptr,nullptr }
 	};
 
@@ -146,6 +147,21 @@ int LuaContext::text_api_load_font_default(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		font::FontAtlas::GetInstance().LoadDefaultFont();
+
+		return 0;
+	});
+}
+
+
+/**
+*	\brief 实现cjing.Text.loadDefaultEn()
+*
+*	加载默认英文字体，调用fontAltas::LoadDefaultFontEn
+*/
+int LuaContext::text_api_load_font_default_en(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		font::FontAtlas::GetInstance().LoadDefaultFontEn();
 
 		return 0;
 	});

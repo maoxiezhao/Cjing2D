@@ -10,6 +10,7 @@ class LuaContext;
 class Tileset;
 class Entities;
 class InputEvent;
+class Tileset;
 /**
 *	\brief map¿‡
 *
@@ -44,6 +45,7 @@ public:
 	bool IsSuspended()const;
 	void CheckSuspended();
 	void SetSuspended(bool suspended);
+	bool IsValidLayer(int layer)const;
 
 	Game& GetGame();
 	LuaContext& GetLuaContext();
@@ -60,19 +62,17 @@ public:
 	// test collison
 	bool TestCollison();
 	
-
-
 private:
 	string mMapID;
 	int mWidth;
 	int mHeight;
 	int mMinLayer;
 	int mMaxLayer;
-	
-	string mTilesetId;
-	const Tileset* mTileset;
 
 	Game* mGame;
+
+	string mTilesetId;
+	std::shared_ptr<Tileset> mTileset;
 
 	std::shared_ptr<Camera> mCamera;
 

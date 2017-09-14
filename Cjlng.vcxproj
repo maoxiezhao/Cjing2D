@@ -111,6 +111,7 @@
     <ClCompile Include="src\entity\entityData.cpp" />
     <ClCompile Include="src\entity\entityInfo.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
+    <ClCompile Include="src\entity\tileset.cpp" />
     <ClCompile Include="src\game\animation.cpp" />
     <ClCompile Include="src\game\animationData.cpp" />
     <ClCompile Include="src\game\animationSet.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\entity\entityData.h" />
     <ClInclude Include="src\entity\entityInfo.h" />
     <ClInclude Include="src\entity\player.h" />
+    <ClInclude Include="src\entity\tileset.h" />
     <ClInclude Include="src\game\animation.h" />
     <ClInclude Include="src\game\animationSet.h" />
     <ClInclude Include="src\game\animationSprite.h" />

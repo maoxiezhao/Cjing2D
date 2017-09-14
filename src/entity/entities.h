@@ -5,7 +5,7 @@
 #include"game\game.h"
 #include"utils\quadTree.h"
 #include"entity\camera.h"
-
+#include"game\mapData.h"
 #include<list>
 
 class Ground;
@@ -32,7 +32,7 @@ public:
 	EntityVector GetEntities();
 
 	// entities
-	void InitEntities();
+	void InitEntities(const MapData& entityData);
 	void AddEntity(const EntityPtr& entity);
 	void RemoveEntity(Entity& entity);
 

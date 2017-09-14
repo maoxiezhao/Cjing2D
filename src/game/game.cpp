@@ -76,7 +76,7 @@ void Game::Update()
 	{
 		return;
 	}
-	//mCurrentMap->Update();	
+	mCurrentMap->Update();	
 	GetLuaContext().OnGameUpdate(*this);
 }
 
@@ -91,7 +91,7 @@ void Game::Draw()
 	}
 	if (mCurrentMap != nullptr)
 	{
-		//mCurrentMap->Draw();
+		mCurrentMap->Draw();
 		GetLuaContext().OnGameDraw(*this);
 	}
 }
@@ -144,6 +144,8 @@ void Game::UpdateTransitoin()
 			mCurrentMap = mNextMap;
 			mNextMap = nullptr;
 		}
+		// start game
+		mCurrentMap->Start();
 	}
 }
 

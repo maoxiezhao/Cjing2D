@@ -27,10 +27,10 @@ function LoadingScene:onStarted()
 end
 
 function LoadingScene:loadingFunction()
-	print "Loading...."
+	print "Asyncing Loading...."
 	
 	-- 加载默认字体
-	--cjing.Text.loadDefault()
+	cjing.Text.loadDefaultEn()
 	
 end
 

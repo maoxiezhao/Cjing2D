@@ -98,6 +98,36 @@ namespace LuaTools
 		return lua_tostring(l, index);
 	}
 
+	bool CheckFieldBool(lua_State*l, int tableIndex, const string& name)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!lua_isboolean(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:color type,got ") + luaL_typename(l, -1));
+		}
+		bool value = CheckBoolean(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
+	bool CheckFieldBoolByDefault(lua_State*l, int tableIndex, const string& name, bool defaultValue)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (lua_isnil(l, -1))
+		{
+			lua_pop(l, 1);	// pop nil
+			return defaultValue;
+		}
+
+		if (!lua_isboolean(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:color type,got ") + luaL_typename(l, -1));
+		}
+		bool value = CheckBoolean(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
 	LuaRef CheckFunction(lua_State * l, int index)
 	{
 		CheckType(l, index, LUA_TFUNCTION);

@@ -36,8 +36,12 @@ EntityVector Entities::GetEntities()
 	return EntityVector();
 }
 
-void Entities::InitEntities()
+/**
+*	\brief 根据entityData创建entities
+*/
+void Entities::InitEntities(const MapData& entityData)
 {
+
 }
 
 void Entities::AddEntity(const EntityPtr& entity)

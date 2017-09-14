@@ -6,6 +6,7 @@
 namespace font {
 
 const string DEFAULT_FONT_NAME = "msyh.ttf";
+const string DEFAULT_FONT_EN_NAME = "arial.ttf";
 
 /**
 *	\brief ◊÷ÃÂ≈‰÷√œÓ
@@ -32,6 +33,7 @@ public:
 	~FontAtlas();
 
 	void LoadDefaultFont();
+	void LoadDefaultFontEn();
 	void LoadFontFromTTF(const string& filename, const std::vector<Font::FontCodeRange> & range, const FontConfig* fontConfig = nullptr);
 
 	FontPtr GetDefaultFont();

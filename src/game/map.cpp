@@ -4,6 +4,7 @@
 #include "lua\luaContext.h"
 #include "game\game.h"
 #include "game\mapData.h"
+#include "entity\tileset.h"
 
 Map::Map():
 	mMapID(),
@@ -54,9 +55,17 @@ void Map::Load(Game * game)
 	{
 		Debug::Die("Failed to load map file '" + GetMapID() + "'.");
 	}
-
 	// 加载地图成功，则初始化地图数据
-	mEntities = nullptr;
+	mWidth  = mapData.GetSize().width;
+	mHeight = mapData.GetSize().height;
+	mMinLayer = mapData.GetMinLayer();
+	mMaxLayer = mapData.GetMaxLayer();
+	mTilesetId = mapData.getTitlesetID();
+	mTileset = std::make_shared<Tileset>(mTilesetId);
+
+	mEntities = std::unique_ptr<Entities>(new Entities(*mGame, *this));
+	mEntities->InitEntities(mapData);
+
 	mTileset = nullptr;
 	mGame = game;
 	mIsLoaded = true;
@@ -67,11 +76,13 @@ void Map::UnLoad()
 }
 
 /**
-*	\brief 开始地图
+*	\brief 开始地图,执行lua的runMap方法
 */
 void Map::Start()
 {
 	mIsStarted = true;
+
+	GetLuaContext().RunMap(*this);
 }
 
 /**
@@ -89,12 +100,8 @@ void Map::Update()
 {
 	CheckSuspended();
 
-	DrawBackground();
-	
 	mEntities->Update();
-	GetLuaContext().OnMapUpdate();
-
-	DrawForeground();
+	GetLuaContext().OnMapUpdate(*this);
 }
 
 bool Map::NotifyInput(const InputEvent & event)
@@ -119,6 +126,15 @@ void Map::CheckSuspended()
 void Map::SetSuspended(bool suspended)
 {
 	mSuspended = suspended;
+}
+
+/**
+*	\brief 是否是合法的layer
+*/
+bool Map::IsValidLayer(int layer) const
+{
+	return (layer >= mMinLayer && 
+		layer <= mMaxLayer);
 }
 
 Game & Map::GetGame()
@@ -164,15 +180,22 @@ const string & Map::getTilesetID() const
 	return mTilesetId;
 }
 
+/**
+*	\brief 绘制地图
+*
+*	绘制过程依次包括背景图，entities,前景图,luaContent
+*/
 void Map::Draw()
 {
 	if (!IsLoaded())
 	{
 		return;
 	}
-
+	DrawBackground();
 	mEntities->Draw();
-	GetLuaContext().OnMapDraw();
+	DrawForeground();
+
+	GetLuaContext().OnMapDraw(*this);
 }
 
 /**

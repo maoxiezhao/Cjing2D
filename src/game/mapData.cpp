@@ -1,6 +1,7 @@
 #include "mapData.h"
 #include "core\debug.h"
 #include "lua\luaContext.h"
+#include <sstream>
 
 MapData::MapData():
 	mMapName(""),
@@ -65,6 +66,26 @@ void MapData::SetTitlesetID(const string & id)
 const string & MapData::getTitlesetID() const
 {
 	return mTilesetID;
+}
+
+bool MapData::IsValidLayer(int layer) const
+{
+	return (layer >= mMinLayer && 
+		layer < mMaxLayer);
+}
+
+/**
+*	\brief 添加一个entityData
+*	\return 添加成功返回true,反之返回false
+*/
+bool MapData::AddEntity(const EntityData & entityData)
+{
+	int layer = entityData.GetLayer();
+	Debug::CheckAssertion(layer >= mMinLayer && layer < mMaxLayer,
+		"The adding entity has a invalid layer.");
+
+	mEntitiesByLayer[layer].push_back(entityData);
+	return true;
 }
 
 /**
@@ -135,8 +156,23 @@ int MapData::LuaAddEntity(lua_State * l)
 		lua_pop(l, 1);
 
 		const string& typeStr = LuaTools::CheckString(l, lua_upvalueindex(1));
-		EntityType entityType = StringToEnum<EntityType>(typeStr);
-		
+		EntityType entityType = StringToEnum<EntityType>(typeStr);	
+		EntityData entityData = EntityData::CheckEntityData(l, 1, entityType);
+
+		// 检测entity是否处在合法的层级
+		if (!mapData->IsValidLayer(entityData.GetLayer()) )
+		{
+			std::ostringstream oss;
+			oss << "Invalid layer: " << entityData.GetLayer();
+			LuaTools::Error(l, oss.str());
+		}
+
+		if (!mapData->AddEntity(entityData) )
+		{
+			std::ostringstream oss;
+			oss << "Failed to add entity " << entityData.GetName();
+			LuaTools::Error(l, oss.str());
+		}
 		return 0;
 	});
 }

@@ -17,6 +17,7 @@ namespace
 	Size positionWindow;
 	string tilename;
 	Renderer* mRenderer = nullptr;
+	uint32_t fps = 0;
 }
 
 /**
@@ -167,6 +168,16 @@ void Video::SetWindowScreen()
 bool Video::IsFullScreen()
 {
 	return fullScreenWindow;
+}
+
+void Video::SetFPS(uint32_t f)
+{
+	fps = f;
+}
+
+uint32_t Video::GetFPS()
+{
+	return fps;
 }
 
 /**

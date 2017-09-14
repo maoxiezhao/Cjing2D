@@ -1,6 +1,6 @@
 config{
-	title = "捕鱼达人",
+	title = "Cjing v0.1",
 	write_dir = "cjing",
-	normal_width = 800,
+	normal_width = 640,
 	normal_height= 480,
 }

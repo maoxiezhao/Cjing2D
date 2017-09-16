@@ -1,0 +1,28 @@
+property{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  world = "inside",
+  tileset = "test",
+}
+
+title{
+	x = 0,
+	y = 0,
+	layer = 0,
+	width = 32,
+	height = 32,
+	pattern = 0,
+}
+
+title{
+	x = 32,
+	y = 0,
+	layer = 0,
+	width = 32,
+	height = 32,
+	pattern = 1,
+}

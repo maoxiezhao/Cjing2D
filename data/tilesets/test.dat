@@ -1,0 +1,15 @@
+tilePattern{
+  id = 0,
+  x = 0,
+  y = 0,
+  width  = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1,
+  x = 16,
+  y = 0,
+  width = 16,
+  height = 16,
+}

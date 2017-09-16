@@ -283,6 +283,15 @@
     <ClCompile Include="src\entity\tileset.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\entityApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\tile.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\tilepattern.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -535,6 +544,12 @@
       <Filter>entity</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\tileset.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\tile.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\tilepattern.h">
       <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>

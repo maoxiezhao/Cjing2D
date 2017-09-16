@@ -54,6 +54,10 @@ void Game::Stop()
 	{
 		return;
 	}
+	if (mCurrentMap != nullptr)
+	{
+		mCurrentMap->UnLoad();
+	}
 
 	mStarted = false;
 	GetLuaContext().OnGameFinish(*this);

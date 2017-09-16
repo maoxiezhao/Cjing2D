@@ -10,6 +10,7 @@
 
 class Ground;
 class Tile;
+class LuaContext;
 
 using EntityList = std::list<EntityPtr>;
 using EntityVector = std::vector<EntityPtr>;
@@ -22,22 +23,24 @@ class Entities
 {
 public:
 	Entities(Game&game, Map&map);
+	~Entities();
 
 	// system
 	void Update();
 	void Draw();
 	void SetSuspended(bool suspended);
 
+	// entities
+	void InitEntities(const MapData& mapData);
+	void AddEntity(const EntityPtr& entity);
+	void RemoveEntity(Entity& entity);
 	CameraPtr GetCamear()const;
 	EntityVector GetEntities();
 
-	// entities
-	void InitEntities(const MapData& entityData);
-	void AddEntity(const EntityPtr& entity);
-	void RemoveEntity(Entity& entity);
-
-	// notify
-
+	// lua
+	LuaContext& GetLuaContext();
+	Map& GetMap();
+	
 private:
 	template<typename T>
 	using ByLayer = std::map<int, T>;

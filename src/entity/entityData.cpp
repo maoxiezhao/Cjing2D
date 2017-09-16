@@ -170,3 +170,45 @@ void EntityData::SetValueInteger(const string & key, int value)
 	entityFieldDescription._default = EntityDefaultValue(value);
 	mValueField[key] = entityFieldDescription;
 }
+
+const EntityData::EntityFieldDescription & EntityData::GetValue(const string & key) const
+{
+	auto& it = mValueField.find(key);
+	Debug::CheckAssertion(it != mValueField.end(),
+		"Tried to get the not exists key in entity valueField.");
+
+	return it->second;
+}
+
+bool EntityData::GetValueBoolean(const string & key) const
+{
+	auto& it = mValueField.find(key);
+	Debug::CheckAssertion(it != mValueField.end(),
+		"Tried to get the not exists key in entity valueField.");
+	Debug::CheckAssertion(it->second._default.mType == EntityValueType::VALUE_TYPE_BOOLEAN,
+		"Excepted boolean value.");
+
+	return static_cast<bool>(it->second._default.mIntValue);
+}
+
+int EntityData::GetValueInteger(const string & key) const
+{
+	auto& it = mValueField.find(key);
+	Debug::CheckAssertion(it != mValueField.end(),
+		"Tried to get the not exists key in entity valueField.");
+	Debug::CheckAssertion(it->second._default.mType == EntityValueType::VALUE_TYPE_INTEGER,
+		"Excepted boolean value.");
+
+	return it->second._default.mIntValue;
+}
+
+const string & EntityData::GetValueString(const string & key) const
+{
+	auto& it = mValueField.find(key);
+	Debug::CheckAssertion(it != mValueField.end(),
+		"Tried to get the not exists key in entity valueField.");
+	Debug::CheckAssertion(it->second._default.mType == EntityValueType::VALUE_TYPE_STRING,
+		"Excepted boolean value.");
+
+	return it->second._default.mStringValue;
+}

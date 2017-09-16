@@ -78,14 +78,37 @@ bool MapData::IsValidLayer(int layer) const
 *	\brief 添加一个entityData
 *	\return 添加成功返回true,反之返回false
 */
+int MapData::GetEntityCountByLayer(int layer)const
+{
+	Debug::CheckAssertion(layer >= mMinLayer && layer <= mMaxLayer,
+		"The getting entity layer is Invalid layer.");
+
+	if (layer >= static_cast<int>(mEntitiesByLayer.size()) )
+		return 0;
+	else
+		return mEntitiesByLayer.at(layer).size();
+}
+
 bool MapData::AddEntity(const EntityData & entityData)
 {
 	int layer = entityData.GetLayer();
-	Debug::CheckAssertion(layer >= mMinLayer && layer < mMaxLayer,
+	Debug::CheckAssertion(layer >= mMinLayer && layer <= mMaxLayer,
 		"The adding entity has a invalid layer.");
 
 	mEntitiesByLayer[layer].push_back(entityData);
 	return true;
+}
+
+const EntityData & MapData::GetEntity(int layer, int index) const
+{
+	Debug::CheckAssertion(layer >= mMinLayer && layer <= mMaxLayer,
+		"The getting entity layer is Invalid layer");
+	
+	const auto& entityList = mEntitiesByLayer.at(layer);
+	Debug::CheckAssertion(index >= 0 && index < static_cast<int>(entityList.size()),
+		"The  getting entity has a invalid index.");
+
+	return entityList.at(index);
 }
 
 /**

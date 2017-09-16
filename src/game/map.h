@@ -50,7 +50,7 @@ public:
 	Game& GetGame();
 	LuaContext& GetLuaContext();
 	const string GetLuaObjectName()const;
-
+	Entities& GetEntities();
 	const std::shared_ptr<Camera>& GetCamera();
 
 	// map property
@@ -58,6 +58,8 @@ public:
 	const Tileset& GetTileset()const;
 	void SetTileset(const string& tilesetID);
 	const string& getTilesetID()const;
+	int GetMinLayer()const;
+	int GetMaxLayer()const;
 
 	// test collison
 	bool TestCollison();
@@ -68,7 +70,6 @@ private:
 	int mHeight;
 	int mMinLayer;
 	int mMaxLayer;
-
 	Game* mGame;
 
 	string mTilesetId;

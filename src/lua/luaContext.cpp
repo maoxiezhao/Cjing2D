@@ -851,6 +851,7 @@ void LuaContext::RegisterModules()
 	RegisterAnimationModule();
 	RegisterMovementModule();
 	RegisterAsyncLoaderModule();
+	RegisterEntityModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

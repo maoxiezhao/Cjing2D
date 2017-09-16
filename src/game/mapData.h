@@ -22,7 +22,8 @@ public:
 	virtual bool ImportFromLua(lua_State*l);
 	virtual bool ExportToLua(lua_State*l);
 
-	/***** ***** ****** setter/getter ***** ***** ******/
+	/**** **** **** setter/getter **** **** ****/
+
 	void SetPosition(const Point2& pos);
 	const Point2& GetPosition()const;
 	void SetMinLayer(int minLayer);
@@ -33,9 +34,13 @@ public:
 	Size GetSize()const;
 	void SetTitlesetID(const string& id);
 	const string& getTitlesetID()const;
-
 	bool IsValidLayer(int layer)const;
+
+	/***** ***** ****** entity ***** ***** ******/
+
+	int GetEntityCountByLayer(int layer)const;
 	bool AddEntity(const EntityData& entityData);
+	const EntityData& GetEntity(int layer, int index)const;
 
 private:
 	static int LuaMapDataProperty(lua_State* l);

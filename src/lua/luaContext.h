@@ -8,6 +8,7 @@
 #include"game\timer.h"
 #include"game\sprite.h"
 #include"game\drawable.h"
+#include"entity\entityData.h"
 
 #include<set>
 #include<map>
@@ -98,6 +99,7 @@ public:
 	void RegisterAnimationModule();
 	void RegisterFontModule();
 	void RegisterAsyncLoaderModule();
+	void RegisterEntityModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -195,6 +197,12 @@ public:
 		async_loader_api_set_callback,
 		async_loader_api_run,
 		async_loader_meta_api_gc,
+		// entity
+
+		// entity create
+		entity_api_create_title,
+		entity_api_create_destimation,
+		entity_api_create_dynamic_title,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -271,6 +279,9 @@ public:
 	bool HasAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader);
 	void RemoveAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader);
 
+	// entity api
+	bool CreateEntity(const EntityData& entityData, Map& map);
+
 	// push data
 	static void PushUserdata(lua_State*l, LuaObject& userData);
 	static void PushDrawable(lua_State*l, Drawable& drawable);
@@ -324,6 +335,8 @@ public:
 	static const string module_drawable_name;
 	static const string module_sprite_name;
 	static const string module_animation_name;
+	// entity
+	static const string module_entity_name;
 
 private:
 	App* mApp;
@@ -342,6 +355,9 @@ private:
 
 	std::set<std::shared_ptr<AsyncLoader> >mAsyncLoaders;	/** ¥Ê¥¢¡À“Ï≤Ωº”‘ÿ∆˜ */
 	std::set<std::shared_ptr<AsyncLoader> >mAsyncLoaderToRemove;
+
+	static std::map<EntityType, lua_CFunction> mEntitityCreaters;
+
 };
 
 #endif

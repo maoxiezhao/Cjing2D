@@ -7,6 +7,7 @@
 #include<vector>
 #include<iostream>
 #include<windows.h>
+#include<sstream>
 
 #define GLEW_STATIC
 #include<glew.h>

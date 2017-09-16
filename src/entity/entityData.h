@@ -98,6 +98,11 @@ public:
 	void SetValueString(const string& key, const string& value);
 	void SetValueInteger(const string& key, int value);
 
+	const EntityFieldDescription& GetValue(const string& key)const;
+	bool GetValueBoolean(const string& key)const;
+	int GetValueInteger(const string& key)const;
+	const string& GetValueString(const string& key)const;
+
 private:
 	EntityType mType;
 	string mName;

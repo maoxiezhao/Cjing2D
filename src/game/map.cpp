@@ -4,6 +4,7 @@
 #include "lua\luaContext.h"
 #include "game\game.h"
 #include "game\mapData.h"
+#include "sprite.h"
 #include "entity\tileset.h"
 
 Map::Map():
@@ -62,17 +63,21 @@ void Map::Load(Game * game)
 	mMaxLayer = mapData.GetMaxLayer();
 	mTilesetId = mapData.getTitlesetID();
 	mTileset = std::make_shared<Tileset>(mTilesetId);
+	mTileset->Load();
 
-	mEntities = std::unique_ptr<Entities>(new Entities(*mGame, *this));
+	mEntities = std::unique_ptr<Entities>(new Entities(*game, *this));
 	mEntities->InitEntities(mapData);
 
-	mTileset = nullptr;
 	mGame = game;
 	mIsLoaded = true;
 }
 
 void Map::UnLoad()
 {
+	if (mTileset != nullptr)
+	{
+		mTileset->UnLoad();
+	}
 }
 
 /**
@@ -152,6 +157,11 @@ const string Map::GetLuaObjectName() const
 	return LuaContext::module_map_name;
 }
 
+Entities & Map::GetEntities()
+{
+	return *mEntities;
+}
+
 const std::shared_ptr<Camera>& Map::GetCamera()
 {
 	return nullptr;
@@ -172,12 +182,22 @@ const Tileset & Map::GetTileset() const
 */
 void Map::SetTileset(const string & tilesetID)
 {
-	
+	mTilesetId = tilesetID;
 }
 
 const string & Map::getTilesetID() const
 {
 	return mTilesetId;
+}
+
+int Map::GetMinLayer() const
+{
+	return mMinLayer;
+}
+
+int Map::GetMaxLayer() const
+{
+	return mMaxLayer;
 }
 
 /**
@@ -194,6 +214,15 @@ void Map::Draw()
 	DrawBackground();
 	mEntities->Draw();
 	DrawForeground();
+
+	// test
+	//mTileset->GetTileImage()->SetPos({ 0, 0 });
+	//mTileset->GetTileImage()->SetTextureRect(Rect(0, 0, 16, 16), true);
+ //   mTileset->GetTileImage()->Draw();
+	//
+	//mTileset->GetTileImage()->SetPos({ 16, 0 });
+	//mTileset->GetTileImage()->SetTextureRect(Rect(16, 0, 32, 16), true);
+	//mTileset->GetTileImage()->Draw();
 
 	GetLuaContext().OnMapDraw(*this);
 }

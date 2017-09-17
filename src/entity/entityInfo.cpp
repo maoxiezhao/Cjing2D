@@ -3,7 +3,7 @@
 const string EnumInfoTraits<EntityType>::prettyName = "entity type";
 const EnumInfo<EntityType>::nameType EnumInfoTraits<EntityType>::names =
 {
-	{ TITLE,"title"},
+	{ TITLE,"tile"},
 	{ DYNAMIC_TITLE,"dynamicTitle"},
 	{ DESTIMATION, "Destimation"}
 };

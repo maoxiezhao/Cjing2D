@@ -50,7 +50,7 @@ void FontAtlas::LoadDefaultFontEn()
 	FontConfig defaultFontConfig;
 	defaultFontConfig.name = DEFAULT_FONT_EN_NAME;
 	defaultFontConfig.fontSize = 16;
-	defaultFontConfig.letterSpacing = 1;
+	defaultFontConfig.letterSpacing = 0;
 	defaultFontConfig.lineHeight = 16;
 
 	std::vector<Font::FontCodeRange> codeRanges;

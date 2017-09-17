@@ -83,6 +83,10 @@ void App::Run()
 		lastFrameDate = now;
 		lag += lastFrameDuration;
 
+		// 计算帧
+		if(lastFrameDuration > 0)
+			Video::SetFPS(uint32_t(1000 / lastFrameDuration));
+
 		// 有可能因为一些情况（比如加载大文件)导致这一帧时间
 		// 特别长，则放弃追回，将时间记录在TimeDropped
 		if (lag >= 200)

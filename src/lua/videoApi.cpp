@@ -12,6 +12,7 @@ void LuaContext::RegisterVideoModule()
 		{"SetFullScreen",video_api_setFullScreen},
 		{"IsFullScreen",video_api_isFullScreen},
 		{"GetScreenSize", video_api_get_wanted_size},
+		{"GetFPS", video_api_get_fps },
 		{nullptr,nullptr}
 	};
 	RegisterFunction(module_video_name, functions);
@@ -55,5 +56,18 @@ int LuaContext::video_api_get_wanted_size(lua_State* l)
 		lua_pushinteger(l, size.height);
 
 		return 2;
+	});
+}
+
+/**
+*	\brief 返回当前帧数
+*/
+int LuaContext::video_api_get_fps(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		uint32_t fps = Video::GetFPS();
+		lua_pushinteger(l, fps);
+
+		return 1;
 	});
 }

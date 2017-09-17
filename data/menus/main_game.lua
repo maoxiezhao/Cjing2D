@@ -7,7 +7,8 @@ function game:onStarted()
 	self._logo = cjing.Sprite.create("sprites/menus/logo.png");
 	self._logo:setAnchor(0.5,0.8)
 	self._logo:setPos(320, 240)
-	self._debugStr = nil 
+	self._logoText = nil
+	self._debugText = nil
 	
 	local text = cjing.Text.create({fontName = "arial.ttf"})
 	if text then 
@@ -16,7 +17,16 @@ function game:onStarted()
 		text:setPos(320, 250)
 		text:setLineHeight(25)
 		text:setFontColor({16,228,176,255})
-		self._debugStr = text
+		self._logoText = text
+	end
+	
+	local debugText = cjing.Text.create({fontName = "arial.ttf"})
+	if debugText then 
+		local dubugStr = "FPS:" .. cjing.Video.GetFPS()
+		debugText:setText(dubugStr)
+		debugText:setPos(20, 440)
+		debugText:setLineHeight(25)
+		self._debugText = debugText
 	end
 end
 
@@ -29,9 +39,15 @@ function game:onUpdated()
 end
 
 function game:onDraw()
+	if self._debugText then 
+		local dubugStr = "FPS:" .. cjing.Video.GetFPS()
+		self._debugText:setText(dubugStr)
+	end
+
 	-- draw main scene --
 	self._logo:draw()
-	self._debugStr:draw()
+	self._logoText:draw()
+	self._debugText:draw()
 end 
 
 function game:onMouseMotion(x, y)

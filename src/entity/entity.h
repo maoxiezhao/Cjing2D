@@ -5,8 +5,8 @@
 #include"lua\luaObject.h"
 #include"utils\point.h"
 #include"utils\size.h"
+#include"utils\rectangle.h"
 #include"entity\entityInfo.h"
-
 
 class Sprtie;
 class LuaContext;
@@ -38,10 +38,12 @@ public:
 	void SetSize(const Size& size);
 	Size GetSize()const;
 	const string& GetName()const;
-	EntityType GetEntityType()const;
+	virtual EntityType GetEntityType()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
+
+	Rect GetRectBounding()const;
 
 private:
 	// status

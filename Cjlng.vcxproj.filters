@@ -292,6 +292,12 @@
     <ClCompile Include="src\entity\tilepattern.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\noAnimatedTilePattern.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\animatedTilePattern.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -552,6 +558,15 @@
     <ClInclude Include="src\entity\tilepattern.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\grid.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\animatedTilePattern.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\noAnimatedTilePattern.h">
+      <Filter>entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -586,5 +601,8 @@
       <Filter>lua</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\utils\grid.inl">
+      <Filter>utils</Filter>
+    </None>
   </ItemGroup>
 </Project>

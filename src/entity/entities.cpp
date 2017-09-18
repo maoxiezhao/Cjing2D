@@ -1,4 +1,5 @@
 #include "entities.h"
+#include "core\video.h"
 #include "lua\luaContext.h"
 
 Entities::Entities(Game&game, Map&map):
@@ -14,6 +15,11 @@ Entities::Entities(Game&game, Map&map):
 
 	// 初始化四叉树
 
+	// 添加相机,Test:临时设置为屏幕中点，视野为整个屏幕
+	mCamera = std::make_shared<Camera>();
+	mCamera->SetSize(Video::GetScreenSize() / 2);
+	mCamera->SetPos({ Video::GetScreenSize().width / 2, Video::GetScreenSize().height / 2 });
+	AddEntity(mCamera);
 }
 
 Entities::~Entities()
@@ -33,7 +39,6 @@ void Entities::Update()
 	{
 		entity->Update();
 	}
-
 	mEntityToDraw.clear();
 }
 
@@ -48,8 +53,17 @@ void Entities::Draw()
 	{
 		for (const auto& entity : mAllEntities)
 		{
-			int layer = entity->GetLayer();
-			mEntityToDraw[layer].push_back(entity);
+			Rect aroundCamera(
+				mCamera->GetPos().x - mCamera->GetSize().width,
+				mCamera->GetPos().y - mCamera->GetSize().height,
+				mCamera->GetSize().width * 2,
+				mCamera->GetSize().height * 2);
+
+			if (entity->GetRectBounding().Overlaps(aroundCamera))
+			{
+				int layer = entity->GetLayer();
+				mEntityToDraw[layer].push_back(entity);
+			}
 		}
 	}
 
@@ -71,14 +85,20 @@ void Entities::SetSuspended(bool suspended)
 {
 }
 
+/**
+*	\brief 返回相机
+*/
 CameraPtr Entities::GetCamear() const
 {
-	return CameraPtr();
+	return mCamera;
 }
 
-EntityVector Entities::GetEntities()
+/**
+*	\brief 返回entities的集合
+*/
+EntityList Entities::GetEntities()
 {
-	return EntityVector();
+	return mAllEntities;
 }
 
 /**

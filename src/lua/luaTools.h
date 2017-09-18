@@ -40,6 +40,7 @@ namespace LuaTools
 	Color4B CheckFieldColorByDefault(lua_State*l, int tableIndex, const string&name, const Color4B defaultValue);
 	void Error(lua_State*l, const string& message);
 	void ArgError(lua_State*l, int index, const string&message);
+	void PrintLuaStack(lua_State*l);
 
 	// template
 	template<typename Callable>

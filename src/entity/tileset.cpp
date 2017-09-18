@@ -1,4 +1,6 @@
 #include "tileset.h"
+#include "entity\noAnimatedTilePattern.h"
+#include "entity\animatedTilePattern.h"
 
 bool TilesetData::ImportFromLua(lua_State * l)
 {
@@ -24,6 +26,11 @@ void TilesetData::PushTilePattern(const TilePatternData & data)
 	mTilePatterns.push_back(data);
 }
 
+/**
+*	\brief 解析tilesetPattern数据
+*
+*	接续tilesetPattern时，需要考虑noanimated pattern和animated pattern
+*/
 int TilesetData::LuaTilesetData(lua_State * l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
@@ -32,17 +39,84 @@ int TilesetData::LuaTilesetData(lua_State * l)
 		lua_pop(l, 1);
 
 		int id = LuaTools::CheckFieldInt(l, 1, "id");
-		int x = LuaTools::CheckFieldInt(l, 1, "x");
-		int y = LuaTools::CheckFieldInt(l, 1, "y");
+		//int x = LuaTools::CheckFieldInt(l, 1, "x");
+		//int y = LuaTools::CheckFieldInt(l, 1, "y");
 		int width = LuaTools::CheckFieldInt(l, 1, "width");
 		int height = LuaTools::CheckFieldInt(l, 1, "height");
 
+		// 解析pattern帧数据
+		int xFrameCount = 0;
+		int yFrameCount = 0;
+		std::vector<Rect> frameRects;		
+		// x data
+		lua_settop(l, 1);
+		lua_getfield(l, 1, "x");
+		if (lua_isnumber(l, 2))
+		{
+			int x = LuaTools::CheckInt(l, 2);
+			Rect frameRect(x, x, width, height);
+			frameRects.push_back(frameRect);
+			lua_pop(l, 1);
+		}
+		else if (lua_istable(l, 2))
+		{
+			lua_pushnil(l);
+			while(lua_next(l, 2) != 0)
+			{				// pattern table key value
+				int x = LuaTools::CheckInt(l, -1);
+				
+				Rect frameRect(x, x, width, height);
+				frameRects.push_back(frameRect);
+				xFrameCount++;
+				lua_pop(l, 1);
+			}
+			lua_pop(l, 1);
+		}
+		else
+		{
+			LuaTools::Error(l, "Invalid tile pattern x data.");
+		}
+		// y data
+		lua_getfield(l, 1, "y");
+		if (lua_isnumber(l, 2))
+		{
+			int y = LuaTools::CheckInt(l, 2);
+			frameRects[yFrameCount].SetPosY(y);
+			lua_pop(l, 1);
+		}
+		else if (lua_istable(l, 2))
+		{
+			lua_pushnil(l);
+			while (lua_next(l, 2) != 0)
+			{				// pattern table key value
+				int y = LuaTools::CheckInt(l, -1);
+				if (yFrameCount >= static_cast<int>(frameRects.size()))
+					LuaTools::Error(l, "x frame count must equal to y frame count.");
+
+				frameRects[yFrameCount].SetPosY(y);
+				yFrameCount++;
+				lua_pop(l, 1);
+			}
+			lua_pop(l, 1);
+		}
+		else
+		{
+			LuaTools::Error(l, "Invalid tile pattern y data.");
+		}
+
+		Debug::CheckAssertion(lua_gettop(l) == 1,
+			"Something in stack after parsed tile pattern data.");
+		Debug::CheckAssertion(xFrameCount == yFrameCount,
+				"x frame count must equal to y frame count.");
+
+		// 创建tilePatterns
 		TilePatternData tilePattern;
 		tilePattern.SetPatternID(id);
-		tilePattern.SetPos({ x, y });
+		//tilePattern.SetPos({ x, y });
 		tilePattern.SetSize({ width, height });
-
+		tilePattern.SetFrameRect(frameRects);
 		tilesetData.PushTilePattern(tilePattern);
+
 		return 0;
 	});
 }
@@ -88,8 +162,18 @@ void Tileset::UnLoad()
 */
 void Tileset::AddTilePattern(int id, const TilePatternData & data)
 {
-	TilePattern* pattern = new TilePattern(data);
-	mTilePatterns.emplace(id, std::unique_ptr<TilePattern>(pattern));
+	if (data.GetFrameRect().size() == 1)
+	{	// 单帧Tilepattern
+		TilePattern* pattern = new NoAnimatedTilePattern(data);
+		mTilePatterns.emplace(id, std::unique_ptr<TilePattern>(pattern));
+	}
+	else
+	{	// 多帧Tilepattern
+		const auto& frameRects = data.GetFrameRect();
+		AnimatedTilePattern* pattern = new AnimatedTilePattern(data);
+		pattern->SetFrameRect(frameRects);
+		mTilePatterns.emplace(id, std::unique_ptr<TilePattern>(pattern));
+	}
 }
 
 /**

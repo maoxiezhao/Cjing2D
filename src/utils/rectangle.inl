@@ -1,3 +1,4 @@
+#include "rectangle.h"
 
 
 constexpr Rect::Rect():
@@ -58,6 +59,16 @@ inline void Rect::Set(int x1, int y1, int x2, int y2)
 inline void Rect::SetPos(int x, int y)
 {
 	this->x = x;
+	this->y = y;
+}
+
+inline void Rect::SetPosX(int x)
+{
+	this->x = x;
+}
+
+inline void Rect::SetPosY(int y)
+{
 	this->y = y;
 }
 

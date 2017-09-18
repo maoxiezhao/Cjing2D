@@ -1,6 +1,7 @@
 #include"luaTools.h"
 #include"luaException.h"
 #include"core\debug.h"
+#include"core\logger.h"
 #include<iostream>
 #include<sstream>
 
@@ -318,6 +319,33 @@ namespace LuaTools
 
 		oss << "Bad argument #" << index << " to " <<  info.name << "(" << message << ")";
 		Error(l,oss.str());
+	}
+
+	void PrintLuaStack(lua_State * l)
+	{
+		int stackSize = lua_gettop(l);
+		std::ostringstream oss;
+		oss << endl;
+		for (int i = 1; i <= stackSize; i++)
+		{
+			switch (lua_type(l, i))
+			{
+			case LUA_TSTRING:
+				oss << "\"" << lua_tostring(l, i) << "\"";
+				break;
+			case LUA_TBOOLEAN:
+				oss << (lua_toboolean(l, i) ? "True" : "False");
+				break;
+			case LUA_TNUMBER:
+				oss << (lua_tonumber(l, i));
+				break;
+			default:
+				oss << lua_typename(l, lua_type(l, i));
+				break;
+			}
+			oss << endl;
+		}
+		Logger::Debug(oss.str());
 	}
 
 

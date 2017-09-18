@@ -19,7 +19,7 @@ using std::vector;
 using std::string;
 
 #ifdef _MSC_VER
-	#pragma warning( disable :4005 4522 4715 4800)
+	#pragma warning( disable :4005 4018 4522 4715 4800)
 #endif
 
 #define DEFAULT_WINDOW_WIDTH 640

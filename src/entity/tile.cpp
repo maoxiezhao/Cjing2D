@@ -10,6 +10,7 @@ Tile::Tile(const TileInfo& tileInfo):
 
 void Tile::Update()
 {
+
 }
 
 void Tile::Draw()

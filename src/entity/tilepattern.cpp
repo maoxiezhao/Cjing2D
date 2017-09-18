@@ -1,11 +1,25 @@
 #include "tilepattern.h"
 #include "entity\tileset.h"
+#include "entity\animatedTilePattern.h"
 
 TilePattern::TilePattern(const TilePatternData & data):
 	mPatternID(data.GetPatternID()),
 	mPos(data.GetPos()),
 	mSize(data.GetSize())
 {
+}
+
+void TilePattern::Init()
+{
+	// do nothing
+}
+
+/**
+*	\brief Ã¿Ö¡Ë¢ÐÂº¯Êý
+*/
+void TilePattern::Update()
+{
+	AnimatedTilePattern::Update();
 }
 
 /**
@@ -15,10 +29,4 @@ TilePattern::TilePattern(const TilePatternData & data):
 */
 void TilePattern::Draw(const Point2& pos, const Size& size, const Tileset& tileset)const
 {
-	auto& tilesetImg = tileset.GetTileImage();
-	tilesetImg->SetTextureRect(Rect(mPos, mSize), true);
-	tilesetImg->SetPos(pos);
-	tilesetImg->SetSize(size);
-
-	tilesetImg->Draw();
 }

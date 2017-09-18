@@ -35,7 +35,7 @@ public:
 	void AddEntity(const EntityPtr& entity);
 	void RemoveEntity(Entity& entity);
 	CameraPtr GetCamear()const;
-	EntityVector GetEntities();
+	EntityList GetEntities();
 
 	// lua
 	LuaContext& GetLuaContext();

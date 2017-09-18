@@ -4,8 +4,9 @@
 #include "lua\luaContext.h"
 #include "game\game.h"
 #include "game\mapData.h"
-#include "sprite.h"
+#include "game\sprite.h"
 #include "entity\tileset.h"
+#include "entity\tilepattern.h"
 
 Map::Map():
 	mMapID(),
@@ -105,7 +106,12 @@ void Map::Update()
 {
 	CheckSuspended();
 
+	// 更新entity
 	mEntities->Update();
+
+	// 更新tilePattern
+	TilePattern::Update();
+
 	GetLuaContext().OnMapUpdate(*this);
 }
 

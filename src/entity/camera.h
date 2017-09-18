@@ -14,9 +14,14 @@ class Camera : public Entity
 public:
 	Camera();
 
+	virtual void Update();
+	virtual void Draw();
+
+	virtual EntityType GetEntityType()const;
+	virtual const string GetLuaObjectName()const;
 private:
 
-	// Effect mEffect;
+
 };
 
 using CameraPtr = std::shared_ptr<Camera>;

@@ -50,6 +50,11 @@ Map & Entity::GetMap()
 	return *mMap;
 }
 
+Rect Entity::GetRectBounding() const
+{
+	return Rect(mPos, mSize);
+}
+
 Point2 Entity::GetPos()const
 {
 	return mPos;

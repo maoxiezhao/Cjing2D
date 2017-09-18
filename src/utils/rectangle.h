@@ -18,6 +18,8 @@ public:
 
 	void Set(int x1, int y1, int x2, int y2);
 	void SetPos(int x, int y);
+	void SetPosX(int x);
+	void SetPosY(int y);
 	void SetSize(int w, int h);
 	void SetCenter(int cx, int cy);
 

@@ -105,11 +105,13 @@
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\types.cpp" />
     <ClCompile Include="src\core\video.cpp" />
+    <ClCompile Include="src\entity\animatedTilePattern.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\entity\entityData.cpp" />
     <ClCompile Include="src\entity\entityInfo.cpp" />
+    <ClCompile Include="src\entity\noAnimatedTilePattern.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
     <ClCompile Include="src\entity\tile.cpp" />
     <ClCompile Include="src\entity\tilepattern.cpp" />
@@ -190,11 +192,13 @@
     <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\video.h" />
+    <ClInclude Include="src\entity\animatedTilePattern.h" />
     <ClInclude Include="src\entity\camera.h" />
     <ClInclude Include="src\entity\entities.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\entity\entityData.h" />
     <ClInclude Include="src\entity\entityInfo.h" />
+    <ClInclude Include="src\entity\noAnimatedTilePattern.h" />
     <ClInclude Include="src\entity\player.h" />
     <ClInclude Include="src\entity\tile.h" />
     <ClInclude Include="src\entity\tilepattern.h" />
@@ -247,6 +251,7 @@
     <ClInclude Include="src\movements\targetMovement.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\geometry.h" />
+    <ClInclude Include="src\utils\grid.h" />
     <ClInclude Include="src\utils\matrix4.h" />
     <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\quadTree.h" />
@@ -263,6 +268,7 @@
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\lua\luaTools.inl" />
     <None Include="src\utils\color.inl" />
+    <None Include="src\utils\grid.inl" />
     <None Include="src\utils\matrix4.inl" />
     <None Include="src\utils\point.inl" />
     <None Include="src\utils\quadTree.inl" />

@@ -86,6 +86,17 @@ void Entities::SetSuspended(bool suspended)
 }
 
 /**
+*	\brief 响应地图创建成功
+*/
+void Entities::NotifyMapStarted()
+{
+	for (const auto& entity : mAllEntities)
+	{
+		entity->NotifyMapStarted();
+	}
+}
+
+/**
 *	\brief 返回相机
 */
 CameraPtr Entities::GetCamear() const

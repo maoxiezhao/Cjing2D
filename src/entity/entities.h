@@ -29,6 +29,7 @@ public:
 	void Update();
 	void Draw();
 	void SetSuspended(bool suspended);
+	void NotifyMapStarted();
 
 	// entities
 	void InitEntities(const MapData& mapData);

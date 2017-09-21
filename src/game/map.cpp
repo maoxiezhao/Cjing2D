@@ -87,7 +87,7 @@ void Map::UnLoad()
 void Map::Start()
 {
 	mIsStarted = true;
-
+	mEntities->NotifyMapStarted();
 	GetLuaContext().RunMap(*this);
 }
 

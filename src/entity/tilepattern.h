@@ -67,9 +67,9 @@ public:
 	void SetSize(const Size& size);
 	int GetPatternID()const;
 	void SetPatternID(int patternID);
-	
+	virtual Rect GetTextureRect()const;
+
 	virtual void Init();
-	virtual void Draw(const Point2& pos, const Size& size, const Tileset& tileset)const;
 	static void Update();
 
 private:
@@ -107,4 +107,9 @@ inline int TilePattern::GetPatternID() const
 inline void TilePattern::SetPatternID(int patternID)
 {
 	mPatternID = patternID;
+}
+
+inline Rect TilePattern::GetTextureRect() const
+{
+	return Rect();
 }

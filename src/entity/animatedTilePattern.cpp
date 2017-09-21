@@ -56,21 +56,10 @@ void AnimatedTilePattern::Update()
 	}
 }
 
-/**
-*	\brief »æÖÆÖ¡¶¯»­Í¼¿é
-*/
-void AnimatedTilePattern::Draw(const Point2 & pos, const Size & size, const Tileset & tileset) const
+Rect AnimatedTilePattern::GetTextureRect() const
 {
-	Debug::CheckAssertion(mFrameRects.size() > 0,
-		"The Animated tile pattern' frame count > 0.");
-
-	auto& tilesetImg = tileset.GetTileImage();
 	int curFrame = mFrameCounter % mFrameRects.size();
 	const Rect& rect = GetCurTileRect(curFrame);
-
-	tilesetImg->SetTextureRect(rect);
-	tilesetImg->SetPos(pos);
-	tilesetImg->SetSize(size);
-
-	tilesetImg->Draw();
+	return rect;
 }
+

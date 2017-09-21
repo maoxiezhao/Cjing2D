@@ -7,11 +7,14 @@
 #include"utils\size.h"
 #include"utils\rectangle.h"
 #include"entity\entityInfo.h"
+#include"game\sprite.h"
 
 class Sprtie;
 class LuaContext;
 class Movement;
 class Map;
+class EntityState;
+class GameCommand;
 
 /**
 *	\brief 游戏实体的抽象类
@@ -24,11 +27,27 @@ public:
 
 	virtual void Update();
 	virtual void Draw();
+	virtual void Initalized();
 
 	void ClearMovements();
 	virtual const string GetLuaObjectName()const;
 
+	/**** **** **** Notify **** **** ****/
+	virtual void NotifyCommandPressed(const GameCommand& command);
+	virtual void NotifyCommandReleased(const GameCommand& command);
+
+	void NotifyMapStarted();
+
 public:
+	/**
+	*	带名字属性的share_ptr<sprite>
+	*/
+	struct NamedSpritePtr
+	{
+		std::string name;
+		SpritePtr sprite;
+	};
+
 	/**** **** **** status **** **** ****/
 	Point2 GetPos()const;
 	void SetPos(const Point2& pos);
@@ -39,11 +58,20 @@ public:
 	Size GetSize()const;
 	const string& GetName()const;
 	virtual EntityType GetEntityType()const;
+	Rect GetRectBounding()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
+	
+	/**** ***** state manager ***** ****/
+	const std::shared_ptr<EntityState>& GetState();
+	void SetState(const std::shared_ptr<EntityState>& state);
+	void UpdateState();
 
-	Rect GetRectBounding()const;
+	/***** **** movement manager ***** *****/
+	void StopMovement();
+	void StartMovement(const std::shared_ptr<Movement>& movement);
+	const std::shared_ptr<Movement>& GetMovement();
 
 private:
 	// status
@@ -52,11 +80,15 @@ private:
 	Size mSize;
 	int mLayer;
 	EntityType mType;
+	bool mIsInitialized;
 
 	// core member
-	LuaContext* mLuaContext;
-	Map* mMap;
+	LuaContext* mLuaContext;				/** 当前的luaContext */
+	Map* mMap;								/** 当前entity所属的map */
+	std::shared_ptr<EntityState> mState;	/** entity 的状态组件 */
+	std::shared_ptr<Movement> mMovement;	/** entity 的运动组件 */
 
+	std::vector<NamedSpritePtr> mSprites;	/** entity 所拥有的用于展示的sprites */
 };
 
 using EntityPtr = std::shared_ptr<Entity>;

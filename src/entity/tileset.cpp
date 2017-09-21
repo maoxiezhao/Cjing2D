@@ -164,7 +164,9 @@ void Tileset::AddTilePattern(int id, const TilePatternData & data)
 {
 	if (data.GetFrameRect().size() == 1)
 	{	// µ¥Ö¡Tilepattern
+		const auto& frameRects = data.GetFrameRect();
 		TilePattern* pattern = new NoAnimatedTilePattern(data);
+		pattern->SetPos(frameRects[0].GetPos());
 		mTilePatterns.emplace(id, std::unique_ptr<TilePattern>(pattern));
 	}
 	else

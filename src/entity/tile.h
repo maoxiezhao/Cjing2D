@@ -29,10 +29,13 @@ public:
 
 	virtual void Update();
 	virtual void Draw();
+	virtual void Initalized();
 
 private:
 	int mPatternID;
-	const TilePattern& mPattern;
+	TilePattern& mPattern;
+	SpritePtr mTileSprite;
+
 };
 
 using TilePtr = std::shared_ptr<Tile>;

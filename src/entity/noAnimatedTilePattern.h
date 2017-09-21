@@ -9,5 +9,9 @@ class NoAnimatedTilePattern : public TilePattern
 {
 public:
 	NoAnimatedTilePattern(const TilePatternData& data);
-	virtual void Draw(const Point2& pos, const Size& size, const Tileset& tileset)const;
+	virtual Rect GetTextureRect()const;
+
+private:
+	SpritePtr mTileSprite;
+
 };

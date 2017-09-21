@@ -1,17 +1,17 @@
 #include "noAnimatedTilePattern.h"
+#include "game\sprite.h"
 #include "entity\tileset.h"
 
 NoAnimatedTilePattern::NoAnimatedTilePattern(const TilePatternData & data):
-	TilePattern(data)
+	TilePattern(data),
+	mTileSprite(nullptr)
 {
 }
 
-void NoAnimatedTilePattern::Draw(const Point2 & pos, const Size & size, const Tileset & tileset) const
+/**
+*	\brief 返回当前pattern对应的纹理矩形
+*/
+Rect NoAnimatedTilePattern::GetTextureRect() const
 {
-	auto& tilesetImg = tileset.GetTileImage();
-	tilesetImg->SetTextureRect(Rect(GetPos(), GetSize()), true);
-	tilesetImg->SetPos(pos);
-	tilesetImg->SetSize(size);
-
-	tilesetImg->Draw();
+	return Rect(GetPos(), GetSize());
 }

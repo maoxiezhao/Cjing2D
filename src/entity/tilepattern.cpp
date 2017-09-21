@@ -22,11 +22,3 @@ void TilePattern::Update()
 	AnimatedTilePattern::Update();
 }
 
-/**
-*	\brief 绘制过程
-*
-*	根据当前pattern状态对tileset imgage绘制
-*/
-void TilePattern::Draw(const Point2& pos, const Size& size, const Tileset& tileset)const
-{
-}

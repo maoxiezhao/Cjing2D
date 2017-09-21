@@ -14,7 +14,7 @@ public:
 	static void Update();
 	static void Quit();
 
-	static const uint32_t timeStep = 10;
+	static const uint32_t timeStep = 15;
 	static const uint32_t doubleClickDeltaTime = 500;
 private:
 	static uint32_t mInitDate;

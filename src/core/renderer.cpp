@@ -2,6 +2,7 @@
 #include"renderCommand.h"
 #include"quadCommand.h"
 #include"debug.h"
+#include"renderCommandPool.h"
 #include<algorithm>
 
 namespace
@@ -49,21 +50,21 @@ void RenderQueue::Clear()
 {
 	for (auto& command : mQueueNegZ)
 	{
-		if (command)
+		if (command && command->IsAutoReleased())
 			delete command;
 	}
 	mQueueNegZ.clear();
 
 	for (auto& command : mQueue0)
 	{
-		if (command)
+		if (command && command->IsAutoReleased())
 			delete command;
 	}
 	mQueue0.clear();
 	
 	for (auto& command : mQueuePosZ)
 	{
-		if (command)
+		if (command && command->IsAutoReleased())
 			delete command;
 	}
 	mQueuePosZ.clear();
@@ -119,11 +120,14 @@ void Renderer::Initialize(int w,int h)
 {
 	if (mInitialized)
 		return;
+	// ≥ı ºªØ‰÷»æ◊¥Ã¨
 	SetViewSize(w, h);
 	InitCamearMatrix();
 	InitIndices();
 	InitVAOandVBO();
 	mInitialized = true;
+	// ≥ı ºªØ√¸¡Ó≥ÿ
+	RenderCommandPool::GetInstance().Initialize();
 }
 
 /**
@@ -206,6 +210,8 @@ void Renderer::Quit()
 	glDeleteBuffers(1, &mVEO);
 	mVAO = mVBO = mVEO = 0;
 	mInitialized = false;
+
+	RenderCommandPool::GetInstance().Quit();
 }
 
 /**
@@ -231,6 +237,7 @@ void Renderer::Render()
 			queue.Sort();
 		VisitRenderQueue(mRenderGroups[0]);
 		Flush();
+		RenderCommandPool::GetInstance().Flush();
 	}
 	RenderAfterClean();
 	mIsRenderer = false;

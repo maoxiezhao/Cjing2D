@@ -23,9 +23,13 @@ public:
 	float GetGlobalOrder()const;
 	CommandType GetCommandType()const;
 
+	void SetAutoReleased(bool autoReleased);
+	bool IsAutoReleased()const;
+
 protected:
 	CommandType mType;
 	float mGlobalOrder;
+	bool mIsAutoReleased;
 
 };
 

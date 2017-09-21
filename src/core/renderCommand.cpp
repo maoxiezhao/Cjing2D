@@ -2,13 +2,15 @@
 
 RenderCommand::RenderCommand():
 	mType(COMMAND_UNKNOW),
-	mGlobalOrder(0)
+	mGlobalOrder(0),
+	mIsAutoReleased(false)
 {
 }
 
 RenderCommand::RenderCommand(CommandType type, float globalorder):
 	mType(type),
-	mGlobalOrder(globalorder)
+	mGlobalOrder(globalorder),
+	mIsAutoReleased(false)
 {
 }
 
@@ -24,4 +26,14 @@ float RenderCommand::GetGlobalOrder() const
 RenderCommand::CommandType RenderCommand::GetCommandType() const
 {
 	return mType;
+}
+
+void RenderCommand::SetAutoReleased(bool autoReleased)
+{
+	mIsAutoReleased = autoReleased;
+}
+
+bool RenderCommand::IsAutoReleased() const
+{
+	return mIsAutoReleased;
 }

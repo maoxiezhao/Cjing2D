@@ -20,7 +20,7 @@ QuadCommand::~QuadCommand()
 *	\brief ≥ı ºªØquadCommand
 */
 void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad quads, int quadCounts, 
-									const BlendFunc & blendFunc, const Matrix4& transfomr, const Matrix4& modelView)
+									const BlendFunc & blendFunc, const Matrix4& transfomr, const Matrix4& modelView, bool autoReleased)
 {
 	Debug::CheckAssertion(programState != nullptr, "Invalid programState in QuadCommand::Init().");
 
@@ -30,6 +30,7 @@ void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint
 	mQuads = quads;
 	mTransform = transfomr;
 	mModelView = modelView;
+	SetAutoReleased(autoReleased);
 
 	if (mTextureID != textureID || mBlendFunc != blendFunc)
 	{

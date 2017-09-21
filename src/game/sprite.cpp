@@ -127,13 +127,13 @@ void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 {
 	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Sprite::Draw().");
 
-	auto quadCommand = new QuadCommand();
+	/*auto quadCommand = new QuadCommand();*/
 
-	quadCommand->Init(GetGlobalOrder(),mProgramState,
+	mQuadCommand.Init(GetGlobalOrder(),mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID(): 0,	// 这里需要考虑无纹理色块
 		mQuad, 1, mBlendFunc,transform,mModelView);
 
-	renderer.PushCommand(quadCommand);
+	renderer.PushCommand(&mQuadCommand);
 }
 
 /**

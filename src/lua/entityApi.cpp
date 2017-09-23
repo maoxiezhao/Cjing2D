@@ -56,9 +56,7 @@ int LuaContext::entity_api_create_title(lua_State* l)
 
 		const Tileset& tileset = map.GetTileset();
 		tileInfo.mPattern = &tileset.GetTilePattern(tileInfo.mPatternID);
-
-		TilePtr tile = std::make_shared<Tile>(tileInfo);
-		map.GetEntities().AddEntity(tile);
+		map.GetEntities().AddTile(tileInfo);
 
 		lua_pushboolean(l, true);
 		return 1;

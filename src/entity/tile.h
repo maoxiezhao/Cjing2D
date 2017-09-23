@@ -27,9 +27,11 @@ class Tile : public Entity
 public:
 	Tile(const TileInfo& tileInfo);
 
+	virtual void Build();
 	virtual void Update();
 	virtual void Draw();
-	virtual void Initalized();
+
+	virtual EntityType GetEntityType()const;
 
 private:
 	int mPatternID;

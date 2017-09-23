@@ -14,7 +14,7 @@ void Camera::Draw()
 
 EntityType Camera::GetEntityType() const
 {
-	return EntityType();
+	return EntityType::CAMERA;
 }
 
 const string Camera::GetLuaObjectName() const

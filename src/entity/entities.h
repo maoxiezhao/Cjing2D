@@ -5,12 +5,14 @@
 #include"game\game.h"
 #include"utils\quadTree.h"
 #include"entity\camera.h"
+#include"entity\tileRegions.h"
 #include"game\mapData.h"
 #include<list>
 
 class Ground;
 class Tile;
 class LuaContext;
+class TileInfo;
 
 using EntityList = std::list<EntityPtr>;
 using EntityVector = std::vector<EntityPtr>;
@@ -25,18 +27,19 @@ public:
 	Entities(Game&game, Map&map);
 	~Entities();
 
-	// system
+	/** system */
 	void Update();
 	void Draw();
 	void SetSuspended(bool suspended);
 	void NotifyMapStarted();
 
-	// entities
+	/** entities */
 	void InitEntities(const MapData& mapData);
 	void AddEntity(const EntityPtr& entity);
 	void RemoveEntity(Entity& entity);
 	CameraPtr GetCamear()const;
 	EntityList GetEntities();
+	void AddTile(const TileInfo& tileInfo);
 
 	// lua
 	LuaContext& GetLuaContext();
@@ -59,10 +62,13 @@ private:
 
 	EntityList mAllEntities;				// 保存所有entities实体
 
-	EntityTree mEntityTree;					// 用于划分加速
+	EntityTree mEntityTree;					// 用于划分加速,同时真正参与到渲染判定的entity合集
 
-	EntityList mEntityToRemove;				
+	EntityList mEntityToRemove;				// 移除的entity列表				
+			
+	ByLayer<EntityVector> mEntityToDraw;	// 绘制entity队列
 
-	ByLayer<EntityVector> mEntityToDraw;	
+	ByLayer<std::unique_ptr<TileRegions> > mTileRegions;	// tile绘制层
 
+	std::shared_ptr<Player> mPlayer;			// 当前控制对象
 };

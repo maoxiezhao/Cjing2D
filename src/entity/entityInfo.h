@@ -11,6 +11,7 @@ enum EntityType
 	DYNAMIC_TITLE,  /** 动态地图块 */
 	DESTIMATION,	/** 目标点 */
 	CAMERA,			/** 相机对象 */
+	PLAYRE,			/** 玩家对象 */
 	UNKNOW,			/** 未知的类型 */
 };
 

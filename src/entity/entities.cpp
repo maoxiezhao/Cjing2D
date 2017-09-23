@@ -1,4 +1,5 @@
 #include "entities.h"
+#include "entity\player.h"
 #include "core\video.h"
 #include "lua\luaContext.h"
 
@@ -9,11 +10,17 @@ Entities::Entities(Game&game, Map&map):
 	mAllEntities(),
 	mEntityToDraw(),
 	mEntityToRemove(),
-	mCamera(nullptr)
+	mCamera(nullptr),
+	mPlayer(game.GetPlayer())
 {
 	// 初始化每层的layer
+	for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++)
+	{
+		TileRegions* tileRegion = new TileRegions(map, layer);
+		mTileRegions.emplace(layer, std::unique_ptr<TileRegions>(tileRegion));
+	}
 
-	// 初始化四叉树
+	// 初始化四叉树管理entity
 
 	// 添加相机,Test:临时设置为屏幕中点，视野为整个屏幕
 	mCamera = std::make_shared<Camera>();
@@ -35,6 +42,10 @@ Entities::~Entities()
 */
 void Entities::Update()
 {
+	// update player
+	mPlayer->Update();
+
+	// update all entites
 	for (const auto& entity : mAllEntities)
 	{
 		entity->Update();
@@ -71,6 +82,7 @@ void Entities::Draw()
 	for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++)
 	{
 		// 绘制tile
+		mTileRegions[layer]->Draw();
 
 		// 绘制普通entity
 		auto curLayerEntityToDraw = mEntityToDraw[layer];
@@ -90,6 +102,13 @@ void Entities::SetSuspended(bool suspended)
 */
 void Entities::NotifyMapStarted()
 {
+	// 创建每层tileRegions的tile
+	for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++)
+	{
+		mTileRegions[layer]->Build();
+	}
+
+	// entity响应map startd
 	for (const auto& entity : mAllEntities)
 	{
 		entity->NotifyMapStarted();
@@ -110,6 +129,16 @@ CameraPtr Entities::GetCamear() const
 EntityList Entities::GetEntities()
 {
 	return mAllEntities;
+}
+
+/**
+*	\brief 添加tile图块
+*/
+void Entities::AddTile(const TileInfo & tileInfo)
+{
+	Debug::CheckAssertion(mMap.IsValidLayer(tileInfo.mLayer),"Invalid tile layer.");
+
+	mTileRegions[tileInfo.mLayer]->AddTile(tileInfo);
 }
 
 /**
@@ -143,8 +172,11 @@ void Entities::AddEntity(const EntityPtr& entity)
 	Debug::CheckAssertion(mMap.IsValidLayer(entity->GetLayer()),
 		"Invalid entity layer in adding entity.");
 
-	mAllEntities.push_back(entity);
-	entity->SetMap(&mMap);
+	//if (entity->GetEntityType() != EntityType::PLAYRE)
+	//{
+		mAllEntities.push_back(entity);
+		entity->SetMap(&mMap);
+	//}
 }
 
 void Entities::RemoveEntity(Entity& entity)

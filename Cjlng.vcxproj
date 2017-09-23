@@ -99,6 +99,7 @@
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
+    <ClCompile Include="src\core\renderCommandPool.cpp" />
     <ClCompile Include="src\core\renderer.cpp" />
     <ClCompile Include="src\core\resourceCache.cpp" />
     <ClCompile Include="src\core\system.cpp" />
@@ -111,10 +112,12 @@
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\entity\entityData.cpp" />
     <ClCompile Include="src\entity\entityInfo.cpp" />
+    <ClCompile Include="src\entity\entityState.cpp" />
     <ClCompile Include="src\entity\noAnimatedTilePattern.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
     <ClCompile Include="src\entity\tile.cpp" />
     <ClCompile Include="src\entity\tilepattern.cpp" />
+    <ClCompile Include="src\entity\tileRegions.cpp" />
     <ClCompile Include="src\entity\tileset.cpp" />
     <ClCompile Include="src\game\animation.cpp" />
     <ClCompile Include="src\game\animationData.cpp" />
@@ -123,6 +126,7 @@
     <ClCompile Include="src\game\app.cpp" />
     <ClCompile Include="src\game\drawable.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\gameCommands.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
     <ClCompile Include="src\game\savegame.cpp" />
@@ -186,6 +190,7 @@
     <ClInclude Include="src\core\quadCommand.h" />
     <ClInclude Include="src\core\random.h" />
     <ClInclude Include="src\core\renderCommand.h" />
+    <ClInclude Include="src\core\renderCommandPool.h" />
     <ClInclude Include="src\core\renderer.h" />
     <ClInclude Include="src\core\resourceCache.h" />
     <ClInclude Include="src\core\system.h" />
@@ -198,19 +203,21 @@
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\entity\entityData.h" />
     <ClInclude Include="src\entity\entityInfo.h" />
+    <ClInclude Include="src\entity\entityState.h" />
     <ClInclude Include="src\entity\noAnimatedTilePattern.h" />
     <ClInclude Include="src\entity\player.h" />
     <ClInclude Include="src\entity\tile.h" />
     <ClInclude Include="src\entity\tilepattern.h" />
+    <ClInclude Include="src\entity\tileRegions.h" />
     <ClInclude Include="src\entity\tileset.h" />
     <ClInclude Include="src\game\animation.h" />
     <ClInclude Include="src\game\animationSet.h" />
     <ClInclude Include="src\game\animationSprite.h" />
     <ClInclude Include="src\game\app.h" />
-    <ClInclude Include="src\game\currentQuest.h" />
     <ClInclude Include="src\game\drawable.h" />
     <ClInclude Include="src\game\enumInfo.h" />
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\gameCommands.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\mapData.h" />
     <ClInclude Include="src\game\savegame.h" />
@@ -253,6 +260,7 @@
     <ClInclude Include="src\utils\geometry.h" />
     <ClInclude Include="src\utils\grid.h" />
     <ClInclude Include="src\utils\matrix4.h" />
+    <ClInclude Include="src\utils\objectPool.h" />
     <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\quadTree.h" />
     <ClInclude Include="src\utils\rectangle.h" />
@@ -268,7 +276,6 @@
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\lua\luaTools.inl" />
     <None Include="src\utils\color.inl" />
-    <None Include="src\utils\grid.inl" />
     <None Include="src\utils\matrix4.inl" />
     <None Include="src\utils\point.inl" />
     <None Include="src\utils\quadTree.inl" />

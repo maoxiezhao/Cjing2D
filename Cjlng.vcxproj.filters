@@ -298,6 +298,18 @@
     <ClCompile Include="src\entity\animatedTilePattern.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\entityState.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderCommandPool.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\tileRegions.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\gameCommands.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -347,9 +359,6 @@
     </ClInclude>
     <ClInclude Include="src\lua\luaData.h">
       <Filter>lua</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\currentQuest.h">
-      <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\core\renderer.h">
       <Filter>core</Filter>
@@ -567,6 +576,21 @@
     <ClInclude Include="src\entity\noAnimatedTilePattern.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\entityState.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\objectPool.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderCommandPool.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\tileRegions.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\gameCommands.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -601,8 +625,5 @@
       <Filter>lua</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
-    <None Include="src\utils\grid.inl">
-      <Filter>utils</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "game\map.h"
+#include "game\gameCommands.h"
 #include "lua\luaContext.h"
 #include "entity\entityState.h"
 

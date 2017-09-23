@@ -15,6 +15,7 @@
 #include"utils\matrix4.h"
 
 #include"core\asyncLoader.h"
+#include"utils\grid.h"
 #include<future>
 
 
@@ -26,11 +27,13 @@ int main(int argc,char** argv)
 	//Test();
 	App().Run();
 
-	// Test parsed utf8
+	// Test Grid
+	//util::Grid<int> mGrid({ 640, 480}, {320,240});
+	//mGrid.Add(10, { 0,0,100,100 });
 
+	//auto& ints = mGrid.GetElements({ 0,0,500,500 });
 
-
-	//system("Pause");
+	system("Pause");
 	return 0;
 }
 

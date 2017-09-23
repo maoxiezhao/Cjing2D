@@ -8,13 +8,13 @@
 #include"utils\rectangle.h"
 #include"entity\entityInfo.h"
 #include"game\sprite.h"
+#include"game\gameCommands.h"
 
 class Sprtie;
 class LuaContext;
 class Movement;
 class Map;
 class EntityState;
-class GameCommand;
 
 /**
 *	\brief 游戏实体的抽象类

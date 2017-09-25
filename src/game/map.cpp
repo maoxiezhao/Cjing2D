@@ -68,7 +68,8 @@ void Map::Load(Game * game)
 
 	mEntities = std::unique_ptr<Entities>(new Entities(*game, *this));
 	mEntities->InitEntities(mapData);
-
+	
+	mCamera = mEntities->GetCamear();
 	mGame = game;
 	mIsLoaded = true;
 }
@@ -170,7 +171,7 @@ Entities & Map::GetEntities()
 
 const std::shared_ptr<Camera>& Map::GetCamera()
 {
-	return nullptr;
+	return mCamera;
 }
 
 const string & Map::GetMapID() const
@@ -204,6 +205,11 @@ int Map::GetMinLayer() const
 int Map::GetMaxLayer() const
 {
 	return mMaxLayer;
+}
+
+Size Map::GetSize() const
+{
+	return Size(mWidth, mHeight);
 }
 
 /**

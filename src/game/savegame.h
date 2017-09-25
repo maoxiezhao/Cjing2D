@@ -6,6 +6,14 @@
 #include"lua\luaObject.h"
 #include<map>
 
+/**
+*	\brief 游戏存档数据
+*
+*	游戏存档数据管理着player的数据，以及相关的事件信息，和基本游戏
+*	设置（例如按键绑定，屏幕设定）
+*
+*	目前按键绑定保存到文档中，未来考虑保存成单独的Input dat文件
+*/
 class Savegame : public LuaObject
 {
 public:
@@ -26,16 +34,22 @@ public:
 	void UnSet(const string& key);
 	virtual const string GetLuaObjectName()const;
 
+	/*** command映射存储的标记 ***/
+	static const std::string GAMECOMMAND_KEYBOARD_UP;
+	static const std::string GAMECOMMAND_KEYBOARD_RIGHT;
+	static const std::string GAMECOMMAND_KEYBOARD_DOWN;
+	static const std::string GAMECOMMAND_KEYBOARD_LEFT;
+
 private:
 	/** lua newindex function */
 	static int LuaLoadConfig(lua_State* l);
-
-	void ImportFromFile(const string& filename);
-
-	void SetDefaultData();
-
 	static int LuaLoadFunction(lua_State* l);
 
+	void ImportFromFile(const string& filename);
+	void SetDefaultData();
+
+	void SetDefaultCommandMappingKeyBoard();
+	void SetDefualtCommandMappingMouse();
 private:
 	struct SavedValue
 	{

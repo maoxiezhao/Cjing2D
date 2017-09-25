@@ -100,6 +100,10 @@ void Movement::NotifyPositonChanged()
 */
 void Movement::NotifyMovementChanged()
 {
+	if (mEntity != nullptr)
+	{
+		mEntity->NotifyMovementChanged();
+	}
 }
 
 /**
@@ -252,6 +256,23 @@ void Movement::SetDrawable(Drawable * drawable)
 	else
 	{
 		mPos = mDrawable->GetPos();
+		NotifyMovementChanged();
+	}
+}
+
+/**
+*	\brief 设置当前移动的entity宿主
+*/
+void Movement::SetEntity(Entity * entity)
+{
+	mEntity = entity;
+	if (mEntity == nullptr)
+	{
+		mPos = { 0, 0 };
+	}
+	else
+	{
+		mPos = mEntity->GetPos();
 		NotifyMovementChanged();
 	}
 }

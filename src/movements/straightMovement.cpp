@@ -10,6 +10,8 @@ StraightMovement::StraightMovement():
 	mAngle(0.0f),
 	mNextMoveDateX(0),
 	mNextMoveDateY(0),
+	mDirectionX(0),
+	mDirectionY(0),
 	mDelayX(0),
 	mDelayY(0),
 	mMaxDistance(0),
@@ -24,6 +26,8 @@ StraightMovement::StraightMovement(bool isIngroedObstacles):
 	mAngle(0.0f),
 	mNextMoveDateX(0),
 	mNextMoveDateY(0),
+	mDirectionX(0),
+	mDirectionY(0),
 	mDelayX(0),
 	mDelayY(0),
 	mMaxDistance(0),
@@ -75,7 +79,7 @@ void StraightMovement::SetSpeed(double speed)
 {
 	double oldAngle = this->mAngle;
 	SetSpeedX(speed * std::cos(mAngle));
-	SetSpeedY(speed * -std::cos(mAngle));	// 原点在左上角
+	SetSpeedY(speed * -std::sin(mAngle));	// 原点在左上角
 	this->mAngle = oldAngle;
 
 	NotifyMovementChanged();

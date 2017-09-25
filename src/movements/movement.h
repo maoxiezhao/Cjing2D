@@ -37,6 +37,7 @@ public:
 	void TranslatePos(const Point2& dxy);
 	uint32_t GetWhenSuspeneded()const;
 	virtual void SetDrawable(Drawable* drawable);
+	virtual void SetEntity(Entity* entity);
 
 	// move
 	virtual bool IsFinished()const;

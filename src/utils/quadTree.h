@@ -6,6 +6,9 @@
 #include<set>
 #include<array>
 
+/**
+*	\brief ËÄ²æÊ÷½á¹¹
+*/
 template <typename T>
 class QuadTree
 {

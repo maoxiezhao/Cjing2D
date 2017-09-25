@@ -33,7 +33,7 @@ E StringToEnum(const string& name)
 template<typename E>
 E StringToEnum(const string& name, E defaultValue)
 {
-	for (auto&it : EnumInfo<E>::names)
+	for (auto&it : EnumInfoTraits<E>::names)
 		if (it.second == name)
 			return it.first;
 	return defaultValue;

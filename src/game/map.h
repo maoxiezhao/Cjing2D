@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"lua\luaObject.h"
+#include"utils\size.h"
 
 class Game;
 class Camera;
@@ -14,12 +15,12 @@ class Tileset;
 /**
 *	\brief map类
 *
-*	map类包含以下信息：
-*	tileset
-*	entities
-*	music
-*	ground
-*	mapcamera
+*	map类包含管理一下对象：
+*	tileset		地图贴片合集
+*	entities	地图实体合集
+*	music		地图背景音乐
+*	ground		地图地形合集
+*	mapcamera	地图相机实体
 */
 class Map : public LuaObject
 {
@@ -60,11 +61,13 @@ public:
 	const string& getTilesetID()const;
 	int GetMinLayer()const;
 	int GetMaxLayer()const;
+	Size GetSize()const;
 
 	// test collison
 	bool TestCollison();
 	
 private:
+	/** status */
 	string mMapID;
 	int mWidth;
 	int mHeight;
@@ -72,6 +75,11 @@ private:
 	int mMaxLayer;
 	Game* mGame;
 
+	bool mIsLoaded;
+	bool mIsStarted;
+	bool mSuspended;
+
+	/** entity */
 	string mTilesetId;
 	std::shared_ptr<Tileset> mTileset;
 
@@ -79,9 +87,6 @@ private:
 
 	std::unique_ptr<Entities> mEntities;
 
-	bool mIsLoaded;
-	bool mIsStarted;
-	bool mSuspended;
 };
 
 

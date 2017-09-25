@@ -122,8 +122,8 @@ void AnimationSprite::SetCurrFrame(int currFrame)
 	if (currFrame != mCurrFrame)
 	{
 		mCurrFrame = currFrame;
-		SetFrameChanged(true);
 	}
+	SetFrameChanged(true);
 }
 
 

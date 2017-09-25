@@ -33,7 +33,7 @@ int main(int argc,char** argv)
 
 	//auto& ints = mGrid.GetElements({ 0,0,500,500 });
 
-	system("Pause");
+	//system("Pause");
 	return 0;
 }
 

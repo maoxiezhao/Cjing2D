@@ -1,7 +1,13 @@
 #include"savegame.h"
 #include"lua\luaContext.h"
 #include"core\fileData.h"
+#include"game\enumInfo.h"
 #include<sstream>
+
+const std::string Savegame::GAMECOMMAND_KEYBOARD_UP = "keyboard_up";
+const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
+const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
+const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
 
 Savegame::Savegame(const string& fileName):
 	mFileName(fileName),
@@ -9,6 +15,11 @@ Savegame::Savegame(const string& fileName):
 {
 }
 
+/**
+*	\brief savegame 初始化
+*
+*	该函数在savegame load时调用
+*/
 void Savegame::Init()
 {
 	if (!FileData::IsFileExists(mFileName))
@@ -206,8 +217,30 @@ void Savegame::ImportFromFile(const string & filename)
 
 /**
 *	\brief 设置默认初始值，仅在无存档文件时调用
+*
+*	依次设置默认的输入映射
 */
 void Savegame::SetDefaultData()
+{
+	SetDefaultCommandMappingKeyBoard();
+	SetDefualtCommandMappingMouse();
+}
+
+/**
+*	\brief 设置默认的键盘映射
+*/
+void Savegame::SetDefaultCommandMappingKeyBoard()
+{
+	SetString(GAMECOMMAND_KEYBOARD_UP, EnumToString(InputEvent::KEY_w));
+	SetString(GAMECOMMAND_KEYBOARD_RIGHT, EnumToString(InputEvent::KEY_d));
+	SetString(GAMECOMMAND_KEYBOARD_DOWN, EnumToString(InputEvent::KEY_s));
+	SetString(GAMECOMMAND_KEYBOARD_LEFT, EnumToString(InputEvent::KEY_a));
+}
+
+/**
+*	\brief 设置默认的鼠标映射
+*/
+void Savegame::SetDefualtCommandMappingMouse()
 {
 }
 

@@ -171,6 +171,8 @@ public:
 
 	static std::unique_ptr<InputEvent> GetSingleEvent(const EventType type);
 	static std::unique_ptr<InputEvent> GetEvent();
+	static Point2 GetMousePos();
+
 	KeyEvent GetKeyEvent()const;
 	bool IsKeyBoardEvent()const;
 	bool IsMouseEvent()const;

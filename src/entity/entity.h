@@ -36,6 +36,8 @@ public:
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 
+	virtual void NotifyMovementChanged();
+
 	void NotifyMapStarted();
 
 public:
@@ -62,7 +64,8 @@ public:
 
 	void SetMap(Map* map);
 	Map& GetMap();
-	
+	Game& GetGame();
+
 	/**** ***** state manager ***** ****/
 	const std::shared_ptr<EntityState>& GetState();
 	void SetState(const std::shared_ptr<EntityState>& state);

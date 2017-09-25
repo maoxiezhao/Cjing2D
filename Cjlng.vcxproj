@@ -168,9 +168,14 @@
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\test.cpp" />
     <ClCompile Include="src\movements\movement.cpp" />
+    <ClCompile Include="src\movements\playerMovement.cpp" />
     <ClCompile Include="src\movements\rotateMovement.cpp" />
     <ClCompile Include="src\movements\straightMovement.cpp" />
     <ClCompile Include="src\movements\targetMovement.cpp" />
+    <ClCompile Include="src\player\freeState.cpp" />
+    <ClCompile Include="src\player\mouseState.cpp" />
+    <ClCompile Include="src\player\movementState.cpp" />
+    <ClCompile Include="src\player\playerSprite.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\xxhash.c" />
@@ -244,7 +249,6 @@
     <ClInclude Include="src\gui\widget\toggleButton.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\gui\widget\window.h" />
-    <ClInclude Include="src\hero\heroState.h" />
     <ClInclude Include="src\lua\luaObject.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />
@@ -253,9 +257,14 @@
     <ClInclude Include="src\lua\luaTools.h" />
     <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\movements\movement.h" />
+    <ClInclude Include="src\movements\playerMovement.h" />
     <ClInclude Include="src\movements\rotateMovement.h" />
     <ClInclude Include="src\movements\straightMovement.h" />
     <ClInclude Include="src\movements\targetMovement.h" />
+    <ClInclude Include="src\player\freeState.h" />
+    <ClInclude Include="src\player\mouseState.h" />
+    <ClInclude Include="src\player\movementState.h" />
+    <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\geometry.h" />
     <ClInclude Include="src\utils\grid.h" />

@@ -4,6 +4,8 @@
 #include"utils\size.h"
 #include"utils\rectangle.h"
 
+#include<set>
+
 namespace util
 {
 

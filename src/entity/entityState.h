@@ -1,6 +1,7 @@
 #pragma once
 
 #include"entity\entity.h"
+#include"game\gameCommands.h"
 
 /**
 *	\brief entity 状态组件的基类
@@ -22,6 +23,10 @@ public:
 	/** command notify */
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
+	virtual void NotifyMovementChanged();
+	virtual Direction8 GetWantedDirection8()const;
+
+	Entity& GetEntity();
 
 private:
 	Entity& mEntity;

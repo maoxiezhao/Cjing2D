@@ -15,6 +15,7 @@ namespace Geometry
 	constexpr double INV_TWOPI   = 0.15915494309189533577;
 	constexpr double INV_FOURPI  = 0.07957747154594766788;
 	constexpr double PI_OVER_2   = 1.57079632679489661923;
+	constexpr double PI_OVER_4   = 0.78539816339744830961;
 
 	inline float Radians(float angle)
 	{

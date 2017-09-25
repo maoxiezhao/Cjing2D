@@ -147,6 +147,11 @@ std::unique_ptr<InputEvent> InputEvent::GetEvent()
 	return std::unique_ptr<InputEvent>(result);
 }
 
+Point2 InputEvent::GetMousePos()
+{
+	return mMousePos;
+}
+
 InputEvent::KeyEvent InputEvent::GetKeyEvent()const
 {
 	return mKeyEvent;

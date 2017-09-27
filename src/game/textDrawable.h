@@ -17,6 +17,7 @@ public:
 	TextDrawable();
 	
 	virtual void Draw();
+	virtual void Draw(const Point2& pos);
 	virtual const string GetLuaObjectName()const;
 
 	/***** ***** ****** setter/gettter ***** ***** ******/

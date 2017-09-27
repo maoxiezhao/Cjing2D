@@ -1,4 +1,5 @@
 #include "playerSprite.h"
+#include "game\map.h"
 
 namespace{
 	const std::string walkAnimationName = "walking";
@@ -49,13 +50,17 @@ void PlayerSprite::Update()
 
 /**
 *	\brief 绘制player的sprites
+*
+*	依次绘制bodySprite，shadowSprite
 */
 void PlayerSprite::Draw()
 {
+	auto& map = mPlayer.GetMap();
 	Point2 pos = mPlayer.GetPos();
-
+	
 	mBodySprite->SetPos(pos);
-	mBodySprite->Draw();
+
+	map.DrawOnMap(*mBodySprite);
 }
 
 /**

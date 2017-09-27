@@ -18,6 +18,8 @@ namespace
 	string tilename;
 	Renderer* mRenderer = nullptr;
 	uint32_t fps = 0;
+	GLFWimage cursorImage;
+	GLFWcursor* cursor = nullptr;
 }
 
 /**
@@ -186,4 +188,24 @@ uint32_t Video::GetFPS()
 const Size & Video::GetScreenSize()
 {
 	return wantedWindowSize;
+}
+
+/**
+*	\brief 设置当前鼠标的光标
+*	\param imageData,32-bit, little-endian, 
+*		   non-premultiplied RGBA
+*/
+void Video::SetImageCursor(unsigned char * imgData, int w, int h)
+{
+	cursorImage.width = w;
+	cursorImage.height = h;
+	cursorImage.pixels = imgData;
+
+	if (cursor != nullptr)
+	{
+		glfwDestroyCursor(cursor);
+		cursor = nullptr;
+	}
+	cursor = glfwCreateCursor(&cursorImage, 0, 0);
+	glfwSetCursor(mainWindow, cursor);
 }

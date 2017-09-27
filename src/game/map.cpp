@@ -1,6 +1,7 @@
 #include "map.h"
 #include "core\inputEvent.h"
 #include "entity\entities.h"
+#include "entity\entity.h"
 #include "lua\luaContext.h"
 #include "game\game.h"
 #include "game\mapData.h"
@@ -212,6 +213,16 @@ Size Map::GetSize() const
 	return Size(mWidth, mHeight);
 }
 
+int Map::GetWidth()const
+{
+	return mWidth;
+}
+
+int Map::GetHeight()const
+{
+	return mHeight;
+}
+
 /**
 *	\brief 绘制地图
 *
@@ -251,6 +262,33 @@ void Map::DrawBackground()
 */
 void Map::DrawForeground()
 {
+}
+
+/**
+*	\brief 在地图上绘制drawable
+*/
+void Map::DrawOnMap(Drawable & drawabel)
+{
+	if (mCamera == nullptr)
+	{
+		Debug::Warning("Draw drawable without camear.");
+		return;
+	}
+	const Point2& pos = drawabel.GetPos();
+	drawabel.Draw(pos - mCamera->GetLeftTopPos());
+}
+
+/**
+*	\brief 在地图上绘制drawable
+*/
+void Map::DrawOnMap(Drawable& drawabel, const Point2& pos)
+{
+	if (mCamera == nullptr)
+	{
+		Debug::Warning("Draw drawable without camear.");
+		return;
+	}
+	drawabel.Draw(pos - mCamera->GetPos());
 }
 
 bool Map::IsLoaded() const

@@ -17,19 +17,19 @@ public:
 
 	virtual void Update();
 	virtual void Draw() = 0;
-	//virtual void Draw(int x, int y) = 0;
+	virtual void Draw(const Point2& pos) = 0;
 
+	// status
 	Point2 GetPos()const;
 	void SetPos(const Point2& pos);
 	float GetRotated()const;
 	void SetRotated(float angle);
 	float GetGlobalOrder()const;
 	void SetGlobalOrder(float order);
-
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
 
-	//void AddMovement(const std::shared_ptr<Movement>& movement);
+	// movement
 	void StopMovement();
 	void StartMovement(const std::shared_ptr<Movement>& movement);
 	const std::shared_ptr<Movement>& GetMovement();

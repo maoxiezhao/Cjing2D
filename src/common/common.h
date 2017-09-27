@@ -8,6 +8,7 @@
 #include<iostream>
 #include<windows.h>
 #include<sstream>
+#include<algorithm>
 
 #define GLEW_STATIC
 #include<glew.h>
@@ -28,5 +29,8 @@ using std::string;
 using wchar = unsigned int;
 
 #define DEFAULT_APP_WRITE_DIR "Cjing"
+
+#undef min
+#undef max
 
 #endif

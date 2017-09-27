@@ -100,6 +100,21 @@ void Sprite::Draw()
 		Draw(GetPos(), GetRotated());
 }
 
+
+/**
+*	\brief 绘制精灵
+*
+*   以自定义的位置绘制精灵，角度还是以sprite的为主
+*/
+void Sprite::Draw(const Point2 & pos)
+{
+	if (IsDirty())
+		UpdateTransform();
+
+	if (mVisible)
+		Draw(pos, GetRotated());
+}
+
 /**
 *	\brief 在指定位置和指定角度绘制精灵
 *

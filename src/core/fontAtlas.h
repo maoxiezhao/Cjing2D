@@ -38,7 +38,7 @@ public:
 
 	FontPtr GetDefaultFont();
 	FontPtr GetFontByName(const string& name);
-	const string& GetNameByFont(const FontPtr& fontPtr);
+	string GetNameByFont(const FontPtr& fontPtr);
 
 private:
 	std::map<string, FontPtr> mFonts;

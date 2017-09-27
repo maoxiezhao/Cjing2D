@@ -10,6 +10,7 @@ const string LuaContext::module_entity_name = "Entity";
 
 void LuaContext::RegisterEntityModule()
 {
+	// entity base
 	static const luaL_Reg functions[] = {
 		{ nullptr,nullptr }
 	};

@@ -13,7 +13,8 @@ Entity::Entity():
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
-	mIsInitialized(false)
+	mIsInitialized(false),
+	mIsDrawOnYOrder(false)
 {
 }
 
@@ -25,7 +26,8 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
-	mIsInitialized(false)
+	mIsInitialized(false),
+	mIsDrawOnYOrder(false)
 {
 }
 
@@ -51,8 +53,19 @@ void Entity::Update()
 	UpdateState();
 }
 
+/**
+*	\brief ªÊ÷∆entityµΩmap
+*/
 void Entity::Draw()
 {
+	for (auto& nameSprite : mSprites)
+	{
+		auto sprite = nameSprite.sprite;
+		if (sprite != nullptr)
+		{
+			GetMap().DrawOnMap(*sprite);
+		}
+	}
 }
 
 /**
@@ -180,9 +193,26 @@ Rect Entity::GetRectBounding() const
 	return Rect(mPos, mSize);
 }
 
+void Entity::SetDrawOnYOrder(bool isDrawOnY)
+{
+	mIsDrawOnYOrder = isDrawOnY;
+}
+
+bool Entity::IsDrawOnYOrder() const
+{
+	return mIsDrawOnYOrder;
+}
+
 Point2 Entity::GetPos()const
 {
 	return mPos;
+}
+Point2 Entity::GetCenterPos() const
+{
+	Size size = GetSize();
+
+	return Point2(mPos.x + size.width / 2,
+		mPos.y + size.height / 2);
 }
 void Entity::SetPos(const Point2& pos)
 {

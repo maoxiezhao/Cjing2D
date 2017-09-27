@@ -60,6 +60,6 @@ void PlayerMovement::ComputeMovement()
 	{
 		double angle = static_cast<double>(mDirection) * 45;
 		SetSpeed((double)mMovingSpeed);
-		SetAngle((double)Geometry::Radians(angle));
+		SetAngle((double)Geometry::Radians((float)angle));
 	}
 }

@@ -24,6 +24,7 @@ public:
 	// system
 	virtual void Update();
 	virtual void Draw();
+	virtual void Draw(const Point2& pos);
 	void Draw(const Point2& pos, float rotate);
 
 	// status 

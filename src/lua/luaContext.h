@@ -127,6 +127,7 @@ public:
 		video_api_isFullScreen,
 		video_api_get_wanted_size,
 		video_api_get_fps,
+		video_api_set_cursor,
 		// drawable
 		drawable_api_get_pos,
 		drawable_api_set_pos,

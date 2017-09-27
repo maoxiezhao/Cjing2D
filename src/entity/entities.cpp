@@ -14,19 +14,23 @@ Entities::Entities(Game&game, Map&map):
 	mPlayer(game.GetPlayer())
 {
 	// 初始化每层的layer
+	int mapWidth16 = mMap.GetWidth() / groundCellWidth;
+	int mapHeight16 = mMap.GetHeight() / groundCellHeight;
 	for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++)
 	{
 		TileRegions* tileRegion = new TileRegions(map, layer);
 		mTileRegions.emplace(layer, std::unique_ptr<TileRegions>(tileRegion));
+
+		mGrounds[layer].resize(mapWidth16*mapHeight16, Ground::GROUND_EMPTY);
 	}
 
 	// 初始化四叉树管理entity
 
 	// 添加相机,Test:临时设置为屏幕中点，视野为整个屏幕
-	mCamera = std::make_shared<Camera>();
+	mCamera = std::make_shared<Camera>(map);
 	mCamera->SetSize(Video::GetScreenSize() / 2);
 	mCamera->SetPos({ Video::GetScreenSize().width / 2, Video::GetScreenSize().height / 2 });
-	AddEntity(mCamera);
+	mCamera->TracingEntity(*mPlayer);
 }
 
 Entities::~Entities()
@@ -50,6 +54,8 @@ void Entities::Update()
 	{
 		entity->Update();
 	}
+
+	mCamera->Update();
 	mEntityToDraw.clear();
 }
 
@@ -62,6 +68,8 @@ void Entities::Draw()
 	// 在相机范围时才添加到绘制列表
 	if (mEntityToDraw.empty())
 	{
+		// 应从4叉数中获取对象集合
+
 		for (const auto& entity : mAllEntities)
 		{
 			Rect aroundCamera(
@@ -75,6 +83,46 @@ void Entities::Draw()
 				int layer = entity->GetLayer();
 				mEntityToDraw[layer].push_back(entity);
 			}
+		}
+
+		// 对entityToDraw进行排序
+		for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++) 
+		{
+			std::sort(mEntityToDraw[layer].begin(), mEntityToDraw[layer].end(), [](EntityPtr& entity1, EntityPtr& entity2) {
+				// layer compare
+				if (entity1->GetLayer() < entity1->GetLayer())
+				{
+					return true;
+				}
+				else if (entity1->GetLayer() > entity1->GetLayer())
+				{
+					return false;
+				}
+				else
+				{	// 当layer相同时，则根据y坐标比较
+					if (!entity1->IsDrawOnYOrder() && entity2->IsDrawOnYOrder())
+					{
+						return true;
+					}
+					else if (entity1->IsDrawOnYOrder() && !entity2->IsDrawOnYOrder())
+					{
+						return false;
+					}
+					else if (entity1->IsDrawOnYOrder() && entity2->IsDrawOnYOrder())
+					{
+						if (entity1->GetPos().y < entity2->GetPos().y)
+						{
+							return true;
+						}
+						else if (entity1->GetPos().y > entity2->GetPos().y)
+						{
+							return false;
+						}
+					}		
+					// 当layer相同，y坐标也相同时
+					return true;
+				}
+			});
 		}
 	}
 

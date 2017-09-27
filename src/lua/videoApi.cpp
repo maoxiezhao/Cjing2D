@@ -1,5 +1,7 @@
 #include"luaContext.h"
 #include"core\video.h"
+#include"core\fileData.h"
+#include"thirdparty\SOIL.h"
 
 const string LuaContext::module_video_name = "Video";
 
@@ -9,10 +11,11 @@ const string LuaContext::module_video_name = "Video";
 void LuaContext::RegisterVideoModule()
 {
 	static const luaL_Reg functions[] = {
-		{"SetFullScreen",video_api_setFullScreen},
-		{"IsFullScreen",video_api_isFullScreen},
-		{"GetScreenSize", video_api_get_wanted_size},
-		{"GetFPS", video_api_get_fps },
+		{"setFullScreen",video_api_setFullScreen},
+		{"isFullScreen",video_api_isFullScreen},
+		{"getScreenSize", video_api_get_wanted_size},
+		{"getFPS", video_api_get_fps },
+		{"setCursor", video_api_set_cursor },
 		{nullptr,nullptr}
 	};
 	RegisterFunction(module_video_name, functions);
@@ -71,3 +74,29 @@ int LuaContext::video_api_get_fps(lua_State* l)
 		return 1;
 	});
 }
+
+/**
+*	\brief 设置当前cursor,cjing.Video.setCursor(cursorImgPath)
+*/
+int LuaContext::video_api_set_cursor(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		const std::string& cursorImgPath = LuaTools::CheckString(l, 1);
+
+		// 这里以Debug::Error的方式来对文件缺失报错
+		if (!FileData::IsFileExists(cursorImgPath))
+		{
+			LuaTools::Error(l, "Can not find file:" + cursorImgPath);
+			return 0;
+		}
+		// 这里对图片的读取不使用texture,因为无需对该资源后续维护
+		int w, h;
+		const string data = FileData::ReadFile(cursorImgPath);
+		unsigned char* imageData = SOIL_load_image_from_memory((unsigned char*)data.c_str(), 
+				data.length(), &w, &h, 0, SOIL_LOAD_RGBA);
+
+		Video::SetImageCursor(imageData, w, h);
+		return 0;
+	});
+}
+

@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"lua\luaObject.h"
 #include"utils\size.h"
+#include"game\drawable.h"
 
 class Game;
 class Camera;
@@ -40,6 +41,9 @@ public:
 	virtual void DrawBackground();		// ªÊ÷∆±≥æ∞Õº£®∫Ûæ∞£©
 	virtual void DrawForeground();		// ªÊ÷∆±≥æ∞Õº£®«∞æ∞£©
 
+	void DrawOnMap(Drawable& drawabel);
+	void DrawOnMap(Drawable& drawabel, const Point2& pos);
+
 	// status
 	bool IsLoaded()const;
 	bool IsStarted()const;
@@ -62,6 +66,8 @@ public:
 	int GetMinLayer()const;
 	int GetMaxLayer()const;
 	Size GetSize()const;
+	int GetWidth()const;
+	int GetHeight()const;
 
 	// test collison
 	bool TestCollison();
@@ -88,6 +94,5 @@ private:
 	std::unique_ptr<Entities> mEntities;
 
 };
-
 
 #endif

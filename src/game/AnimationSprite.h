@@ -20,6 +20,7 @@ public:
 	// system
 	virtual void Update();
 	virtual void Draw();
+	virtual void Draw(const Point2& pos);
 	virtual bool IsAnimationed()const;
 	
 	// frame status

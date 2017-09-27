@@ -29,6 +29,26 @@ void TextDrawable::Draw()
 	}
 }
 
+
+/**
+*	\brief 绘制文本
+*	\param 位置
+
+*	因为最终绘制还是由font来绘制，所以可能会有不同的TextDrawable
+*	拥有同一个，所以在绘制前需要设置好所有属性,其中位置属性由参
+*	数传入
+*/
+void TextDrawable::Draw(const Point2 & pos)
+{
+	if (mFont != nullptr)
+	{
+		mFont->SetFontColor(mFontColor);
+		mFont->SetLineHeight(mTextLineHeight);
+		mFont->SetLetterSpacing(mTextLetterSpacing);
+		mFont->RenderText((float)mFontSize, pos, mText, mTextHorizontalAlign);
+	}
+}
+
 const string TextDrawable::GetLuaObjectName() const
 {
 	return LuaContext::module_font_name;

@@ -108,7 +108,7 @@ FontPtr FontAtlas::GetFontByName(const string & name)
 	return nullptr;
 }
 
-const string & FontAtlas::GetNameByFont(const FontPtr & fontPtr)
+string FontAtlas::GetNameByFont(const FontPtr & fontPtr)
 {
 	for (auto& kvp : mFonts)
 	{

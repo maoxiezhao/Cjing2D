@@ -81,6 +81,20 @@ void AnimationSprite::Draw()
 }
 
 /**
+*	\brief 绘制动画精灵
+*	\param 绘制的位置
+*
+*   绘制时需要考虑是否发生了帧变换
+*/
+void AnimationSprite::Draw(const Point2 & pos)
+{
+	if (IsFrameChanged())
+		UpdateFramedChanged();
+
+	Sprite::Draw(pos);
+}
+
+/**
 *	\brief 是否是动画精灵，AnimationSprite必然返回false;
 */
 bool AnimationSprite::IsAnimationed() const
@@ -288,6 +302,7 @@ void AnimationSprite::SetCurrDirection(int direction)
 {
 	Debug::CheckAssertion(direction >= -1 && direction < mCurrAnimation->GetNumDirections(),
 		"Invaild direction in AnimationSprite::SetCurrDirection().");
+
 	mCurrDirection = direction;
 }
 

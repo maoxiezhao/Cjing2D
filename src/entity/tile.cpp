@@ -23,7 +23,7 @@ void Tile::Draw()
 	mTileSprite->SetPos(GetPos());
 	mTileSprite->SetSize(GetSize());
 
-	mTileSprite->Draw();
+	GetMap().DrawOnMap(*mTileSprite);
 }
 
 void Tile::Build()

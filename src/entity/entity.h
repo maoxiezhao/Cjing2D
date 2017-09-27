@@ -52,6 +52,7 @@ public:
 
 	/**** **** **** status **** **** ****/
 	Point2 GetPos()const;
+	Point2 GetCenterPos()const;
 	void SetPos(const Point2& pos);
 	void SetLayer(int layer);
 	int GetLayer()const;
@@ -61,6 +62,8 @@ public:
 	const string& GetName()const;
 	virtual EntityType GetEntityType()const;
 	Rect GetRectBounding()const;
+	void SetDrawOnYOrder(bool isDrawOnY);
+	bool IsDrawOnYOrder()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
@@ -84,6 +87,7 @@ private:
 	int mLayer;
 	EntityType mType;
 	bool mIsInitialized;
+	bool mIsDrawOnYOrder;
 
 	// core member
 	LuaContext* mLuaContext;				/** µ±Ç°µÄluaContext */

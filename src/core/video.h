@@ -24,6 +24,7 @@ public:
 	static void SetFPS(uint32_t f);
 	static uint32_t GetFPS();
 	static const Size& GetScreenSize();
+	static void SetImageCursor(unsigned char* imgData, int w, int h);
 };
 
 #endif

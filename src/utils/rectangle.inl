@@ -169,10 +169,10 @@ inline bool Rect::operator!=(const Rect & rect)
 */
 inline Rect& Rect::operator&=(const Rect& rect)
 {
-	int lx = max(x, rect.x);
-	int ly = max(y, rect.y);
-	int rx = min(x + width, rect.x + rect.width);
-	int ry = min(y + height, rect.y + rect.height);
+	int lx = std::max(x, rect.x);
+	int ly = std::max(y, rect.y);
+	int rx = std::min(x + width, rect.x + rect.width);
+	int ry = std::min(y + height, rect.y + rect.height);
 
 	if (lx >= rx || ly >= ry)
 		*this = Rect();
@@ -186,10 +186,10 @@ inline Rect& Rect::operator&=(const Rect& rect)
 */
 inline Rect& Rect::operator |=(const Rect& rect)
 {
-	int lx = min(x, rect.x);
-	int ly = min(y, rect.y);
-	int rx = max(x + width, rect.x + rect.width);
-	int ry = max(y + height, rect.y + rect.height);
+	int lx = std::min(x, rect.x);
+	int ly = std::min(y, rect.y);
+	int rx = std::max(x + width, rect.x + rect.width);
+	int ry = std::max(y + height, rect.y + rect.height);
 
 	if (lx >= rx || ly >= ry)
 		*this = Rect();

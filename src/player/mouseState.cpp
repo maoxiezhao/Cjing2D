@@ -42,7 +42,7 @@ void MouseState::Update()
 
 	// ½Ç¶ÈÆ«ÒÆ
 	double angle = Geometry::GetAngle(playerPos, mousePos);
-	if (Geometry::PI_2 - angle < Geometry::PI_OVER_4)
+	if (Geometry::PI_2 - angle <= Geometry::PI_OVER_4)
 	{
 		angle = Geometry::PI_2 - angle;
 	}
@@ -50,5 +50,6 @@ void MouseState::Update()
 
 	Direction4 direction = static_cast<Direction4>(
 		(int)(angle / Geometry::PI_OVER_2));
+
 	player.GetPlayerSprites().SetAnimationDirection4(direction);
 }

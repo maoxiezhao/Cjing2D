@@ -6,10 +6,10 @@
 #include"utils\quadTree.h"
 #include"entity\camera.h"
 #include"entity\tileRegions.h"
+#include"entity\groundInfo.h"
 #include"game\mapData.h"
 #include<list>
 
-class Ground;
 class Tile;
 class LuaContext;
 class TileInfo;
@@ -70,5 +70,8 @@ private:
 
 	ByLayer<std::unique_ptr<TileRegions> > mTileRegions;	// tile绘制层
 
-	std::shared_ptr<Player> mPlayer;			// 当前控制对象
+	ByLayer<std::vector<Ground> > mGrounds;	// 当前地面地形,当前地形以16x16为单位存储
+
+	std::shared_ptr<Player> mPlayer;		// 当前控制对象
+
 };

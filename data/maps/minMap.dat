@@ -1,0 +1,442 @@
+property{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 160,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = 'minMap',
+}
+
+tile{
+  x = 32,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 6,
+}
+
+tile{
+  x = 64,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 96,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 128,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 160,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 192,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 224,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 7,
+}
+
+tile{
+  x = 256,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 8,
+}
+
+tile{
+  x = 32,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 20,
+}
+
+tile{
+  x = 64,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 96,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 128,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 160,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 192,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 224,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 256,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 22,
+}
+
+tile{
+  x = 0,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 15,
+}
+
+tile{
+  x = 32,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 38,
+}
+
+tile{
+  x = 64,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 96,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 128,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 160,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 192,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 224,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 256,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 40,
+}
+
+tile{
+  x = 288,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 16,
+}
+
+tile{
+  x = 32,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 20,
+}
+
+tile{
+  x = 64,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 96,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 128,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 160,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 192,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 224,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 256,
+  y = 96,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 22,
+}
+
+tile{
+  x = 32,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 34,
+}
+
+tile{
+  x = 64,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 96,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 128,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 160,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 192,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 224,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 256,
+  y = 128,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 36,
+}
+
+tile{
+  x = 64,
+  y = 0,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 31,
+}
+
+tile{
+  x = 224,
+  y = 0,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 31,
+}
+
+tile{
+  x = 64,
+  y = 32,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 45,
+}
+
+tile{
+  x = 224,
+  y = 32,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 44,
+}
+
+tile{
+  x = 64,
+  y = 96,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  x = 224,
+  y = 96,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 73,
+}
+

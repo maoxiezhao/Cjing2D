@@ -16,6 +16,9 @@ function cjing.Main:onStarted()
 	self._asyncLoader = nil
 	self._game = nil
 	
+	-- set video property
+	cjing.Video.setCursor("sprites/menus/cursor.png")
+	
 	-- loading scene
 	local loadingScene = require("menus/loading")	
 	if loadingScene then 
@@ -67,7 +70,7 @@ function cjing.Main:onKeyPressed(key,modifiers)
 	if (key == "f4" and modifiers.ctrl == true)then
 		cjing.Main.Exit()
 	elseif(key == "f5") then
-		cjing.Video.SetFullScreen(not cjing.Video.IsFullScreen())
+		cjing.Video.setFullScreen(not cjing.Video.isFullScreen())
 	end
 	
 	return handle

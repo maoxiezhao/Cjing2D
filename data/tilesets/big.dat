@@ -1,0 +1,16384 @@
+tilePattern{
+  id = 1,
+  x = 0,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2,
+  x = 16,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 3,
+  x = 32,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 4,
+  x = 48,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 5,
+  x = 64,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 6,
+  x = 80,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 7,
+  x = 96,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 8,
+  x = 112,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 9,
+  x = 128,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 10,
+  x = 144,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 11,
+  x = 160,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 12,
+  x = 176,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 13,
+  x = 192,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 14,
+  x = 208,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 15,
+  x = 224,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 16,
+  x = 240,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 17,
+  x = 0,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 18,
+  x = 16,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 19,
+  x = 32,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 20,
+  x = 48,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 21,
+  x = 64,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 22,
+  x = 80,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 23,
+  x = 96,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 24,
+  x = 112,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 25,
+  x = 128,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 26,
+  x = 144,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 27,
+  x = 160,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 28,
+  x = 176,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 29,
+  x = 192,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 30,
+  x = 208,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 31,
+  x = 224,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 32,
+  x = 240,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 33,
+  x = 0,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 34,
+  x = 16,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 35,
+  x = 32,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 36,
+  x = 48,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 37,
+  x = 64,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 38,
+  x = 80,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 39,
+  x = 96,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 40,
+  x = 112,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 41,
+  x = 128,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 42,
+  x = 144,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 43,
+  x = 160,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 44,
+  x = 176,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 45,
+  x = 192,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 46,
+  x = 208,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 47,
+  x = 224,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 48,
+  x = 240,
+  y = 32,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 49,
+  x = 0,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 50,
+  x = 16,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 51,
+  x = 32,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 52,
+  x = 48,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 53,
+  x = 64,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 54,
+  x = 80,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 55,
+  x = 96,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 56,
+  x = 112,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 57,
+  x = 128,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 58,
+  x = 144,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 59,
+  x = 160,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 60,
+  x = 176,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 61,
+  x = 192,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 62,
+  x = 208,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 63,
+  x = 224,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 64,
+  x = 240,
+  y = 48,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 65,
+  x = 0,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 66,
+  x = 16,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 67,
+  x = 32,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 68,
+  x = 48,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 69,
+  x = 64,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 70,
+  x = 80,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 71,
+  x = 96,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 72,
+  x = 112,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 73,
+  x = 128,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 74,
+  x = 144,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 75,
+  x = 160,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 76,
+  x = 176,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 77,
+  x = 192,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 78,
+  x = 208,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 79,
+  x = 224,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 80,
+  x = 240,
+  y = 64,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 81,
+  x = 0,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 82,
+  x = 16,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 83,
+  x = 32,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 84,
+  x = 48,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 85,
+  x = 64,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 86,
+  x = 80,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 87,
+  x = 96,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 88,
+  x = 112,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 89,
+  x = 128,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 90,
+  x = 144,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 91,
+  x = 160,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 92,
+  x = 176,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 93,
+  x = 192,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 94,
+  x = 208,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 95,
+  x = 224,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 96,
+  x = 240,
+  y = 80,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 97,
+  x = 0,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 98,
+  x = 16,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 99,
+  x = 32,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 100,
+  x = 48,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 101,
+  x = 64,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 102,
+  x = 80,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 103,
+  x = 96,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 104,
+  x = 112,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 105,
+  x = 128,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 106,
+  x = 144,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 107,
+  x = 160,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 108,
+  x = 176,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 109,
+  x = 192,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 110,
+  x = 208,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 111,
+  x = 224,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 112,
+  x = 240,
+  y = 96,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 113,
+  x = 0,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 114,
+  x = 16,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 115,
+  x = 32,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 116,
+  x = 48,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 117,
+  x = 64,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 118,
+  x = 80,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 119,
+  x = 96,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 120,
+  x = 112,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 121,
+  x = 128,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 122,
+  x = 144,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 123,
+  x = 160,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 124,
+  x = 176,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 125,
+  x = 192,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 126,
+  x = 208,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 127,
+  x = 224,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 128,
+  x = 240,
+  y = 112,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 129,
+  x = 0,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 130,
+  x = 16,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 131,
+  x = 32,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 132,
+  x = 48,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 133,
+  x = 64,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 134,
+  x = 80,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 135,
+  x = 96,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 136,
+  x = 112,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 137,
+  x = 128,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 138,
+  x = 144,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 139,
+  x = 160,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 140,
+  x = 176,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 141,
+  x = 192,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 142,
+  x = 208,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 143,
+  x = 224,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 144,
+  x = 240,
+  y = 128,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 145,
+  x = 0,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 146,
+  x = 16,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 147,
+  x = 32,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 148,
+  x = 48,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 149,
+  x = 64,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 150,
+  x = 80,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 151,
+  x = 96,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 152,
+  x = 112,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 153,
+  x = 128,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 154,
+  x = 144,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 155,
+  x = 160,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 156,
+  x = 176,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 157,
+  x = 192,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 158,
+  x = 208,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 159,
+  x = 224,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 160,
+  x = 240,
+  y = 144,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 161,
+  x = 0,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 162,
+  x = 16,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 163,
+  x = 32,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 164,
+  x = 48,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 165,
+  x = 64,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 166,
+  x = 80,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 167,
+  x = 96,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 168,
+  x = 112,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 169,
+  x = 128,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 170,
+  x = 144,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 171,
+  x = 160,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 172,
+  x = 176,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 173,
+  x = 192,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 174,
+  x = 208,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 175,
+  x = 224,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 176,
+  x = 240,
+  y = 160,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 177,
+  x = 0,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 178,
+  x = 16,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 179,
+  x = 32,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 180,
+  x = 48,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 181,
+  x = 64,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 182,
+  x = 80,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 183,
+  x = 96,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 184,
+  x = 112,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 185,
+  x = 128,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 186,
+  x = 144,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 187,
+  x = 160,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 188,
+  x = 176,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 189,
+  x = 192,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 190,
+  x = 208,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 191,
+  x = 224,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 192,
+  x = 240,
+  y = 176,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 193,
+  x = 0,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 194,
+  x = 16,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 195,
+  x = 32,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 196,
+  x = 48,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 197,
+  x = 64,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 198,
+  x = 80,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 199,
+  x = 96,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 200,
+  x = 112,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 201,
+  x = 128,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 202,
+  x = 144,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 203,
+  x = 160,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 204,
+  x = 176,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 205,
+  x = 192,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 206,
+  x = 208,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 207,
+  x = 224,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 208,
+  x = 240,
+  y = 192,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 209,
+  x = 0,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 210,
+  x = 16,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 211,
+  x = 32,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 212,
+  x = 48,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 213,
+  x = 64,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 214,
+  x = 80,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 215,
+  x = 96,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 216,
+  x = 112,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 217,
+  x = 128,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 218,
+  x = 144,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 219,
+  x = 160,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 220,
+  x = 176,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 221,
+  x = 192,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 222,
+  x = 208,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 223,
+  x = 224,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 224,
+  x = 240,
+  y = 208,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 225,
+  x = 0,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 226,
+  x = 16,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 227,
+  x = 32,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 228,
+  x = 48,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 229,
+  x = 64,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 230,
+  x = 80,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 231,
+  x = 96,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 232,
+  x = 112,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 233,
+  x = 128,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 234,
+  x = 144,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 235,
+  x = 160,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 236,
+  x = 176,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 237,
+  x = 192,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 238,
+  x = 208,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 239,
+  x = 224,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 240,
+  x = 240,
+  y = 224,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 241,
+  x = 0,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 242,
+  x = 16,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 243,
+  x = 32,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 244,
+  x = 48,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 245,
+  x = 64,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 246,
+  x = 80,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 247,
+  x = 96,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 248,
+  x = 112,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 249,
+  x = 128,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 250,
+  x = 144,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 251,
+  x = 160,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 252,
+  x = 176,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 253,
+  x = 192,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 254,
+  x = 208,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 255,
+  x = 224,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 256,
+  x = 240,
+  y = 240,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 257,
+  x = 0,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 258,
+  x = 16,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 259,
+  x = 32,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 260,
+  x = 48,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 261,
+  x = 64,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 262,
+  x = 80,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 263,
+  x = 96,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 264,
+  x = 112,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 265,
+  x = 128,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 266,
+  x = 144,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 267,
+  x = 160,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 268,
+  x = 176,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 269,
+  x = 192,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 270,
+  x = 208,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 271,
+  x = 224,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 272,
+  x = 240,
+  y = 256,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 273,
+  x = 0,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 274,
+  x = 16,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 275,
+  x = 32,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 276,
+  x = 48,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 277,
+  x = 64,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 278,
+  x = 80,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 279,
+  x = 96,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 280,
+  x = 112,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 281,
+  x = 128,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 282,
+  x = 144,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 283,
+  x = 160,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 284,
+  x = 176,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 285,
+  x = 192,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 286,
+  x = 208,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 287,
+  x = 224,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 288,
+  x = 240,
+  y = 272,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 289,
+  x = 0,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 290,
+  x = 16,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 291,
+  x = 32,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 292,
+  x = 48,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 293,
+  x = 64,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 294,
+  x = 80,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 295,
+  x = 96,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 296,
+  x = 112,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 297,
+  x = 128,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 298,
+  x = 144,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 299,
+  x = 160,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 300,
+  x = 176,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 301,
+  x = 192,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 302,
+  x = 208,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 303,
+  x = 224,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 304,
+  x = 240,
+  y = 288,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 305,
+  x = 0,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 306,
+  x = 16,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 307,
+  x = 32,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 308,
+  x = 48,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 309,
+  x = 64,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 310,
+  x = 80,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 311,
+  x = 96,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 312,
+  x = 112,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 313,
+  x = 128,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 314,
+  x = 144,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 315,
+  x = 160,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 316,
+  x = 176,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 317,
+  x = 192,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 318,
+  x = 208,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 319,
+  x = 224,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 320,
+  x = 240,
+  y = 304,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 321,
+  x = 0,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 322,
+  x = 16,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 323,
+  x = 32,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 324,
+  x = 48,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 325,
+  x = 64,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 326,
+  x = 80,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 327,
+  x = 96,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 328,
+  x = 112,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 329,
+  x = 128,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 330,
+  x = 144,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 331,
+  x = 160,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 332,
+  x = 176,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 333,
+  x = 192,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 334,
+  x = 208,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 335,
+  x = 224,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 336,
+  x = 240,
+  y = 320,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 337,
+  x = 0,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 338,
+  x = 16,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 339,
+  x = 32,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 340,
+  x = 48,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 341,
+  x = 64,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 342,
+  x = 80,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 343,
+  x = 96,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 344,
+  x = 112,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 345,
+  x = 128,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 346,
+  x = 144,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 347,
+  x = 160,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 348,
+  x = 176,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 349,
+  x = 192,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 350,
+  x = 208,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 351,
+  x = 224,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 352,
+  x = 240,
+  y = 336,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 353,
+  x = 0,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 354,
+  x = 16,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 355,
+  x = 32,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 356,
+  x = 48,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 357,
+  x = 64,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 358,
+  x = 80,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 359,
+  x = 96,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 360,
+  x = 112,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 361,
+  x = 128,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 362,
+  x = 144,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 363,
+  x = 160,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 364,
+  x = 176,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 365,
+  x = 192,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 366,
+  x = 208,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 367,
+  x = 224,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 368,
+  x = 240,
+  y = 352,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 369,
+  x = 0,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 370,
+  x = 16,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 371,
+  x = 32,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 372,
+  x = 48,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 373,
+  x = 64,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 374,
+  x = 80,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 375,
+  x = 96,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 376,
+  x = 112,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 377,
+  x = 128,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 378,
+  x = 144,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 379,
+  x = 160,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 380,
+  x = 176,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 381,
+  x = 192,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 382,
+  x = 208,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 383,
+  x = 224,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 384,
+  x = 240,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 385,
+  x = 0,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 386,
+  x = 16,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 387,
+  x = 32,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 388,
+  x = 48,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 389,
+  x = 64,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 390,
+  x = 80,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 391,
+  x = 96,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 392,
+  x = 112,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 393,
+  x = 128,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 394,
+  x = 144,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 395,
+  x = 160,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 396,
+  x = 176,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 397,
+  x = 192,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 398,
+  x = 208,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 399,
+  x = 224,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 400,
+  x = 240,
+  y = 384,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 401,
+  x = 0,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 402,
+  x = 16,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 403,
+  x = 32,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 404,
+  x = 48,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 405,
+  x = 64,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 406,
+  x = 80,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 407,
+  x = 96,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 408,
+  x = 112,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 409,
+  x = 128,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 410,
+  x = 144,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 411,
+  x = 160,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 412,
+  x = 176,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 413,
+  x = 192,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 414,
+  x = 208,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 415,
+  x = 224,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 416,
+  x = 240,
+  y = 400,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 417,
+  x = 0,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 418,
+  x = 16,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 419,
+  x = 32,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 420,
+  x = 48,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 421,
+  x = 64,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 422,
+  x = 80,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 423,
+  x = 96,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 424,
+  x = 112,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 425,
+  x = 128,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 426,
+  x = 144,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 427,
+  x = 160,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 428,
+  x = 176,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 429,
+  x = 192,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 430,
+  x = 208,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 431,
+  x = 224,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 432,
+  x = 240,
+  y = 416,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 433,
+  x = 0,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 434,
+  x = 16,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 435,
+  x = 32,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 436,
+  x = 48,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 437,
+  x = 64,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 438,
+  x = 80,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 439,
+  x = 96,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 440,
+  x = 112,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 441,
+  x = 128,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 442,
+  x = 144,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 443,
+  x = 160,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 444,
+  x = 176,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 445,
+  x = 192,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 446,
+  x = 208,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 447,
+  x = 224,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 448,
+  x = 240,
+  y = 432,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 449,
+  x = 0,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 450,
+  x = 16,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 451,
+  x = 32,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 452,
+  x = 48,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 453,
+  x = 64,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 454,
+  x = 80,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 455,
+  x = 96,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 456,
+  x = 112,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 457,
+  x = 128,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 458,
+  x = 144,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 459,
+  x = 160,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 460,
+  x = 176,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 461,
+  x = 192,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 462,
+  x = 208,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 463,
+  x = 224,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 464,
+  x = 240,
+  y = 448,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 465,
+  x = 0,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 466,
+  x = 16,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 467,
+  x = 32,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 468,
+  x = 48,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 469,
+  x = 64,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 470,
+  x = 80,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 471,
+  x = 96,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 472,
+  x = 112,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 473,
+  x = 128,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 474,
+  x = 144,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 475,
+  x = 160,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 476,
+  x = 176,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 477,
+  x = 192,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 478,
+  x = 208,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 479,
+  x = 224,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 480,
+  x = 240,
+  y = 464,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 481,
+  x = 0,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 482,
+  x = 16,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 483,
+  x = 32,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 484,
+  x = 48,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 485,
+  x = 64,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 486,
+  x = 80,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 487,
+  x = 96,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 488,
+  x = 112,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 489,
+  x = 128,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 490,
+  x = 144,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 491,
+  x = 160,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 492,
+  x = 176,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 493,
+  x = 192,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 494,
+  x = 208,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 495,
+  x = 224,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 496,
+  x = 240,
+  y = 480,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 497,
+  x = 0,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 498,
+  x = 16,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 499,
+  x = 32,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 500,
+  x = 48,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 501,
+  x = 64,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 502,
+  x = 80,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 503,
+  x = 96,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 504,
+  x = 112,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 505,
+  x = 128,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 506,
+  x = 144,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 507,
+  x = 160,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 508,
+  x = 176,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 509,
+  x = 192,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 510,
+  x = 208,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 511,
+  x = 224,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 512,
+  x = 240,
+  y = 496,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 513,
+  x = 0,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 514,
+  x = 16,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 515,
+  x = 32,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 516,
+  x = 48,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 517,
+  x = 64,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 518,
+  x = 80,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 519,
+  x = 96,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 520,
+  x = 112,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 521,
+  x = 128,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 522,
+  x = 144,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 523,
+  x = 160,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 524,
+  x = 176,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 525,
+  x = 192,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 526,
+  x = 208,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 527,
+  x = 224,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 528,
+  x = 240,
+  y = 512,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 529,
+  x = 0,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 530,
+  x = 16,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 531,
+  x = 32,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 532,
+  x = 48,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 533,
+  x = 64,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 534,
+  x = 80,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 535,
+  x = 96,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 536,
+  x = 112,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 537,
+  x = 128,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 538,
+  x = 144,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 539,
+  x = 160,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 540,
+  x = 176,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 541,
+  x = 192,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 542,
+  x = 208,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 543,
+  x = 224,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 544,
+  x = 240,
+  y = 528,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 545,
+  x = 0,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 546,
+  x = 16,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 547,
+  x = 32,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 548,
+  x = 48,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 549,
+  x = 64,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 550,
+  x = 80,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 551,
+  x = 96,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 552,
+  x = 112,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 553,
+  x = 128,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 554,
+  x = 144,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 555,
+  x = 160,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 556,
+  x = 176,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 557,
+  x = 192,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 558,
+  x = 208,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 559,
+  x = 224,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 560,
+  x = 240,
+  y = 544,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 561,
+  x = 0,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 562,
+  x = 16,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 563,
+  x = 32,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 564,
+  x = 48,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 565,
+  x = 64,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 566,
+  x = 80,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 567,
+  x = 96,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 568,
+  x = 112,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 569,
+  x = 128,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 570,
+  x = 144,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 571,
+  x = 160,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 572,
+  x = 176,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 573,
+  x = 192,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 574,
+  x = 208,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 575,
+  x = 224,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 576,
+  x = 240,
+  y = 560,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 577,
+  x = 0,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 578,
+  x = 16,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 579,
+  x = 32,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 580,
+  x = 48,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 581,
+  x = 64,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 582,
+  x = 80,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 583,
+  x = 96,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 584,
+  x = 112,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 585,
+  x = 128,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 586,
+  x = 144,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 587,
+  x = 160,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 588,
+  x = 176,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 589,
+  x = 192,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 590,
+  x = 208,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 591,
+  x = 224,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 592,
+  x = 240,
+  y = 576,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 593,
+  x = 0,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 594,
+  x = 16,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 595,
+  x = 32,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 596,
+  x = 48,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 597,
+  x = 64,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 598,
+  x = 80,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 599,
+  x = 96,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 600,
+  x = 112,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 601,
+  x = 128,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 602,
+  x = 144,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 603,
+  x = 160,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 604,
+  x = 176,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 605,
+  x = 192,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 606,
+  x = 208,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 607,
+  x = 224,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 608,
+  x = 240,
+  y = 592,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 609,
+  x = 0,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 610,
+  x = 16,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 611,
+  x = 32,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 612,
+  x = 48,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 613,
+  x = 64,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 614,
+  x = 80,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 615,
+  x = 96,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 616,
+  x = 112,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 617,
+  x = 128,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 618,
+  x = 144,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 619,
+  x = 160,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 620,
+  x = 176,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 621,
+  x = 192,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 622,
+  x = 208,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 623,
+  x = 224,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 624,
+  x = 240,
+  y = 608,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 625,
+  x = 0,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 626,
+  x = 16,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 627,
+  x = 32,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 628,
+  x = 48,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 629,
+  x = 64,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 630,
+  x = 80,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 631,
+  x = 96,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 632,
+  x = 112,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 633,
+  x = 128,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 634,
+  x = 144,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 635,
+  x = 160,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 636,
+  x = 176,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 637,
+  x = 192,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 638,
+  x = 208,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 639,
+  x = 224,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 640,
+  x = 240,
+  y = 624,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 641,
+  x = 0,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 642,
+  x = 16,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 643,
+  x = 32,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 644,
+  x = 48,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 645,
+  x = 64,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 646,
+  x = 80,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 647,
+  x = 96,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 648,
+  x = 112,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 649,
+  x = 128,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 650,
+  x = 144,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 651,
+  x = 160,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 652,
+  x = 176,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 653,
+  x = 192,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 654,
+  x = 208,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 655,
+  x = 224,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 656,
+  x = 240,
+  y = 640,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 657,
+  x = 0,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 658,
+  x = 16,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 659,
+  x = 32,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 660,
+  x = 48,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 661,
+  x = 64,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 662,
+  x = 80,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 663,
+  x = 96,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 664,
+  x = 112,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 665,
+  x = 128,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 666,
+  x = 144,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 667,
+  x = 160,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 668,
+  x = 176,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 669,
+  x = 192,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 670,
+  x = 208,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 671,
+  x = 224,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 672,
+  x = 240,
+  y = 656,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 673,
+  x = 0,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 674,
+  x = 16,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 675,
+  x = 32,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 676,
+  x = 48,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 677,
+  x = 64,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 678,
+  x = 80,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 679,
+  x = 96,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 680,
+  x = 112,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 681,
+  x = 128,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 682,
+  x = 144,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 683,
+  x = 160,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 684,
+  x = 176,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 685,
+  x = 192,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 686,
+  x = 208,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 687,
+  x = 224,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 688,
+  x = 240,
+  y = 672,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 689,
+  x = 0,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 690,
+  x = 16,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 691,
+  x = 32,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 692,
+  x = 48,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 693,
+  x = 64,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 694,
+  x = 80,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 695,
+  x = 96,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 696,
+  x = 112,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 697,
+  x = 128,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 698,
+  x = 144,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 699,
+  x = 160,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 700,
+  x = 176,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 701,
+  x = 192,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 702,
+  x = 208,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 703,
+  x = 224,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 704,
+  x = 240,
+  y = 688,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 705,
+  x = 0,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 706,
+  x = 16,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 707,
+  x = 32,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 708,
+  x = 48,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 709,
+  x = 64,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 710,
+  x = 80,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 711,
+  x = 96,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 712,
+  x = 112,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 713,
+  x = 128,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 714,
+  x = 144,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 715,
+  x = 160,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 716,
+  x = 176,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 717,
+  x = 192,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 718,
+  x = 208,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 719,
+  x = 224,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 720,
+  x = 240,
+  y = 704,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 721,
+  x = 0,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 722,
+  x = 16,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 723,
+  x = 32,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 724,
+  x = 48,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 725,
+  x = 64,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 726,
+  x = 80,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 727,
+  x = 96,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 728,
+  x = 112,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 729,
+  x = 128,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 730,
+  x = 144,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 731,
+  x = 160,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 732,
+  x = 176,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 733,
+  x = 192,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 734,
+  x = 208,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 735,
+  x = 224,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 736,
+  x = 240,
+  y = 720,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 737,
+  x = 0,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 738,
+  x = 16,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 739,
+  x = 32,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 740,
+  x = 48,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 741,
+  x = 64,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 742,
+  x = 80,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 743,
+  x = 96,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 744,
+  x = 112,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 745,
+  x = 128,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 746,
+  x = 144,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 747,
+  x = 160,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 748,
+  x = 176,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 749,
+  x = 192,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 750,
+  x = 208,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 751,
+  x = 224,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 752,
+  x = 240,
+  y = 736,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 753,
+  x = 0,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 754,
+  x = 16,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 755,
+  x = 32,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 756,
+  x = 48,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 757,
+  x = 64,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 758,
+  x = 80,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 759,
+  x = 96,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 760,
+  x = 112,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 761,
+  x = 128,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 762,
+  x = 144,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 763,
+  x = 160,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 764,
+  x = 176,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 765,
+  x = 192,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 766,
+  x = 208,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 767,
+  x = 224,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 768,
+  x = 240,
+  y = 752,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 769,
+  x = 0,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 770,
+  x = 16,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 771,
+  x = 32,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 772,
+  x = 48,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 773,
+  x = 64,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 774,
+  x = 80,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 775,
+  x = 96,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 776,
+  x = 112,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 777,
+  x = 128,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 778,
+  x = 144,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 779,
+  x = 160,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 780,
+  x = 176,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 781,
+  x = 192,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 782,
+  x = 208,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 783,
+  x = 224,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 784,
+  x = 240,
+  y = 768,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 785,
+  x = 0,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 786,
+  x = 16,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 787,
+  x = 32,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 788,
+  x = 48,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 789,
+  x = 64,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 790,
+  x = 80,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 791,
+  x = 96,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 792,
+  x = 112,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 793,
+  x = 128,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 794,
+  x = 144,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 795,
+  x = 160,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 796,
+  x = 176,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 797,
+  x = 192,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 798,
+  x = 208,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 799,
+  x = 224,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 800,
+  x = 240,
+  y = 784,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 801,
+  x = 0,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 802,
+  x = 16,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 803,
+  x = 32,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 804,
+  x = 48,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 805,
+  x = 64,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 806,
+  x = 80,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 807,
+  x = 96,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 808,
+  x = 112,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 809,
+  x = 128,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 810,
+  x = 144,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 811,
+  x = 160,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 812,
+  x = 176,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 813,
+  x = 192,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 814,
+  x = 208,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 815,
+  x = 224,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 816,
+  x = 240,
+  y = 800,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 817,
+  x = 0,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 818,
+  x = 16,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 819,
+  x = 32,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 820,
+  x = 48,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 821,
+  x = 64,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 822,
+  x = 80,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 823,
+  x = 96,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 824,
+  x = 112,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 825,
+  x = 128,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 826,
+  x = 144,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 827,
+  x = 160,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 828,
+  x = 176,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 829,
+  x = 192,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 830,
+  x = 208,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 831,
+  x = 224,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 832,
+  x = 240,
+  y = 816,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 833,
+  x = 0,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 834,
+  x = 16,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 835,
+  x = 32,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 836,
+  x = 48,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 837,
+  x = 64,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 838,
+  x = 80,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 839,
+  x = 96,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 840,
+  x = 112,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 841,
+  x = 128,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 842,
+  x = 144,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 843,
+  x = 160,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 844,
+  x = 176,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 845,
+  x = 192,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 846,
+  x = 208,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 847,
+  x = 224,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 848,
+  x = 240,
+  y = 832,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 849,
+  x = 0,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 850,
+  x = 16,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 851,
+  x = 32,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 852,
+  x = 48,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 853,
+  x = 64,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 854,
+  x = 80,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 855,
+  x = 96,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 856,
+  x = 112,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 857,
+  x = 128,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 858,
+  x = 144,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 859,
+  x = 160,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 860,
+  x = 176,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 861,
+  x = 192,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 862,
+  x = 208,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 863,
+  x = 224,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 864,
+  x = 240,
+  y = 848,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 865,
+  x = 0,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 866,
+  x = 16,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 867,
+  x = 32,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 868,
+  x = 48,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 869,
+  x = 64,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 870,
+  x = 80,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 871,
+  x = 96,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 872,
+  x = 112,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 873,
+  x = 128,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 874,
+  x = 144,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 875,
+  x = 160,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 876,
+  x = 176,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 877,
+  x = 192,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 878,
+  x = 208,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 879,
+  x = 224,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 880,
+  x = 240,
+  y = 864,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 881,
+  x = 0,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 882,
+  x = 16,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 883,
+  x = 32,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 884,
+  x = 48,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 885,
+  x = 64,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 886,
+  x = 80,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 887,
+  x = 96,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 888,
+  x = 112,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 889,
+  x = 128,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 890,
+  x = 144,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 891,
+  x = 160,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 892,
+  x = 176,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 893,
+  x = 192,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 894,
+  x = 208,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 895,
+  x = 224,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 896,
+  x = 240,
+  y = 880,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 897,
+  x = 0,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 898,
+  x = 16,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 899,
+  x = 32,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 900,
+  x = 48,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 901,
+  x = 64,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 902,
+  x = 80,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 903,
+  x = 96,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 904,
+  x = 112,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 905,
+  x = 128,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 906,
+  x = 144,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 907,
+  x = 160,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 908,
+  x = 176,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 909,
+  x = 192,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 910,
+  x = 208,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 911,
+  x = 224,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 912,
+  x = 240,
+  y = 896,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 913,
+  x = 0,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 914,
+  x = 16,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 915,
+  x = 32,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 916,
+  x = 48,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 917,
+  x = 64,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 918,
+  x = 80,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 919,
+  x = 96,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 920,
+  x = 112,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 921,
+  x = 128,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 922,
+  x = 144,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 923,
+  x = 160,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 924,
+  x = 176,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 925,
+  x = 192,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 926,
+  x = 208,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 927,
+  x = 224,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 928,
+  x = 240,
+  y = 912,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 929,
+  x = 0,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 930,
+  x = 16,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 931,
+  x = 32,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 932,
+  x = 48,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 933,
+  x = 64,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 934,
+  x = 80,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 935,
+  x = 96,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 936,
+  x = 112,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 937,
+  x = 128,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 938,
+  x = 144,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 939,
+  x = 160,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 940,
+  x = 176,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 941,
+  x = 192,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 942,
+  x = 208,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 943,
+  x = 224,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 944,
+  x = 240,
+  y = 928,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 945,
+  x = 0,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 946,
+  x = 16,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 947,
+  x = 32,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 948,
+  x = 48,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 949,
+  x = 64,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 950,
+  x = 80,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 951,
+  x = 96,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 952,
+  x = 112,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 953,
+  x = 128,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 954,
+  x = 144,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 955,
+  x = 160,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 956,
+  x = 176,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 957,
+  x = 192,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 958,
+  x = 208,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 959,
+  x = 224,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 960,
+  x = 240,
+  y = 944,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 961,
+  x = 0,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 962,
+  x = 16,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 963,
+  x = 32,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 964,
+  x = 48,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 965,
+  x = 64,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 966,
+  x = 80,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 967,
+  x = 96,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 968,
+  x = 112,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 969,
+  x = 128,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 970,
+  x = 144,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 971,
+  x = 160,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 972,
+  x = 176,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 973,
+  x = 192,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 974,
+  x = 208,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 975,
+  x = 224,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 976,
+  x = 240,
+  y = 960,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 977,
+  x = 0,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 978,
+  x = 16,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 979,
+  x = 32,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 980,
+  x = 48,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 981,
+  x = 64,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 982,
+  x = 80,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 983,
+  x = 96,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 984,
+  x = 112,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 985,
+  x = 128,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 986,
+  x = 144,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 987,
+  x = 160,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 988,
+  x = 176,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 989,
+  x = 192,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 990,
+  x = 208,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 991,
+  x = 224,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 992,
+  x = 240,
+  y = 976,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 993,
+  x = 0,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 994,
+  x = 16,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 995,
+  x = 32,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 996,
+  x = 48,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 997,
+  x = 64,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 998,
+  x = 80,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 999,
+  x = 96,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1000,
+  x = 112,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1001,
+  x = 128,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1002,
+  x = 144,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1003,
+  x = 160,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1004,
+  x = 176,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1005,
+  x = 192,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1006,
+  x = 208,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1007,
+  x = 224,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1008,
+  x = 240,
+  y = 992,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1009,
+  x = 0,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1010,
+  x = 16,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1011,
+  x = 32,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1012,
+  x = 48,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1013,
+  x = 64,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1014,
+  x = 80,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1015,
+  x = 96,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1016,
+  x = 112,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1017,
+  x = 128,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1018,
+  x = 144,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1019,
+  x = 160,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1020,
+  x = 176,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1021,
+  x = 192,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1022,
+  x = 208,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1023,
+  x = 224,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1024,
+  x = 240,
+  y = 1008,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1025,
+  x = 0,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1026,
+  x = 16,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1027,
+  x = 32,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1028,
+  x = 48,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1029,
+  x = 64,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1030,
+  x = 80,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1031,
+  x = 96,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1032,
+  x = 112,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1033,
+  x = 128,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1034,
+  x = 144,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1035,
+  x = 160,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1036,
+  x = 176,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1037,
+  x = 192,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1038,
+  x = 208,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1039,
+  x = 224,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1040,
+  x = 240,
+  y = 1024,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1041,
+  x = 0,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1042,
+  x = 16,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1043,
+  x = 32,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1044,
+  x = 48,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1045,
+  x = 64,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1046,
+  x = 80,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1047,
+  x = 96,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1048,
+  x = 112,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1049,
+  x = 128,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1050,
+  x = 144,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1051,
+  x = 160,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1052,
+  x = 176,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1053,
+  x = 192,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1054,
+  x = 208,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1055,
+  x = 224,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1056,
+  x = 240,
+  y = 1040,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1057,
+  x = 0,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1058,
+  x = 16,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1059,
+  x = 32,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1060,
+  x = 48,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1061,
+  x = 64,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1062,
+  x = 80,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1063,
+  x = 96,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1064,
+  x = 112,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1065,
+  x = 128,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1066,
+  x = 144,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1067,
+  x = 160,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1068,
+  x = 176,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1069,
+  x = 192,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1070,
+  x = 208,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1071,
+  x = 224,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1072,
+  x = 240,
+  y = 1056,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1073,
+  x = 0,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1074,
+  x = 16,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1075,
+  x = 32,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1076,
+  x = 48,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1077,
+  x = 64,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1078,
+  x = 80,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1079,
+  x = 96,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1080,
+  x = 112,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1081,
+  x = 128,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1082,
+  x = 144,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1083,
+  x = 160,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1084,
+  x = 176,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1085,
+  x = 192,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1086,
+  x = 208,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1087,
+  x = 224,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1088,
+  x = 240,
+  y = 1072,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1089,
+  x = 0,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1090,
+  x = 16,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1091,
+  x = 32,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1092,
+  x = 48,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1093,
+  x = 64,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1094,
+  x = 80,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1095,
+  x = 96,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1096,
+  x = 112,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1097,
+  x = 128,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1098,
+  x = 144,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1099,
+  x = 160,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1100,
+  x = 176,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1101,
+  x = 192,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1102,
+  x = 208,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1103,
+  x = 224,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1104,
+  x = 240,
+  y = 1088,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1105,
+  x = 0,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1106,
+  x = 16,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1107,
+  x = 32,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1108,
+  x = 48,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1109,
+  x = 64,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1110,
+  x = 80,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1111,
+  x = 96,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1112,
+  x = 112,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1113,
+  x = 128,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1114,
+  x = 144,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1115,
+  x = 160,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1116,
+  x = 176,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1117,
+  x = 192,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1118,
+  x = 208,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1119,
+  x = 224,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1120,
+  x = 240,
+  y = 1104,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1121,
+  x = 0,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1122,
+  x = 16,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1123,
+  x = 32,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1124,
+  x = 48,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1125,
+  x = 64,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1126,
+  x = 80,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1127,
+  x = 96,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1128,
+  x = 112,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1129,
+  x = 128,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1130,
+  x = 144,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1131,
+  x = 160,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1132,
+  x = 176,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1133,
+  x = 192,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1134,
+  x = 208,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1135,
+  x = 224,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1136,
+  x = 240,
+  y = 1120,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1137,
+  x = 0,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1138,
+  x = 16,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1139,
+  x = 32,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1140,
+  x = 48,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1141,
+  x = 64,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1142,
+  x = 80,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1143,
+  x = 96,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1144,
+  x = 112,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1145,
+  x = 128,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1146,
+  x = 144,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1147,
+  x = 160,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1148,
+  x = 176,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1149,
+  x = 192,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1150,
+  x = 208,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1151,
+  x = 224,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1152,
+  x = 240,
+  y = 1136,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1153,
+  x = 0,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1154,
+  x = 16,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1155,
+  x = 32,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1156,
+  x = 48,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1157,
+  x = 64,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1158,
+  x = 80,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1159,
+  x = 96,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1160,
+  x = 112,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1161,
+  x = 128,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1162,
+  x = 144,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1163,
+  x = 160,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1164,
+  x = 176,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1165,
+  x = 192,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1166,
+  x = 208,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1167,
+  x = 224,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1168,
+  x = 240,
+  y = 1152,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1169,
+  x = 0,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1170,
+  x = 16,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1171,
+  x = 32,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1172,
+  x = 48,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1173,
+  x = 64,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1174,
+  x = 80,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1175,
+  x = 96,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1176,
+  x = 112,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1177,
+  x = 128,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1178,
+  x = 144,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1179,
+  x = 160,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1180,
+  x = 176,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1181,
+  x = 192,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1182,
+  x = 208,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1183,
+  x = 224,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1184,
+  x = 240,
+  y = 1168,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1185,
+  x = 0,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1186,
+  x = 16,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1187,
+  x = 32,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1188,
+  x = 48,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1189,
+  x = 64,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1190,
+  x = 80,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1191,
+  x = 96,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1192,
+  x = 112,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1193,
+  x = 128,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1194,
+  x = 144,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1195,
+  x = 160,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1196,
+  x = 176,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1197,
+  x = 192,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1198,
+  x = 208,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1199,
+  x = 224,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1200,
+  x = 240,
+  y = 1184,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1201,
+  x = 0,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1202,
+  x = 16,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1203,
+  x = 32,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1204,
+  x = 48,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1205,
+  x = 64,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1206,
+  x = 80,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1207,
+  x = 96,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1208,
+  x = 112,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1209,
+  x = 128,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1210,
+  x = 144,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1211,
+  x = 160,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1212,
+  x = 176,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1213,
+  x = 192,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1214,
+  x = 208,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1215,
+  x = 224,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1216,
+  x = 240,
+  y = 1200,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1217,
+  x = 0,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1218,
+  x = 16,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1219,
+  x = 32,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1220,
+  x = 48,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1221,
+  x = 64,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1222,
+  x = 80,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1223,
+  x = 96,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1224,
+  x = 112,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1225,
+  x = 128,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1226,
+  x = 144,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1227,
+  x = 160,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1228,
+  x = 176,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1229,
+  x = 192,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1230,
+  x = 208,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1231,
+  x = 224,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1232,
+  x = 240,
+  y = 1216,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1233,
+  x = 0,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1234,
+  x = 16,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1235,
+  x = 32,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1236,
+  x = 48,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1237,
+  x = 64,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1238,
+  x = 80,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1239,
+  x = 96,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1240,
+  x = 112,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1241,
+  x = 128,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1242,
+  x = 144,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1243,
+  x = 160,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1244,
+  x = 176,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1245,
+  x = 192,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1246,
+  x = 208,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1247,
+  x = 224,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1248,
+  x = 240,
+  y = 1232,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1249,
+  x = 0,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1250,
+  x = 16,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1251,
+  x = 32,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1252,
+  x = 48,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1253,
+  x = 64,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1254,
+  x = 80,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1255,
+  x = 96,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1256,
+  x = 112,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1257,
+  x = 128,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1258,
+  x = 144,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1259,
+  x = 160,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1260,
+  x = 176,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1261,
+  x = 192,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1262,
+  x = 208,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1263,
+  x = 224,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1264,
+  x = 240,
+  y = 1248,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1265,
+  x = 0,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1266,
+  x = 16,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1267,
+  x = 32,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1268,
+  x = 48,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1269,
+  x = 64,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1270,
+  x = 80,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1271,
+  x = 96,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1272,
+  x = 112,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1273,
+  x = 128,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1274,
+  x = 144,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1275,
+  x = 160,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1276,
+  x = 176,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1277,
+  x = 192,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1278,
+  x = 208,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1279,
+  x = 224,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1280,
+  x = 240,
+  y = 1264,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1281,
+  x = 0,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1282,
+  x = 16,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1283,
+  x = 32,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1284,
+  x = 48,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1285,
+  x = 64,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1286,
+  x = 80,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1287,
+  x = 96,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1288,
+  x = 112,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1289,
+  x = 128,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1290,
+  x = 144,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1291,
+  x = 160,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1292,
+  x = 176,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1293,
+  x = 192,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1294,
+  x = 208,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1295,
+  x = 224,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1296,
+  x = 240,
+  y = 1280,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1297,
+  x = 0,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1298,
+  x = 16,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1299,
+  x = 32,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1300,
+  x = 48,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1301,
+  x = 64,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1302,
+  x = 80,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1303,
+  x = 96,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1304,
+  x = 112,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1305,
+  x = 128,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1306,
+  x = 144,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1307,
+  x = 160,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1308,
+  x = 176,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1309,
+  x = 192,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1310,
+  x = 208,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1311,
+  x = 224,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1312,
+  x = 240,
+  y = 1296,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1313,
+  x = 0,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1314,
+  x = 16,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1315,
+  x = 32,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1316,
+  x = 48,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1317,
+  x = 64,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1318,
+  x = 80,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1319,
+  x = 96,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1320,
+  x = 112,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1321,
+  x = 128,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1322,
+  x = 144,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1323,
+  x = 160,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1324,
+  x = 176,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1325,
+  x = 192,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1326,
+  x = 208,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1327,
+  x = 224,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1328,
+  x = 240,
+  y = 1312,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1329,
+  x = 0,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1330,
+  x = 16,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1331,
+  x = 32,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1332,
+  x = 48,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1333,
+  x = 64,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1334,
+  x = 80,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1335,
+  x = 96,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1336,
+  x = 112,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1337,
+  x = 128,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1338,
+  x = 144,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1339,
+  x = 160,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1340,
+  x = 176,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1341,
+  x = 192,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1342,
+  x = 208,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1343,
+  x = 224,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1344,
+  x = 240,
+  y = 1328,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1345,
+  x = 0,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1346,
+  x = 16,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1347,
+  x = 32,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1348,
+  x = 48,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1349,
+  x = 64,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1350,
+  x = 80,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1351,
+  x = 96,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1352,
+  x = 112,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1353,
+  x = 128,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1354,
+  x = 144,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1355,
+  x = 160,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1356,
+  x = 176,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1357,
+  x = 192,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1358,
+  x = 208,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1359,
+  x = 224,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1360,
+  x = 240,
+  y = 1344,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1361,
+  x = 0,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1362,
+  x = 16,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1363,
+  x = 32,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1364,
+  x = 48,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1365,
+  x = 64,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1366,
+  x = 80,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1367,
+  x = 96,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1368,
+  x = 112,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1369,
+  x = 128,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1370,
+  x = 144,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1371,
+  x = 160,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1372,
+  x = 176,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1373,
+  x = 192,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1374,
+  x = 208,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1375,
+  x = 224,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1376,
+  x = 240,
+  y = 1360,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1377,
+  x = 0,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1378,
+  x = 16,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1379,
+  x = 32,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1380,
+  x = 48,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1381,
+  x = 64,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1382,
+  x = 80,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1383,
+  x = 96,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1384,
+  x = 112,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1385,
+  x = 128,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1386,
+  x = 144,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1387,
+  x = 160,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1388,
+  x = 176,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1389,
+  x = 192,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1390,
+  x = 208,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1391,
+  x = 224,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1392,
+  x = 240,
+  y = 1376,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1393,
+  x = 0,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1394,
+  x = 16,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1395,
+  x = 32,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1396,
+  x = 48,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1397,
+  x = 64,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1398,
+  x = 80,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1399,
+  x = 96,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1400,
+  x = 112,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1401,
+  x = 128,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1402,
+  x = 144,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1403,
+  x = 160,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1404,
+  x = 176,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1405,
+  x = 192,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1406,
+  x = 208,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1407,
+  x = 224,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1408,
+  x = 240,
+  y = 1392,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1409,
+  x = 0,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1410,
+  x = 16,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1411,
+  x = 32,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1412,
+  x = 48,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1413,
+  x = 64,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1414,
+  x = 80,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1415,
+  x = 96,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1416,
+  x = 112,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1417,
+  x = 128,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1418,
+  x = 144,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1419,
+  x = 160,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1420,
+  x = 176,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1421,
+  x = 192,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1422,
+  x = 208,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1423,
+  x = 224,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1424,
+  x = 240,
+  y = 1408,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1425,
+  x = 0,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1426,
+  x = 16,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1427,
+  x = 32,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1428,
+  x = 48,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1429,
+  x = 64,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1430,
+  x = 80,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1431,
+  x = 96,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1432,
+  x = 112,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1433,
+  x = 128,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1434,
+  x = 144,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1435,
+  x = 160,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1436,
+  x = 176,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1437,
+  x = 192,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1438,
+  x = 208,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1439,
+  x = 224,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1440,
+  x = 240,
+  y = 1424,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1441,
+  x = 0,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1442,
+  x = 16,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1443,
+  x = 32,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1444,
+  x = 48,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1445,
+  x = 64,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1446,
+  x = 80,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1447,
+  x = 96,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1448,
+  x = 112,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1449,
+  x = 128,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1450,
+  x = 144,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1451,
+  x = 160,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1452,
+  x = 176,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1453,
+  x = 192,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1454,
+  x = 208,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1455,
+  x = 224,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1456,
+  x = 240,
+  y = 1440,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1457,
+  x = 0,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1458,
+  x = 16,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1459,
+  x = 32,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1460,
+  x = 48,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1461,
+  x = 64,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1462,
+  x = 80,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1463,
+  x = 96,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1464,
+  x = 112,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1465,
+  x = 128,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1466,
+  x = 144,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1467,
+  x = 160,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1468,
+  x = 176,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1469,
+  x = 192,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1470,
+  x = 208,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1471,
+  x = 224,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1472,
+  x = 240,
+  y = 1456,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1473,
+  x = 0,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1474,
+  x = 16,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1475,
+  x = 32,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1476,
+  x = 48,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1477,
+  x = 64,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1478,
+  x = 80,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1479,
+  x = 96,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1480,
+  x = 112,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1481,
+  x = 128,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1482,
+  x = 144,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1483,
+  x = 160,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1484,
+  x = 176,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1485,
+  x = 192,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1486,
+  x = 208,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1487,
+  x = 224,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1488,
+  x = 240,
+  y = 1472,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1489,
+  x = 0,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1490,
+  x = 16,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1491,
+  x = 32,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1492,
+  x = 48,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1493,
+  x = 64,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1494,
+  x = 80,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1495,
+  x = 96,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1496,
+  x = 112,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1497,
+  x = 128,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1498,
+  x = 144,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1499,
+  x = 160,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1500,
+  x = 176,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1501,
+  x = 192,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1502,
+  x = 208,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1503,
+  x = 224,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1504,
+  x = 240,
+  y = 1488,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1505,
+  x = 0,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1506,
+  x = 16,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1507,
+  x = 32,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1508,
+  x = 48,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1509,
+  x = 64,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1510,
+  x = 80,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1511,
+  x = 96,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1512,
+  x = 112,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1513,
+  x = 128,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1514,
+  x = 144,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1515,
+  x = 160,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1516,
+  x = 176,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1517,
+  x = 192,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1518,
+  x = 208,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1519,
+  x = 224,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1520,
+  x = 240,
+  y = 1504,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1521,
+  x = 0,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1522,
+  x = 16,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1523,
+  x = 32,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1524,
+  x = 48,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1525,
+  x = 64,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1526,
+  x = 80,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1527,
+  x = 96,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1528,
+  x = 112,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1529,
+  x = 128,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1530,
+  x = 144,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1531,
+  x = 160,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1532,
+  x = 176,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1533,
+  x = 192,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1534,
+  x = 208,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1535,
+  x = 224,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1536,
+  x = 240,
+  y = 1520,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1537,
+  x = {0,16,32,48,}, 
+  y = {1536,1536,1536,1536,}, 
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1538,
+  x = 16,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1539,
+  x = 32,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1540,
+  x = 48,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1541,
+  x = 64,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1542,
+  x = 80,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1543,
+  x = 96,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1544,
+  x = 112,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1545,
+  x = 128,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1546,
+  x = 144,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1547,
+  x = 160,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1548,
+  x = 176,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1549,
+  x = 192,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1550,
+  x = 208,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1551,
+  x = 224,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1552,
+  x = 240,
+  y = 1536,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1553,
+  x = 0,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1554,
+  x = 16,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1555,
+  x = 32,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1556,
+  x = 48,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1557,
+  x = 64,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1558,
+  x = 80,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1559,
+  x = 96,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1560,
+  x = 112,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1561,
+  x = 128,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1562,
+  x = 144,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1563,
+  x = 160,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1564,
+  x = 176,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1565,
+  x = 192,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1566,
+  x = 208,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1567,
+  x = 224,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1568,
+  x = 240,
+  y = 1552,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1569,
+  x = 0,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1570,
+  x = 16,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1571,
+  x = 32,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1572,
+  x = 48,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1573,
+  x = 64,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1574,
+  x = 80,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1575,
+  x = 96,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1576,
+  x = 112,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1577,
+  x = 128,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1578,
+  x = 144,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1579,
+  x = 160,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1580,
+  x = 176,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1581,
+  x = 192,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1582,
+  x = 208,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1583,
+  x = 224,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1584,
+  x = 240,
+  y = 1568,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1585,
+  x = 0,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1586,
+  x = 16,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1587,
+  x = 32,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1588,
+  x = 48,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1589,
+  x = 64,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1590,
+  x = 80,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1591,
+  x = 96,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1592,
+  x = 112,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1593,
+  x = 128,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1594,
+  x = 144,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1595,
+  x = 160,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1596,
+  x = 176,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1597,
+  x = 192,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1598,
+  x = 208,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1599,
+  x = 224,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1600,
+  x = 240,
+  y = 1584,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1601,
+  x = 0,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1602,
+  x = 16,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1603,
+  x = 32,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1604,
+  x = 48,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1605,
+  x = 64,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1606,
+  x = 80,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1607,
+  x = 96,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1608,
+  x = 112,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1609,
+  x = 128,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1610,
+  x = 144,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1611,
+  x = 160,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1612,
+  x = 176,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1613,
+  x = 192,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1614,
+  x = 208,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1615,
+  x = 224,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1616,
+  x = 240,
+  y = 1600,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1617,
+  x = 0,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1618,
+  x = 16,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1619,
+  x = 32,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1620,
+  x = 48,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1621,
+  x = 64,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1622,
+  x = 80,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1623,
+  x = 96,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1624,
+  x = 112,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1625,
+  x = 128,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1626,
+  x = 144,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1627,
+  x = 160,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1628,
+  x = 176,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1629,
+  x = 192,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1630,
+  x = 208,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1631,
+  x = 224,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1632,
+  x = 240,
+  y = 1616,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1633,
+  x = 0,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1634,
+  x = 16,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1635,
+  x = 32,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1636,
+  x = 48,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1637,
+  x = 64,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1638,
+  x = 80,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1639,
+  x = 96,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1640,
+  x = 112,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1641,
+  x = 128,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1642,
+  x = 144,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1643,
+  x = 160,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1644,
+  x = 176,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1645,
+  x = 192,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1646,
+  x = 208,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1647,
+  x = 224,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1648,
+  x = 240,
+  y = 1632,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1649,
+  x = 0,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1650,
+  x = 16,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1651,
+  x = 32,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1652,
+  x = 48,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1653,
+  x = 64,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1654,
+  x = 80,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1655,
+  x = 96,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1656,
+  x = 112,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1657,
+  x = 128,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1658,
+  x = 144,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1659,
+  x = 160,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1660,
+  x = 176,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1661,
+  x = 192,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1662,
+  x = 208,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1663,
+  x = 224,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1664,
+  x = 240,
+  y = 1648,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1665,
+  x = 0,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1666,
+  x = 16,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1667,
+  x = 32,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1668,
+  x = 48,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1669,
+  x = 64,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1670,
+  x = 80,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1671,
+  x = 96,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1672,
+  x = 112,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1673,
+  x = 128,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1674,
+  x = 144,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1675,
+  x = 160,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1676,
+  x = 176,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1677,
+  x = 192,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1678,
+  x = 208,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1679,
+  x = 224,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1680,
+  x = 240,
+  y = 1664,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1681,
+  x = 0,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1682,
+  x = 16,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1683,
+  x = 32,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1684,
+  x = 48,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1685,
+  x = 64,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1686,
+  x = 80,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1687,
+  x = 96,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1688,
+  x = 112,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1689,
+  x = 128,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1690,
+  x = 144,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1691,
+  x = 160,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1692,
+  x = 176,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1693,
+  x = 192,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1694,
+  x = 208,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1695,
+  x = 224,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1696,
+  x = 240,
+  y = 1680,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1697,
+  x = 0,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1698,
+  x = 16,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1699,
+  x = 32,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1700,
+  x = 48,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1701,
+  x = 64,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1702,
+  x = 80,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1703,
+  x = 96,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1704,
+  x = 112,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1705,
+  x = 128,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1706,
+  x = 144,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1707,
+  x = 160,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1708,
+  x = 176,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1709,
+  x = 192,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1710,
+  x = 208,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1711,
+  x = 224,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1712,
+  x = 240,
+  y = 1696,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1713,
+  x = 0,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1714,
+  x = 16,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1715,
+  x = 32,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1716,
+  x = 48,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1717,
+  x = 64,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1718,
+  x = 80,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1719,
+  x = 96,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1720,
+  x = 112,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1721,
+  x = 128,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1722,
+  x = 144,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1723,
+  x = 160,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1724,
+  x = 176,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1725,
+  x = 192,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1726,
+  x = 208,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1727,
+  x = 224,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1728,
+  x = 240,
+  y = 1712,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1729,
+  x = 0,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1730,
+  x = 16,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1731,
+  x = 32,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1732,
+  x = 48,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1733,
+  x = 64,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1734,
+  x = 80,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1735,
+  x = 96,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1736,
+  x = 112,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1737,
+  x = 128,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1738,
+  x = 144,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1739,
+  x = 160,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1740,
+  x = 176,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1741,
+  x = 192,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1742,
+  x = 208,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1743,
+  x = 224,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1744,
+  x = 240,
+  y = 1728,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1745,
+  x = 0,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1746,
+  x = 16,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1747,
+  x = 32,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1748,
+  x = 48,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1749,
+  x = 64,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1750,
+  x = 80,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1751,
+  x = 96,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1752,
+  x = 112,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1753,
+  x = 128,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1754,
+  x = 144,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1755,
+  x = 160,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1756,
+  x = 176,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1757,
+  x = 192,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1758,
+  x = 208,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1759,
+  x = 224,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1760,
+  x = 240,
+  y = 1744,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1761,
+  x = 0,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1762,
+  x = 16,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1763,
+  x = 32,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1764,
+  x = 48,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1765,
+  x = 64,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1766,
+  x = 80,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1767,
+  x = 96,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1768,
+  x = 112,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1769,
+  x = 128,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1770,
+  x = 144,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1771,
+  x = 160,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1772,
+  x = 176,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1773,
+  x = 192,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1774,
+  x = 208,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1775,
+  x = 224,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1776,
+  x = 240,
+  y = 1760,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1777,
+  x = 0,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1778,
+  x = 16,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1779,
+  x = 32,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1780,
+  x = 48,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1781,
+  x = 64,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1782,
+  x = 80,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1783,
+  x = 96,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1784,
+  x = 112,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1785,
+  x = 128,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1786,
+  x = 144,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1787,
+  x = 160,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1788,
+  x = 176,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1789,
+  x = 192,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1790,
+  x = 208,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1791,
+  x = 224,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1792,
+  x = 240,
+  y = 1776,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1793,
+  x = 0,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1794,
+  x = 16,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1795,
+  x = 32,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1796,
+  x = 48,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1797,
+  x = 64,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1798,
+  x = 80,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1799,
+  x = 96,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1800,
+  x = 112,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1801,
+  x = 128,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1802,
+  x = 144,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1803,
+  x = 160,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1804,
+  x = 176,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1805,
+  x = 192,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1806,
+  x = 208,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1807,
+  x = 224,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1808,
+  x = 240,
+  y = 1792,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1809,
+  x = 0,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1810,
+  x = 16,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1811,
+  x = 32,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1812,
+  x = 48,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1813,
+  x = 64,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1814,
+  x = 80,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1815,
+  x = 96,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1816,
+  x = 112,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1817,
+  x = 128,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1818,
+  x = 144,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1819,
+  x = 160,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1820,
+  x = 176,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1821,
+  x = 192,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1822,
+  x = 208,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1823,
+  x = 224,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1824,
+  x = 240,
+  y = 1808,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1825,
+  x = 0,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1826,
+  x = 16,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1827,
+  x = 32,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1828,
+  x = 48,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1829,
+  x = 64,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1830,
+  x = 80,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1831,
+  x = 96,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1832,
+  x = 112,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1833,
+  x = 128,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1834,
+  x = 144,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1835,
+  x = 160,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1836,
+  x = 176,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1837,
+  x = 192,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1838,
+  x = 208,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1839,
+  x = 224,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1840,
+  x = 240,
+  y = 1824,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1841,
+  x = 0,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1842,
+  x = 16,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1843,
+  x = 32,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1844,
+  x = 48,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1845,
+  x = 64,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1846,
+  x = 80,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1847,
+  x = 96,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1848,
+  x = 112,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1849,
+  x = 128,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1850,
+  x = 144,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1851,
+  x = 160,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1852,
+  x = 176,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1853,
+  x = 192,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1854,
+  x = 208,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1855,
+  x = 224,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1856,
+  x = 240,
+  y = 1840,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1857,
+  x = 0,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1858,
+  x = 16,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1859,
+  x = 32,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1860,
+  x = 48,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1861,
+  x = 64,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1862,
+  x = 80,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1863,
+  x = 96,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1864,
+  x = 112,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1865,
+  x = 128,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1866,
+  x = 144,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1867,
+  x = 160,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1868,
+  x = 176,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1869,
+  x = 192,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1870,
+  x = 208,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1871,
+  x = 224,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1872,
+  x = 240,
+  y = 1856,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1873,
+  x = 0,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1874,
+  x = 16,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1875,
+  x = 32,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1876,
+  x = 48,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1877,
+  x = 64,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1878,
+  x = 80,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1879,
+  x = 96,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1880,
+  x = 112,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1881,
+  x = 128,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1882,
+  x = 144,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1883,
+  x = 160,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1884,
+  x = 176,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1885,
+  x = 192,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1886,
+  x = 208,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1887,
+  x = 224,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1888,
+  x = 240,
+  y = 1872,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1889,
+  x = 0,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1890,
+  x = 16,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1891,
+  x = 32,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1892,
+  x = 48,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1893,
+  x = 64,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1894,
+  x = 80,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1895,
+  x = 96,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1896,
+  x = 112,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1897,
+  x = 128,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1898,
+  x = 144,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1899,
+  x = 160,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1900,
+  x = 176,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1901,
+  x = 192,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1902,
+  x = 208,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1903,
+  x = 224,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1904,
+  x = 240,
+  y = 1888,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1905,
+  x = 0,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1906,
+  x = 16,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1907,
+  x = 32,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1908,
+  x = 48,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1909,
+  x = 64,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1910,
+  x = 80,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1911,
+  x = 96,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1912,
+  x = 112,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1913,
+  x = 128,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1914,
+  x = 144,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1915,
+  x = 160,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1916,
+  x = 176,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1917,
+  x = 192,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1918,
+  x = 208,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1919,
+  x = 224,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1920,
+  x = 240,
+  y = 1904,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1921,
+  x = 0,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1922,
+  x = 16,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1923,
+  x = 32,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1924,
+  x = 48,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1925,
+  x = 64,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1926,
+  x = 80,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1927,
+  x = 96,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1928,
+  x = 112,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1929,
+  x = 128,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1930,
+  x = 144,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1931,
+  x = 160,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1932,
+  x = 176,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1933,
+  x = 192,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1934,
+  x = 208,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1935,
+  x = 224,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1936,
+  x = 240,
+  y = 1920,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1937,
+  x = 0,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1938,
+  x = 16,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1939,
+  x = 32,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1940,
+  x = 48,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1941,
+  x = 64,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1942,
+  x = 80,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1943,
+  x = 96,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1944,
+  x = 112,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1945,
+  x = 128,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1946,
+  x = 144,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1947,
+  x = 160,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1948,
+  x = 176,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1949,
+  x = 192,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1950,
+  x = 208,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1951,
+  x = 224,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1952,
+  x = 240,
+  y = 1936,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1953,
+  x = 0,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1954,
+  x = 16,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1955,
+  x = 32,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1956,
+  x = 48,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1957,
+  x = 64,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1958,
+  x = 80,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1959,
+  x = 96,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1960,
+  x = 112,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1961,
+  x = 128,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1962,
+  x = 144,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1963,
+  x = 160,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1964,
+  x = 176,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1965,
+  x = 192,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1966,
+  x = 208,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1967,
+  x = 224,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1968,
+  x = 240,
+  y = 1952,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1969,
+  x = 0,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1970,
+  x = 16,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1971,
+  x = 32,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1972,
+  x = 48,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1973,
+  x = 64,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1974,
+  x = 80,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1975,
+  x = 96,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1976,
+  x = 112,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1977,
+  x = 128,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1978,
+  x = 144,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1979,
+  x = 160,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1980,
+  x = 176,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1981,
+  x = 192,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1982,
+  x = 208,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1983,
+  x = 224,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1984,
+  x = 240,
+  y = 1968,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1985,
+  x = 0,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1986,
+  x = 16,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1987,
+  x = 32,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1988,
+  x = 48,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1989,
+  x = 64,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1990,
+  x = 80,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1991,
+  x = 96,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1992,
+  x = 112,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1993,
+  x = 128,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1994,
+  x = 144,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1995,
+  x = 160,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1996,
+  x = 176,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1997,
+  x = 192,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1998,
+  x = 208,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 1999,
+  x = 224,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2000,
+  x = 240,
+  y = 1984,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2001,
+  x = 0,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2002,
+  x = 16,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2003,
+  x = 32,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2004,
+  x = 48,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2005,
+  x = 64,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2006,
+  x = 80,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2007,
+  x = 96,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2008,
+  x = 112,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2009,
+  x = 128,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2010,
+  x = 144,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2011,
+  x = 160,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2012,
+  x = 176,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2013,
+  x = 192,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2014,
+  x = 208,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2015,
+  x = 224,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2016,
+  x = 240,
+  y = 2000,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2017,
+  x = 0,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2018,
+  x = 16,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2019,
+  x = 32,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2020,
+  x = 48,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2021,
+  x = 64,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2022,
+  x = 80,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2023,
+  x = 96,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2024,
+  x = 112,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2025,
+  x = 128,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2026,
+  x = 144,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2027,
+  x = 160,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2028,
+  x = 176,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2029,
+  x = 192,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2030,
+  x = 208,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2031,
+  x = 224,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2032,
+  x = 240,
+  y = 2016,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2033,
+  x = 0,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2034,
+  x = 16,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2035,
+  x = 32,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2036,
+  x = 48,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2037,
+  x = 64,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2038,
+  x = 80,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2039,
+  x = 96,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2040,
+  x = 112,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2041,
+  x = 128,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2042,
+  x = 144,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2043,
+  x = 160,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2044,
+  x = 176,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2045,
+  x = 192,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2046,
+  x = 208,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2047,
+  x = 224,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+
+tilePattern{
+  id = 2048,
+  x = 240,
+  y = 2032,
+  width = 16,
+  height = 16,
+}
+

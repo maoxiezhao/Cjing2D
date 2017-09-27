@@ -6,7 +6,7 @@ function game:onStarted()
 	print("[Lua] Game onStarted.")	
 	self._logo = cjing.Sprite.create("sprites/menus/logo.png");
 	self._logo:setAnchor(0.5,0.8)
-	self._logo:setPos(320, 240)
+	self._logo:setPos(540, 430)
 	self._logoText = nil
 	self._debugText = nil
 	
@@ -14,15 +14,14 @@ function game:onStarted()
 	if text then 
 		text:setHorizontalAlign("center")
 		text:setText("Welcome to Cjing v0.1")
-		text:setPos(320, 250)
+		text:setPos(540, 430)
 		text:setLineHeight(25)
-		text:setFontColor({16,228,176,255})
 		self._logoText = text
 	end
 	
 	local debugText = cjing.Text.create({fontName = "arial.ttf"})
 	if debugText then 
-		local dubugStr = "FPS:" .. cjing.Video.GetFPS()
+		local dubugStr = "FPS:" .. cjing.Video.getFPS()
 		debugText:setText(dubugStr)
 		debugText:setPos(20, 440)
 		debugText:setLineHeight(25)
@@ -40,7 +39,7 @@ end
 
 function game:onDraw()
 	if self._debugText then 
-		local dubugStr = "FPS:" .. cjing.Video.GetFPS()
+		local dubugStr = "FPS:" .. cjing.Video.getFPS()
 		self._debugText:setText(dubugStr)
 	end
 

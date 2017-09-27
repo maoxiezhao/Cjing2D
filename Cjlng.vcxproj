@@ -113,6 +113,7 @@
     <ClCompile Include="src\entity\entityData.cpp" />
     <ClCompile Include="src\entity\entityInfo.cpp" />
     <ClCompile Include="src\entity\entityState.cpp" />
+    <ClCompile Include="src\entity\groundInfo.cpp" />
     <ClCompile Include="src\entity\noAnimatedTilePattern.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
     <ClCompile Include="src\entity\tile.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="src\entity\entityData.h" />
     <ClInclude Include="src\entity\entityInfo.h" />
     <ClInclude Include="src\entity\entityState.h" />
+    <ClInclude Include="src\entity\groundInfo.h" />
     <ClInclude Include="src\entity\noAnimatedTilePattern.h" />
     <ClInclude Include="src\entity\player.h" />
     <ClInclude Include="src\entity\tile.h" />

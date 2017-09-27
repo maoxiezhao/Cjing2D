@@ -325,6 +325,9 @@
     <ClCompile Include="src\player\mouseState.cpp">
       <Filter>player</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\groundInfo.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -617,6 +620,9 @@
     </ClInclude>
     <ClInclude Include="src\player\mouseState.h">
       <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\groundInfo.h">
+      <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

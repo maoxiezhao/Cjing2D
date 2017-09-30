@@ -26,7 +26,7 @@ namespace gui {
 			mGrid.ReduceWidth(maxnumWidth);
 			gridSize = mGrid.GetBestSize();
 			size.width = gridSize.width;
-			size.height = max(gridSize.height, size.height);
+			size.height = std::max(gridSize.height, size.height);
 		}
 		else
 		{
@@ -47,7 +47,7 @@ namespace gui {
 			mGrid.RequestReduceWidth(maxnumWidth);
 			gridSize = mGrid.GetBestSize();
 			size.width = gridSize.width;
-			size.height = max(gridSize.height, size.height);
+			size.height = std::max(gridSize.height, size.height);
 		}
 		else
 		{
@@ -68,7 +68,7 @@ namespace gui {
 			mGrid.ReduceHeight(maxnumHeight);
 			gridSize = mGrid.GetBestSize();
 			size.height = gridSize.height;
-			size.width = max(gridSize.width, size.width);
+			size.width = std::max(gridSize.width, size.width);
 		}
 		else
 		{
@@ -89,7 +89,7 @@ namespace gui {
 			mGrid.RequestReduceHeight(maxnumHeight);
 			gridSize = mGrid.GetBestSize();
 			size.height = gridSize.height;
-			size.width = max(gridSize.width, size.width);
+			size.width = std::max(gridSize.width, size.width);
 		}
 		else
 		{

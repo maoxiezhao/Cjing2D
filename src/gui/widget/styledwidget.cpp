@@ -148,7 +148,7 @@ void StyledWidget::RequestReduceWidth(const int maxnumWidth)
 	{
 		Size bestSize = GetBestSize();
 		Size maxnumSize = GetConfigMaxSize();
-		bestSize.width = min(bestSize.width, maxnumSize.width);
+		bestSize.width = std::min(bestSize.width, maxnumSize.width);
 
 		SetLayoutSize(bestSize);
 	}
@@ -177,7 +177,7 @@ void StyledWidget::RequestReduceHeight(const int maxnumHeight)
 
 	Size bestSize = GetBestSize();
 	Size maxnumSize = GetConfigMaxSize();
-	bestSize.height = min(bestSize.height, maxnumSize.height);
+	bestSize.height = std::min(bestSize.height, maxnumSize.height);
 
 	SetLayoutSize(bestSize);
 }

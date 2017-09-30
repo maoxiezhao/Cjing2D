@@ -251,7 +251,7 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 
 	// 当设置大小大于bestSize时，则需要根据对齐方式调整位子
 	Point2 widgetPos = adjustedPos;
-	Size widgetSize = Size(min(size.width, bestSize.width), min(size.height, bestSize.height));
+	Size widgetSize = Size(std::min(size.width, bestSize.width), std::min(size.height, bestSize.height));
 
 	int vertialFlag = mFlag & ALIGN_VERTICAL_MASK;
 	if (vertialFlag & ALIGN_VERTICAL_TOP)

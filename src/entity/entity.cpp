@@ -34,6 +34,13 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 {
 }
 
+Entity::~Entity()
+{
+	ClearSprites();
+	ClearRemovedSprite();
+	ClearMovements();
+}
+
 /**
 *	\brief entity刷新动作
 *
@@ -41,6 +48,17 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 */
 void Entity::Update()
 {
+	// sprite
+	for (auto namedSprite : mSprites)
+	{
+		if (namedSprite.removed)
+		{
+			continue;
+		}
+		namedSprite.sprite->Update();
+	}
+	ClearRemovedSprite();
+
 	// movement
 	if (mMovement != nullptr)
 	{
@@ -158,6 +176,101 @@ Game & Entity::GetGame()
 	Debug::CheckAssertion(mMap != nullptr,
 		"The invalid entity withou map.");
 	return mMap->GetGame();
+}
+
+/**
+*	\brief 创建sprite,并设置sprite
+*/
+SpritePtr Entity::CreateSprite(const string & spriteName)
+{
+	// sprite
+	SpritePtr sprite = std::make_shared<Sprite>(spriteName);
+
+	NamedSpritePtr namedSprite;
+	namedSprite.name = spriteName;
+	namedSprite.sprite = sprite;
+	namedSprite.removed = false;
+
+	mSprites.push_back(namedSprite);
+	return sprite;
+}
+
+/**
+*	\brief 创建animaiton,并设置sprite
+*/
+AnimationSpritePtr Entity::CreateAnimationSprite(const string & animationSetId, const string & animationID)
+{
+	// animationSprite
+	AnimationSpritePtr animationSprite = std::make_shared<AnimationSprite>(animationSetId);
+	animationSprite->SetCurrAnimation(animationID);
+	
+	NamedSpritePtr namedSprite;
+	namedSprite.name = animationID;
+	namedSprite.sprite = animationSprite;
+	namedSprite.removed = false;
+
+	mSprites.push_back(namedSprite);
+	return animationSprite;
+}
+
+SpritePtr Entity::GetSprite(const string & spriteName)
+{
+	for (auto sprite : mSprites)
+	{
+		if (sprite.name == spriteName &&
+			sprite.removed == false)
+		{
+			return sprite.sprite;
+		}
+	}
+	return nullptr;
+}
+
+bool Entity::RemoveSprite(SpritePtr sprite)
+{
+	for (auto namedSprite : mSprites)
+	{
+		if (namedSprite.sprite == sprite &&
+			namedSprite.removed == false)
+		{
+			namedSprite.removed = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+*	\brief 删除所有sprite
+*
+*	真正的清除操作在所有的sprite update之后调用
+*	clearRemovedSprites执行
+*/
+void Entity::ClearSprites()
+{
+	for (auto sprite : mSprites)
+	{
+		sprite.removed = true;
+	}
+}
+
+/**
+*	\brief 释放所有被标记为removed的sprite
+*/
+void Entity::ClearRemovedSprite()
+{
+	for (auto it = mSprites.begin(); it != mSprites.end();)
+	{
+		if (it->removed)
+		{
+			it = mSprites.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+
+	}
 }
 
 const std::shared_ptr<EntityState>& Entity::GetState()

@@ -33,7 +33,7 @@ PlayerSprite::PlayerSprite(Player & player):
 void PlayerSprite::BuildSprites()
 {
 	// 创建身体的sprite
-	mBodySprite = std::make_shared<AnimationSprite>("players/player");
+	mBodySprite = mPlayer.CreateAnimationSprite("players/player", walkAnimationName); 
 	mBodySprite->SetCurrDirection(0);
 
 	SetAnimationDirection4(Direction4::DIRECTION4_DOWN);

@@ -9,6 +9,7 @@
 #include"entity\entityInfo.h"
 #include"game\sprite.h"
 #include"game\gameCommands.h"
+#include"game\animationSprite.h"
 
 class Sprtie;
 class LuaContext;
@@ -24,6 +25,7 @@ class Entity : public LuaObject
 public:
 	Entity();
 	Entity(const string& name, const Point2& pos, const Size& size, int layer);
+	~Entity();
 
 	virtual void Update();
 	virtual void Draw();
@@ -49,6 +51,7 @@ public:
 	{
 		std::string name;
 		SpritePtr sprite;
+		bool removed;
 	};
 
 	/**** **** **** status **** **** ****/
@@ -73,6 +76,14 @@ public:
 	Map& GetMap();
 	const Map& GetMap()const;
 	Game& GetGame();
+
+	/**** ***** sprite ***** ****/
+	SpritePtr CreateSprite(const string & spriteName);
+	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID);
+	SpritePtr GetSprite(const string& spriteName);
+	bool RemoveSprite(SpritePtr sprite);
+	void ClearSprites();
+	void ClearRemovedSprite();
 
 	/**** ***** state manager ***** ****/
 	const std::shared_ptr<EntityState>& GetState();

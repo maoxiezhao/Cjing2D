@@ -29,10 +29,11 @@ Player::Player():
 
 void Player::Update()
 {
-	Entity::Update();
-
 	// sprite update
 	mPlayerSprites->Update();
+
+	// movement update
+	GetMovement()->Update();
 
 	// state update
 	GetState()->Update();

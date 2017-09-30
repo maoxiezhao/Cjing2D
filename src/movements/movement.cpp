@@ -1,5 +1,6 @@
 #include "movement.h"
 #include "game\drawable.h"
+#include "game\map.h"
 #include "core\system.h"
 #include "lua\luaContext.h"
 #include "entity\entity.h"
@@ -145,14 +146,13 @@ bool Movement::TestCollisionWithObstacles(const Point2 & dxy) const
 		return false;
 	}
 
-	//Map map = GetMap();
-	//Rect rect = GetBoundsRect();
-	//rect.translate(dxy);
+	// 获取当前entity的碰撞盒，并偏移位移量后
+	// 参与碰撞检测
+	Map& map = mEntity->GetMap();
+	Rect rect = mEntity->GetRectBounding();
+	rect.AddPos(dxy.x, dxy.y);
 
-	//bool collision = map->TestCollisionWithObstacles(rect, *mEntity);
-
-	bool collision = false;
-	
+	bool collision = map.TestCollisionWithObstacle(rect, *mEntity);
 	return collision;
 }
 

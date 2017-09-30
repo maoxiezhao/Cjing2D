@@ -38,7 +38,7 @@ void MouseState::Update()
 
 	auto& player = dynamic_cast<Player&>(GetEntity());
 	const Point2& mousePos = InputEvent::GetMousePos();
-	const Point2& playerPos = player.GetPos();
+	const Point2& playerPos = player.GetScreenPos();
 
 	// ½Ç¶ÈÆ«ÒÆ
 	double angle = Geometry::GetAngle(playerPos, mousePos);

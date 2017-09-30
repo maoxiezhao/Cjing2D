@@ -1,6 +1,7 @@
 #pragma once
 
 #include"common\common.h"
+#include"entity\groundInfo.h"
 #include"game\sprite.h"
 
 class Tileset;
@@ -44,13 +45,21 @@ public:
 	{
 		return mFramesRect;
 	}
+	void SetGround(Ground ground)
+	{
+		mGround = ground;
+	}
+	Ground GetGround()const
+	{
+		return mGround;
+	}
 
 private:
 	int mPatternID;
 	Point2 mPos;
 	Size mSize;
 	std::vector<Rect> mFramesRect;
-
+	Ground mGround;
 };
 
 /**
@@ -68,6 +77,8 @@ public:
 	int GetPatternID()const;
 	void SetPatternID(int patternID);
 	virtual Rect GetTextureRect()const;
+	void SetGround(Ground ground);
+	Ground GetGround()const;
 
 	virtual void Init();
 	static void Update();
@@ -76,7 +87,7 @@ private:
 	int mPatternID;
 	Point2 mPos;
 	Size mSize;
-
+	Ground mGround;
 };
 
 inline Point2 TilePattern::GetPos()const
@@ -112,4 +123,14 @@ inline void TilePattern::SetPatternID(int patternID)
 inline Rect TilePattern::GetTextureRect() const
 {
 	return Rect();
+}
+
+inline void TilePattern::SetGround(Ground ground)
+{
+	mGround = ground;
+}
+
+inline Ground TilePattern::GetGround() const
+{
+	return mGround;
 }

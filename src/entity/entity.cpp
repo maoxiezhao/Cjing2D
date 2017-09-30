@@ -3,31 +3,34 @@
 #include "game\gameCommands.h"
 #include "lua\luaContext.h"
 #include "entity\entityState.h"
+#include "entity\camera.h"
 #include "movements\movement.h"
 
 Entity::Entity():
 	mName(""),
-	mPos(),
-	mSize(),
+	mBounding(),
+	mOrigin(0, 0),
 	mLayer(0),
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
 	mIsInitialized(false),
-	mIsDrawOnYOrder(false)
+	mIsDrawOnYOrder(false),
+	mDebugSprite(nullptr)
 {
 }
 
 Entity::Entity(const string & name, const Point2 & pos, const Size & size, int layer):
 	mName(name),
-	mPos(pos),
-	mSize(size),
+	mBounding(pos, size),
+	mOrigin(),
 	mLayer(layer),
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
 	mIsInitialized(false),
-	mIsDrawOnYOrder(false)
+	mIsDrawOnYOrder(false),
+	mDebugSprite(nullptr)
 {
 }
 
@@ -89,6 +92,18 @@ const string Entity::GetLuaObjectName() const
 	return string();
 }
 
+void Entity::DrawDebugBounding()
+{
+	if (mDebugSprite == nullptr)
+	{
+		mDebugSprite = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
+	}
+
+	mDebugSprite->SetPos(mBounding.GetPos());
+	mDebugSprite->SetSize(mBounding.GetSize());
+	GetMap().DrawOnMap(*mDebugSprite);
+}
+
 void Entity::NotifyCommandPressed(const GameCommand & command)
 {
 	// do nothing
@@ -129,6 +144,11 @@ void Entity::SetMap(Map * map)
 }
 
 Map & Entity::GetMap()
+{
+	return *mMap;
+}
+
+const Map & Entity::GetMap() const
 {
 	return *mMap;
 }
@@ -190,7 +210,7 @@ const std::shared_ptr<Movement>& Entity::GetMovement()
 
 Rect Entity::GetRectBounding() const
 {
-	return Rect(mPos, mSize);
+	return mBounding;
 }
 
 void Entity::SetDrawOnYOrder(bool isDrawOnY)
@@ -203,20 +223,40 @@ bool Entity::IsDrawOnYOrder() const
 	return mIsDrawOnYOrder;
 }
 
+void Entity::SetOrigin(const Point2 & origin)
+{
+	mBounding.AddPos(mOrigin.x - origin.x, mOrigin.y - origin.y);
+	mOrigin = origin;
+}
+
+const Point2 & Entity::GetOrigin() const
+{
+	return mOrigin;
+}
+
+/**
+*	\brief ·µ»ØÆÁÄ»×ø±ê
+*/
+Point2 Entity::GetScreenPos() const
+{
+	auto camPos = GetMap().GetCamera()->GetLeftTopPos();
+	return GetPos() - camPos;
+}
+
 Point2 Entity::GetPos()const
 {
-	return mPos;
+	return mBounding.GetPos() + mOrigin;
 }
 Point2 Entity::GetCenterPos() const
 {
 	Size size = GetSize();
-
-	return Point2(mPos.x + size.width / 2,
-		mPos.y + size.height / 2);
+	Point2 pos = mBounding.GetPos();
+	return Point2(pos.x + size.width / 2,
+		pos.y + size.height / 2);
 }
 void Entity::SetPos(const Point2& pos)
 {
-	mPos = pos;
+	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
 }
 void Entity::SetLayer(int layer)
 {
@@ -232,11 +272,11 @@ void Entity::SetName(const string& name)
 }
 void Entity::SetSize(const Size & size)
 {
-	mSize = size;
+	mBounding.SetSize(size.width, size.height);
 }
 Size Entity::GetSize() const
 {
-	return mSize;
+	return mBounding.GetSize();
 }
 const string& Entity::GetName()const
 {

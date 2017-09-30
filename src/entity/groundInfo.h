@@ -21,5 +21,5 @@ struct EnumInfoTraits<Ground>
 /**
 *	\brief 处理ground的最小单元大小
 */
-static int groundCellWidth  = 16;
-static int groundCellHeight = 16;
+static int groundCellWidth  = 8;
+static int groundCellHeight = 8;

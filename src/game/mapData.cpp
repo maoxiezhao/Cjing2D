@@ -71,7 +71,7 @@ const string & MapData::getTitlesetID() const
 bool MapData::IsValidLayer(int layer) const
 {
 	return (layer >= mMinLayer && 
-		layer < mMaxLayer);
+		layer <= mMaxLayer);
 }
 
 /**

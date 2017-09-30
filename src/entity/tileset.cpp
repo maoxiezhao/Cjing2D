@@ -1,6 +1,7 @@
 #include "tileset.h"
 #include "entity\noAnimatedTilePattern.h"
 #include "entity\animatedTilePattern.h"
+#include "entity\groundInfo.h"
 
 bool TilesetData::ImportFromLua(lua_State * l)
 {
@@ -39,10 +40,10 @@ int TilesetData::LuaTilesetData(lua_State * l)
 		lua_pop(l, 1);
 
 		int id = LuaTools::CheckFieldInt(l, 1, "id");
-		//int x = LuaTools::CheckFieldInt(l, 1, "x");
-		//int y = LuaTools::CheckFieldInt(l, 1, "y");
 		int width = LuaTools::CheckFieldInt(l, 1, "width");
 		int height = LuaTools::CheckFieldInt(l, 1, "height");
+		const std::string groundStr = LuaTools::CheckFieldStringByDefault(l, 1, "ground", "");
+		Ground ground = StringToEnum<Ground>(groundStr, Ground::GROUND_EMPTY);
 
 		// 解析pattern帧数据
 		int xFrameCount = 0;
@@ -112,7 +113,7 @@ int TilesetData::LuaTilesetData(lua_State * l)
 		// 创建tilePatterns
 		TilePatternData tilePattern;
 		tilePattern.SetPatternID(id);
-		//tilePattern.SetPos({ x, y });
+		tilePattern.SetGround(ground);
 		tilePattern.SetSize({ width, height });
 		tilePattern.SetFrameRect(frameRects);
 		tilesetData.PushTilePattern(tilePattern);

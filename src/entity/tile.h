@@ -2,6 +2,7 @@
 
 #include"entity\entity.h"
 #include"entity\tilePattern.h"
+#include"entity\groundInfo.h"
 
 /**
 *	\brief ÕºøÈ–≈œ¢√Ë ˆ
@@ -9,12 +10,14 @@
 class TileInfo
 {
 public:
-	TileInfo() :mLayer(0), mPos(), mSize(0,0), mPatternID(0), mPattern(nullptr){}
+	TileInfo() :mLayer(0), mPos(), mSize(0,0), mPatternID(0),
+		mGround(Ground::GROUND_EMPTY), mPattern(nullptr){}
 
 	int mLayer;
 	Point2 mPos;
 	Size mSize;
 	int mPatternID;
+	Ground mGround;
 	const TilePattern* mPattern;
 };
 

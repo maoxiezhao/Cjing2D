@@ -3,8 +3,10 @@
 
 #include"common\common.h"
 #include"lua\luaObject.h"
-#include"utils\size.h"
 #include"game\drawable.h"
+#include"utils\size.h"
+#include"utils\rectangle.h"
+#include"entity\groundInfo.h"
 
 class Game;
 class Camera;
@@ -13,6 +15,8 @@ class Tileset;
 class Entities;
 class InputEvent;
 class Tileset;
+class Entity;
+
 /**
 *	\brief map¿‡
 *
@@ -51,12 +55,14 @@ public:
 	void CheckSuspended();
 	void SetSuspended(bool suspended);
 	bool IsValidLayer(int layer)const;
+	Ground GetGround(int layer, int x, int y);
 
 	Game& GetGame();
 	LuaContext& GetLuaContext();
 	const string GetLuaObjectName()const;
 	Entities& GetEntities();
-	const std::shared_ptr<Camera>& GetCamera();
+	std::shared_ptr<Camera>& GetCamera();
+	const std::shared_ptr<Camera>& GetCamera()const;
 
 	// map property
 	const string& GetMapID()const;
@@ -70,8 +76,8 @@ public:
 	int GetHeight()const;
 
 	// test collison
-	bool TestCollison();
-	
+	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);
+	bool TestCollisionWithGround(int layer, int x, int y, Entity& entity);
 private:
 	/** status */
 	string mMapID;

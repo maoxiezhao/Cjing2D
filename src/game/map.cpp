@@ -1,11 +1,11 @@
 #include "map.h"
-#include "core\inputEvent.h"
-#include "entity\entities.h"
-#include "entity\entity.h"
 #include "lua\luaContext.h"
+#include "core\inputEvent.h"
 #include "game\game.h"
 #include "game\mapData.h"
 #include "game\sprite.h"
+#include "entity\entities.h"
+#include "entity\entity.h"
 #include "entity\tileset.h"
 #include "entity\tilepattern.h"
 
@@ -150,6 +150,11 @@ bool Map::IsValidLayer(int layer) const
 		layer <= mMaxLayer);
 }
 
+Ground Map::GetGround(int layer, int x, int y)
+{
+	return Ground::GROUND_EMPTY;
+}
+
 Game & Map::GetGame()
 {
 	return *mGame;
@@ -170,7 +175,12 @@ Entities & Map::GetEntities()
 	return *mEntities;
 }
 
-const std::shared_ptr<Camera>& Map::GetCamera()
+std::shared_ptr<Camera>& Map::GetCamera()
+{
+	return mCamera;
+}
+
+const std::shared_ptr<Camera>& Map::GetCamera() const
 {
 	return mCamera;
 }
@@ -224,6 +234,62 @@ int Map::GetHeight()const
 }
 
 /**
+*	\brief 测试entity与障碍物的碰撞检测
+*	\param rect 测试entity的包围盒rect
+*	\param entity 参与碰撞检测的entity
+*	\return true 发生了碰撞检测
+*/
+bool Map::TestCollisionWithObstacle(const Rect & rect, Entity & entity)
+{
+	// 与map当前layerd的ground
+	int xBegin = rect.x;
+	int xEnd = xBegin + rect.width - 1;
+	int yBegin = rect.y;
+	int yEnd = yBegin + rect.height - 1;
+	int layer = entity.GetLayer();
+
+	// 仅计算4条边界即可
+	for (int x = xBegin; x <= xEnd; x += 8)
+	{
+		if (TestCollisionWithGround(layer, x, yBegin, entity) ||
+			TestCollisionWithGround(layer, x, yEnd, entity) ||
+			TestCollisionWithGround(layer, x + 7, yBegin, entity) ||
+			TestCollisionWithGround(layer, x + 7, yEnd, entity)){
+			return true;
+		}
+	}
+
+	// 测试以每8个像素为间距的点的ground是否是障碍点
+	for (int y = yBegin; y <= yEnd; y += groundCellHeight)
+	{
+		if (TestCollisionWithGround(layer, xBegin, y, entity) ||
+			TestCollisionWithGround(layer, xEnd,   y, entity) ||
+			TestCollisionWithGround(layer, xBegin, y + 7, entity) ||
+			TestCollisionWithGround(layer, xEnd, y + 7, entity)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Map::TestCollisionWithGround(int layer, int x, int y, Entity & entity)
+{
+	bool isObstacle = false;
+	Ground ground = mEntities->GetGround(layer, x / groundCellWidth, y / groundCellHeight);
+	switch (ground)
+	{
+	case GROUND_EMPTY:
+		isObstacle = false;
+		break;
+	case GROUND_WALL:
+		isObstacle = true;
+		break;
+	}
+
+	return isObstacle;
+}
+
+/**
 *	\brief 绘制地图
 *
 *	绘制过程依次包括背景图，entities,前景图,luaContent
@@ -237,15 +303,6 @@ void Map::Draw()
 	DrawBackground();
 	mEntities->Draw();
 	DrawForeground();
-
-	// test
-	//mTileset->GetTileImage()->SetPos({ 0, 0 });
-	//mTileset->GetTileImage()->SetTextureRect(Rect(0, 0, 16, 16), true);
- //   mTileset->GetTileImage()->Draw();
-	//
-	//mTileset->GetTileImage()->SetPos({ 16, 0 });
-	//mTileset->GetTileImage()->SetTextureRect(Rect(16, 0, 32, 16), true);
-	//mTileset->GetTileImage()->Draw();
 
 	GetLuaContext().OnMapDraw(*this);
 }

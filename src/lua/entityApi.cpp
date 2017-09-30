@@ -56,7 +56,9 @@ int LuaContext::entity_api_create_title(lua_State* l)
 		tileInfo.mPatternID = entityData.GetValueInteger("pattern");
 
 		const Tileset& tileset = map.GetTileset();
-		tileInfo.mPattern = &tileset.GetTilePattern(tileInfo.mPatternID);
+		auto pattern = &tileset.GetTilePattern(tileInfo.mPatternID);
+		tileInfo.mPattern = pattern;
+		tileInfo.mGround = pattern->GetGround();
 		map.GetEntities().AddTile(tileInfo);
 
 		lua_pushboolean(l, true);

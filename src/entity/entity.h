@@ -32,14 +32,15 @@ public:
 	void ClearMovements();
 	virtual const string GetLuaObjectName()const;
 
+	void DrawDebugBounding();
+
 	/**** **** **** Notify **** **** ****/
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
-
 	virtual void NotifyMovementChanged();
 
 	void NotifyMapStarted();
-
+	
 public:
 	/**
 	*	带名字属性的share_ptr<sprite>
@@ -64,9 +65,13 @@ public:
 	Rect GetRectBounding()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
+	void SetOrigin(const Point2& origin);
+	const Point2& GetOrigin()const;
+	Point2 GetScreenPos()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
+	const Map& GetMap()const;
 	Game& GetGame();
 
 	/**** ***** state manager ***** ****/
@@ -82,8 +87,8 @@ public:
 private:
 	// status
 	string mName;
-	Point2 mPos;
-	Size mSize;
+	Point2 mOrigin;		/** 原点位置 */
+	Rect mBounding;
 	int mLayer;
 	EntityType mType;
 	bool mIsInitialized;
@@ -96,6 +101,7 @@ private:
 	std::shared_ptr<Movement> mMovement;	/** entity 的运动组件 */
 
 	std::vector<NamedSpritePtr> mSprites;	/** entity 所拥有的用于展示的sprites */
+	SpritePtr mDebugSprite;
 };
 
 using EntityPtr = std::shared_ptr<Entity>;

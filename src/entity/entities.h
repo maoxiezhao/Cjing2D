@@ -40,6 +40,9 @@ public:
 	CameraPtr GetCamear()const;
 	EntityList GetEntities();
 	void AddTile(const TileInfo& tileInfo);
+	void SetGround(const Ground& ground, int layer, const Rect& rect);
+	void SetGround(const Ground& ground, int layer, int cellX, int cellY);
+	Ground GetGround(int layer, int cellX, int cellY)const;
 
 	// lua
 	LuaContext& GetLuaContext();
@@ -52,8 +55,9 @@ private:
 	// system
 	Game& mGame;
 	Map& mMap;
-	int mMapWidth;
-	int mMapHeight;
+
+	int mMapCellWidth;	/** 地图的最小单元x,y方向个数 */
+	int mMapCellHeight;
 
 	// entities
 	CameraPtr mCamera;

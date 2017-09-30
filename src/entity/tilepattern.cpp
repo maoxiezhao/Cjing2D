@@ -5,7 +5,8 @@
 TilePattern::TilePattern(const TilePatternData & data):
 	mPatternID(data.GetPatternID()),
 	mPos(data.GetPos()),
-	mSize(data.GetSize())
+	mSize(data.GetSize()),
+	mGround(data.GetGround())
 {
 }
 

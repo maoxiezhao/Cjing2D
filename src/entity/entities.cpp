@@ -14,14 +14,14 @@ Entities::Entities(Game&game, Map&map):
 	mPlayer(game.GetPlayer())
 {
 	// 初始化每层的layer
-	int mapWidth16 = mMap.GetWidth() / groundCellWidth;
-	int mapHeight16 = mMap.GetHeight() / groundCellHeight;
+	mMapCellWidth = mMap.GetWidth() / groundCellWidth;
+	mMapCellHeight = mMap.GetHeight() / groundCellHeight;
 	for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++)
 	{
 		TileRegions* tileRegion = new TileRegions(map, layer);
 		mTileRegions.emplace(layer, std::unique_ptr<TileRegions>(tileRegion));
 
-		mGrounds[layer].resize(mapWidth16*mapHeight16, Ground::GROUND_EMPTY);
+		mGrounds[layer].resize(mMapCellWidth*mMapCellHeight, Ground::GROUND_EMPTY);
 	}
 
 	// 初始化四叉树管理entity
@@ -187,6 +187,76 @@ void Entities::AddTile(const TileInfo & tileInfo)
 	Debug::CheckAssertion(mMap.IsValidLayer(tileInfo.mLayer),"Invalid tile layer.");
 
 	mTileRegions[tileInfo.mLayer]->AddTile(tileInfo);
+
+	// add ground
+	int tileLayer = tileInfo.mLayer;
+	const Size tileSize = tileInfo.mSize;
+	const Point2 tilePos = tileInfo.mPos;
+	const Ground ground = tileInfo.mGround;
+
+	switch (ground)
+	{
+	case Ground::GROUND_WALL:
+		SetGround(ground, tileLayer, Rect(tilePos, tileSize));
+		break;
+
+	case Ground::GROUND_EMPTY:
+		// empty do nothing.
+		break;
+	}
+
+}
+
+/**
+*	\brief 设置地面地形
+*	\param rect 设置的范围
+*/
+void Entities::SetGround(const Ground & ground, int layer, const Rect & rect)
+{
+	int cellBeginX = rect.x / groundCellWidth;
+	int cellEndX = (rect.x + rect.width) / groundCellWidth;
+	int cellBeginY = rect.y / groundCellHeight;
+	int cellEndY = (rect.y + rect.height) / groundCellHeight;
+
+	for (int cellY = cellBeginY; cellY < cellEndY; cellY++)
+	{
+		if (cellY < 0 || cellY >= mMapCellHeight)
+		{
+			continue;
+		}
+		for (int cellX = cellBeginX; cellX < cellEndX; cellX++)
+		{
+			SetGround(ground, layer, cellX, cellY);
+		}
+	}
+}
+
+/**
+*	\brief 设置地面地形
+*	\param cellX x方向的第n个cell
+*	\param cellY y方向的第n个cell
+*/
+void Entities::SetGround(const Ground & ground, int layer, int cellX, int cellY)
+{
+	if (cellX >= 0 && cellX < mMapCellWidth && 
+		cellY >= 0 && cellY < mMapCellHeight)
+	{
+		mGrounds[layer][cellY*mMapCellWidth + cellX] = ground;
+	}
+}
+
+
+/**
+*	\brief 获取指定位置ground的inline
+*/
+Ground Entities::GetGround(int layer, int cellX, int cellY)const
+{
+	if (cellX >= 0 && cellX < mMapCellWidth &&
+		cellY >= 0 && cellY < mMapCellHeight)
+	{
+		return mGrounds.at(layer).at(cellY*mMapCellWidth + cellX);
+	}
+	return Ground::GROUND_EMPTY;
 }
 
 /**

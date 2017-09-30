@@ -6,12 +6,14 @@
 #include"player\playerSprite.h"
 
 Player::Player():
-	Entity("", { 200, 200 }, {50, 50}, 1),	// testing data
+	Entity("", { 200, 200 }, {30, 30}, 0),	// testing data
 	mPlayerSprites(nullptr),
 	mNormalWalkingSpeed(100),
 	mCurWalkingSpeed(100),
 	mIsBindDirectionByGameCommand(true)
 {
+	SetOrigin({ -5, -10 });
+
 	// 设置当前player sprites
 	PlayerSprite* playerSprite = new PlayerSprite(*this);
 	if (playerSprite == nullptr)
@@ -21,7 +23,7 @@ Player::Player():
 	mPlayerSprites = std::unique_ptr<PlayerSprite>(playerSprite);
 
 	// 设置当前状态
-	auto movementState = std::make_shared<FreeState>(*this);
+	auto movementState = std::make_shared<MouseState>(*this);
 	SetState(movementState);
 }
 
@@ -45,6 +47,8 @@ void Player::Draw()
 {
 	// now testing data
 	Debug::CheckAssertion(mPlayerSprites != nullptr, "Player sprites is null.");
+
+//	DrawDebugBounding();
 
 	mPlayerSprites->Draw();
 }

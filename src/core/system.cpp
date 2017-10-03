@@ -1,6 +1,7 @@
-#include"system.h"
-#include"inputEvent.h"
-#include"video.h"
+#include"core\system.h"
+#include"core\inputEvent.h"
+#include"core\video.h"
+#include"core\sound.h"
 #include<Windows.h>
 
 uint32_t System::mInitDate = 0;
@@ -29,6 +30,7 @@ void System::Initialize()
 
 	// “¿¥Œ≥ı ºªØinput,audio,video
 	InputEvent::Initialize();
+	Sound::Initialize();
 	Video::Initialize();
 }
 
@@ -40,5 +42,6 @@ void System::Update()
 void System::Quit()
 {
 	Video::Quit();
+	Sound::Quid();
 	InputEvent::Quit();
 }

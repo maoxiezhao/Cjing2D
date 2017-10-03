@@ -1,4 +1,5 @@
 #include "video.h"
+#include "logger.h"
 #include "debug.h"
 #include "inputEvent.h"
 #include "renderer.h"
@@ -29,6 +30,7 @@ namespace
 */
 void Video::Initialize()
 {
+	Logger::Info("Initialize Video module");
 	Debug::CheckAssertion(!IsInitialized(), "The video already initialized.");
 	auto& configProperties = ConfigData::GetConfigProperties();
 	wantedWindowSize = configProperties.GetNormalSize();

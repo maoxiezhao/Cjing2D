@@ -328,6 +328,15 @@
     <ClCompile Include="src\entity\groundInfo.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\equipment.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\sound.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\oggDecoder.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -626,6 +635,15 @@
     </ClInclude>
     <ClInclude Include="src\entity\enemy.h">
       <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\sound.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\equipment.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\oggDecoder.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

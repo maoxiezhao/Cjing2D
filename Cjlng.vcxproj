@@ -60,7 +60,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype255d.lib;SOIL.lib;Lua_lib.lib;glew32s.lib;winmm.lib;OpenGL32.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;OpenAL32.lib;freetype255d.lib;SOIL.lib;Lua_lib.lib;glew32s.lib;winmm.lib;OpenGL32.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -96,12 +96,14 @@
     <ClCompile Include="src\core\glProgramState.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
+    <ClCompile Include="src\core\oggDecoder.cpp" />
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
     <ClCompile Include="src\core\renderCommandPool.cpp" />
     <ClCompile Include="src\core\renderer.cpp" />
     <ClCompile Include="src\core\resourceCache.cpp" />
+    <ClCompile Include="src\core\sound.cpp" />
     <ClCompile Include="src\core\system.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\types.cpp" />
@@ -126,6 +128,7 @@
     <ClCompile Include="src\game\animationSprite.cpp" />
     <ClCompile Include="src\game\app.cpp" />
     <ClCompile Include="src\game\drawable.cpp" />
+    <ClCompile Include="src\game\equipment.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\gameCommands.cpp" />
     <ClCompile Include="src\game\map.cpp" />
@@ -193,12 +196,14 @@
     <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />
     <ClInclude Include="src\core\logger.h" />
+    <ClInclude Include="src\core\oggDecoder.h" />
     <ClInclude Include="src\core\quadCommand.h" />
     <ClInclude Include="src\core\random.h" />
     <ClInclude Include="src\core\renderCommand.h" />
     <ClInclude Include="src\core\renderCommandPool.h" />
     <ClInclude Include="src\core\renderer.h" />
     <ClInclude Include="src\core\resourceCache.h" />
+    <ClInclude Include="src\core\sound.h" />
     <ClInclude Include="src\core\system.h" />
     <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\types.h" />
@@ -224,6 +229,7 @@
     <ClInclude Include="src\game\app.h" />
     <ClInclude Include="src\game\drawable.h" />
     <ClInclude Include="src\game\enumInfo.h" />
+    <ClInclude Include="src\game\equipment.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\gameCommands.h" />
     <ClInclude Include="src\game\map.h" />

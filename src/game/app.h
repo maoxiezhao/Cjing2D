@@ -15,6 +15,7 @@
 #include"gui\core\handler.h"
 #include"gui\widget\window.h"
 #include"gui\widget\button.h"
+#include"core\sound.h"
 
 /**
 *	\brief 程序的主循环
@@ -51,6 +52,8 @@ private:
 	std::unique_ptr<gui::GUIManager> mGUI;	
 
 	std::shared_ptr<gui::Window> mWindow;
+
+	Sound mSound;
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include"app.h"
+#include"game\app.h"
 #include"core\debug.h"
 #include"core\logger.h"
 #include"core\system.h"
@@ -20,7 +20,8 @@ App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr)
+	mNextGame(nullptr),
+	mSound("bg.ogg")
 {
 	Logger::Info("Cjing start initializing.");
 
@@ -45,6 +46,10 @@ App::App() :
 	// initialize gui manager
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+
+	// test sound
+	mSound.Load();
+	mSound.Play();
 }
 
 App::~App()
@@ -134,6 +139,8 @@ void App::Step()
 
 void App::Update()
 {
+	mSound.Update(1);
+
 	// game update
 	if (mCurrGame != nullptr)
 	{

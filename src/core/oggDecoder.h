@@ -19,7 +19,8 @@ class OggDecoder
 public:
 	OggDecoder();
 
-	void Load(const std::string& oggData);
+	void Load(const std::string& oggData, bool looped);
+	void UnLoad();
 	void Decode(ALuint buffer, int nbSamples);
 
 private:

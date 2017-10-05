@@ -100,6 +100,7 @@ public:
 	void RegisterFontModule();
 	void RegisterAsyncLoaderModule();
 	void RegisterEntityModule();
+	void RegisterSoundModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -199,6 +200,9 @@ public:
 		async_loader_api_set_callback,
 		async_loader_api_run,
 		async_loader_meta_api_gc,
+		// sound
+		sound_api_play_music,
+		sound_api_stop_music,
 		// entity
 
 		// entity create
@@ -329,6 +333,7 @@ public:
 	static const string module_video_name;
 	static const string module_font_name;
 	static const string module_async_loader_name;
+	static const string module_sound_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;

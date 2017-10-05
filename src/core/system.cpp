@@ -37,6 +37,8 @@ void System::Initialize()
 void System::Update()
 {
 	mTicks += timeStep;
+
+	Sound::Update();
 }
 
 void System::Quit()

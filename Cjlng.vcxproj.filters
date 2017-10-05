@@ -337,6 +337,12 @@
     <ClCompile Include="src\core\oggDecoder.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\music.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\soundApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -643,6 +649,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\core\oggDecoder.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\music.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

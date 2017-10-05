@@ -14,13 +14,14 @@ OggDecoder::OggDecoder():
 {
 }
 
-void OggDecoder::Load(const std::string& oggData)
+void OggDecoder::Load(const std::string& oggData, bool looped)
 {
 	// 加载oggFile
 	mVf = OggVorbisFileUniquePtr(new OggVorbis_File());
 
 	oggMem.position = 0;
 	oggMem.data = oggData;
+	oggMem.loop = looped;
 
 	int error = ov_open_callbacks(&oggMem, mVf.get(), nullptr, 0, Sound::mCallBacks);
 	if (error != 0)
@@ -54,6 +55,12 @@ void OggDecoder::Load(const std::string& oggData)
 
 
 	mIsLoaded = true;
+}
+
+void OggDecoder::UnLoad()
+{
+	mVf = nullptr;
+	oggMem.data.clear();
 }
 
 /**
@@ -92,8 +99,11 @@ void OggDecoder::Decode(ALuint buffer, int nbSamples)
 
 		if (curReadByte < 0)
 		{
-			Debug::Error("Error Decoding ogg.");
-			return;
+			if (curReadByte != OV_HOLE)	// 因为循环播放可能导致其中产生中断
+			{
+				Debug::Error("Error Decoding ogg.");
+				return;
+			}
 		}
 		else
 		{
@@ -105,8 +115,11 @@ void OggDecoder::Decode(ALuint buffer, int nbSamples)
 
 	// 生成al buffer
 	alBufferData(buffer, mFormat, samplesData.data(), ALsizei(totalReadBytes), mRate);
-	if (alGetError() != AL_NO_ERROR)
+	int error = alGetError();
+	if (error != AL_NO_ERROR)
 	{
-		Debug::Error("Failed to fill audio buffer with decode ogg data.");
+		std::ostringstream oss;
+		oss << "Failed to fill audio buffer with decode ogg data;Error " << error;
+		Debug::Error(oss.str());
 	}
 }

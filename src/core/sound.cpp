@@ -3,6 +3,7 @@
 #include"core\logger.h"
 #include"core\fileData.h"
 #include"core\oggDecoder.h"
+#include"core\music.h"
 
 namespace
 {
@@ -24,7 +25,14 @@ size_t memRead(void *ptr, size_t size, size_t nmemb, void *datasource)
 
 	if (oggMem->position >= totalSize)
 	{
-		return 0;
+		if (oggMem->loop)
+		{
+			oggMem->position = 0;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	else if (oggMem->position + nmemb >= totalSize)
 	{
@@ -50,13 +58,13 @@ int memSeek(void *datasource, ogg_int64_t offset, int whence)
 	switch (whence)
 	{
 	case SEEK_SET:
-		oggMem->position = offset;
+		oggMem->position = (size_t)offset;
 		break;
 	case SEEK_CUR:
-		oggMem->position += offset;
+		oggMem->position += (size_t)offset;
 		break;
 	case SEEK_END:
-		oggMem->position = oggMem->data.size() - offset;
+		oggMem->position = oggMem->data.size() - (size_t)offset;
 		break;
 	}
 
@@ -87,17 +95,13 @@ ov_callbacks Sound::mCallBacks = {
 	memTell
 };
 
-std::unique_ptr<OggDecoder> Sound::mOggDecoder = nullptr;
-
-constexpr int Sound::numBuffers;
+std::map<std::string, Sound> Sound::mSounds;
 
 Sound::Sound() :
-	Sound(std::string("")) 
+	mSoundID(""),
+	mBuffer(AL_NONE),
+	mSource(AL_NONE)
 {
-	for (int i = 0; i < numBuffers; i++)
-	{
-		mBuffers[i] = AL_NONE;
-	}
 }
 
 Sound::Sound(const std::string soundID) :
@@ -105,10 +109,6 @@ Sound::Sound(const std::string soundID) :
 	mBuffer(AL_NONE),
 	mSource(AL_NONE)
 {
-	for (int i = 0; i < numBuffers; i++)
-	{
-		mBuffers[i] = AL_NONE;
-	}
 }
 
 Sound::~Sound()
@@ -132,29 +132,13 @@ void Sound::Update(int a)
 	{
 		return;
 	}
-	/**
-	*	检测是否存在已经播放结束的buffer
-	*	如果存在则decode新的数据
-	*/
-	ALint nb_empty;
-	alGetSourcei(mSource, AL_BUFFERS_PROCESSED, &nb_empty);
-	
-	for (int i = 0; i < nb_empty; i++)
-	{
-		ALuint buffer;
-		alSourceUnqueueBuffers(mSource, 1, &buffer);
-		mOggDecoder->Decode(buffer, 16384);
-		alSourceQueueBuffers(mSource, 1, &buffer);
-	}	
 
-	ALint status;
-	alGetSourcei(mSource, AL_SOURCE_STATE, &status);
-	if (status != AL_PLAYING)
-	{
-		alSourcePlay(mSource);
-	}
+	Music::Update();
 }
 
+/**
+*	\brief 加载当前音效
+*/
 void Sound::Load()
 {
 	std::string soundPath = "sounds/" + mSoundID;
@@ -164,22 +148,8 @@ void Sound::Load()
 	}
 	const std::string oggData = FileData::ReadFile(soundPath);
 
-	/*** testing decoder **/
+	/** 加载步骤 */
 
-	alGenBuffers(numBuffers, mBuffers);
-	alGenSources(1, &mSource);
-	alSourcef(mSource, AL_GAIN, 1.0f);
-
-	// decode
-	mOggDecoder->Load(oggData);
-	for (int i = 0; i < numBuffers; i++)
-	{
-		mOggDecoder->Decode(mBuffers[i], 16384);
-	}
-
-	// 播放
-	alSourceQueueBuffers(mSource, numBuffers, mBuffers);
-	alSourcePlay(mSource);
 }
 
 ALuint Sound::DecodeFile(const std::string file)
@@ -191,16 +161,16 @@ void Sound::Play()
 {
 }
 
-//Sound * Sound::LoadFile(const std::string soundID)
-//{
-//	auto it = mSounds.find(soundID);
-//	if (it != mSounds.end())
-//	{
-//		return &it->second;
-//	}
-//	mSounds[soundID] = Sound(soundID);
-//	return &mSounds[soundID];
-//}
+Sound * Sound::LoadFile(const std::string soundID)
+{
+	auto it = mSounds.find(soundID);
+	if (it != mSounds.end())
+	{
+		return &it->second;
+	}
+	mSounds[soundID] = Sound(soundID);
+	return &mSounds[soundID];
+}
 
 void Sound::Initialize()
 {
@@ -230,21 +200,23 @@ void Sound::Initialize()
 	}
 	alGenBuffers(0, nullptr);
 
-	// init decoder
-	mOggDecoder = std::unique_ptr<OggDecoder>(new OggDecoder);
+	// init music
+	Music::Initialize();
 
 	initialized = true;
 }
 
 void Sound::Update()
 {
-
+	Music::Update();
 }
 
 void Sound::Quid()
 {
 	if (initialized)
 	{
+		Music::Quid();
+
 		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(context);
 		alcCloseDevice(device);

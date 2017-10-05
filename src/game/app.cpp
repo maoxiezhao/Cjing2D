@@ -10,18 +10,11 @@
 
 #include<Windows.h>
 
-//test
-#include"movements\targetMovement.h"
-#include"gui\widget\selections.h"
-#include"gui\widget\selections_private.h"
-#include"gui\widget\toggleButton.h"
-
 App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr),
-	mSound("bg.ogg")
+	mNextGame(nullptr)
 {
 	Logger::Info("Cjing start initializing.");
 
@@ -47,9 +40,6 @@ App::App() :
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
-	// test sound
-	mSound.Load();
-	mSound.Play();
 }
 
 App::~App()
@@ -139,8 +129,6 @@ void App::Step()
 
 void App::Update()
 {
-	mSound.Update(1);
-
 	// game update
 	if (mCurrGame != nullptr)
 	{

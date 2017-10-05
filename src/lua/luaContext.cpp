@@ -841,6 +841,7 @@ bool LuaContext::OnMouseMotion(const InputEvent & event)
 void LuaContext::RegisterModules()
 {
 	RegisterMainModule();
+	RegisterSoundModule();
 	RegisterGameModule();
 	RegisterMapModule();
 	RegisterVideoModule();

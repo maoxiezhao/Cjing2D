@@ -4,7 +4,7 @@ local LoadingScene = {};
 -- 用于加载字体以及其他游戏资源
 
 function LoadingScene:onStarted()
-	print "LoadingScene Starting.";
+	print "[Lua] LoadingScene Starting.";
 	self._asyncLoader = nil
 	self._animation = nil
 	
@@ -27,15 +27,13 @@ function LoadingScene:onStarted()
 end
 
 function LoadingScene:loadingFunction()
-	print "Asyncing Loading...."
-	
 	-- 加载默认字体
 	cjing.Text.loadDefaultEn()
 	
 end
 
 function LoadingScene:loadingFinishedCallBack()
-	print "Loading Finished"
+	print "[Lua] Loading Finished"
 	cjing.Menu.Stop(LoadingScene)
 end
 

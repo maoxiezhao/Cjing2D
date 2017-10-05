@@ -96,6 +96,7 @@
     <ClCompile Include="src\core\glProgramState.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
+    <ClCompile Include="src\core\music.cpp" />
     <ClCompile Include="src\core\oggDecoder.cpp" />
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\lua\mapApi.cpp" />
     <ClCompile Include="src\lua\menuApi.cpp" />
     <ClCompile Include="src\lua\movementApi.cpp" />
+    <ClCompile Include="src\lua\soundApi.cpp" />
     <ClCompile Include="src\lua\spriteApi.cpp" />
     <ClCompile Include="src\lua\timeApi.cpp" />
     <ClCompile Include="src\lua\videoApi.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />
     <ClInclude Include="src\core\logger.h" />
+    <ClInclude Include="src\core\music.h" />
     <ClInclude Include="src\core\oggDecoder.h" />
     <ClInclude Include="src\core\quadCommand.h" />
     <ClInclude Include="src\core\random.h" />

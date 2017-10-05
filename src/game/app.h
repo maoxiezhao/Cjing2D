@@ -53,7 +53,6 @@ private:
 
 	std::shared_ptr<gui::Window> mWindow;
 
-	Sound mSound;
 };
 
 #endif

@@ -13,13 +13,18 @@
 class OggDecoder;
 
 /**
-*	\brief 音频类
+*	\brief Sound音频类
+*
+*	Sound同时用于初始化管理openAL模块，也用于作为音效的实例
+*	音效因为数据量小，则直接全部加载到内存中，同时sound类
+*	也控制着Music的流程
 */
 class Sound
 {
 public:
 	struct OggMemory
 	{
+		bool loop;
 		size_t position;
 		string data;
 	};
@@ -39,15 +44,13 @@ public:
 	static void Update();
 	static void Quid();
 
-	static ov_callbacks mCallBacks;
-	static std::unique_ptr<OggDecoder> mOggDecoder;
+	static ov_callbacks mCallBacks;		/** 自定义的ovfile加载时的解析数据行为 */
 
 private:
 	std::string mSoundID;
 	ALuint mBuffer;
 	ALuint mSource;
-	std::vector<ALuint> mSources;
+	std::vector<ALuint> mSources;		/** 管理每个音效的source */
 
-	static constexpr int numBuffers = 8;
-	ALuint mBuffers[numBuffers];
+	static std::map<std::string, Sound> mSounds;	/** 管理全部sound实例 */
 };

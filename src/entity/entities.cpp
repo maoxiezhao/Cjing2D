@@ -25,6 +25,8 @@ Entities::Entities(Game&game, Map&map):
 	}
 
 	// 初始化四叉树管理entity
+	const int margin = 64;
+	mEntityTree.Initialize({-margin, -margin, mMap.GetWidth() + margin, mMap.GetHeight() + margin});
 
 	// 添加相机,Test:临时设置为屏幕中点，视野为整个屏幕
 	mCamera = std::make_shared<Camera>(map);
@@ -35,6 +37,7 @@ Entities::Entities(Game&game, Map&map):
 
 Entities::~Entities()
 {
+	mEntityTree.Clear();
 	mEntityNamed.clear();
 	mEntityToDraw.clear();
 	mEntityToRemove.clear();
@@ -68,19 +71,20 @@ void Entities::Draw()
 	// 在相机范围时才添加到绘制列表
 	if (mEntityToDraw.empty())
 	{
-		// 应从4叉数中获取对象集合
+		// 应从4叉数中获取相机范围内的对象集合
+		Rect aroundCamera(
+			mCamera->GetPos().x - mCamera->GetSize().width,
+			mCamera->GetPos().y - mCamera->GetSize().height,
+			mCamera->GetSize().width * 2,
+			mCamera->GetSize().height * 2);
 
-		for (const auto& entity : mAllEntities)
+		EntityVector entitiesInCamera;
+		GetEntitiesInRect(aroundCamera, entitiesInCamera);
+		for (const auto& entity : entitiesInCamera)
 		{
-			Rect aroundCamera(
-				mCamera->GetPos().x - mCamera->GetSize().width,
-				mCamera->GetPos().y - mCamera->GetSize().height,
-				mCamera->GetSize().width * 2,
-				mCamera->GetSize().height * 2);
-
-			if (entity->GetRectBounding().Overlaps(aroundCamera))
+			int layer = entity->GetLayer();
+			if (entity->IsVisible())
 			{
-				int layer = entity->GetLayer();
 				mEntityToDraw[layer].push_back(entity);
 			}
 		}
@@ -177,6 +181,14 @@ CameraPtr Entities::GetCamear() const
 EntityList Entities::GetEntities()
 {
 	return mAllEntities;
+}
+
+/**
+*	\brief 返回范围内的entities的集合
+*/
+void Entities::GetEntitiesInRect(const Rect & rect, EntityVector & entities) const
+{
+	entities = mEntityTree.GetElements(rect);
 }
 
 /**
@@ -290,11 +302,10 @@ void Entities::AddEntity(const EntityPtr& entity)
 	Debug::CheckAssertion(mMap.IsValidLayer(entity->GetLayer()),
 		"Invalid entity layer in adding entity.");
 
-	//if (entity->GetEntityType() != EntityType::PLAYRE)
-	//{
-		mAllEntities.push_back(entity);
-		entity->SetMap(&mMap);
-	//}
+	mEntityTree.Add(entity, entity->GetRectBounding());
+
+	mAllEntities.push_back(entity);
+	entity->SetMap(&mMap);
 }
 
 void Entities::RemoveEntity(Entity& entity)
@@ -309,5 +320,17 @@ LuaContext & Entities::GetLuaContext()
 Map & Entities::GetMap()
 {
 	return mMap;
+}
+
+/**
+*	\brief 响应entity的rect改变
+*
+*	当entity的大小和位置发生改变时，调用该函数来
+*	维护quadTree结构的正确
+*/
+void Entities::NotifyEntityRectChanged(Entity & entity)
+{
+	auto& entityPtr = std::dynamic_pointer_cast<Entity>(entity.shared_from_this());	// get shared_ptr entity
+	mEntityTree.Move(entityPtr, entityPtr->GetRectBounding());
 }
 

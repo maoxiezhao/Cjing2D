@@ -23,6 +23,7 @@ public:
 
 	/** Notify command event */
 	virtual void NotifyMovementChanged();
+	virtual void NotifyPositonChanged();
 
 	/** status manager */
 	void PlaceOnMap(Map& map);

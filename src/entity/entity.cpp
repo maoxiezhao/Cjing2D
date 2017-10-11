@@ -16,6 +16,7 @@ Entity::Entity():
 	mMovement(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
+	mVisibled(true),
 	mDebugSprite(nullptr)
 {
 }
@@ -30,6 +31,7 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 	mMovement(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
+	mVisibled(true),
 	mDebugSprite(nullptr)
 {
 }
@@ -140,6 +142,10 @@ void Entity::NotifyMovementChanged()
 	}
 }
 
+void Entity::NotifyPositonChanged()
+{
+}
+
 /**
 *	\brief 当地图完成加载后执行完成初始化
 */
@@ -164,6 +170,14 @@ void Entity::SetMap(Map * map)
 Map & Entity::GetMap()
 {
 	return *mMap;
+}
+
+/**
+*	\brief 是否在地图中
+*/
+bool Entity::IsOnMap() const
+{
+	return mMap != nullptr;
 }
 
 const Map & Entity::GetMap() const
@@ -354,6 +368,16 @@ Point2 Entity::GetScreenPos() const
 {
 	auto camPos = GetMap().GetCamera()->GetLeftTopPos();
 	return GetPos() - camPos;
+}
+
+bool Entity::IsVisible()const
+{
+	return mVisibled;
+}
+
+void Entity::SetVisible(bool visibled)
+{
+	mVisibled = visibled;
 }
 
 Point2 Entity::GetPos()const

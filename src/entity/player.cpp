@@ -118,3 +118,14 @@ void Player::NotifyMovementChanged()
 	// 响应中设置动画的播放暂停
 	GetState()->NotifyMovementChanged();	
 }
+
+/**
+*	\brief 响应位置改变
+*/
+void Player::NotifyPositonChanged()
+{
+	if (IsOnMap())
+	{
+		GetMap().GetEntities().NotifyEntityRectChanged(*this);
+	}
+}

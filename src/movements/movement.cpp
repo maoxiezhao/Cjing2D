@@ -94,6 +94,10 @@ void Movement::Start()
 */
 void Movement::NotifyPositonChanged()
 {
+	if (mEntity != nullptr)
+	{
+		mEntity->NotifyPositonChanged();
+	}
 }
 
 /**

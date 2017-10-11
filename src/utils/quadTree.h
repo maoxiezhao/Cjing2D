@@ -18,8 +18,9 @@ public:
 
 	void Initialize(const Rect& rect);
 	bool Add(const T& element, const Rect& boundingBox);	   // Ìí¼Óelement
-	bool Move();   // ÒÆ¶¯element
+	bool Move(const T& element, const Rect& newBoundingBox);   // ÒÆ¶¯element
 	bool Remove(const T& element);
+	void Clear();
 
 	Rect GetSpace()const;
 	std::vector<T> GetElements(const Rect& region)const;
@@ -48,7 +49,8 @@ private:
 		bool Remove(const T& element, const Rect& boundingBox);
 		void GetElements(const Rect&region, std::set<T>& result)const;
 		int GetElementCount()const;
-		
+		void Clear();
+
 		Rect GetCell()const;
 		bool Remove(const T& element);
 		void DrawDebug(SpritePtr sprite);

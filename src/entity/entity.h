@@ -40,6 +40,7 @@ public:
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
+	virtual void NotifyPositonChanged();
 
 	void NotifyMapStarted();
 	
@@ -71,9 +72,12 @@ public:
 	void SetOrigin(const Point2& origin);
 	const Point2& GetOrigin()const;
 	Point2 GetScreenPos()const;
+	bool IsVisible()const;
+	void SetVisible(bool visibled);
 
 	void SetMap(Map* map);
 	Map& GetMap();
+	bool IsOnMap()const;
 	const Map& GetMap()const;
 	Game& GetGame();
 
@@ -104,6 +108,7 @@ private:
 	EntityType mType;
 	bool mIsInitialized;
 	bool mIsDrawOnYOrder;
+	bool mVisibled;
 
 	// core member
 	LuaContext* mLuaContext;				/** µ±Ç°µÄluaContext */

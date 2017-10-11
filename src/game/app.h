@@ -10,13 +10,8 @@
 #include"game\animationSprite.h"
 #include"game\game.h"
 #include"entity\player.h"
-
-// test
 #include"gui\core\handler.h"
 #include"gui\widget\window.h"
-#include"gui\widget\button.h"
-#include"core\sound.h"
-#include"utils\quadTree.h"
 
 /**
 *	\brief 程序的主循环
@@ -53,10 +48,6 @@ private:
 	std::unique_ptr<gui::GUIManager> mGUI;	
 
 	std::shared_ptr<gui::Window> mWindow;
-
-	// test
-	QuadTree<int> mTrees;
-	void DrawQuadTreeDebug();
 };
 
 #endif

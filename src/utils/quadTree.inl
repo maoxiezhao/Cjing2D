@@ -11,6 +11,8 @@ QuadTree<T>::QuadTree():
 template<typename T>
 inline void QuadTree<T>::Initialize(const Rect & rect)
 {
+	Clear();
+
 	mRoot.Initialize(rect);
 }
 
@@ -37,10 +39,38 @@ inline bool QuadTree<T>::Add(const T & element, const Rect & boundingBox)
 	return true;
 }
 
+/**
+*	\brief 调整element在quadTree中位置
+*
+*	当element的pos和size发生改变时，调用该函数来保持四叉树结构的
+*	的正确性。
+*/
 template<typename T>
-inline bool QuadTree<T>::Move()
+inline bool QuadTree<T>::Move(const T & element, const Rect & newBoundingBox)
 {
-	return false;
+	auto& it = mElements.find(element);
+	if (it == mElements.end())
+	{	// 四叉树中未保存当前结构
+		return false;
+	}
+	else
+	{
+		// 当rect未发生改变时直接返回
+		if (it->second == newBoundingBox)
+		{
+			return true;
+		}
+		// 先移除old element，再添加新的element
+		if (!Remove(element))
+		{
+			return false;
+		}
+		if (!Add(element, newBoundingBox))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 /**
@@ -63,6 +93,14 @@ inline bool QuadTree<T>::Remove(const T& element)
 	}
 
 	return false;
+}
+
+template<typename T>
+inline void QuadTree<T>::Clear()
+{
+	mElements.clear();
+	mElementsOut.clear();
+	mRoot.Clear();
 }
 
 template<typename T>
@@ -271,6 +309,20 @@ inline int QuadTree<T>::Node::GetElementCount() const
 		result = mElements.size();
 	}
 	return result;
+}
+
+template<typename T>
+inline void QuadTree<T>::Node::Clear()
+{
+	mElements.clear();
+	if (IsSplit())
+	{
+		for (auto& child : mChilds)
+		{
+			child->Clear();
+		}
+	}
+	std::fill(mChilds.begin(), mChilds.end(), nullptr);
 }
 
 template<typename T>

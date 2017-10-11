@@ -16,7 +16,7 @@ class TileInfo;
 
 using EntityList = std::list<EntityPtr>;
 using EntityVector = std::vector<EntityPtr>;
-using EntityTree = QuadTree<Entity>;
+using EntityTree = QuadTree<EntityPtr>;
 
 /**
 *	\brief Entitiesπ‹¿Ìentitiy
@@ -39,6 +39,7 @@ public:
 	void RemoveEntity(Entity& entity);
 	CameraPtr GetCamear()const;
 	EntityList GetEntities();
+	void GetEntitiesInRect(const Rect& rect, EntityVector& entities)const;
 	void AddTile(const TileInfo& tileInfo);
 	void SetGround(const Ground& ground, int layer, const Rect& rect);
 	void SetGround(const Ground& ground, int layer, int cellX, int cellY);
@@ -47,6 +48,9 @@ public:
 	// lua
 	LuaContext& GetLuaContext();
 	Map& GetMap();
+
+	// notify
+	void NotifyEntityRectChanged(Entity& entity);
 	
 private:
 	template<typename T>

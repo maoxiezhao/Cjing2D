@@ -16,6 +16,7 @@
 #include"gui\widget\window.h"
 #include"gui\widget\button.h"
 #include"core\sound.h"
+#include"utils\quadTree.h"
 
 /**
 *	\brief 程序的主循环
@@ -53,6 +54,9 @@ private:
 
 	std::shared_ptr<gui::Window> mWindow;
 
+	// test
+	QuadTree<int> mTrees;
+	void DrawQuadTreeDebug();
 };
 
 #endif

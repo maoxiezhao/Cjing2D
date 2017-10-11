@@ -1,6 +1,3 @@
-#include "rectangle.h"
-
-
 constexpr Rect::Rect():
 	x(0),y(0),
 	width(0),height(0)
@@ -149,16 +146,16 @@ inline bool Rect::Overlaps(const Rect & rect) const
 		y + height < rect.y || y > rect.y + rect.height);
 }
 
-inline bool Rect::operator==(const Rect & rect)
+constexpr bool operator==(const Rect& lhs, const Rect& rhs)
 {
-	return x == rect.x && y == rect.y &&
-		width == rect.width && height == rect.width;
+	return lhs.x == rhs.x && lhs.y == rhs.y &&
+		lhs.width == rhs.width && lhs.height == rhs.width;
 }
 
-inline bool Rect::operator!=(const Rect & rect)
+constexpr bool operator!=(const Rect& lhs, const Rect& rhs)
 {
-	return x != rect.x || y != rect.y ||
-		width != rect.width || height != rect.width;
+	return lhs.x != rhs.x || lhs.y != rhs.y ||
+		lhs.width != rhs.width || lhs.height != rhs.width;
 }
 
 /**

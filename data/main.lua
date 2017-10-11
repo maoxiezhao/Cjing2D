@@ -31,11 +31,11 @@ end
 
 function cjing.Main:FinishedLoading()
 	print "[Lua] Loading Finished."
-	cjing.Sound.playMusic("bg.ogg", true);
+	cjing.Sound.playMusic("castle.ogg", true);
 	-- 加载存档
 	local gameManager = require("menus/gameManager")
 	if gameManager then 
-		gameManager:startGame()
+		--gameManager:startGame()
 	end
 end
 

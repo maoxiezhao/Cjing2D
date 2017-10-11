@@ -10,6 +10,9 @@
 
 #include<Windows.h>
 
+// test
+#include"utils\rectangle.h"
+
 App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
@@ -40,6 +43,17 @@ App::App() :
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
 
+	// test quadTree
+	for (int i = 0; i < 50; i++)
+	{
+		mTrees.Add(100 + i, Rect((i % 16) * 40 , (i / 16) * 30, 25, 25));
+	}
+
+	auto removedElements = mTrees.GetElements({ 320, 0, 320, 240 });
+	for (auto& element : removedElements)
+	{
+		mTrees.Remove(element);
+	}
 }
 
 App::~App()
@@ -182,6 +196,9 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
+	// test
+	DrawQuadTreeDebug();
+
 	if (mCurrGame != nullptr)
 	{
 		mCurrGame->Draw();
@@ -211,6 +228,11 @@ void App::NotifyInput(const InputEvent & ent)
 	{
 		mGUI->HandleEvent(ent);
 	}
+}
+
+void App::DrawQuadTreeDebug()
+{
+	mTrees.DrawDebug();
 }
 
 /**

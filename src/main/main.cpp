@@ -18,7 +18,6 @@
 #include"utils\grid.h"
 #include<future>
 
-
 int main(int argc,char** argv)
 {
 	Debug::SetAbortOnDie(true);

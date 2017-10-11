@@ -26,6 +26,8 @@ public:
 	virtual void Draw();
 	virtual void Draw(const Point2& pos);
 	void Draw(const Point2& pos, float rotate);
+	void MultiplyDraw();
+	void MultiplyDraw(const Point2& pos, float rotate);
 
 	// status 
 	void SetVisible(bool visible);
@@ -75,6 +77,7 @@ protected:
 	bool InitWithTexture(TexturePtr texture, const Rect& rect);
 	void UpdateTransform();
 	void Draw(Renderer& renderer, const Matrix4& transform);
+	void MultiplyDraw(Renderer& renderer, const Matrix4& transform);
 
 protected:
 	Quad mQuad;

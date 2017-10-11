@@ -136,6 +136,36 @@ void Sprite::Draw(const Point2 & pos, float rotate)
 }
 
 /**
+*	\brief 实现多次绘制
+*
+*	因为存在频繁的renderCommand的创建释放，所以存在
+*	性能问题
+*/
+void Sprite::MultiplyDraw()
+{
+	if (IsDirty())
+		UpdateTransform();
+
+	if (mVisible)
+		MultiplyDraw(GetPos(), GetRotated());
+}
+
+void Sprite::MultiplyDraw(const Point2 & pos, float rotate)
+{
+	Matrix4 transfomr;
+	// 因为是右乘坐标，所有操作顺序为从下往上
+	// 移动到指定位置
+	transfomr = Matrix4::Translate(Vec3f((float)pos.x, (float)pos.y, .0f));
+
+	// 移动到原点旋转后移回
+	transfomr *= Matrix4::Translate(Vec3f(mSize.width*0.5f, mSize.height*0.5f, 0.0f));
+	transfomr *= Matrix4::Rotate(Vec3f(0.0f, 0.0f, 1.0f), rotate);
+	transfomr *= Matrix4::Translate(Vec3f(-mSize.width*0.5f, -mSize.height*0.5f, 0.0f));
+
+	MultiplyDraw(Renderer::GetInstance(), transfomr);
+}
+
+/**
 *	\brief 向renderer提交渲染命令
 */
 void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
@@ -149,6 +179,19 @@ void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 		mQuad, 1, mBlendFunc,transform,mModelView);
 
 	renderer.PushCommand(&mQuadCommand);
+}
+
+void Sprite::MultiplyDraw(Renderer & renderer, const Matrix4 & transform)
+{
+	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Sprite::Draw().");
+
+	auto quadCommand = new QuadCommand();
+
+	quadCommand->Init(0, mProgramState,
+		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
+		mQuad, 1, mBlendFunc, transform, mModelView, true);
+
+	renderer.PushCommand(quadCommand);
 }
 
 /**

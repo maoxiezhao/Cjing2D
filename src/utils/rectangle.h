@@ -38,11 +38,11 @@ public:
 	bool Contains(const Point2& point)const;
 	bool Overlaps(const Rect& rect)const;
 
-
-	bool operator ==(const Rect& rect);
-	bool operator !=(const Rect& rect);
 	Rect& operator &=(const Rect& rect);
 	Rect& operator |=(const Rect& rect);
+
+	friend constexpr bool operator==(const Rect& lhs, const Rect& rhs);
+	friend constexpr bool operator!=(const Rect& lhs, const Rect& rhs);
 
 public:
 	int x, y;

@@ -1,11 +1,6 @@
 -- global setting
 package.path = package.path .. ";data/?.lua"
 
-local circlePosX = 200
-local circlePosY = 100
-local circleRadis = 50
-local currStep = 1
-
 function cjing.Main:onStarted()
 	print "[lua] Main:onStarted normal."
 

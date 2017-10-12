@@ -9,6 +9,7 @@ function game:onStarted()
 	self._logo:setPos(540, 430)
 	self._logoText = nil
 	self._debugText = nil
+	self._heartHud = nil
 	
 	local text = cjing.Text.create({fontName = "arial.ttf"})
 	if text then 
@@ -27,6 +28,11 @@ function game:onStarted()
 		debugText:setLineHeight(25)
 		self._debugText = debugText
 	end
+	
+	-- main game hud
+	local hudClass = require("menus/huds/hudHeart")	
+	local hudHeart = hudClass:new()
+	hudHeart:initialize(self)
 end
 
 function game:onFinished()

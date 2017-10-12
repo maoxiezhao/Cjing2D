@@ -1,6 +1,8 @@
 #pragma once
 
-#include"game\savegame.h"
+#include"common\common.h"
+
+class Savegame;
 
 /**
 *	\brief equipment 类包含有当前的游戏数值属性
@@ -10,8 +12,15 @@
 *	过该类管理在savegame中，同时保存有两份数据
 *	（该类和savegame)
 */
-
 class Equipment
 {
-	Equipment();
+public:
+	Equipment(Savegame& savegame);
+
+	/**** ***** Setter/Getter **** *****/
+	int GetLife()const;
+	void SetLife(int life);
+
+private:
+	Savegame& mSavegame;
 };

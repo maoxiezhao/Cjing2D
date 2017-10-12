@@ -8,10 +8,12 @@ const std::string Savegame::GAMECOMMAND_KEYBOARD_UP = "keyboard_up";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
+const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
 
 Savegame::Savegame(const string& fileName):
 	mFileName(fileName),
-	mGame(nullptr)
+	mGame(nullptr),
+	mEquipment(*this)
 {
 }
 
@@ -75,6 +77,11 @@ void Savegame::SaveGameToLocal()
 	}
 	const string& content = oss.str();
 	FileData::SaveFile(mFileName, content);
+}
+
+Equipment & Savegame::GetEquipment()
+{
+	return mEquipment;
 }
 
 void Savegame::SetInteger(const string & key, int value)
@@ -224,6 +231,7 @@ void Savegame::SetDefaultData()
 {
 	SetDefaultCommandMappingKeyBoard();
 	SetDefualtCommandMappingMouse();
+	SetDefaultEquipmentState();
 }
 
 /**
@@ -242,6 +250,14 @@ void Savegame::SetDefaultCommandMappingKeyBoard()
 */
 void Savegame::SetDefualtCommandMappingMouse()
 {
+}
+
+/**
+*	\brief ÉèÖÃÄ¬ÈÏµÄequipment×´Ì¬
+*/
+void Savegame::SetDefaultEquipmentState()
+{
+	mEquipment.SetLife(10);
 }
 
 /**

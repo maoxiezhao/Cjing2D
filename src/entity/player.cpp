@@ -1,13 +1,15 @@
 #include"entity\player.h"
 #include"entity\entities.h"
 #include"game\map.h"
+#include"game\equipment.h"
 #include"player\freeState.h"
 #include"player\mouseState.h"
 #include"player\playerSprite.h"
 
-Player::Player():
+Player::Player(Equipment & equipment) :
 	Entity("", { 200, 200 }, {30, 30}, 0),	// testing data
 	mPlayerSprites(nullptr),
+	mEquipment(equipment),
 	mNormalWalkingSpeed(100),
 	mCurWalkingSpeed(100),
 	mIsBindDirectionByGameCommand(true)

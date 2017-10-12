@@ -4,6 +4,7 @@
 #include"game\savegame.h"
 #include"game\map.h"
 #include"game\gameCommands.h"
+#include"game\equipment.h"
 #include"lua\luaContext.h"
 
 Game::Game(App* app):	// test,no savegame
@@ -15,7 +16,8 @@ Game::Game(App* app):	// test,no savegame
 	mCurrentMap(nullptr),
 	mNextMap(nullptr)
 {
-	mPlayer = std::make_shared<Player>();
+	Equipment& equipment = mSavegame->GetEquipment();
+	mPlayer = std::make_shared<Player>(equipment);
 }
 
 Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
@@ -33,7 +35,8 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	mGameCommands = std::make_shared<GameCommands>(*this);
 
 	// º”‘ÿplayer
-	mPlayer = std::make_shared<Player>();
+	Equipment& equipment = mSavegame->GetEquipment();
+	mPlayer = std::make_shared<Player>(equipment);
 
 	// º”‘ÿmap
 	string mapID = "test";      //savegame->getStringMapId();

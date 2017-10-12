@@ -118,6 +118,7 @@ public:
 		game_api_save,
 		game_api_set_value,
 		game_api_get_value,
+		game_api_get_life,
 		// time
 		time_api_start,
 		// menu

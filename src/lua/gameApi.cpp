@@ -18,6 +18,7 @@ void LuaContext::RegisterGameModule()
 		{ "start", game_api_start},
 		{ "save", game_api_save },
 		{ "setValue", game_api_set_value},
+		{ "getLife", game_api_get_life },
 		{ nullptr,nullptr }
 	};
 
@@ -180,4 +181,17 @@ int LuaContext::game_api_set_value(lua_State*l)
 	});
 }
 
+
+/**
+*	\brief  µœ÷game:saveValue(key, value)
+*/
+int LuaContext::game_api_get_life(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		int life = savegame.GetEquipment().GetLife();
+		lua_pushinteger(l, life);
+		return 1;
+	});
+}
 

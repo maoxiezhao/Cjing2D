@@ -53,6 +53,9 @@ void LuaContext::Initialize()
 	// 注册函数
 	RegisterModules();
 
+	// 加载全局函数
+	DoFileIfExists(l, "script/libFunction");
+
 	// 自定义lua require 加载器，用于解析打包的资源文件
 
 

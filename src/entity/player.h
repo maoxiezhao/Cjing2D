@@ -7,6 +7,7 @@
 #include"game\gameCommands.h"
 
 class PlayerSprite;
+class Equipment;
 
 /**
 *	\brief 可操纵的玩家类基类
@@ -14,7 +15,7 @@ class PlayerSprite;
 class Player : public Entity
 {
 public:
-	Player();
+	Player(Equipment& equipment);
 
 	/** system operator */
 	virtual void Update();
@@ -36,6 +37,7 @@ public:
 
 private:
 	std::unique_ptr<PlayerSprite> mPlayerSprites;	// 当前的sprite合集
+	Equipment& mEquipment;		// 当前player数值管理者，包括装备管理
 
 	Point2 mDisplayedPos;		// sprite 显示的位置
 	bool mIsBindDirectionByGameCommand;

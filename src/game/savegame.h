@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"game\game.h"
+#include"game\equipment.h"
 #include"lua\luaObject.h"
 #include<map>
 
@@ -23,6 +24,7 @@ public:
 	void SetGame(Game* game);
 	Game* GetGame();
 	void SaveGameToLocal();
+	Equipment& GetEquipment();
 
 	/** saved value operation */
 	void SetInteger(const string& key, int value);
@@ -40,6 +42,9 @@ public:
 	static const std::string GAMECOMMAND_KEYBOARD_DOWN;
 	static const std::string GAMECOMMAND_KEYBOARD_LEFT;
 
+	/*** *** 当前游戏数值的Keyword *** ***/
+	static const std::string KEYWORD_CURRENT_LIFE;
+
 private:
 	/** lua newindex function */
 	static int LuaLoadConfig(lua_State* l);
@@ -50,7 +55,12 @@ private:
 
 	void SetDefaultCommandMappingKeyBoard();
 	void SetDefualtCommandMappingMouse();
+	void SetDefaultEquipmentState();
+
 private:
+	/**
+	*	保存值的对象结构，包含了对象的值和对象的数据类型
+	*/
 	struct SavedValue
 	{
 		enum TYPE{
@@ -60,14 +70,15 @@ private:
 		};
 		TYPE type;
 		std::string mStringData;
-		int mValueData;		//	(Integer and boolean)
+		int mValueData;		    //	(Integer and boolean)
 
 		SavedValue() :type(VALUE_STRING), mStringData(""), mValueData(0){}
 	};
 
 	std::map<std::string, SavedValue> mSavedValues;
 	Game* mGame;
-	string mFileName;
+	Equipment mEquipment;		/** 当前的玩家状态管理者 */
+	string mFileName;			/** 当前存档文件名 */
 
 };
 

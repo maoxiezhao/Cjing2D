@@ -9,13 +9,13 @@ function game:onStarted()
 	self._logo:setPos(540, 430)
 	self._logoText = nil
 	self._debugText = nil
-	self._heartHud = nil
+	self._gameHud = nil
 	
 	local text = cjing.Text.create({fontName = "arial.ttf"})
 	if text then 
 		text:setHorizontalAlign("center")
 		text:setText("Welcome to Cjing v0.1")
-		text:setPos(540, 430)
+		text:setPos(540, 460)
 		text:setLineHeight(25)
 		self._logoText = text
 	end
@@ -24,7 +24,7 @@ function game:onStarted()
 	if debugText then 
 		local dubugStr = "FPS:" .. cjing.Video.getFPS()
 		debugText:setText(dubugStr)
-		debugText:setPos(20, 440)
+		debugText:setPos(20, 460)
 		debugText:setLineHeight(25)
 		self._debugText = debugText
 	end
@@ -33,6 +33,7 @@ function game:onStarted()
 	local hudClass = require("menus/huds/hudHeart")	
 	local hudHeart = hudClass:new()
 	hudHeart:initialize(self)
+	self._gameHud = hudHeart
 end
 
 function game:onFinished()
@@ -49,6 +50,9 @@ function game:onDraw()
 		self._debugText:setText(dubugStr)
 	end
 
+	-- draw hud
+	self._gameHud:onDraw()
+	
 	-- draw main scene --
 	self._logo:draw()
 	self._logoText:draw()

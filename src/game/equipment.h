@@ -20,6 +20,8 @@ public:
 	/**** ***** Setter/Getter **** *****/
 	int GetLife()const;
 	void SetLife(int life);
+	int GetMaxLife()const;
+	void SetMaxLife(int maxLife);
 
 private:
 	Savegame& mSavegame;

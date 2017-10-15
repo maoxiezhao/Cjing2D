@@ -119,6 +119,7 @@ public:
 		game_api_set_value,
 		game_api_get_value,
 		game_api_get_life,
+		game_api_get_max_life,
 		// time
 		time_api_start,
 		// menu
@@ -148,6 +149,7 @@ public:
 		sprite_api_set_opacity,
 		sprite_api_get_opacity,
 		sprite_api_set_anchor,
+		sprite_api_set_color,
 		sprite_api_draw,
 		// animation
 		animation_api_create,

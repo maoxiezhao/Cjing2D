@@ -343,6 +343,9 @@
     <ClCompile Include="src\lua\soundApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\pickable.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -653,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="src\core\music.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\pickable.h">
+      <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -378,7 +378,7 @@ void Font::RenderText(float size, const Point2 & pos, const Rect & clipRect, flo
 						if (!IsDynamicLoadTexture())
 							SetCharChanel((float)glyph->chanel);
 
-						Render(Point2(x, y), charSize, 0);
+						Render(Point2(x, y - lineHeight), charSize, 0);
 					}
 				}
 			}

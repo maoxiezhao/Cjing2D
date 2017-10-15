@@ -17,6 +17,7 @@ void LuaContext::RegisterSpriteModule()
 		{"getSize", sprite_api_get_size},
 		{"setRotation", sprite_api_set_rotation},
 		{"getRotation", sprite_api_get_rotation},
+		{"setColor", sprite_api_set_color},
 		{"setBlend", sprite_api_set_blend},
 		{"getBlend", sprite_api_get_blend},
 		{"setOpacity", sprite_api_set_opacity},
@@ -67,17 +68,33 @@ bool LuaContext::IsSprite(lua_State*l, int index)
 /**
 *	\brief 实现cjing.Sprite.create()
 *
-*	这里存在2中创建精灵的方法,目前考虑是否支持第二种纯色精灵的创建
+*	这里存在2中创建精灵的方法
+*	1.cjing.Sprite.create(pathStr)   创建指定的图片精灵
+*	2.cjing.Sprite.create({r,g,b,a}) 创建指定颜色的图片块
 */
 int LuaContext::sprite_api_create(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		const string spriteName = LuaTools::CheckString(l, 1);
-		
-		SpritePtr sprite = std::make_shared<Sprite>(spriteName);
-		GetLuaContext(l).AddDrawable(sprite);
+		if (lua_type(l, 1) != LUA_TTABLE && lua_type(l, 1) != LUA_TSTRING)
+		{
+			LuaTools::Error(l, "Invalid param in sprite::create.");
+			return 0;
+		}
 
+		SpritePtr sprite = nullptr;
+		if (lua_type(l, 1) == LUA_TSTRING)
+		{
+			const string spriteName = LuaTools::CheckString(l, 1);
+			sprite = std::make_shared<Sprite>(spriteName);
+		}
+		else
+		{
+			const Color4B& color = LuaTools::CheckColor(l, 1);
+			sprite = std::make_shared<Sprite>(color, Size(0, 0));
+		}
+		GetLuaContext(l).AddDrawable(sprite);
 		PushSprite(l, *sprite);
+
 		return 1;
 	});
 }
@@ -205,6 +222,20 @@ int LuaContext::sprite_api_get_rotation(lua_State*l)
 		lua_pushnumber(l, angle);
 
 		return 1;
+	});
+}
+
+/**
+*	\brief 实现cjing.Sprite:setColor({r,g,b,a})
+*/
+int LuaContext::sprite_api_set_color(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		const Color4B color = LuaTools::CheckColor(l, 2);
+		sprite.SetColor(color);
+
+		return 0;
 	});
 }
 

@@ -9,6 +9,7 @@ const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
+const std::string Savegame::KEYWORD_CURRENT_MAX_LIFE = "keyword_current_max_life";
 
 Savegame::Savegame(const string& fileName):
 	mFileName(fileName),
@@ -258,6 +259,7 @@ void Savegame::SetDefualtCommandMappingMouse()
 void Savegame::SetDefaultEquipmentState()
 {
 	mEquipment.SetLife(10);
+	mEquipment.SetMaxLife(10);
 }
 
 /**

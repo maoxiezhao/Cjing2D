@@ -19,6 +19,7 @@ void LuaContext::RegisterGameModule()
 		{ "save", game_api_save },
 		{ "setValue", game_api_set_value},
 		{ "getLife", game_api_get_life },
+		{ "getMaxLife", game_api_get_max_life },
 		{ nullptr,nullptr }
 	};
 
@@ -183,13 +184,26 @@ int LuaContext::game_api_set_value(lua_State*l)
 
 
 /**
-*	\brief 实现game:saveValue(key, value)
+*	\brief 实现game:getLife()
 */
 int LuaContext::game_api_get_life(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Savegame& savegame = *CheckSavegame(l, 1);
 		int life = savegame.GetEquipment().GetLife();
+		lua_pushinteger(l, life);
+		return 1;
+	});
+}
+
+/**
+*	\brief 实现game:getMaxLife()
+*/
+int LuaContext::game_api_get_max_life(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		int life = savegame.GetEquipment().GetMaxLife();
 		lua_pushinteger(l, life);
 		return 1;
 	});

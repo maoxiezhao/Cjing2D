@@ -1,0 +1,9 @@
+animation{
+  name = "flash",
+  src_image = "particles/flash.png",
+  frame_delay = 150,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 10, frame_height = 10, origin_x = 25, origin_y = 25, num_frames = 4, num_columns = 4 },
+  },
+}

@@ -1,0 +1,32 @@
+particle{
+  name = "test",
+  type = "animation",
+  path = "particles/flash",
+  
+  -- property --
+  minLife = 3000,		-- ms
+  maxLife = 5000,
+  
+  minGravity = 0.0,
+  maxGravity = 0.0,
+  
+  minRadialAccel = 0.0,
+  maxRadialAccel = 0.0,
+  
+  minTangentialAccel = 0.0,
+  maxTangentialAccel = 0.0,
+  
+  minSpeed = 50,
+  maxSpeed = 70,
+  
+  startSpin = 60,
+  endSpin = 120,
+  
+  startAlpah = 255,
+  endAlpha = 255,
+  
+  emissionRate = 50,
+  posOffset = {0, 0},		-- 生成位置的偏移量（正负）
+  
+  
+}

@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"utils\point.h"
+#include"utils\vec2.h"
 
 /**
 *	\brief 数学常用定义和常用的数学函数
@@ -17,9 +18,9 @@ namespace Geometry
 	constexpr double PI_OVER_2   = 1.57079632679489661923;
 	constexpr double PI_OVER_4   = 0.78539816339744830961;
 
-	inline float Radians(float angle)
+	inline double Radians(double angle)
 	{
-		return (float)PI * angle  / 180.0f;
+		return PI * angle / 180.0f;
 	}
 
 	inline double GetDistance(const Point2& p1, const Point2& p2)
@@ -55,6 +56,20 @@ namespace Geometry
 			return PI_OVER_2;
 		}
 		double angle = std::atan2(-dxy.y, dxy.x);
+		if (angle < 0.0)
+		{
+			angle += PI_2;
+		}
+		return angle;
+	}
+
+	inline double GetAngle(const Vec2d& vec)
+	{
+		if (vec.x == 0 && vec.y == 0)
+		{
+			return PI_OVER_2;
+		}
+		double angle = std::atan2(-vec.y, vec.x);
 		if (angle < 0.0)
 		{
 			angle += PI_2;

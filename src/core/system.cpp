@@ -2,6 +2,7 @@
 #include"core\inputEvent.h"
 #include"core\video.h"
 #include"core\sound.h"
+#include"core\random.h"
 #include<Windows.h>
 
 uint32_t System::mInitDate = 0;
@@ -32,6 +33,7 @@ void System::Initialize()
 	InputEvent::Initialize();
 	Sound::Initialize();
 	Video::Initialize();
+	Random::Initialize();
 }
 
 void System::Update()

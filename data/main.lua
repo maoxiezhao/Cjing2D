@@ -30,7 +30,7 @@ function cjing.Main:FinishedLoading()
 	-- 加载存档
 	local gameManager = require("menus/gameManager")
 	if gameManager then 
-		gameManager:startGame()
+		--gameManager:startGame()
 	end
 end
 

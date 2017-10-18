@@ -10,6 +10,7 @@ Movement::Movement():
 	mFinished(false),
 	mSuspended(false),
 	mDrawable(nullptr),
+	mEntity(nullptr),
 	mWhenSuspendedTime(0),
 	mIngoreObstacle(false)
 {
@@ -20,6 +21,7 @@ Movement::Movement(bool ingoreObstacles):
 	mFinished(false),
 	mSuspended(false),
 	mDrawable(nullptr),
+	mEntity(nullptr),
 	mWhenSuspendedTime(0),
 	mIngoreObstacle(ingoreObstacles)
 {

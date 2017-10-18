@@ -1,3 +1,4 @@
+#include "luaTools.h"
 namespace LuaTools {
 
 template<typename Callable>
@@ -46,6 +47,19 @@ E CheckEnum(lua_State * l, int index, const std::map<E, string>& names)
 	ArgError(l, index, std::string("Invailed name '") + name + ", allowed name are " + allowedNames);
 
 	return E();
+}
+
+template<typename E>
+E CheckFiledEnum(lua_State * l, int tableIndex, const string & name)
+{
+	lua_getfield(l, tableIndex, name.c_str());
+	if (!lua_isstring(l, -1))
+	{
+		ArgError(l, tableIndex, string("Excepted:String type,got ") + luaL_typename(l, -1));
+	}
+	E value = CheckEnum<E>(l, -1);
+	lua_pop(l, 1);
+	return value;
 }
 
 

@@ -120,7 +120,7 @@ inline void Vec2<T>::Set(T xx, T yy)
 template<typename T>
 inline double Vec2<T>::GetLength() const
 {
-	return sqrtf(x*x + y*y);
+	return sqrt(x*x + y*y);
 }
 
 template<typename T>
@@ -132,7 +132,7 @@ inline double Vec2<T>::GetLengthSquared() const
 template<typename T>
 inline Vec2<T> Vec2<T>::Normalized()
 {
-	float inv = 1.0f / GetLength();
+	double inv = 1.0f / GetLength();
 	x *= inv;
 	y *= inv;
 	return *this;

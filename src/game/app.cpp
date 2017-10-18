@@ -14,7 +14,8 @@ App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr)
+	mNextGame(nullptr),
+	mParticle(nullptr)
 {
 	Logger::Info("Cjing start initializing.");
 
@@ -39,6 +40,13 @@ App::App() :
 	// initialize gui manager
 	Logger::Info("Initialize GUI system");
 	mGUI = std::unique_ptr<gui::GUIManager>(new gui::GUIManager());
+
+	// test particle
+	mParticle = std::make_shared<ParticleSystem>("test");
+	mParticle->Initialize();
+	mParticle->SetPos({ Video::GetScreenSize().width / 2,
+					    Video::GetScreenSize().height / 2 });
+	mParticle->Start(50000);
 }
 
 App::~App()
@@ -128,6 +136,9 @@ void App::Step()
 
 void App::Update()
 {
+	// test particle
+	mParticle->Update();
+
 	// game update
 	if (mCurrGame != nullptr)
 	{
@@ -180,6 +191,9 @@ void App::CheckInput()
 void App::Render()
 {
 	Video::CleanCanvas();
+
+	// test particle
+	mParticle->Draw();
 
 	if (mCurrGame != nullptr)
 	{

@@ -337,6 +337,7 @@ public:
 	static const string module_font_name;
 	static const string module_async_loader_name;
 	static const string module_sound_name;
+	static const string module_particle_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;

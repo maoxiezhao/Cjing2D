@@ -346,6 +346,18 @@
     <ClCompile Include="src\entity\pickable.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\particleSystem.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\particleData.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\accelMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\particleApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -659,6 +671,15 @@
     </ClInclude>
     <ClInclude Include="src\entity\pickable.h">
       <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\particleSystem.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\particleData.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\accelMovement.h">
+      <Filter>movments</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -84,6 +84,18 @@ namespace LuaTools
 		return (double)lua_tonumber(l, index);
 	}
 
+	double CheckFieldNumber(lua_State * l, int tableIndex, const string & name)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!lua_isnumber(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:Number type,got ") + luaL_typename(l, -1));
+		}
+		double value = CheckNumber(l, -1);
+		lua_pop(l, 1);
+		return value;
+	}
+
 	float CheckFloat(lua_State * l, int index)
 	{
 		if (!lua_isnumber(l, index))
@@ -160,6 +172,7 @@ namespace LuaTools
 					  lua_isnumber(l, -3) &&
 					  lua_isnumber(l, -2) &&
 					  lua_isnumber(l, -1);
+		lua_pop(l, 4);
 		return result;
 	}
 
@@ -211,6 +224,65 @@ namespace LuaTools
 		const Color4B& color = CheckColor(l, -1);
 		lua_pop(l, 1);
 		return color;
+	}
+
+	bool IsPoint2(lua_State * l, int index)
+	{
+		index = GetPositiveIndex(l, index);
+		if (lua_type(l, index) != LUA_TTABLE)
+		{
+			return false;
+		}
+
+		lua_rawgeti(l, index, 1);
+		lua_rawgeti(l, index, 2);
+		bool result = lua_isnumber(l, -2) && lua_isnumber(l, -1);
+		lua_pop(l, 2);
+		return result;
+	}
+
+	Point2 CheckPoint2(lua_State * l, int index)
+	{
+		index = GetPositiveIndex(l, index);
+		CheckType(l, index, LUA_TTABLE);
+
+		lua_rawgeti(l, index, 1);
+		lua_rawgeti(l, index, 2);
+		Point2 point(CheckInt(l, -2),
+			CheckInt(l, -1));
+		lua_pop(l, 2);
+		return point;
+	}
+
+	Point2 CheckFieldPoint2(lua_State * l, int tableIndex, const string & name)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (!IsPoint2(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:Point2 type,got ") + luaL_typename(l, -1));
+		}
+		const Point2& point = CheckPoint2(l, -1);
+		lua_pop(l, 1);
+		return point;
+	}
+
+	Point2 CheckFieldPoint2ByDefault(lua_State * l, int tableIndex, const string & name, const Point2 defaultValue)
+	{
+		lua_getfield(l, tableIndex, name.c_str());
+		if (lua_isnil(l, -1))
+		{
+			lua_pop(l, 1);	// pop nil
+			return defaultValue;
+		}
+
+		if (!IsPoint2(l, -1))
+		{
+			ArgError(l, tableIndex, string("Excepted:Point2 type,got ") + luaL_typename(l, -1));
+		}
+
+		const Point2& point = CheckPoint2(l, -1);
+		lua_pop(l, 1);
+		return point;
 	}
 
 	/**

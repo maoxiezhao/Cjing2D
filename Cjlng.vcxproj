@@ -135,6 +135,8 @@
     <ClCompile Include="src\game\gameCommands.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
+    <ClCompile Include="src\game\particleData.cpp" />
+    <ClCompile Include="src\game\particleSystem.cpp" />
     <ClCompile Include="src\game\savegame.cpp" />
     <ClCompile Include="src\game\setting.cpp" />
     <ClCompile Include="src\game\sprite.cpp" />
@@ -168,12 +170,14 @@
     <ClCompile Include="src\lua\mapApi.cpp" />
     <ClCompile Include="src\lua\menuApi.cpp" />
     <ClCompile Include="src\lua\movementApi.cpp" />
+    <ClCompile Include="src\lua\particleApi.cpp" />
     <ClCompile Include="src\lua\soundApi.cpp" />
     <ClCompile Include="src\lua\spriteApi.cpp" />
     <ClCompile Include="src\lua\timeApi.cpp" />
     <ClCompile Include="src\lua\videoApi.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\test.cpp" />
+    <ClCompile Include="src\movements\accelMovement.cpp" />
     <ClCompile Include="src\movements\movement.cpp" />
     <ClCompile Include="src\movements\playerMovement.cpp" />
     <ClCompile Include="src\movements\rotateMovement.cpp" />
@@ -239,6 +243,8 @@
     <ClInclude Include="src\game\gameCommands.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\mapData.h" />
+    <ClInclude Include="src\game\particleData.h" />
+    <ClInclude Include="src\game\particleSystem.h" />
     <ClInclude Include="src\game\savegame.h" />
     <ClInclude Include="src\game\setting.h" />
     <ClInclude Include="src\game\sprite.h" />
@@ -270,6 +276,7 @@
     <ClInclude Include="src\lua\luaRef.h" />
     <ClInclude Include="src\lua\luaTools.h" />
     <ClInclude Include="src\main\test.h" />
+    <ClInclude Include="src\movements\accelMovement.h" />
     <ClInclude Include="src\movements\movement.h" />
     <ClInclude Include="src\movements\playerMovement.h" />
     <ClInclude Include="src\movements\rotateMovement.h" />

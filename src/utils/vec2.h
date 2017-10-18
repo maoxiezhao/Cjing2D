@@ -44,5 +44,6 @@ public:
 
 using Vec2i = Vec2<int>;
 using Vec2f = Vec2<float>;
+using Vec2d = Vec2<double>;
 
 #endif

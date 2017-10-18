@@ -185,8 +185,8 @@ Matrix4 Matrix4::Scale(float x, float y, float z)
 
 Matrix4 Matrix4::RotateX(float angle)
 {
-	float sint = sinf(Geometry::Radians(angle));
-	float cost = cosf(Geometry::Radians(angle));
+	float sint = sinf((float)Geometry::Radians(angle));
+	float cost = cosf((float)Geometry::Radians(angle));
 	return Matrix4 (1,0,0,0,
 					0,cost, -sint,0,
 					0,sint, cost, 0,
@@ -195,8 +195,8 @@ Matrix4 Matrix4::RotateX(float angle)
 
 Matrix4 Matrix4::RotateY(float angle)
 {
-	float sint = sinf(Geometry::Radians(angle));
-	float cost = cosf(Geometry::Radians(angle));
+	float sint = sinf((float)Geometry::Radians(angle));
+	float cost = cosf((float)Geometry::Radians(angle));
 
 	return  Matrix4(cost, 0,sint, 0,
 					0,1,0,0,
@@ -206,8 +206,8 @@ Matrix4 Matrix4::RotateY(float angle)
 
 Matrix4 Matrix4::RotateZ(float angle)
 {
-	float sint = sinf(Geometry::Radians(angle));
-	float cost = cosf(Geometry::Radians(angle));
+	float sint = sinf((float)Geometry::Radians(angle));
+	float cost = cosf((float)Geometry::Radians(angle));
 
 	return Matrix4 (cost, -sint, 0, 0,
 					sint, cost, 0, 0,
@@ -221,8 +221,8 @@ Matrix4 Matrix4::RotateZ(float angle)
 Matrix4 Matrix4::Rotate(const Vec3f& axis, float angle)
 {
 	Vec3f a = axis.GetNormalized();
-	float s = sinf(Geometry::Radians(angle));
-	float c = cosf(Geometry::Radians(angle));
+	float s = sinf((float)Geometry::Radians(angle));
+	float c = cosf((float)Geometry::Radians(angle));
 	float m[16];
 
 	m[0] = a.x * a.x + (1.0f - a.x*a.x) * c;

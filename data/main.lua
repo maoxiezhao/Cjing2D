@@ -11,6 +11,11 @@ function cjing.Main:onStarted()
 	self._asyncLoader = nil
 	self._game = nil
 	
+	-- test particle
+	self._particle = cjing.Particle.create("test")
+	self._particle:setPreprocess(function(drawable)self:preProcessPraticle(drawable) end)
+	self._particle:play(200,200)
+	
 	-- set video property
 	cjing.Video.setCursor("sprites/menus/cursor.png")
 	
@@ -30,7 +35,7 @@ function cjing.Main:FinishedLoading()
 	-- 加载存档
 	local gameManager = require("menus/gameManager")
 	if gameManager then 
-		--gameManager:startGame()
+		gameManager:startGame()
 	end
 end
 
@@ -40,6 +45,7 @@ end
 
 function cjing.Main:onDraw()
 	-- test text
+	self._particle:draw()
 	if self._text then 
 		self._text:draw()
 	end 
@@ -69,5 +75,14 @@ function cjing.Main:onKeyPressed(key,modifiers)
 	end
 	
 	return handle
+end
+
+function cjing.Main:onMouseMotion(x, y)
+	self._particle:play(x,y)
+end
+
+-- 粒子发射前预处理函数
+function cjing.Main:preProcessPraticle(drawable)
+	--drawable:setPos(100,100)
 end
 

@@ -22,7 +22,8 @@ bool LuaContext::IsDrawable(lua_State*l, int index)
 {
 	return IsSprite(l, index) || 
 		   IsAnimation(l, index) ||
-		   IsTextDrawable(l, index);
+		   IsTextDrawable(l, index) ||
+		   IsParticle(l,index);
 }
 
 void LuaContext::PushDrawable(lua_State*l, Drawable& drawable)

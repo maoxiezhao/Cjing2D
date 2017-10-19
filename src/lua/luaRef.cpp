@@ -76,6 +76,11 @@ int LuaRef::GetRef() const
 	return mRef;
 }
 
+lua_State * LuaRef::GetLuaState() const
+{
+	return l;
+}
+
 /**
 *	\brief É¾³ırefÒıÓÃ
 *

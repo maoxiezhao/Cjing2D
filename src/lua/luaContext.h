@@ -28,6 +28,7 @@ class AsyncLoader;
 class Savegame;
 class Game;
 class Map;
+class ParticleSystem;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -101,6 +102,7 @@ public:
 	void RegisterAsyncLoaderModule();
 	void RegisterEntityModule();
 	void RegisterSoundModule();
+	void RegisterParticle();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -206,6 +208,12 @@ public:
 		// sound
 		sound_api_play_music,
 		sound_api_stop_music,
+		// particle
+		particle_api_create,
+		particle_api_play,
+		particle_api_stop,
+		particle_api_set_preprocess,
+		particle_api_draw,
 		// entity
 
 		// entity create
@@ -301,6 +309,7 @@ public:
 	static void PushAsyncLoader(lua_State*l, AsyncLoader& asyncLoader);
 	static void PushGame(lua_State*l, Savegame& saveGame);
 	static void PushMap(lua_State*l, Map& map);
+	static void PushParticle(lua_State*l, ParticleSystem& particle);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -323,6 +332,8 @@ public:
 	static bool IsSavegame(lua_State*l, int index);
 	static std::shared_ptr<Map> CheckMap(lua_State*l, int index);
 	static bool IsMap(lua_State*l, int index);
+	static std::shared_ptr<ParticleSystem> CheckParticle(lua_State*l, int index);
+	static bool IsParticle(lua_State*l, int index);
 
 
 	// modules name

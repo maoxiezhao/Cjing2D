@@ -22,9 +22,10 @@ public:
 	bool IsEmpty()const;
 	int  GetRef()const;
 
+	lua_State* GetLuaState()const;
 	void Clear();
 	void Push()const;
-	void Call(const std::string& functionName)const;
+	void Call(const std::string& functionName )const;
 
 private:
 	lua_State*l;

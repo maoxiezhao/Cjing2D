@@ -24,6 +24,7 @@ namespace LuaTools
 	bool CheckBoolean(lua_State*l, int index);
 	bool OptBoolean(lua_State*l, int index, bool defaultValue);
 	int  CheckInt(lua_State*l, int index);
+	int CheckIntByDefault(lua_State*l, int index, int defaultValue);
 	double CheckNumber(lua_State*l, int index);
 	double CheckFieldNumber(lua_State*l, int tableIndex, const string&name);
 	float CheckFloat(lua_State*l, int index);

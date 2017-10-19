@@ -28,6 +28,7 @@ public:
 	virtual void Draw(const Point2& pos);
 	
 	void Start(uint32_t duration);
+	void Stop();
 	void Initialize();
 	void Quit();
 
@@ -38,7 +39,7 @@ public:
 	bool IsFinished()const;
 	void SetFinished(bool finished);
 	const string& GetParticleName()const;
-
+	void SetPreProcess(const LuaRef& func);
 private:
 	/**
 	*	\brief 粒子节点,ParticleSystem以粒子节点
@@ -72,6 +73,7 @@ private:
 
 	bool mIsInitialized;
 	bool mIsFinished;				/** 是否已经结束粒子发射过程 */
+	bool mLooped;
 	ParticleData mParticleData;		/** 粒子数据，应在initialize中创建 */
 };
 
@@ -90,4 +92,12 @@ inline void ParticleSystem::SetFinished(bool finished)
 inline const string & ParticleSystem::GetParticleName() const
 {
 	return mParticleFileName;
+}
+
+inline void ParticleSystem::SetPreProcess(const LuaRef & func)
+{
+	Debug::CheckAssertion(mIsInitialized,
+		"Set particle preprcess without initialized.");
+
+	mPreprocessFunc = func;
 }

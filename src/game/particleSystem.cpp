@@ -14,7 +14,8 @@ ParticleSystem::ParticleSystem():
 	mEmissionCountInPerFrame(0),
 	mLastEmissionWaste(0),
 	mIsFinished(true),
-	mIsInitialized(false)
+	mIsInitialized(false),
+	mLooped(false)
 {
 }
 
@@ -26,7 +27,8 @@ ParticleSystem::ParticleSystem(const std::string & ParticleSystemFile):
 	mEmissionCountInPerFrame(0),
 	mLastEmissionWaste(0),
 	mIsFinished(true),
-	mIsInitialized(false)
+	mIsInitialized(false),
+	mLooped(false)
 {
 }
 
@@ -82,7 +84,7 @@ void ParticleSystem::Update()
 	if (!IsFinished())
 	{
 		// 发生器是否到期，到期则不产生新粒子
-		if (mDeadDate > 0 && now >= mDeadDate)
+		if (!mLooped && mDeadDate > 0 && now >= mDeadDate)
 		{
 			SetFinished(true);
 		}
@@ -133,7 +135,7 @@ void ParticleSystem::Draw(const Point2 & pos)
 
 /**
 *	\brief 开始发射粒子
-*	\param duration 发射的时间长度
+*	\param duration 发射的时间长度,duration为0时，为循环播放
 */
 void ParticleSystem::Start(uint32_t duration)
 {
@@ -142,8 +144,17 @@ void ParticleSystem::Start(uint32_t duration)
 
 	uint32_t now = System::Now();
 	mDeadDate = now + duration;
-	
+	mLooped = duration > 0 ? false : true;
+
 	SetFinished(false);
+}
+
+/**
+*	\brief 强制停止产生粒子
+*/
+void ParticleSystem::Stop()
+{
+	SetFinished(true);
 }
 
 /**
@@ -247,7 +258,14 @@ void ParticleSystem::Preprocess(ParticleNode& particle)
 {
 	if (!mPreprocessFunc.IsEmpty())
 	{
-		// do pre process func
+		LuaContext* luaContext = GetLuaContext();
+		if (luaContext != nullptr)
+		{
+			lua_State*l = mPreprocessFunc.GetLuaState();
+			mPreprocessFunc.Push();
+			luaContext->PushDrawable(l, *this);
+			LuaTools::CallFunction(l, 1, 0, "Praticle preprocess.");
+		}
 	}
 }
 

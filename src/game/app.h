@@ -13,8 +13,6 @@
 #include"gui\core\handler.h"
 #include"gui\widget\window.h"
 
-#include"game\particleSystem.h"
-
 /**
 *	\brief 程序的主循环
 */
@@ -48,7 +46,6 @@ private:
 	std::unique_ptr<gui::GUIManager> mGUI;	
 	std::shared_ptr<gui::Window> mWindow;
 
-	ParticleSystemPtr mParticle;
 };
 
 #endif

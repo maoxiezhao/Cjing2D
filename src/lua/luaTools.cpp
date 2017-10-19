@@ -76,6 +76,15 @@ namespace LuaTools
 		return (int)lua_tointeger(l,index);
 	}
 
+	int CheckIntByDefault(lua_State * l, int index, int defaultValue)
+	{
+		if (!lua_isinteger(l, index))
+		{
+			return defaultValue;
+		}
+		return CheckInt(l, index);
+	}
+
 	double CheckNumber(lua_State * l, int index)
 	{
 		if (!lua_isnumber(l, index))

@@ -26,6 +26,7 @@ public:
 	Entity* GetEntity();
 	Drawable* GetDrawable();
 
+	void RefreshPos();
 	int GetPosX()const;
 	int GetPosY()const;
 	Point2 GetPos()const;

@@ -107,6 +107,14 @@ void TargetMovement::RefreshMovment()
 
 }
 
+void TargetMovement::Start()
+{
+	mFinished = false;
+	RefreshPos();
+	RefreshMovment();
+	Movement::Start();
+}
+
 /**
 *	\brief Ã¿Ö¡Ë¢ÐÂ²Ù×÷
 */

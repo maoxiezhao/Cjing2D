@@ -358,6 +358,15 @@
     <ClCompile Include="src\lua\particleApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\itemAcquired.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\sequenceMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\item.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -680,6 +689,15 @@
     </ClInclude>
     <ClInclude Include="src\movements\accelMovement.h">
       <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\itemAcquired.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\sequenceMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\item.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

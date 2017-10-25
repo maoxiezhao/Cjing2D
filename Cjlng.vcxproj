@@ -133,6 +133,8 @@
     <ClCompile Include="src\game\equipment.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\gameCommands.cpp" />
+    <ClCompile Include="src\game\item.cpp" />
+    <ClCompile Include="src\game\itemAcquired.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
     <ClCompile Include="src\game\particleData.cpp" />
@@ -181,6 +183,7 @@
     <ClCompile Include="src\movements\movement.cpp" />
     <ClCompile Include="src\movements\playerMovement.cpp" />
     <ClCompile Include="src\movements\rotateMovement.cpp" />
+    <ClCompile Include="src\movements\sequenceMovement.cpp" />
     <ClCompile Include="src\movements\straightMovement.cpp" />
     <ClCompile Include="src\movements\targetMovement.cpp" />
     <ClCompile Include="src\player\freeState.cpp" />
@@ -241,6 +244,8 @@
     <ClInclude Include="src\game\equipment.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\gameCommands.h" />
+    <ClInclude Include="src\game\item.h" />
+    <ClInclude Include="src\game\itemAcquired.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\mapData.h" />
     <ClInclude Include="src\game\particleData.h" />
@@ -280,6 +285,7 @@
     <ClInclude Include="src\movements\movement.h" />
     <ClInclude Include="src\movements\playerMovement.h" />
     <ClInclude Include="src\movements\rotateMovement.h" />
+    <ClInclude Include="src\movements\sequenceMovement.h" />
     <ClInclude Include="src\movements\straightMovement.h" />
     <ClInclude Include="src\movements\targetMovement.h" />
     <ClInclude Include="src\player\freeState.h" />

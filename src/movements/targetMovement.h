@@ -26,6 +26,7 @@ public:
 	void SetMovingSpeed(int movingSpeed);
 	int GetMovingSpeed()const;
 
+	virtual void Start();
 	virtual void Update();
 	virtual bool IsFinished()const;
 	virtual const string GetLuaObjectName()const;

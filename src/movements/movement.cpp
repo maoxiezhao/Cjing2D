@@ -187,6 +187,26 @@ bool Movement::IsStarted() const
 	return false;
 }
 
+/**
+*	\brief 刷新当前位置值
+*/
+void Movement::RefreshPos()
+{
+	Point2 curPos;
+	if (mEntity != nullptr)
+	{
+		curPos = mEntity->GetPos();
+	}
+	if (mDrawable != nullptr)
+	{
+		curPos = mDrawable->GetPos();
+	}
+	if (curPos != GetPos())
+	{
+		SetPos(curPos);
+	}
+}
+
 int Movement::GetPosX() const
 {
 	return mPos.x;

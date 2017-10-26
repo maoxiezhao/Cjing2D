@@ -106,8 +106,8 @@ int LuaContext::sprite_api_set_size(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Sprite& sprite = *CheckSprite(l, 1);
-		int x = LuaTools::CheckInt(l, 2);
-		int y = LuaTools::CheckInt(l, 3);
+		int x = (int)LuaTools::CheckNumber(l, 2);
+		int y = (int)LuaTools::CheckNumber(l, 3);
 
 		sprite.SetSize(Size(x, y));
 

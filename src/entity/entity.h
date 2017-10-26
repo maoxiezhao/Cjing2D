@@ -23,6 +23,26 @@ class EntityState;
 class Entity : public LuaObject
 {
 public:
+	/**
+	*	带名字属性的share_ptr<sprite>
+	*/
+	struct NamedSpritePtr
+	{
+		std::string name;
+		SpritePtr sprite;
+		bool removed;
+	};
+
+	/**
+	*	\brief 碰撞模式
+	*/
+	enum CollisionMode
+	{
+		COLLISION_NONE      = 0x00,     // 无碰撞模式，不参与碰撞
+		COLLISION_OVERLAPING = 0x01,	// 覆盖模式
+		COLLISION_CONTAINING = 0x02,	// 包含模式
+	};
+
 	Entity();
 	Entity(const string& name, const Point2& pos, const Size& size, int layer);
 	~Entity();
@@ -41,20 +61,12 @@ public:
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
 	virtual void NotifyPositonChanged();
+	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
+	virtual void NotifyBeRemoved();
 
 	void NotifyMapStarted();
 	
 public:
-	/**
-	*	带名字属性的share_ptr<sprite>
-	*/
-	struct NamedSpritePtr
-	{
-		std::string name;
-		SpritePtr sprite;
-		bool removed;
-	};
-
 	/**** **** **** status **** **** ****/
 	Point2 GetPos()const;
 	Point2 GetCenterPos()const;
@@ -65,7 +77,6 @@ public:
 	void SetSize(const Size& size);
 	Size GetSize()const;
 	const string& GetName()const;
-	virtual EntityType GetEntityType()const;
 	Rect GetRectBounding()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
@@ -74,11 +85,14 @@ public:
 	Point2 GetScreenPos()const;
 	bool IsVisible()const;
 	void SetVisible(bool visibled);
+	bool IsBeRemoved()const;
+	virtual EntityType GetEntityType()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
 	bool IsOnMap()const;
 	const Map& GetMap()const;
+	void RemoveFromMap();
 	Game& GetGame();
 
 	/**** ***** sprite ***** ****/
@@ -99,6 +113,17 @@ public:
 	void StartMovement(const std::shared_ptr<Movement>& movement);
 	const std::shared_ptr<Movement>& GetMovement();
 
+	/***** **** collision ***** *****/
+	void CheckCollisionWithEntities();
+	virtual void CheckCollision(Entity& otherEntity);
+
+	bool TestCollisionWithRect(const Entity& entity);
+	bool TestCollisionContaining(const Entity& entity);
+
+	bool IsHaveCollision()const;
+	void SetCollisionMode(CollisionMode collisionMode);
+	bool HasCollisionMode(CollisionMode collisionMode);
+
 private:
 	// status
 	string mName;
@@ -109,6 +134,9 @@ private:
 	bool mIsInitialized;
 	bool mIsDrawOnYOrder;
 	bool mVisibled;
+	bool mEnabled;
+	bool mBeRemoved;	/** 将要被移除 */
+	int mCollisionMode;
 
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */

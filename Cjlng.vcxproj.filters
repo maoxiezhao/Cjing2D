@@ -699,6 +699,9 @@
     <ClInclude Include="src\game\item.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\gameResources.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

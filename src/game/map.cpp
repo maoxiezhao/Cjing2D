@@ -59,6 +59,7 @@ void Map::Load(Game * game)
 		Debug::Die("Failed to load map file '" + GetMapID() + "'.");
 	}
 	// 加载地图成功，则初始化地图数据
+	mGame = game;
 	mWidth  = mapData.GetSize().width;
 	mHeight = mapData.GetSize().height;
 	mMinLayer = mapData.GetMinLayer();
@@ -71,7 +72,6 @@ void Map::Load(Game * game)
 	mEntities->InitEntities(mapData);
 	
 	mCamera = mEntities->GetCamear();
-	mGame = game;
 	mIsLoaded = true;
 }
 
@@ -290,6 +290,30 @@ bool Map::TestCollisionWithGround(int layer, int x, int y, Entity & entity)
 }
 
 /**
+*	\brief 检测实体与其他实体的碰撞
+*
+*	当其他实体可碰撞时且发生碰撞时，会触发notifyCollision
+*/
+void Map::CheckCollisionWithEntities(Entity & entity)
+{
+	Rect checkRect = entity.GetRectBounding();
+	checkRect.Extend(8, 8);
+
+	// 获取临近范围内的entity
+	std::vector<EntityPtr> entityNearby;
+	mEntities->GetEntitiesInRect(checkRect, entityNearby);
+	for (auto& checkEntity : entityNearby)
+	{
+		if (!checkEntity->IsHaveCollision() || 
+			checkEntity.get() == &entity)
+		{
+			continue;
+		}
+		checkEntity->CheckCollision(entity);
+	}
+}
+
+/**
 *	\brief 绘制地图
 *
 *	绘制过程依次包括背景图，entities,前景图,luaContent
@@ -345,7 +369,7 @@ void Map::DrawOnMap(Drawable& drawabel, const Point2& pos)
 		Debug::Warning("Draw drawable without camear.");
 		return;
 	}
-	drawabel.Draw(pos - mCamera->GetPos());
+	drawabel.Draw(pos - mCamera->GetLeftTopPos());
 }
 
 bool Map::IsLoaded() const

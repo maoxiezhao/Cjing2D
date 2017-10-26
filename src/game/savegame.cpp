@@ -8,6 +8,8 @@ const std::string Savegame::GAMECOMMAND_KEYBOARD_UP = "keyboard_up";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
+
+const std::string Savegame::KEYWORD_START_MAP = "keyword_start_map";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
 const std::string Savegame::KEYWORD_CURRENT_MAX_LIFE = "keyword_current_max_life";
 

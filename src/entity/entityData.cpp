@@ -21,8 +21,14 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 	},
 	{
 		EntityType::DESTIMATION,{
-			{ "name",       EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT,  EntityData::EntityDefaultValue("") },
-			{ "direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT,  EntityData::EntityDefaultValue("")}
+			{ "name",       EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT,  EntityData::EntityDefaultValue(string("")) },
+			{ "direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT,  EntityData::EntityDefaultValue(string(""))}
+		}
+	},
+	{
+		EntityType::PICKABLE,{
+			{ "itemName",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+			{ "itemCount", EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0) }
 		}
 	},
 };

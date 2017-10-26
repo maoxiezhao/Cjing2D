@@ -165,7 +165,11 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 			SetDataFromAnimation(*mCurrAnimation);
 		}
 		else
+		{
 			mCurrAnimation = nullptr;
+			Debug::Error("The animation:" + name + "is not exists.");
+			return;
+		}
 
 		if (mCurrDirection < 0 || mCurrDirection >= GetNumDirections())
 			mCurrDirection = 0;
@@ -326,6 +330,14 @@ void AnimationSprite::SetCurrAnimationSetId(const string & id)
 string AnimationSprite::GetCurrAnimationSetId() const
 {
 	return mCurrAnimationSet.GetAnimationSetName();
+}
+
+/**
+*	\brief 返回是否存在指定动画
+*/
+bool AnimationSprite::HasAnimation(const string & name) const
+{
+	return mCurrAnimationSet.HasAnimation(name);
 }
 
 void AnimationSprite::NotifyFinished()

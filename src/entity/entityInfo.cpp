@@ -7,5 +7,6 @@ const EnumInfo<EntityType>::nameType EnumInfoTraits<EntityType>::names =
 	{ DYNAMIC_TITLE,"dynamicTitle"},
 	{ DESTIMATION, "destimation"},
 	{ CAMERA, "camera"},
-	{ PLAYRE , "player"}
+	{ PLAYRE, "player"},
+	{ PICKABLE, "pickable"}
 };

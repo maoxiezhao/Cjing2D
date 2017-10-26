@@ -4,6 +4,48 @@
 Equipment::Equipment(Savegame & savegame):
 	mSavegame(savegame)
 {
+	LoadAllItems();
+}
+
+/**
+*	\brief 加载所有item
+*/
+void Equipment::LoadAllItems()
+{
+}
+
+/**
+*	\brief 获取制定名字的item
+*
+*	该item必须已经注册
+*/
+Item & Equipment::GetItem(const std::string & itemName)
+{
+	auto itor = mAllItems.find(itemName);
+	if (itor == mAllItems.end())
+	{
+		Debug::Error("Get the non-exists item:" + itemName);
+	}
+	return *itor->second;
+}
+
+/**
+*	\brief 获取制定名字的item
+*
+*	该item必须已经注册
+*/
+const Item & Equipment::GetItem(const std::string & itemName) const
+{
+	auto itor = mAllItems.find(itemName);
+	if (itor == mAllItems.end())
+	{
+		Debug::Error("Get the non-exists item:" + itemName);
+	}
+	return *itor->second;
+}
+
+void Equipment::PushItemIntoBeg(Item & item)
+{
 }
 
 /**

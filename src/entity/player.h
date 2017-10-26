@@ -28,6 +28,7 @@ public:
 
 	/** status manager */
 	void PlaceOnMap(Map& map);
+	void CheckPosition();
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;

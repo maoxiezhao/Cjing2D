@@ -136,7 +136,7 @@ int AnimationLuaData::LuaAnimation(lua_State * l)
 			int height = LuaTools::CheckFieldInt(l, -1, "frame_height");
 			int orginX = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_x", 0);
 			int orginY = LuaTools::CheckFieldIntByDefault(l, -1, "orgin_y", 0);
-			int numFrames = LuaTools::CheckFieldIntByDefault(l, -1, "num_frames", 0);
+			int numFrames = LuaTools::CheckFieldIntByDefault(l, -1, "num_frames", 1);
 			int numColumns = LuaTools::CheckFieldIntByDefault(l, -1, "num_columns",numFrames);
 
 			if (numColumns < 1 || numColumns > numFrames)

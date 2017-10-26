@@ -54,6 +54,7 @@ public:
 	void SetCurrAnimation(const string& name);
 	void SetCurrAnimationSetId(const string& id);
 	string GetCurrAnimationSetId()const;
+	bool HasAnimation(const string& name)const;
 
 	// notify
 	void NotifyFinished();

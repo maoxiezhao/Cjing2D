@@ -2,6 +2,7 @@
 #include "game\map.h"
 #include "game\gameCommands.h"
 #include "lua\luaContext.h"
+#include "entity\entities.h"
 #include "entity\entityState.h"
 #include "entity\camera.h"
 #include "movements\movement.h"
@@ -17,7 +18,10 @@ Entity::Entity():
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
-	mDebugSprite(nullptr)
+	mDebugSprite(nullptr),
+	mEnabled(true),
+	mCollisionMode(COLLISION_NONE),
+	mBeRemoved(false)
 {
 }
 
@@ -32,7 +36,10 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
-	mDebugSprite(nullptr)
+	mDebugSprite(nullptr),
+	mEnabled(true),
+	mCollisionMode(COLLISION_NONE),
+	mBeRemoved(false)
 {
 }
 
@@ -86,7 +93,7 @@ void Entity::Draw()
 		auto sprite = nameSprite.sprite;
 		if (sprite != nullptr)
 		{
-			GetMap().DrawOnMap(*sprite);
+			GetMap().DrawOnMap(*sprite, GetPos());
 		}
 	}
 }
@@ -142,8 +149,30 @@ void Entity::NotifyMovementChanged()
 	}
 }
 
+/**
+*	\brief 响应位置变动
+*/
 void Entity::NotifyPositonChanged()
 {
+	CheckCollisionWithEntities();
+}
+
+/**
+*	\brief 响应碰撞函数
+*	\param otherEntity 发生碰撞的其他实体
+*	\param collisonMode 发生的碰撞类型
+*/
+void Entity::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
+{
+}
+
+/**
+*	\brief 响应被销毁
+*/
+void Entity::NotifyBeRemoved()
+{
+	// luaContext->onRemovedEneity(*this) 响应lua
+	mBeRemoved = true;
 }
 
 /**
@@ -185,6 +214,15 @@ const Map & Entity::GetMap() const
 	return *mMap;
 }
 
+/**
+*	\brief 将该enitty从设置的地图中销毁
+*/
+void Entity::RemoveFromMap()
+{
+	auto& entities = mMap->GetEntities();
+	entities.RemoveEntity(*this);
+}
+
 Game & Entity::GetGame()
 {
 	Debug::CheckAssertion(mMap != nullptr,
@@ -217,7 +255,8 @@ AnimationSpritePtr Entity::CreateAnimationSprite(const string & animationSetId, 
 	// animationSprite
 	AnimationSpritePtr animationSprite = std::make_shared<AnimationSprite>(animationSetId);
 	animationSprite->SetCurrAnimation(animationID);
-	
+	animationSprite->SetPos(GetPos());
+
 	NamedSpritePtr namedSprite;
 	namedSprite.name = animationID;
 	namedSprite.sprite = animationSprite;
@@ -335,6 +374,87 @@ const std::shared_ptr<Movement>& Entity::GetMovement()
 	return mMovement;
 }
 
+/**
+*	\brief 检测该实例与其他实例之间是否发生碰撞
+*/
+void Entity::CheckCollisionWithEntities()
+{
+	if (!IsOnMap())
+	{
+		return;
+	}
+	GetMap().CheckCollisionWithEntities(*this);
+}
+
+/**
+*	\brief 检测实体间的碰撞检测
+*	\param otherEntity 待检测的其他实体
+*
+*	当发生碰撞检测后，根据碰撞类型调用notifyCollision,
+*	响应触发事件
+*/
+void Entity::CheckCollision(Entity & otherEntity)
+{
+	if (!IsHaveCollision() || this == &otherEntity)
+	{
+		return;
+	}
+	// 层级需要相同,且设定为同层级碰撞
+	if (GetLayer() != otherEntity.GetLayer())
+	{
+		return;
+	}
+	// 根据当前的碰撞模式测试碰撞
+	if (HasCollisionMode(CollisionMode::COLLISION_OVERLAPING) &&
+		TestCollisionWithRect(otherEntity))
+	{
+		NotifyCollision(otherEntity, CollisionMode::COLLISION_OVERLAPING);
+	}
+	else if (HasCollisionMode(CollisionMode::COLLISION_CONTAINING) &&
+		TestCollisionContaining(otherEntity))
+	{
+		NotifyCollision(otherEntity, CollisionMode::COLLISION_CONTAINING);
+	}
+}
+
+/**
+*	\brief 当collisonMode不等于collision_none时参与碰撞
+*/
+bool Entity::IsHaveCollision() const
+{
+	return mCollisionMode != COLLISION_NONE;
+}
+
+/**
+*	\brief 测试实体与其他实体间矩形碰撞
+*/
+bool Entity::TestCollisionWithRect(const Entity & entity)
+{
+	auto otheRect = entity.GetRectBounding();
+	return GetRectBounding().Overlaps(otheRect);
+}
+
+bool Entity::TestCollisionContaining(const Entity & entity)
+{
+	return false;
+}
+
+/**
+*	\brief 设置当前碰撞模式
+*/
+void Entity::SetCollisionMode(CollisionMode collisionMode)
+{
+	mCollisionMode |= collisionMode;
+}
+
+/**
+*	\brief 返回当前是否存在该碰撞模式
+*/
+bool Entity::HasCollisionMode(CollisionMode collisionMode)
+{
+	return ((collisionMode & mCollisionMode) != 0);
+}
+
 Rect Entity::GetRectBounding() const
 {
 	return mBounding;
@@ -380,6 +500,11 @@ void Entity::SetVisible(bool visibled)
 	mVisibled = visibled;
 }
 
+bool Entity::IsBeRemoved() const
+{
+	return mBeRemoved;
+}
+
 Point2 Entity::GetPos()const
 {
 	return mBounding.GetPos() + mOrigin;
@@ -423,3 +548,4 @@ EntityType Entity::GetEntityType()const
 {
 	return mType;
 }
+

@@ -39,7 +39,11 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	mPlayer = std::make_shared<Player>(equipment);
 
 	// ¼ÓÔØmap
-	string mapID = "test";      //savegame->getStringMapId();
+	string mapID = savegame->GetString(Savegame::KEYWORD_START_MAP);
+	if (mapID.empty())
+	{
+		mapID = "test";
+	}
 	string destination_name = ""; //savegame->getStringDestination();
 	
 	SetCurrentMap(mapID);
@@ -127,6 +131,13 @@ std::shared_ptr<Player> Game::GetPlayer()
 GameCommands & Game::GetGameCommands()
 {
 	return *mGameCommands;
+}
+
+Equipment & Game::GetEquipment()
+{
+	Debug::CheckAssertion(mSavegame != nullptr,
+		"The savegame must exists before get equipent.");
+	return mSavegame->GetEquipment();
 }
 
 bool Game::HasCurrentMap() const

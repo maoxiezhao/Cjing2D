@@ -60,6 +60,7 @@ void Entities::Update()
 
 	mCamera->Update();
 	mEntityToDraw.clear();
+	ClearRemovedEntites();
 }
 
 /**
@@ -92,13 +93,17 @@ void Entities::Draw()
 		// 对entityToDraw进行排序
 		for (int layer = mMap.GetMinLayer(); layer <= mMap.GetMaxLayer(); layer++) 
 		{
-			std::sort(mEntityToDraw[layer].begin(), mEntityToDraw[layer].end(), [](EntityPtr& entity1, EntityPtr& entity2) {
+			if (layer + 1 > mEntityToDraw.size())
+			{
+				continue;
+			}
+			std::sort(mEntityToDraw[layer].begin(), mEntityToDraw[layer].end(), [this](EntityPtr& entity1, EntityPtr& entity2) {
 				// layer compare
-				if (entity1->GetLayer() < entity1->GetLayer())
+				if (entity1->GetLayer() < entity2->GetLayer())	// 临时做法
 				{
 					return true;
 				}
-				else if (entity1->GetLayer() > entity1->GetLayer())
+				else if (entity1->GetLayer() > entity2->GetLayer())
 				{
 					return false;
 				}
@@ -124,7 +129,7 @@ void Entities::Draw()
 						}
 					}		
 					// 当layer相同，y坐标也相同时
-					return true;
+					return GetEntityValueZ(entity1) <= GetEntityValueZ(entity2);
 				}
 			});
 		}
@@ -165,6 +170,22 @@ void Entities::NotifyMapStarted()
 	{
 		entity->NotifyMapStarted();
 	}
+}
+
+/**
+*	\brief 清除要被移除的entity
+*
+*	依次需要移除quadTree,allEntites,zCache
+*/
+void Entities::ClearRemovedEntites()
+{
+	for (auto& entity : mEntityToRemove)
+	{
+		mEntityTree.Remove(entity);
+		mZCache.RemoveEntity(entity);
+		mAllEntities.remove(entity);
+	}
+	mEntityToRemove.clear();
 }
 
 /**
@@ -302,14 +323,29 @@ void Entities::AddEntity(const EntityPtr& entity)
 	Debug::CheckAssertion(mMap.IsValidLayer(entity->GetLayer()),
 		"Invalid entity layer in adding entity.");
 
-	mEntityTree.Add(entity, entity->GetRectBounding());
+	EntityType entityType = entity->GetEntityType();
+	if (entityType != EntityType::CAMERA )
+	{
+		mEntityTree.Add(entity, entity->GetRectBounding());
+		mZCache.AddEntity(entity);
+	}
 
 	mAllEntities.push_back(entity);
 	entity->SetMap(&mMap);
 }
 
+/**
+*	\biref 销毁entity
+*/
 void Entities::RemoveEntity(Entity& entity)
 {
+	if (!entity.IsBeRemoved())
+	{
+		const auto& sharedEntity = std::dynamic_pointer_cast<Entity>(entity.shared_from_this());
+		mEntityToRemove.push_back(sharedEntity);
+
+		entity.NotifyBeRemoved();
+	}
 }
 
 LuaContext & Entities::GetLuaContext()
@@ -334,3 +370,53 @@ void Entities::NotifyEntityRectChanged(Entity & entity)
 	mEntityTree.Move(entityPtr, entityPtr->GetRectBounding());
 }
 
+/**
+*	\brief 获取这个实体的z值
+*
+*	该z值由ZCache维护
+*/
+uint32_t Entities::GetEntityValueZ(const EntityPtr& entity) const
+{
+	return mZCache.GetZ(entity);
+}
+
+Entities::ZCache::ZCache():
+	mValueZ(0)
+{
+}
+
+/**
+*	\brief 添加新的实体加入到缓存中
+*/
+bool Entities::ZCache::AddEntity(EntityPtr entity)
+{
+	int layer = entity->GetLayer();
+	if (mZCache[layer].find(entity) != mZCache[layer].end())
+	{
+		RemoveEntity(entity);
+	}
+	mZCache[layer].insert(std::pair<EntityPtr, uint32_t>(entity, mValueZ));
+	mValueZ++;
+	return true;
+}
+
+bool Entities::ZCache::RemoveEntity(EntityPtr entity)
+{
+	int layer = entity->GetLayer();
+	if (mZCache[layer].find(entity) == mZCache[layer].end())
+	{
+		return false;
+	}
+	mZCache[layer].erase(entity);
+	return true;
+}
+
+int Entities::ZCache::GetZ(const EntityPtr & entity)const
+{
+	int layer = entity->GetLayer();
+	auto kvp = mZCache.at(layer).find(entity);
+	Debug::CheckAssertion(kvp != mZCache.at(layer).end(),
+		"Invalid entity int GetZ with not insert to cache.");
+
+	return kvp->second;
+}

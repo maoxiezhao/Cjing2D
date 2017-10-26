@@ -244,6 +244,7 @@
     <ClInclude Include="src\game\equipment.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\gameCommands.h" />
+    <ClInclude Include="src\game\gameResources.h" />
     <ClInclude Include="src\game\item.h" />
     <ClInclude Include="src\game\itemAcquired.h" />
     <ClInclude Include="src\game\map.h" />

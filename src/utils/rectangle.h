@@ -5,6 +5,9 @@
 #include"utils\point.h"
 #include"utils\size.h"
 
+/**
+*	\brief ¾ØÐÎ½á¹¹
+*/
 class Rect
 {
 public:
@@ -33,9 +36,11 @@ public:
 	void AddWidth(int dw);
 	void AddHeight(int dh);
 	void AddSize(int dw, int dh);
+	void Extend(int dx, int dy);
 
 	bool Contains(int px, int py)const;
 	bool Contains(const Point2& point)const;
+	bool Contains(const Rect& rect)const;
 	bool Overlaps(const Rect& rect)const;
 
 	Rect& operator &=(const Rect& rect);

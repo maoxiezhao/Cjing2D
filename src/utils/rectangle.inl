@@ -1,3 +1,4 @@
+#include "rectangle.h"
 constexpr Rect::Rect():
 	x(0),y(0),
 	width(0),height(0)
@@ -128,6 +129,12 @@ inline void Rect::AddSize(int dw, int dh)
 	height += dh;
 }
 
+inline void Rect::Extend(int dx, int dy)
+{
+	AddSize(dx, dy);
+	AddPos(-dx / 2, -dy / 2);
+}
+
 inline bool Rect::Contains(int px, int py) const
 {
 	return px >= x && px <= (x + width) &&
@@ -138,6 +145,12 @@ inline bool Rect::Contains(const Point2 & point) const
 {
 	return point.x >= x && point.x <= (x + width) &&
 		point.y >= y && point.y <= (y + height);
+}
+
+inline bool Rect::Contains(const Rect & rect) const
+{
+	return rect.x >= x && (rect.x + rect.width)  <= (x + width) &&
+		   rect.y >= y && (rect.y + rect.height) <= (y + height);
 }
 
 inline bool Rect::Overlaps(const Rect & rect) const

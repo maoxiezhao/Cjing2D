@@ -120,8 +120,11 @@ public:
 		game_api_save,
 		game_api_set_value,
 		game_api_get_value,
+		game_api_set_start_location,
 		game_api_get_life,
 		game_api_get_max_life,
+		game_api_set_life,
+		game_api_set_max_life,
 		// time
 		time_api_start,
 		// menu
@@ -220,6 +223,7 @@ public:
 		entity_api_create_title,
 		entity_api_create_destimation,
 		entity_api_create_dynamic_title,
+		entity_api_create_pickable,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,

@@ -20,6 +20,9 @@ void LuaContext::RegisterGameModule()
 		{ "setValue", game_api_set_value},
 		{ "getLife", game_api_get_life },
 		{ "getMaxLife", game_api_get_max_life },
+		{ "setLife", game_api_set_life },
+		{ "setMaxLife", game_api_set_max_life },
+		{ "setStartLocation", game_api_set_start_location },
 		{ nullptr,nullptr }
 	};
 
@@ -182,6 +185,21 @@ int LuaContext::game_api_set_value(lua_State*l)
 	});
 }
 
+/**
+*	\brief 实现game:setStartLocation(mapID)
+*
+*	设置game的开始地图和位置
+*/
+int LuaContext::game_api_set_start_location(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		const std::string mapID = LuaTools::CheckString(l, 2);
+		savegame.SetString(Savegame::KEYWORD_START_MAP, mapID);
+
+		return 0;
+	});
+}
 
 /**
 *	\brief 实现game:getLife()
@@ -208,4 +226,34 @@ int LuaContext::game_api_get_max_life(lua_State* l)
 		return 1;
 	});
 }
+
+/**
+*	\brief 实现game:setLife(life)
+*/
+int LuaContext::game_api_set_life(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		int life = LuaTools::CheckInt(l, 2);
+		savegame.SetInteger(Savegame::KEYWORD_CURRENT_LIFE, life);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现game:setMaxLife(maxLife)
+*/
+int LuaContext::game_api_set_max_life(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		int maxLife = LuaTools::CheckInt(l, 2);
+		savegame.SetInteger(Savegame::KEYWORD_CURRENT_MAX_LIFE, maxLife);
+
+		return 0;
+	});
+}
+
+
 

@@ -32,6 +32,7 @@ public:
 	void Draw();
 	void SetSuspended(bool suspended);
 	void NotifyMapStarted();
+	void ClearRemovedEntites();
 
 	/** entities */
 	void InitEntities(const MapData& mapData);
@@ -44,6 +45,7 @@ public:
 	void SetGround(const Ground& ground, int layer, const Rect& rect);
 	void SetGround(const Ground& ground, int layer, int cellX, int cellY);
 	Ground GetGround(int layer, int cellX, int cellY)const;
+	uint32_t GetEntityValueZ(const EntityPtr& entity) const;
 
 	// lua
 	LuaContext& GetLuaContext();
@@ -55,6 +57,25 @@ public:
 private:
 	template<typename T>
 	using ByLayer = std::map<int, T>;
+
+	/**
+	*	\brief Z缓存，该对象主要用于entity绘制顺序
+	*	当entity其他条件相同时，根据zcache的值决定
+	*	绘制顺序
+	*
+	*	zcache的值由entity加入顺序决定
+	*/
+	struct ZCache
+	{
+		ZCache();
+
+		bool AddEntity(EntityPtr entity);
+		bool RemoveEntity(EntityPtr entity);
+		int GetZ(const EntityPtr& entity)const;
+
+		uint32_t mValueZ;
+		ByLayer<std::map<EntityPtr, uint32_t> > mZCache;
+	};
 
 	// system
 	Game& mGame;
@@ -82,4 +103,5 @@ private:
 
 	std::shared_ptr<Player> mPlayer;		// 当前控制对象
 
+	ZCache mZCache;							// 当前z值缓存
 };

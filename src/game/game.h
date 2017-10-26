@@ -10,7 +10,7 @@ class App;
 class InputEvent;
 class Savegame;
 class LuaContext;
-
+class Equipment;
 /**
 *	\brief Game类管理当前地图，所有的游戏对象
 */
@@ -34,6 +34,7 @@ public:
 	Savegame& GetSavegame();
 	std::shared_ptr<Player> GetPlayer();
 	GameCommands& GetGameCommands();
+	Equipment& GetEquipment();
 
 	/** Map */
 	bool HasCurrentMap()const;

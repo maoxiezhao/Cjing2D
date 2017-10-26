@@ -7,14 +7,14 @@
 #include"player\playerSprite.h"
 
 Player::Player(Equipment & equipment) :
-	Entity("", { 200, 200 }, {30, 30}, 0),	// testing data
+	Entity("", { 200, 200 }, {22, 20}, 0),	// testing data
 	mPlayerSprites(nullptr),
 	mEquipment(equipment),
 	mNormalWalkingSpeed(100),
 	mCurWalkingSpeed(100),
 	mIsBindDirectionByGameCommand(true)
 {
-	SetOrigin({ -5, -10 });
+	SetOrigin({ -10, -22 });
 
 	// 设置当前player sprites
 	PlayerSprite* playerSprite = new PlayerSprite(*this);
@@ -51,7 +51,7 @@ void Player::Draw()
 	// now testing data
 	Debug::CheckAssertion(mPlayerSprites != nullptr, "Player sprites is null.");
 
-//	DrawDebugBounding();
+	//DrawDebugBounding();
 
 	mPlayerSprites->Draw();
 }
@@ -64,6 +64,17 @@ void Player::PlaceOnMap(Map & map)
 {
 	auto sharedPlayer = std::dynamic_pointer_cast<Entity>(this->shared_from_this());
 	map.GetEntities().AddEntity(sharedPlayer);
+}
+
+/**
+*	\brief 检测当前位置
+*
+*	包括检测当前facing entity，检测当前ground地形，检测
+*	当前与其他entity的碰撞
+*/
+void Player::CheckPosition()
+{
+	CheckCollisionWithEntities();
 }
 
 /**
@@ -130,4 +141,5 @@ void Player::NotifyPositonChanged()
 	{
 		GetMap().GetEntities().NotifyEntityRectChanged(*this);
 	}
+	CheckPosition();
 }

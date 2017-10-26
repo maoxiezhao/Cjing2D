@@ -13,11 +13,13 @@ function GameManager:startGame()
 	if not exists then 
 		-- default data
 		print("[lua] Defualt Game Data.")
-		game:setValue("HP", 20)
-		game:setValue("SP", 20)
+		game:setLife(20)
+		game:setMaxLife(20)
+		game:setStartLocation("test")
 		game:save()
 	end 
-	
+	-- test map
+	game:setStartLocation("test")
 	-- start game
 	if game then 
 		cjing.Main:StartGame(game)

@@ -55,7 +55,7 @@ end
 -- 检测当前hud单元状态，判断是否需要刷新
 -- 会创建定时器间隔执行onCheck
 function HudHeart:onCheck()
-	local curLife = self._game:getLife() - 5
+	local curLife = self._game:getLife() - 11
 	local maxLife = self._game:getMaxLife()
 	self._heartText:setText(curLife .. " / " .. maxLife)
 

@@ -1,0 +1,10 @@
+animation{
+  name = "big",
+  src_image = "entities/shadow.png",
+  frame_delay = 50,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
+  },
+}
+

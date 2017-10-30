@@ -265,7 +265,12 @@ Matrix4 Matrix4::LookAt(const Vec2f& pos, const Vec2f& look, const Vec3f& up)
 */
 Matrix4 Matrix4::Perspective(float fov, float n, float f)
 {
-	return Matrix4();
+	Matrix4 persp = Matrix4(1, 0, 0, 0,
+							0, 1, 0, 0,
+							0, 0, f / (f - n), -f*n / (f - n),
+							0, 0, 1, 0
+							);
+	return persp;
 }
 
 Matrix4 Matrix4::Ortho(float width, float height, float zNear, float zFar)

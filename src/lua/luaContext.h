@@ -136,6 +136,7 @@ public:
 		video_api_get_wanted_size,
 		video_api_get_fps,
 		video_api_set_cursor,
+		video_api_load_program,
 		// drawable
 		drawable_api_get_pos,
 		drawable_api_set_pos,
@@ -155,6 +156,8 @@ public:
 		sprite_api_get_opacity,
 		sprite_api_set_anchor,
 		sprite_api_set_color,
+		sprite_api_set_outLined,
+		sprite_api_set_blinking,
 		sprite_api_draw,
 		// animation
 		animation_api_create,

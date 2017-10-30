@@ -133,6 +133,7 @@
     <ClCompile Include="src\game\equipment.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\gameCommands.cpp" />
+    <ClCompile Include="src\game\gameResources.cpp" />
     <ClCompile Include="src\game\item.cpp" />
     <ClCompile Include="src\game\itemAcquired.cpp" />
     <ClCompile Include="src\game\map.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\gameCommands.h" />
     <ClInclude Include="src\game\gameResources.h" />
+    <ClInclude Include="src\game\gameResourceType.h" />
     <ClInclude Include="src\game\item.h" />
     <ClInclude Include="src\game\itemAcquired.h" />
     <ClInclude Include="src\game\map.h" />

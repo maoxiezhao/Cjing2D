@@ -21,6 +21,9 @@ public:
 *
 *	\const static string prettyName;
 *	\const static nameType names;
+*
+*   static const string prettyName;
+*	static const EnumInfo<E>::nameType names;
 */
 template<typename E>
 struct EnumInfoTraits;

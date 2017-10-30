@@ -23,9 +23,12 @@ void LuaContext::RegisterSpriteModule()
 		{"setOpacity", sprite_api_set_opacity},
 		{"getOpacity", sprite_api_get_opacity},
 		{"setAnchor", sprite_api_set_anchor},
+		{"setOutLined", sprite_api_set_outLined },
+		{"setBlinking", sprite_api_set_blinking },
 		{"draw", sprite_api_draw},
-		{"getPos", drawable_api_get_pos},
-		{"setPos", drawable_api_set_pos },		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
+		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
+		{"getPos", drawable_api_get_pos},	
+		{"setPos", drawable_api_set_pos },		
 		{"runMovement", drawable_api_run_movement },
 		{"getMovment", drawable_api_get_movement },
 		{"stopMovement", drawable_api_stop_movment },
@@ -250,3 +253,34 @@ int LuaContext::sprite_api_set_anchor(lua_State*l)
 		return 0;
 	});
 }
+
+/**
+*	\brief 实现cjing.Sprite:setOutLined(lineWidth)
+*
+*	当lineWidth大于0时，开启描边，小于等于0时关闭描边
+*/
+int LuaContext::sprite_api_set_outLined(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		float lineWidth = LuaTools::CheckFloat(l, 2);
+		sprite.SetOutLine(lineWidth);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现cjing.Sprite:setBlinking(blinkDelay)
+*/
+int LuaContext::sprite_api_set_blinking(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		uint32_t blinkDelay = LuaTools::CheckInt(l, 2);
+		sprite.SetBlinking(blinkDelay);
+
+		return 0;
+	});
+}
+

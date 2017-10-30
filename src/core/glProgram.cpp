@@ -4,6 +4,7 @@
 
 const string GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME = "normal_sprite";
 const string GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME = "color_sprite";
+const string GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME = "outlined_sprite";
 const string GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME = "normal_text";
 
 GLProgram::GLProgram():

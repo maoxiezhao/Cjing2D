@@ -2,19 +2,25 @@
 #include"core\texture.h"
 #include"core\debug.h"
 #include"core\resourceCache.h"
+#include"core\system.h"
 #include"lua\luaContext.h"
+#include"utils\size.h"
 
 /**
 *	\brief 创建一个默认的精灵
 */
 Sprite::Sprite():
 	mProgramState(nullptr),
+	mPreProgramState(nullptr),
 	mTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
 	mBlendFunc(),
-	mSuspended(false)
+	mBlinkDelay(0),
+	mBlinkNextDate(0),
+	mIsBlinkVisible(true),
+	mOutLineWidth(0.0f)
 {
 	SetDefaultNormalState();
 }
@@ -24,11 +30,16 @@ Sprite::Sprite():
 */
 Sprite::Sprite(const std::string & name):
 	mProgramState(nullptr),
+	mPreProgramState(nullptr),
 	mTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0,0),
-	mBlendFunc()
+	mBlendFunc(),
+	mBlinkDelay(0),
+	mBlinkNextDate(0),
+	mIsBlinkVisible(true),
+	mOutLineWidth(0.0f)
 {
 	InitWithFile(name);
 	SetDefaultNormalState();
@@ -39,11 +50,16 @@ Sprite::Sprite(const std::string & name):
 */
 Sprite::Sprite(TexturePtr & tex):
 	mProgramState(nullptr),
+	mPreProgramState(nullptr),
 	mTexture(tex),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
-	mBlendFunc()
+	mBlendFunc(),
+	mBlinkDelay(0),
+	mBlinkNextDate(0),
+	mIsBlinkVisible(true),
+	mOutLineWidth(0.0f)
 {
 	InitWithTexture(mTexture);
 	SetDefaultNormalState();
@@ -56,11 +72,16 @@ Sprite::Sprite(TexturePtr & tex):
 */
 Sprite::Sprite(const Color4B & color, const Size & size):
 	mProgramState(nullptr),
+	mPreProgramState(nullptr),
 	mTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
-	mBlendFunc()
+	mBlendFunc(),
+	mBlinkDelay(0),
+	mBlinkNextDate(0),
+	mIsBlinkVisible(true),
+	mOutLineWidth(0.0f)
 {
 	SetSize(size);
 	SetColor(color);
@@ -79,9 +100,22 @@ void Sprite::Update()
 {
 	Drawable::Update();
 
-	if (mSuspended)
+	if (IsSuspended())
+	{
 		return;
+	}
 
+	// 处理blinking
+	if (IsBlinking())
+	{
+		if (System::Now() >= mBlinkNextDate)
+		{
+			mIsBlinkVisible = !mIsBlinkVisible;
+			mBlinkNextDate += mBlinkDelay;
+		}
+	}
+
+	// 遍历child sprite
 	for (auto& sprite : mChildSprites)
 		sprite->Update();
 }
@@ -96,8 +130,10 @@ void Sprite::Draw()
 	if (IsDirty())
 		UpdateTransform();
 
-	if(mVisible)
+	if (mVisible && (!IsBlinking() || mIsBlinkVisible))
+	{		
 		Draw(GetPos(), GetRotated());
+	}
 }
 
 
@@ -111,8 +147,10 @@ void Sprite::Draw(const Point2 & pos)
 	if (IsDirty())
 		UpdateTransform();
 
-	if (mVisible)
+	if (mVisible && (!IsBlinking() || mIsBlinkVisible))
+	{
 		Draw(pos, GetRotated());
+	}
 }
 
 /**
@@ -172,8 +210,6 @@ void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 {
 	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Sprite::Draw().");
 
-	/*auto quadCommand = new QuadCommand();*/
-
 	mQuadCommand.Init(GetGlobalOrder(),mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID(): 0,	// 这里需要考虑无纹理色块
 		mQuad, 1, mBlendFunc,transform,mModelView);
@@ -186,7 +222,6 @@ void Sprite::MultiplyDraw(Renderer & renderer, const Matrix4 & transform)
 	Debug::CheckAssertion(mProgramState != nullptr, "Invaild programState in Sprite::Draw().");
 
 	auto quadCommand = new QuadCommand();
-
 	quadCommand->Init(0, mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
 		mQuad, 1, mBlendFunc, transform, mModelView, true);
@@ -444,6 +479,16 @@ void Sprite::SetSuspended(bool suspended)
 	if (suspended != IsSuspended() )
 	{
 		Drawable::SetSuspended(suspended);
+		
+		// 设置暂停了，即便闪烁也直接可见
+		if (!suspended)
+		{
+			mBlinkNextDate = System::Now();
+		}
+		else
+		{
+			mIsBlinkVisible = true;
+		}
 	}
 }
 
@@ -479,6 +524,59 @@ void Sprite::AddChildSprite(std::shared_ptr<Sprite> childSprite)
 const string Sprite::GetLuaObjectName() const
 {
 	return LuaContext::module_sprite_name;
+}
+
+bool Sprite::IsBlinking() const
+{
+	return mBlinkDelay != 0;
+}
+
+/**
+*	\brief 设置闪烁效果
+*	\param blinkDelay 闪烁的时间间隔,为0时关闭闪烁
+*/
+void Sprite::SetBlinking(uint32_t blinkDelay)
+{
+	mBlinkDelay = blinkDelay;
+	mBlinkNextDate = System::Now() + mBlinkDelay;
+}
+
+bool Sprite::IsOutLine() const
+{
+	return mOutLineWidth != 0.0f;
+}
+
+/**
+*	\brief 设置描边效果
+*	\param outLineWidth 描边的宽度，当宽度为0时关闭描边效果
+*	
+*	注意当调用其他programState时，应默认关闭outlined效果
+*/
+void Sprite::SetOutLine(float outLineWidth)
+{
+	Debug::CheckAssertion(outLineWidth >= 0,
+		"The outline width unable less than 0.");
+
+	if (outLineWidth > 0)
+	{
+		// 加载默认的outlined sprite program
+		auto& resourceCache = ResourceCache::GetInstance();
+		auto outLinedprogramState = std::make_shared<GLProgramState>();
+		outLinedprogramState->Set(resourceCache.GetGLProgram(GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME));
+		outLinedprogramState->SetUniform1f("lineWidth", outLineWidth);
+		outLinedprogramState->SetUniform3f("textureSize", { (float)GetSize().width, (float)GetSize().height, 0.0f });
+
+		mPreProgramState = GetProgramState();
+		SetProgramState(outLinedprogramState);
+	}
+	else
+	{
+		Debug::CheckAssertion(mPreProgramState != nullptr, 
+			"The previous programState is nullptr.");
+		SetProgramState(mPreProgramState);
+	}
+
+	mOutLineWidth = outLineWidth;
 }
 
 /**

@@ -367,6 +367,9 @@
     <ClCompile Include="src\game\item.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\gameResources.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -700,6 +703,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\gameResources.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\gameResourceType.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

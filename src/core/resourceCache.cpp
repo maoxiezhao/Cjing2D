@@ -46,6 +46,13 @@ void ResourceCache::LoadDefaultProgram()
 	colorProgram->Link();
 	mPrograms[GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME] = colorProgram;
 
+	// 记载默认的outlined sprite program
+	auto outLined = std::make_shared<GLProgram>();
+	outLined->InitWithFileNames(GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME + ".frag");
+	outLined->Link();
+	mPrograms[GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME] = outLined;
+
 	// 加载默认的字体program
 	auto fontProgram = std::make_shared<GLProgram>();
 	fontProgram->InitWithFileNames(GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME + ".vs",

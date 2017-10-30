@@ -1,4 +1,5 @@
 #include"game\app.h"
+#include"game\gameResources.h"
 #include"core\debug.h"
 #include"core\logger.h"
 #include"core\system.h"
@@ -7,8 +8,6 @@
 #include"core\video.h"
 #include"core\renderer.h"
 #include"core\fontAtlas.h"
-
-#include<Windows.h>
 
 App::App() :
 	mLuaContext(nullptr),
@@ -23,9 +22,13 @@ App::App() :
 	if (!FileData::OpenData("", dataPath))
 		Debug::Die("No data file was found int the direcion:" + dataPath);
 
-	Logger::Info("Open Config.");
+	Logger::Info("Load config.");
 	ConfigData::LoadConfig("config.dat");
 	FileData::SetDataWriteDir(ConfigData::GetConfigProperties().GetWriteDir());
+
+	// initialize game 
+	Logger::Info("Load game resource info.");
+	GameResource::GetGameResource().ImportFromFile("resources.dat");
 
 	// initialize system
 	Logger::Info("Initialize system modules");

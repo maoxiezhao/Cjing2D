@@ -1,6 +1,7 @@
 #include"luaContext.h"
 #include"core\video.h"
 #include"core\fileData.h"
+#include"core\resourceCache.h"
 #include"thirdparty\SOIL.h"
 
 const string LuaContext::module_video_name = "Video";
@@ -16,6 +17,7 @@ void LuaContext::RegisterVideoModule()
 		{"getScreenSize", video_api_get_wanted_size},
 		{"getFPS", video_api_get_fps },
 		{"setCursor", video_api_set_cursor },
+		{"loadProgram", video_api_load_program},
 		{nullptr,nullptr}
 	};
 	RegisterFunction(module_video_name, functions);
@@ -100,3 +102,29 @@ int LuaContext::video_api_set_cursor(lua_State* l)
 	});
 }
 
+
+/**
+*	\brief 加载一个新的program,cjing.Video.loadProgram(keyname, vertexName, fragName)
+*
+*	目前处于简化的考虑，当加载一个新的program时，也会默认创建一个唯一的programState
+*/
+int LuaContext::video_api_load_program(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		const std::string& keyName = LuaTools::CheckString(l, 1);
+		const std::string& vertexFileName = LuaTools::CheckString(l, 2);
+		const std::string& fragFileName = LuaTools::CheckString(l, 3);
+
+		// 创建program
+		auto program = std::make_shared<GLProgram>();
+		program->InitWithFileNames(vertexFileName, fragFileName);
+		ResourceCache::GetInstance().AddGLProgram(program, keyName);
+
+		// 创建programState
+		auto programState = std::make_shared<GLProgramState>();
+		programState->Set(program);
+		ResourceCache::GetInstance().AddGLProgramState(programState, keyName);
+
+		return 0;
+	});
+}

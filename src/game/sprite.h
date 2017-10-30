@@ -12,6 +12,10 @@
 
 /**
 *	\brief 精灵,可以显示纹理的移动单元，不能展示帧动画
+*
+*	17.10.29添加effect，包括blink和outLine，目前绘制以接口保存在
+*	sprite中，不存在更好的拓展性，未来系统将effect以一种更好的方式
+*	提供
 */
 class Sprite : public Drawable
 {
@@ -70,6 +74,12 @@ public:
 	// lua
 	virtual const string GetLuaObjectName()const;
 
+	// effect
+	bool IsBlinking()const;
+	void SetBlinking(uint32_t blinkDelay);
+	bool IsOutLine()const;
+	void SetOutLine(float outLineWidth);
+
 protected:
 	Sprite();
 	bool InitWithFile(const std::string& name);
@@ -83,6 +93,7 @@ protected:
 	Quad mQuad;
 	QuadCommand mQuadCommand;
 	GLProgramStatePtr mProgramState;
+	GLProgramStatePtr mPreProgramState;		/** 仅保存上一个programState */
 	TexturePtr mTexture;
 	Rect mTextureRect;
 	Size mSize;
@@ -92,11 +103,17 @@ protected:
 	float scaleX, scaleY;
 
 	bool mVisible;
-	bool mDirty;
+	bool mDirty;			/** 是否需要重新填充quad */
+	
+	uint32_t mBlinkDelay;
+	uint32_t mBlinkNextDate;
+	bool mIsBlinkVisible;	/** 是否是处于闪烁的可见时间段*/
+
+	float mOutLineWidth;		/** 是否开启描边 */
+	Color4B mOutLineColor;		/** 描边的颜色 */
 
 	// children
 	std::vector<std::shared_ptr<Sprite>> mChildSprites;
-	bool mSuspended;
 
 };
 

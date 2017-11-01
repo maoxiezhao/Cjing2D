@@ -370,6 +370,9 @@
     <ClCompile Include="src\game\gameResources.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\itemApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

@@ -163,6 +163,7 @@
     <ClCompile Include="src\lua\entityApi.cpp" />
     <ClCompile Include="src\lua\fontApi.cpp" />
     <ClCompile Include="src\lua\gameApi.cpp" />
+    <ClCompile Include="src\lua\itemApi.cpp" />
     <ClCompile Include="src\lua\luaContext.cpp" />
     <ClCompile Include="src\lua\luaData.cpp" />
     <ClCompile Include="src\lua\luaException.cpp" />

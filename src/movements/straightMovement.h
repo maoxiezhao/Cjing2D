@@ -41,12 +41,14 @@ public:
 
 protected:
 	void UpdateXY();
+	void UpdateSmoothXY();
 	void UpdateSmoothX();
 	void UpdateSmoothY();
 
 private:
 	double mSpeedX;
 	double mSpeedY;
+	double mSpeedValue;
 	double mAngle;
 
 	int mDirectionX;	// x方向的移动方向，0:不移动，1正向移动，-1负向移动

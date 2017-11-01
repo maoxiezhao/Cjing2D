@@ -25,15 +25,15 @@ void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint
 	Debug::CheckAssertion(programState != nullptr, "Invalid programState in QuadCommand::Init().");
 
 	mGlobalOrder = globalOrder;
-	mProgramState = programState;
 	mQuadCounts = quadCounts;
 	mQuads = quads;
 	mTransform = transfomr;
 	mModelView = modelView;
 	SetAutoReleased(autoReleased);
 
-	if (mTextureID != textureID || mBlendFunc != blendFunc)
+	if (mTextureID != textureID || mBlendFunc != blendFunc || mProgramState != programState)
 	{
+		mProgramState = programState;
 		mTextureID = textureID;
 		mBlendFunc = blendFunc;
 		GenerateShadeState();
@@ -97,7 +97,8 @@ Matrix4 QuadCommand::GetModelView() const
 void QuadCommand::GenerateShadeState()
 {
 	int program = mProgramState->GetProgram();
-	int hashArray[4] = { program,(int)mTextureID,(int)mBlendFunc.srcBlend ,(int)mBlendFunc.dstBlend };
+	int hashArray[5] = { program,static_cast<int>(mProgramState->GetProgramStateID()),
+		(int)mTextureID,(int)mBlendFunc.srcBlend ,(int)mBlendFunc.dstBlend };
 
 	mShadeState = XXH32((const void*)hashArray, sizeof(hashArray), 0);
 }

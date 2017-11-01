@@ -5,6 +5,8 @@ const string GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME = "normal_s
 const string GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME = "color_sprite_state";
 const string GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME = "normal_text_state";
 
+uint32_t GLProgramState::ProgramStateID = 0;
+
 UniformValue::UniformValue() :
 	mUniform(nullptr)
 {
@@ -102,7 +104,8 @@ void UniformValue::SetUniform(Uniform* uniform)
 
 GLProgramState::GLProgramState():
 	mProgram(nullptr),
-	mUniformValueDirty(true)
+	mUniformValueDirty(true),
+	mProgramStateID(GLProgramState::ProgramStateID++)
 {
 }
 
@@ -152,6 +155,11 @@ void GLProgramState::ApplyUniforms()
 {
 	for (auto& unifomr : mUniforms)
 		unifomr.second.Apply();
+}
+
+uint32_t GLProgramState::GetProgramStateID() const
+{
+	return mProgramStateID;
 }
 
 UniformValue* GLProgramState::GetUniform(const string & key) 

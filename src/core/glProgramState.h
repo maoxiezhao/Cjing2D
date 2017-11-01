@@ -63,7 +63,8 @@ public:
 	void ApplyProgram();
 	void ApplyAttibutes();
 	void ApplyUniforms();
-	
+	uint32_t GetProgramStateID()const;
+
 	UniformValue* GetUniform(const string& key);
 	UniformValue* GetUniform(const GLint& key);
 
@@ -87,7 +88,9 @@ private:
 	void ResetProgram();
 
 	bool mUniformValueDirty;
-	
+	static uint32_t ProgramStateID;
+	const uint32_t mProgramStateID;
+
 	GLProgramPtr mProgram;
 	std::unordered_map<string, GLint> mUniformNames;	/* 以uniform name 保存 uniform location */
 	std::unordered_map<GLint, UniformValue>mUniforms;	/* 以uniform location 保存uniform */

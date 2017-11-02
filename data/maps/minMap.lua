@@ -1,7 +1,7 @@
 local map = ...
 
 function map:onStarted()
-	print("map started.")
+	print("[lua] map started.")
 end
 
 function map:onUpdated()

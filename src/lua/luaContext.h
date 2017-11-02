@@ -29,6 +29,8 @@ class Savegame;
 class Game;
 class Map;
 class ParticleSystem;
+class Item;
+class ItemAcquired;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -44,14 +46,14 @@ class ParticleSystem;
 class LuaContext
 {
 public:
-	LuaContext(App* app);
+	LuaContext(App& app);
 	~LuaContext();
 
 	// system
 	void Initialize();
 	void Update();
 	void Exit();
-	App* GetApp()const;
+	App& GetApp()const;
 	bool NotifyInput(const InputEvent& event);
 
 	// script
@@ -70,6 +72,7 @@ public:
 	// userdata
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
 	static const bool IsUserdata(lua_State*l, int index, const string& name);
+	bool IsUserdataHasField(LuaObject& userdata, const std::string& fieldName);
 	void CloseUserdatas();
 	void NotifyUserdataDestoryed(LuaObject& obj);
 
@@ -78,7 +81,8 @@ public:
 	void OnUpdate();
 	void OnFinish();
 	void OnDraw();
-	
+	void OnCreated();
+
 	// input event
 	bool OnInput(const InputEvent& event);
 	bool OnKeyPressed(const InputEvent& event);
@@ -103,6 +107,7 @@ public:
 	void RegisterEntityModule();
 	void RegisterSoundModule();
 	void RegisterParticle();
+	void RegisterItem();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -158,6 +163,8 @@ public:
 		sprite_api_set_color,
 		sprite_api_set_outLined,
 		sprite_api_set_blinking,
+		sprite_api_set_flip_x,
+		sprite_api_set_flip_y,
 		sprite_api_draw,
 		// animation
 		animation_api_create,
@@ -220,6 +227,11 @@ public:
 		particle_api_stop,
 		particle_api_set_preprocess,
 		particle_api_draw,
+		// item
+		item_api_get_game,
+		item_api_set_shadow,
+		item_api_set_flow,
+		item_api_set_auto_picked,
 		// entity
 
 		// entity create
@@ -266,6 +278,11 @@ public:
 	void CallTimerRef(const TimerPtr& timer);
 	void UpdateTimers();
 	void DestoryTimers();
+
+	// item api
+	void RunItem(Item& item);
+	void OnItemCreated(Item& item);
+	bool OnItemObtained(Item& item, ItemAcquired& itemAcquired);
 
 	// menu api
 	struct MenuData	
@@ -317,6 +334,7 @@ public:
 	static void PushGame(lua_State*l, Savegame& saveGame);
 	static void PushMap(lua_State*l, Map& map);
 	static void PushParticle(lua_State*l, ParticleSystem& particle);
+	static void PushItem(lua_State*l, Item& item);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -341,7 +359,8 @@ public:
 	static bool IsMap(lua_State*l, int index);
 	static std::shared_ptr<ParticleSystem> CheckParticle(lua_State*l, int index);
 	static bool IsParticle(lua_State*l, int index);
-
+	static std::shared_ptr<Item> CheckItem(lua_State*l, int index);
+	static bool IsItem(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
@@ -356,6 +375,7 @@ public:
 	static const string module_async_loader_name;
 	static const string module_sound_name;
 	static const string module_particle_name;
+	static const string module_item_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -368,7 +388,7 @@ public:
 	static const string module_entity_name;
 
 private:
-	App* mApp;
+	App& mApp;
 	lua_State* l;
 	static std::map<lua_State*, LuaContext*>mLuaContexts;/* 用于在lua APi中通过lua_state获取
 														    luaContext */
@@ -386,6 +406,9 @@ private:
 	std::set<std::shared_ptr<AsyncLoader> >mAsyncLoaderToRemove;
 
 	static std::map<EntityType, lua_CFunction> mEntitityCreaters;
+
+	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
+																				该数据存储仅用于快速的查找是否存在指定key */
 
 };
 

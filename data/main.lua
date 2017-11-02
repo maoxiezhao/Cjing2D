@@ -10,12 +10,8 @@ function cjing.Main:onStarted()
 	self._text = nil
 	self._asyncLoader = nil
 	self._game = nil
-	self._testImg =  cjing.Sprite.create("sprites/test/test2.png")
-	self._testImg:setPos(280,20)
-	self._testImg:setOutLined(1.0)
-	self._testImg1 =  cjing.Sprite.create("sprites/test/test2.png")
-	self._testImg1:setPos(0,20)
-	self._testImg1:setBlinking(100)
+	-- self._testSprite = cjing.Sprite.create("sprites/test/test2.png")
+	-- self._testSprite:setPos(0,0)
 	
 	-- test particle
 	self._particle = cjing.Particle.create("test")
@@ -37,11 +33,11 @@ end
 
 function cjing.Main:FinishedLoading()
 	print "[Lua] Loading Finished."
-	cjing.Sound.playMusic("bg.ogg", true);
+	cjing.Sound.playMusic("castle.ogg", true);
 	-- 加载存档
 	local gameManager = require("menus/gameManager")
 	if gameManager then 
-		--gameManager:startGame()
+		gameManager:startGame()
 	end
 end
 
@@ -50,11 +46,9 @@ function cjing.Main:StartExit()
 end
 
 function cjing.Main:onDraw()
-	-- test text
-	self._testImg:draw()
-	self._testImg1:draw()
-	
-	--self._particle:draw()
+	-- self._testSprite:draw()
+
+	self._particle:draw()
 	if self._text then 
 		self._text:draw()
 	end 

@@ -1,4 +1,5 @@
 #include "mouseState.h"
+#include "entity\entity.h"
 #include "entity\player.h"
 #include "player\playerSprite.h"
 #include "core\inputEvent.h"
@@ -7,6 +8,31 @@
 MouseState::MouseState(Entity & entity):
 	MovementState(entity)
 {
+}
+
+/**
+*	\brief 该状态下相应交互键
+*
+*	这里应注意overlap和facing会以overlap为优先
+*/
+void MouseState::NotifyCommandInteractPressed()
+{
+	Player& player = dynamic_cast<Player&>(GetEntity());
+	Entity* overlapEntity = player.GetOverlapEntity();
+	bool entityInteraction = false;
+	if (overlapEntity != nullptr && overlapEntity->IsFosused())
+	{
+		overlapEntity->NotifyCommandInteractPressed(player);
+	}
+	else
+	{
+		// 当overlap不存在时才考虑处理facingEntity
+		Entity* facingEntity = player.GetFacingEntity();
+		if (facingEntity != nullptr && facingEntity->IsFosused())
+		{
+			facingEntity->NotifyCommandInteractPressed(player);
+		}
+	}
 }
 
 void MouseState::Start(EntityState & state)

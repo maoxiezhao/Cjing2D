@@ -4,7 +4,7 @@ property{
   width = 320,
   height = 160,
   min_layer = 0,
-  max_layer = 2,
+  max_layer = 1,
   tileset = 'minMap',
 }
 
@@ -95,7 +95,7 @@ tile{
   layer = 0,
   width = 32,
   height = 32,
-  pattern = 21,
+  pattern = 44,
 }
 
 tile{
@@ -104,7 +104,7 @@ tile{
   layer = 0,
   width = 32,
   height = 32,
-  pattern = 21,
+  pattern = 43,
 }
 
 tile{
@@ -113,7 +113,7 @@ tile{
   layer = 0,
   width = 32,
   height = 32,
-  pattern = 21,
+  pattern = 45,
 }
 
 tile{
@@ -122,7 +122,7 @@ tile{
   layer = 0,
   width = 32,
   height = 32,
-  pattern = 21,
+  pattern = 43,
 }
 
 tile{
@@ -140,7 +140,7 @@ tile{
   layer = 0,
   width = 32,
   height = 32,
-  pattern = 21,
+  pattern = 45,
 }
 
 tile{
@@ -396,7 +396,7 @@ tile{
 }
 
 tile{
-  x = 224,
+  x = 96,
   y = 0,
   layer = 1,
   width = 32,
@@ -405,38 +405,45 @@ tile{
 }
 
 tile{
-  x = 64,
-  y = 32,
+  x = 128,
+  y = 0,
   layer = 1,
   width = 32,
   height = 32,
-  pattern = 45,
+  pattern = 31,
+}
+
+tile{
+  x = 160,
+  y = 0,
+  layer = 1,
+  width = 32,
+  height = 32,
+  pattern = 31,
 }
 
 tile{
   x = 224,
-  y = 32,
+  y = 0,
   layer = 1,
   width = 32,
   height = 32,
-  pattern = 44,
+  pattern = 31,
 }
 
-tile{
-  x = 64,
-  y = 96,
-  layer = 1,
-  width = 32,
-  height = 32,
-  pattern = 3,
+pickable{
+  x = 100,
+  y = 100,
+  layer = 0,
+  itemName = "gold",
+  itemCount = 1,
 }
 
-tile{
-  x = 224,
-  y = 96,
-  layer = 1,
-  width = 32,
-  height = 32,
-  pattern = 73,
-}
 
+pickable{
+  x = 150,
+  y = 80,
+  layer = 0,
+  itemName = "heart",
+  itemCount = 1,
+}

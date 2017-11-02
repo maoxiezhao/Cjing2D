@@ -20,7 +20,9 @@ Sprite::Sprite():
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
 	mIsBlinkVisible(true),
-	mOutLineWidth(0.0f)
+	mOutLineWidth(0.0f),
+	mFlipX(false),
+	mFlipY(false)
 {
 	SetDefaultNormalState();
 }
@@ -39,7 +41,9 @@ Sprite::Sprite(const std::string & name):
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
 	mIsBlinkVisible(true),
-	mOutLineWidth(0.0f)
+	mOutLineWidth(0.0f),
+	mFlipX(false),
+	mFlipY(false)
 {
 	InitWithFile(name);
 	SetDefaultNormalState();
@@ -59,7 +63,9 @@ Sprite::Sprite(TexturePtr & tex):
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
 	mIsBlinkVisible(true),
-	mOutLineWidth(0.0f)
+	mOutLineWidth(0.0f),
+	mFlipX(false),
+	mFlipY(false)
 {
 	InitWithTexture(mTexture);
 	SetDefaultNormalState();
@@ -81,7 +87,9 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
 	mIsBlinkVisible(true),
-	mOutLineWidth(0.0f)
+	mOutLineWidth(0.0f),
+	mFlipX(false),
+	mFlipY(false)
 {
 	SetSize(size);
 	SetColor(color);
@@ -277,6 +285,16 @@ void Sprite::SetTextureCroods(const Rect & rect)
 	float top = orgin.y / height;
 	float bottom = (orgin.y + size.height) / height;
 
+	// do flip if need.
+	if (mFlipX)
+	{
+		std::swap(left, right);
+	}
+	if (mFlipY)
+	{
+		std::swap(top, right);
+	}
+
 	mQuad.lt.texs.u = left;
 	mQuad.lt.texs.v = bottom;
 	mQuad.lb.texs.u = left;
@@ -408,6 +426,32 @@ void Sprite::SetScale(float x, float y)
 {
 	scaleX = x;
 	scaleY = y;
+}
+
+/**
+*	\brief 翻转x轴
+*/
+void Sprite::SetFlipX(bool fliped)
+{
+	if (mFlipX != fliped)
+	{
+		mFlipX = fliped;
+		Rect rect = Rect(GetPos(), GetSize());
+		SetTextureRect(rect);
+	}
+}
+
+/**
+*	\brief 翻转y轴
+*/
+void Sprite::SetFlipY(bool fliped)
+{
+	if (mFlipY != fliped)
+	{
+		mFlipY = fliped;
+		Rect rect = Rect(GetPos(), GetSize());
+		SetTextureRect(rect);
+	}
 }
 
 /**
@@ -557,6 +601,12 @@ void Sprite::SetOutLine(float outLineWidth)
 	Debug::CheckAssertion(outLineWidth >= 0,
 		"The outline width unable less than 0.");
 
+	// 当设置相同值时返回
+	if (fabs(outLineWidth - mOutLineWidth) <= 1e-4)
+	{
+		return;
+	}
+
 	if (outLineWidth > 0)
 	{
 		// 加载默认的outlined sprite program
@@ -568,15 +618,15 @@ void Sprite::SetOutLine(float outLineWidth)
 
 		mPreProgramState = GetProgramState();
 		SetProgramState(outLinedprogramState);
+		mOutLineWidth = outLineWidth;
 	}
-	else
+	else if(outLineWidth <= 0.0f)
 	{
 		Debug::CheckAssertion(mPreProgramState != nullptr, 
 			"The previous programState is nullptr.");
 		SetProgramState(mPreProgramState);
+		mOutLineWidth = outLineWidth;
 	}
-
-	mOutLineWidth = outLineWidth;
 }
 
 /**

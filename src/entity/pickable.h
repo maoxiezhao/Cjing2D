@@ -18,18 +18,18 @@ public:
 	/** system */
 	virtual void Update();
 	virtual void Draw();
-
 	virtual EntityType GetEntityType()const;
 	virtual const string GetLuaObjectName()const;
 
 	/** notify */
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
+	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
 
 private:
 	bool InitSprites();
 	void TryGiveItemToPicker(Entity& picker);
 
-	bool mCanPicked;
+	bool mCanPicked;	
 
 	ItemAcquired mItemAcquired;	/** 当前获取物品的描述对象 */
 	AnimationSpritePtr mItemSprite;

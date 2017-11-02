@@ -25,6 +25,8 @@ void LuaContext::RegisterSpriteModule()
 		{"setAnchor", sprite_api_set_anchor},
 		{"setOutLined", sprite_api_set_outLined },
 		{"setBlinking", sprite_api_set_blinking },
+		{"setFlipX", sprite_api_set_flip_x },
+		{"setFlipY", sprite_api_set_flip_y },
 		{"draw", sprite_api_draw},
 		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
 		{"getPos", drawable_api_get_pos},	
@@ -279,6 +281,35 @@ int LuaContext::sprite_api_set_blinking(lua_State*l)
 		Sprite& sprite = *CheckSprite(l, 1);
 		uint32_t blinkDelay = LuaTools::CheckInt(l, 2);
 		sprite.SetBlinking(blinkDelay);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现cjing.Sprite:setFlipX(bool)
+*/
+int LuaContext::sprite_api_set_flip_x(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		bool fliped = LuaTools::CheckBoolean(l, 2);
+		sprite.SetFlipX(fliped);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现cjing.Sprite:setFlipY(bool)
+*/
+int LuaContext::sprite_api_set_flip_y(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		uint32_t blinkDelay = LuaTools::CheckInt(l, 2);
+		bool fliped = LuaTools::CheckBoolean(l, 2);
+		sprite.SetFlipY(fliped);
 
 		return 0;
 	});

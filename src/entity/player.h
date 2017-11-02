@@ -22,9 +22,11 @@ public:
 	virtual void Draw();
 	virtual void Initalized();
 
-	/** Notify command event */
+	/** Notify event */
 	virtual void NotifyMovementChanged();
 	virtual void NotifyPositonChanged();
+	virtual void NotifyFacingEntityChanged(Entity* entity);
+	virtual void NotifyOverlapEntityChanged(Entity* entity);
 
 	/** status manager */
 	void PlaceOnMap(Map& map);

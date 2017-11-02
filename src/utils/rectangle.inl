@@ -162,13 +162,13 @@ inline bool Rect::Overlaps(const Rect & rect) const
 constexpr bool operator==(const Rect& lhs, const Rect& rhs)
 {
 	return lhs.x == rhs.x && lhs.y == rhs.y &&
-		lhs.width == rhs.width && lhs.height == rhs.width;
+		lhs.width == rhs.width && lhs.height == rhs.height;
 }
 
 constexpr bool operator!=(const Rect& lhs, const Rect& rhs)
 {
 	return lhs.x != rhs.x || lhs.y != rhs.y ||
-		lhs.width != rhs.width || lhs.height != rhs.width;
+		lhs.width != rhs.width || lhs.height != rhs.height;
 }
 
 /**

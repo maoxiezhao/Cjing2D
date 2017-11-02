@@ -14,9 +14,9 @@ function game:onStarted()
 	local text = cjing.Text.create({fontName = "arial.ttf"})
 	if text then 
 		text:setHorizontalAlign("center")
-		text:setText("Welcome to Cjing v0.1")
-		text:setPos(540, 460)
-		text:setLineHeight(25)
+		text:setText("WASD--move   E--get   LeftMouse--attack             Welcome to Cjing v0.0.1")
+		text:setPos(370, 460)
+		text:setLineHeight(20)
 		self._logoText = text
 	end
 	
@@ -25,7 +25,7 @@ function game:onStarted()
 		local dubugStr = "FPS:" .. cjing.Video.getFPS()
 		debugText:setText(dubugStr)
 		debugText:setPos(20, 460)
-		debugText:setLineHeight(25)
+		debugText:setLineHeight(20)
 		self._debugText = debugText
 	end
 	

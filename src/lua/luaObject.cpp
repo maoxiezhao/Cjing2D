@@ -16,7 +16,7 @@ LuaObject::~LuaObject()
 	}
 }
 
-LuaContext* LuaObject::GetLuaContext() const
+LuaContext* LuaObject::GetLuaContext()
 {
 	return mLuaContext;
 }

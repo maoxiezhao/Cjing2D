@@ -111,9 +111,9 @@ Window::~Window()
 /**
 *	\brief œ‘ æ¥∞ÃÂ
 */
-void Window::Show()
+void Window::Show(bool showed)
 {
-	mSuspendDrawing = false;
+	mSuspendDrawing = !showed;
 }
 
 /**

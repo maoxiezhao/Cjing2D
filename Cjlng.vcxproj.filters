@@ -373,6 +373,9 @@
     <ClCompile Include="src\lua\itemApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\itemBeg.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -709,6 +712,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\gameResourceType.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\itemBeg.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

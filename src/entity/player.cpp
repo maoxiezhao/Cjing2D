@@ -7,14 +7,15 @@
 #include"player\playerSprite.h"
 
 Player::Player(Equipment & equipment) :
-	Entity("", { 200, 200 }, {22, 20}, 0),	// testing data
+	Entity("", { 50, 50 }, {22, 20}, 0),	// testing data
 	mPlayerSprites(nullptr),
 	mEquipment(equipment),
 	mNormalWalkingSpeed(100),
 	mCurWalkingSpeed(100),
 	mIsBindDirectionByGameCommand(true)
 {
-	SetOrigin({ -10, -22 });
+	SetOrigin({ -9, -22 });
+	SetDrawOnYOrder(true);
 
 	// 设置当前player sprites
 	PlayerSprite* playerSprite = new PlayerSprite(*this);
@@ -39,6 +40,7 @@ void Player::Update()
 
 	// state update
 	GetState()->Update();
+
 }
 
 /**
@@ -51,7 +53,7 @@ void Player::Draw()
 	// now testing data
 	Debug::CheckAssertion(mPlayerSprites != nullptr, "Player sprites is null.");
 
-	//DrawDebugBounding();
+//	DrawDebugBounding();
 
 	mPlayerSprites->Draw();
 }
@@ -74,6 +76,8 @@ void Player::PlaceOnMap(Map & map)
 */
 void Player::CheckPosition()
 {
+	SetFacingEntity(nullptr);
+	SetOverlapEntity(nullptr);
 	CheckCollisionWithEntities();
 }
 
@@ -142,4 +146,48 @@ void Player::NotifyPositonChanged()
 		GetMap().GetEntities().NotifyEntityRectChanged(*this);
 	}
 	CheckPosition();
+}
+
+/**
+*	\brief 响应facingEntity的改变,并设置该entity为focused
+*/
+void Player::NotifyFacingEntityChanged(Entity * entity)
+{
+	auto facingEntity = GetFacingEntity();
+	if (facingEntity != entity)
+	{
+		// old entity失去焦点
+		if (facingEntity != nullptr)
+		{
+			facingEntity->SetFocused(false);
+		}
+		
+		// new entity拾取焦点
+		if (entity != nullptr)
+		{
+			entity->SetFocused(true);
+		}
+	}
+}
+
+/**
+*	\brief 响应overlapEntity的改变,并设置该entity为focused
+*/
+void Player::NotifyOverlapEntityChanged(Entity * entity)
+{
+	auto overlapEntity = GetOverlapEntity();
+	if (overlapEntity != entity)
+	{
+		// old entity失去焦点
+		if (overlapEntity != nullptr)
+		{
+			overlapEntity->SetFocused(false);
+		}
+
+		// new entity拾取焦点
+		if (entity != nullptr)
+		{
+			entity->SetFocused(true);
+		}
+	}
 }

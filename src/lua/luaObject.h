@@ -15,7 +15,7 @@ public:
 	LuaObject();
 	virtual ~LuaObject();
 
-	LuaContext* GetLuaContext()const;
+	LuaContext* GetLuaContext();
 	void SetLuaContext(LuaContext* luaContext);
 
 	bool IsKnowToLua()const;

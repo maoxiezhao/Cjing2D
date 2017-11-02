@@ -4,6 +4,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -12,6 +13,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -20,6 +22,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -28,6 +31,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -36,6 +40,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -44,6 +49,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -52,6 +58,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -60,6 +67,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -68,6 +76,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -76,6 +85,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -84,6 +94,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -92,6 +103,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -100,6 +112,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -108,6 +121,7 @@ tilePattern{
   y = 0,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -116,6 +130,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -124,6 +139,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -132,6 +148,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -140,6 +157,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -148,6 +166,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -156,6 +175,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -164,6 +184,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -172,6 +193,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -180,6 +202,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -188,6 +211,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -196,6 +220,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -204,6 +229,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -212,6 +238,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -220,6 +247,7 @@ tilePattern{
   y = 32,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -228,6 +256,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -236,6 +265,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -244,6 +274,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -252,6 +283,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -260,6 +292,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -268,6 +301,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -276,6 +310,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -284,6 +319,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -292,6 +328,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -300,6 +337,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -308,6 +346,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -316,6 +355,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -324,6 +364,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -332,6 +373,7 @@ tilePattern{
   y = 64,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -340,6 +382,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = 'Wall',
 }
 
 tilePattern{
@@ -348,6 +391,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = 'Wall',
 }
 
 tilePattern{
@@ -356,6 +400,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = 'Wall',
 }
 
 tilePattern{
@@ -364,6 +409,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -372,6 +418,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -380,6 +427,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -388,6 +436,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -396,6 +445,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -404,6 +454,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -412,6 +463,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -420,6 +472,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -428,6 +481,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -436,6 +490,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -444,6 +499,7 @@ tilePattern{
   y = 96,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -452,6 +508,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -460,6 +517,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -468,6 +526,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -476,6 +535,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -484,6 +544,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -492,6 +553,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -500,6 +562,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -508,6 +571,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -516,6 +580,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -524,6 +589,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -532,6 +598,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -540,6 +607,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -548,6 +616,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -556,6 +625,7 @@ tilePattern{
   y = 128,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -564,6 +634,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -572,6 +643,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -580,6 +652,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -588,6 +661,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -596,6 +670,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -604,6 +679,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -612,6 +688,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -620,6 +697,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -628,6 +706,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -636,6 +715,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -644,6 +724,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -652,6 +733,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -660,6 +742,7 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 
 tilePattern{
@@ -668,5 +751,6 @@ tilePattern{
   y = 160,
   width = 32,
   height = 32,
+  ground = '',
 }
 

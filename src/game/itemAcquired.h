@@ -18,7 +18,7 @@ class ItemAcquired
 public:
 	ItemAcquired(Game& game, const std::string& itemName, int variant);
 
-	void GiveItemToPlayer();
+	bool GiveItemToPlayer();
 	const string& GetItemName()const;
 	void SetItemName(const string& name);
 	int GetVariant()const;

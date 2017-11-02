@@ -1,5 +1,5 @@
 config{
-	title = "Cjing v0.1",
+	title = "Cjing v0.0.1",
 	write_dir = "cjing",
 	normal_width = 640,
 	normal_height= 480,

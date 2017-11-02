@@ -9,7 +9,7 @@
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 const string LuaContext::module_name = "cjing";
 
-LuaContext::LuaContext(App* app):
+LuaContext::LuaContext(App& app):
 	mApp(app)
 {
 }
@@ -115,7 +115,7 @@ void LuaContext::Exit()
 	}
 }
 
-App * LuaContext::GetApp() const
+App& LuaContext::GetApp() const
 {
 	return mApp;
 }
@@ -213,8 +213,8 @@ int LuaContext::userdata_meta_gc(lua_State*l)
 /**
 *	\biref lua newindex元方法处理存储特殊数据
 *
-*	xxx = yyyy,newindex方法会将3个参数压栈,如果userdata_tables里已经
-*	存在tables，则直接存取，不然
+*	xxx = yyyy,那么newindex方法会将3个参数以userdata,xxx,yyy压栈,
+*	如果userdata_tables里已经存在tables，则直接存取，不然
 */
 int LuaContext::userdata_meta_newindex(lua_State* l)
 {
@@ -258,6 +258,21 @@ int LuaContext::userdata_meta_newindex(lua_State* l)
 		lua_pushvalue(l, 3);
 								// userdata_table userdata table key value
 		lua_settable(l, -3);
+
+		// 将xxx=yyy的key值保存在userdataFields中
+		if (lua_isstring(l, 2))
+		{
+			if (!lua_isnil(l, 3))
+			{
+				GetLuaContext(l).mUserdataFields[userdata.get()].insert(LuaTools::CheckString(l, 2));
+			}
+			else
+			{
+				GetLuaContext(l).mUserdataFields[userdata.get()].erase(LuaTools::CheckString(l, 2));
+
+			}
+		}
+
 		return 0;	
 	});
 }
@@ -337,6 +352,8 @@ void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
 								// userdata_talbes
 		}
 		lua_pop(l, 1);
+
+		GetLuaContext(l).mUserdataFields.erase(&obj);
 	}
 }
 
@@ -658,13 +675,56 @@ const bool LuaContext::IsUserdata(lua_State * l, int index, const string& name)
 }
 
 /**
+*	\brief 检测userdata的userdata_tables中是否存在指定值
+*/
+bool LuaContext::IsUserdataHasField(LuaObject & userdata, const std::string & fieldName)
+{
+	// 是否是已注册数据
+	if (!userdata.IsKnowToLua())
+	{
+		return false;
+	}
+
+	// 检查元表
+	luaL_getmetatable(l, userdata.GetLuaObjectName().c_str());
+							// metatable
+	lua_pushstring(l, fieldName.c_str());
+							// metatable fieldname
+	lua_rawget(l, -2);
+							// metatable nil/field
+	bool foundInMeta = !lua_isnil(l, -1);
+	lua_pop(l, 2);
+	if (foundInMeta)
+	{
+		return true;
+	}
+
+	// 不包含表则直接返回
+	if (!userdata.IsWithLuaTable())
+	{
+		return false;
+	}
+
+	// 从自定义数据表中查找
+	const auto& it = mUserdataFields.find(&userdata);
+	if (it == mUserdataFields.end())
+	{
+		return false;
+	}
+	return it->second.find(fieldName) != it->second.end();
+}
+
+/**
 *	\brief 清楚所有Userdata数据
 */
 void LuaContext::CloseUserdatas()
 {
 	lua_getfield(l,LUA_REGISTRYINDEX,"all_userdata");
 
-	// 依次去除userdata清楚
+	// 清楚userdata_tables数据
+	mUserdataFields.clear();
+	lua_pushnil(l);
+	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
 }
 
 void LuaContext::OnStart()
@@ -690,6 +750,14 @@ void LuaContext::OnDraw()
 	if (FindMethod("onDraw"))
 	{
 		LuaTools::CallFunction(l, 1, 0, "onDraw");
+	}
+}
+
+void LuaContext::OnCreated()
+{
+	if (FindMethod("onCreated"))
+	{
+		LuaTools::CallFunction(l, 1, 0, "onCreated");
 	}
 }
 
@@ -857,6 +925,7 @@ void LuaContext::RegisterModules()
 	RegisterAsyncLoaderModule();
 	RegisterEntityModule();
 	RegisterParticle();
+	RegisterItem();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

@@ -1,10 +1,11 @@
 #include "game\equipment.h"
 #include "game\savegame.h"
+#include "game\gameResources.h"
+#include "game\item.h"
 
 Equipment::Equipment(Savegame & savegame):
 	mSavegame(savegame)
 {
-	LoadAllItems();
 }
 
 /**
@@ -12,6 +13,20 @@ Equipment::Equipment(Savegame & savegame):
 */
 void Equipment::LoadAllItems()
 {
+	// 创建所有item对象
+	const auto& itemsInfo = GameResource::GetGameResource().GetGameResourcesInfos(GameResourceType::ITEM);
+	for (const auto& itemId : itemsInfo)
+	{
+		std::shared_ptr<Item> item = std::make_shared<Item>(itemId, *this);
+		mAllItems[itemId] = item;
+	}
+	// 初始化所有脚本
+	for (auto& kvp : mAllItems)
+	{
+		Item& item = *kvp.second;
+		item.Initialize();
+	}
+
 }
 
 /**
@@ -44,8 +59,9 @@ const Item & Equipment::GetItem(const std::string & itemName) const
 	return *itor->second;
 }
 
-void Equipment::PushItemIntoBeg(Item & item)
+bool Equipment::PushItemIntoBeg(Item & item)
 {
+	return true;
 }
 
 /**
@@ -78,4 +94,9 @@ int Equipment::GetMaxLife() const
 void Equipment::SetMaxLife(int maxLife)
 {
 	mSavegame.SetInteger(Savegame::KEYWORD_CURRENT_MAX_LIFE, maxLife);
+}
+
+Savegame & Equipment::GetSavegame()
+{
+	return mSavegame;
 }

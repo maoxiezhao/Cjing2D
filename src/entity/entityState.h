@@ -24,6 +24,12 @@ public:
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
+
+	// notify special command
+	virtual void NotifyCommandDirectionPressed(Direction4 direction);
+	virtual void NotifyCommandDirectionReleased(Direction4 direction);
+	virtual void NotifyCommandInteractPressed();
+
 	virtual Direction8 GetWantedDirection8()const;
 
 	Entity& GetEntity();

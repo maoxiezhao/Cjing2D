@@ -7,6 +7,8 @@
 #include"lua\luaObject.h"
 #include<map>
 
+class App;
+
 /**
 *	\brief 游戏存档数据
 *
@@ -18,7 +20,7 @@
 class Savegame : public LuaObject
 {
 public:
-	Savegame(const string& fileName);
+	Savegame(App& app, const string& fileName);
 
 	void Init();
 	void SetGame(Game* game);
@@ -34,6 +36,8 @@ public:
 	void SetBoolean(const string& key, bool value);
 	bool GetBoolean(const string& key);
 	void UnSet(const string& key);
+
+	LuaContext& GetLuaContext();
 	virtual const string GetLuaObjectName()const;
 
 	/*** command映射存储的标记 ***/
@@ -41,6 +45,7 @@ public:
 	static const std::string GAMECOMMAND_KEYBOARD_RIGHT;
 	static const std::string GAMECOMMAND_KEYBOARD_DOWN;
 	static const std::string GAMECOMMAND_KEYBOARD_LEFT;
+	static const std::string GAMECOMMAND_KEYBOARD_INTERACT;
 
 	/*** *** 当前游戏数值的Keyword *** ***/
 	static const std::string KEYWORD_START_MAP;
@@ -78,6 +83,7 @@ private:
 	};
 
 	std::map<std::string, SavedValue> mSavedValues;
+	App& mApp;
 	Game* mGame;
 	Equipment mEquipment;		/** 当前的玩家状态管理者 */
 	string mFileName;			/** 当前存档文件名 */

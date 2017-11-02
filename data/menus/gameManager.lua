@@ -15,11 +15,13 @@ function GameManager:startGame()
 		print("[lua] Defualt Game Data.")
 		game:setLife(20)
 		game:setMaxLife(20)
-		game:setStartLocation("test")
+		game:setStartLocation("minMap")
 		game:save()
 	end 
 	-- test map
-	game:setStartLocation("test")
+	game:setLife(3)
+	game:setStartLocation("minMap")
+	
 	-- start game
 	if game then 
 		cjing.Main:StartGame(game)

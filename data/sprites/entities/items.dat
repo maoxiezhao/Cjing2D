@@ -1,9 +1,29 @@
 animation{
-  name = "apple",
+  name = "heart",
   src_image = "entities/items.png",
-  frame_delay = 50,
+  frame_delay = 200,
   frame_loop = 0,
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 4, num_columns = 4 },
+  },
+}
+
+animation{
+  name = "gold",
+  src_image = "entities/items.png",
+  frame_delay = 200,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 16, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 4, num_columns = 4 },
+  },
+}
+
+animation{
+  name = "apple",
+  src_image = "entities/items.png",
+  frame_delay = 200,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 32, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
   },
 }

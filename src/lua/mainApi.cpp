@@ -86,7 +86,7 @@ int LuaContext::main_api_exit(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		
-		GetLuaContext(l).GetApp()->SetExiting(true);
+		GetLuaContext(l).GetApp().SetExiting(true);
 		return 0;
 	});
 }

@@ -34,8 +34,10 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	// 创建游戏命令管理
 	mGameCommands = std::make_shared<GameCommands>(*this);
 
-	// 加载player
+	// 获取当前equipment
 	Equipment& equipment = mSavegame->GetEquipment();
+
+	// 设置当前player
 	mPlayer = std::make_shared<Player>(equipment);
 
 	// 加载map

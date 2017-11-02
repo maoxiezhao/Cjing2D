@@ -1,19 +1,24 @@
-#include"savegame.h"
-#include"lua\luaContext.h"
-#include"core\fileData.h"
+#include"game\savegame.h"
 #include"game\enumInfo.h"
+#include"game\app.h"
+#include"core\fileData.h"
+#include"lua\luaContext.h"
+
 #include<sstream>
 
 const std::string Savegame::GAMECOMMAND_KEYBOARD_UP = "keyboard_up";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
+const std::string Savegame::GAMECOMMAND_KEYBOARD_INTERACT = "keyboard_interact";
 
 const std::string Savegame::KEYWORD_START_MAP = "keyword_start_map";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
 const std::string Savegame::KEYWORD_CURRENT_MAX_LIFE = "keyword_current_max_life";
 
-Savegame::Savegame(const string& fileName):
+
+Savegame::Savegame(App & app, const string & fileName):
+	mApp(app),
 	mFileName(fileName),
 	mGame(nullptr),
 	mEquipment(*this)
@@ -35,6 +40,7 @@ void Savegame::Init()
 	{
 		ImportFromFile(mFileName);
 	}
+	mEquipment.LoadAllItems();
 }
 
 void Savegame::SetGame(Game * game)
@@ -168,6 +174,11 @@ void Savegame::UnSet(const string & key)
 	}
 }
 
+LuaContext& Savegame::GetLuaContext()
+{
+	return mApp.GetLuaContext();
+}
+
 const string Savegame::GetLuaObjectName() const
 {
 	return LuaContext::module_game_name;
@@ -246,6 +257,7 @@ void Savegame::SetDefaultCommandMappingKeyBoard()
 	SetString(GAMECOMMAND_KEYBOARD_RIGHT, EnumToString(InputEvent::KEY_d));
 	SetString(GAMECOMMAND_KEYBOARD_DOWN, EnumToString(InputEvent::KEY_s));
 	SetString(GAMECOMMAND_KEYBOARD_LEFT, EnumToString(InputEvent::KEY_a));
+	SetString(GAMECOMMAND_KEYBOARD_INTERACT, EnumToString(InputEvent::KEY_e));
 }
 
 /**

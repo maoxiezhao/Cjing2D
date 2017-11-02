@@ -22,7 +22,8 @@ namespace{
 PlayerSprite::PlayerSprite(Player & player):
 	mPlayer(player),
 	mIsFourDirecitonSprite(true),
-	mBodySprite(nullptr)
+	mBodySprite(nullptr),
+	mShadowSprite(nullptr)
 {
 	BuildSprites();
 }
@@ -32,6 +33,12 @@ PlayerSprite::PlayerSprite(Player & player):
 */
 void PlayerSprite::BuildSprites()
 {
+	const Point2& pos = mPlayer.GetOrigin();
+
+	// 创建影子的sprite
+	mShadowSprite = mPlayer.CreateAnimationSprite("entities/shadow", "big");
+	mShadowSprite->SetAnchorFloat(0.5f, 0.85f);
+
 	// 创建身体的sprite
 	mBodySprite = mPlayer.CreateAnimationSprite("players/player", walkAnimationName); 
 	mBodySprite->SetCurrDirection(0);
@@ -56,8 +63,13 @@ void PlayerSprite::Update()
 void PlayerSprite::Draw()
 {
 	auto& map = mPlayer.GetMap();
-	Point2 pos = mPlayer.GetPos();
-	
+	const Point2& pos = mPlayer.GetPos();
+	const Point2& ltPos = mPlayer.GetLeftTopPos();
+	const Size& size = mPlayer.GetSize();
+
+	mShadowSprite->SetPos({ ltPos.x + size.width/2, ltPos.y + size.height});
+	map.DrawOnMap(*mShadowSprite);
+
 	mBodySprite->SetPos(pos);
 
 	map.DrawOnMap(*mBodySprite);

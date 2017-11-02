@@ -25,13 +25,14 @@ public:
 	Item& GetItem(const std::string& itemName);
 	const Item& GetItem(const std::string& itemName)const;
 
-	void PushItemIntoBeg(Item& item);
+	bool PushItemIntoBeg(Item& item);
 
 	/** Setter/Getter */
 	int GetLife()const;
 	void SetLife(int life);
 	int GetMaxLife()const;
 	void SetMaxLife(int maxLife);
+	Savegame& GetSavegame();
 
 private:
 	Savegame& mSavegame;

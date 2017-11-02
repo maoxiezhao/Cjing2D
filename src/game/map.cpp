@@ -160,7 +160,7 @@ Game & Map::GetGame()
 	return *mGame;
 }
 
-LuaContext & Map::GetLuaContext()
+LuaContext& Map::GetLuaContext()
 {
 	return mGame->GetLuaContext();
 }

@@ -39,7 +39,7 @@ private:
 	
 	/**** **** sprite **** ****/
 	AnimationSpritePtr mBodySprite;		/** 身体的精灵 */
-
+	AnimationSpritePtr mShadowSprite;
 };
 
 inline bool PlayerSprite::IsFourDirection()const

@@ -86,6 +86,8 @@ void Grid::SetRowCols(int row, int col)
 	}
 	mRows = row;
 	mCols = col;
+	mRowsHeight.resize(row, 0);
+	mColsWidth.resize(col, 0);
 	mChilds.resize(row * col);
 }
 
@@ -187,7 +189,8 @@ void Grid::SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, co
 
 Grid::Children::Children():
 	mFlag(0),
-	mWidget(nullptr)
+	mWidget(nullptr),
+	mBorderSize(0)
 {
 }
 

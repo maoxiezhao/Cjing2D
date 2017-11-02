@@ -136,6 +136,7 @@
     <ClCompile Include="src\game\gameResources.cpp" />
     <ClCompile Include="src\game\item.cpp" />
     <ClCompile Include="src\game\itemAcquired.cpp" />
+    <ClCompile Include="src\game\itemBeg.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
     <ClCompile Include="src\game\particleData.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="src\game\gameResourceType.h" />
     <ClInclude Include="src\game\item.h" />
     <ClInclude Include="src\game\itemAcquired.h" />
+    <ClInclude Include="src\game\itemBeg.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\mapData.h" />
     <ClInclude Include="src\game\particleData.h" />

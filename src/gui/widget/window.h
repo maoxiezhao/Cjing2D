@@ -21,7 +21,7 @@ public:
 	Window(int x, int y, int w, int h);
 	~Window();
 
-	void Show();
+	void Show(bool showed);
 	void Draw();
 	void UnDraw();
 

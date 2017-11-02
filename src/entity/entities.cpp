@@ -119,11 +119,11 @@ void Entities::Draw()
 					}
 					else if (entity1->IsDrawOnYOrder() && entity2->IsDrawOnYOrder())
 					{
-						if (entity1->GetPos().y < entity2->GetPos().y)
+						if (entity1->GetLeftTopPos().y < entity2->GetLeftTopPos().y)
 						{
 							return true;
 						}
-						else if (entity1->GetPos().y > entity2->GetPos().y)
+						else if (entity1->GetLeftTopPos().y > entity2->GetLeftTopPos().y)
 						{
 							return false;
 						}
@@ -320,6 +320,7 @@ void Entities::AddEntity(const EntityPtr& entity)
 	{
 		return;
 	}
+
 	Debug::CheckAssertion(mMap.IsValidLayer(entity->GetLayer()),
 		"Invalid entity layer in adding entity.");
 
@@ -330,7 +331,10 @@ void Entities::AddEntity(const EntityPtr& entity)
 		mZCache.AddEntity(entity);
 	}
 
-	mAllEntities.push_back(entity);
+	if (entityType != EntityType::PLAYRE)
+	{
+		mAllEntities.push_back(entity);
+	}
 	entity->SetMap(&mMap);
 }
 

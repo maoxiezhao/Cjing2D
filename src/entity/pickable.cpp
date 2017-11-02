@@ -18,6 +18,7 @@ Pickable::Pickable(const std::string itemName, int layer, const Point2 & pos, It
 	mCanPicked(true)
 {
 	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
+	SetDrawOnYOrder(true);
 
 	if (!InitSprites())
 	{
@@ -33,8 +34,17 @@ Pickable::Pickable(const std::string itemName, int layer, const Point2 & pos, It
 */
 void Pickable::Update()
 {
-	mItemSprite->Update();
+	auto& item = mItemAcquired.GetItem();
+	if (!item.IsAutoPicked() && IsFosused())
+	{
+		mItemSprite->SetOutLine(0.5f);
+	}
+	else
+	{
+		mItemSprite->SetOutLine(0.0f);
+	}
 
+	mItemSprite->Update();
 	Entity::Update();
 }
 
@@ -70,8 +80,26 @@ void Pickable::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode
 {
 	if (otherEntity.GetEntityType() == EntityType::PLAYRE)
 	{
-		TryGiveItemToPicker(otherEntity);
+		// 如果自动获取，则直接尝试给player
+		auto& item = mItemAcquired.GetItem();
+		if (item.IsAutoPicked())
+		{
+			TryGiveItemToPicker(otherEntity);
+		}
 	}
+}
+
+/**
+*	\brief 当道具不是自动拾取时，互动时拾取该道具
+*/
+bool Pickable::NotifyCommandInteractPressed(Entity& interactEntity)
+{
+	auto& item = mItemAcquired.GetItem();
+	if (!item.IsAutoPicked())
+	{
+		TryGiveItemToPicker(interactEntity);
+	}
+	return false;
 }
 
 /**
@@ -91,26 +119,31 @@ bool Pickable::InitSprites()
 	}
 	mItemSprite->SetCurrAnimation(itemName);
 	mItemSprite->SetPos(GetPos());
+	mItemSprite->StartAnimation();
 
+	auto& item = mItemAcquired.GetItem();
 	// 创建用于提醒的阴影和浮动效果
-	// PS.是否需要阴影和浮动效果由道具本身定义
-	// 目前用于测试，不判断
-	mShadowSprite = Entity::CreateAnimationSprite("entities/shadow", "big");
-	mShadowSprite->SetAnchorFloat(-0.3f, -1.2f);
-
+	if (item.IsHasShadow())
+	{
+		mShadowSprite = Entity::CreateAnimationSprite("entities/shadow", "big");
+		mShadowSprite->SetAnchorFloat(-0.3f, -1.2f);
+	}
 	// movement
-	mMovemment = std::make_shared<SequenceMovement>(true, true);
-	Point2 upPoint = GetPos() + Point2(0, -4);
-	auto upMovement = std::make_shared<TargetMovement>(nullptr, upPoint, 10, true);
-	mMovemment->AddMovement(upMovement);
-	Point2 downPoint = GetPos();
-	auto downMovement = std::make_shared<TargetMovement>(nullptr, downPoint, 10, true);
-	mMovemment->AddMovement(downMovement);
-	mItemSprite->StartMovement(mMovemment);
+	if (item.IsHasFlowEffect())
+	{
+		mMovemment = std::make_shared<SequenceMovement>(true, true);
+		Point2 upPoint = GetPos() + Point2(0, -4);
+		auto upMovement = std::make_shared<TargetMovement>(nullptr, upPoint, 10, true);
+		mMovemment->AddMovement(upMovement);
+		Point2 downPoint = GetPos();
+		auto downMovement = std::make_shared<TargetMovement>(nullptr, downPoint, 10, true);
+		mMovemment->AddMovement(downMovement);
+		mItemSprite->StartMovement(mMovemment);
+	}
 
 	// status
 	SetSize({ 16, 16 });
-	SetOrigin({ 8, 13 });
+	SetOrigin({ 0, -8 });
 
 	return true;
 }
@@ -132,16 +165,18 @@ void Pickable::TryGiveItemToPicker(Entity& picker)
 		return;
 	}
 
-	// 如果拾取音效存在，则播放
-	const std::string pickedSound = item.GetPickedSound();
-	if (!pickedSound.empty())
-	{
-		// sound::play(pickedSound)
-	}
-
-	// 移除pickable
-	RemoveFromMap();
-
 	// 获取item
-	mItemAcquired.GiveItemToPlayer();
+	bool pickSucceesed = mItemAcquired.GiveItemToPlayer();
+	if (pickSucceesed)
+	{
+		// 如果拾取音效存在，则播放
+		const std::string pickedSound = item.GetPickedSound();
+		if (!pickedSound.empty())
+		{
+			// sound::play(pickedSound)
+		}
+
+		// 移除pickable
+		RemoveFromMap();
+	}	
 }

@@ -7,7 +7,8 @@ std::map<GameCommand, std::string> GameCommands::mGameCommands = {
 	{ GameCommand::GAME_COMMAND_RIGHT,"right" },
 	{ GameCommand::GAME_COMMAND_UP,   "up" },
 	{ GameCommand::GAME_COMMAND_LEFT, "left" },
-	{ GameCommand::GAME_COMMAND_DOWN, "down" }
+	{ GameCommand::GAME_COMMAND_DOWN, "down" },
+	{ GameCommand::GAME_COMMAND_INTERACT, "interact"}
 };
 
 namespace {
@@ -175,7 +176,8 @@ InputEvent::KeyboardKey GameCommands::GetSavegameMappingKeyboard(GameCommand com
 		{ GameCommand::GAME_COMMAND_UP,   Savegame::GAMECOMMAND_KEYBOARD_UP },
 		{ GameCommand::GAME_COMMAND_RIGHT,Savegame::GAMECOMMAND_KEYBOARD_RIGHT },
 		{ GameCommand::GAME_COMMAND_DOWN, Savegame::GAMECOMMAND_KEYBOARD_DOWN },
-		{ GameCommand::GAME_COMMAND_LEFT, Savegame::GAMECOMMAND_KEYBOARD_LEFT }
+		{ GameCommand::GAME_COMMAND_LEFT, Savegame::GAMECOMMAND_KEYBOARD_LEFT },
+		{ GameCommand::GAME_COMMAND_INTERACT, Savegame::GAMECOMMAND_KEYBOARD_INTERACT}
 	};
 
 	std::string keyStr = "";

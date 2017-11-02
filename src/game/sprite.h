@@ -53,6 +53,8 @@ public:
 	void SetScaleX(float x);
 	void SetScaleY(float y);
 	void SetScale(float x, float y);
+	void SetFlipX(bool fliped);
+	void SetFlipY(bool fliped);
 	virtual void SetSuspended(bool suspended);
 
 	TexturePtr GetTexture()const;
@@ -101,10 +103,12 @@ protected:
 	BlendFunc mBlendFunc;
 	Matrix4 mModelView;
 	float scaleX, scaleY;
+	bool mFlipX;
+	bool mFlipY;
 
 	bool mVisible;
 	bool mDirty;			/** 是否需要重新填充quad */
-	
+
 	uint32_t mBlinkDelay;
 	uint32_t mBlinkNextDate;
 	bool mIsBlinkVisible;	/** 是否是处于闪烁的可见时间段*/

@@ -51,10 +51,11 @@ public:
 	virtual void Draw();
 	virtual void Initalized();
 
-	void ClearMovements();
-	virtual const string GetLuaObjectName()const;
-
 	void DrawDebugBounding();
+	void ClearMovements();
+
+	/** Lua Context */
+	virtual const string GetLuaObjectName()const;
 
 	/**** **** **** Notify **** **** ****/
 	virtual void NotifyCommandPressed(const GameCommand& command);
@@ -63,6 +64,11 @@ public:
 	virtual void NotifyPositonChanged();
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyBeRemoved();
+	virtual void NotifyFacingEntityChanged(Entity* entity);
+	virtual void NotifyOverlapEntityChanged(Entity* entity);
+	
+	// game command notify
+	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
 
 	void NotifyMapStarted();
 	
@@ -70,6 +76,7 @@ public:
 	/**** **** **** status **** **** ****/
 	Point2 GetPos()const;
 	Point2 GetCenterPos()const;
+	Point2 GetLeftTopPos()const;
 	void SetPos(const Point2& pos);
 	void SetLayer(int layer);
 	int GetLayer()const;
@@ -87,6 +94,14 @@ public:
 	void SetVisible(bool visibled);
 	bool IsBeRemoved()const;
 	virtual EntityType GetEntityType()const;
+
+	// special status
+	void SetFacingEntity(Entity* entity);
+	Entity* GetFacingEntity();
+	void SetOverlapEntity(Entity* entity);
+	Entity* GetOverlapEntity();
+	void SetFocused(bool bFocused);
+	bool IsFosused()const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
@@ -137,12 +152,16 @@ private:
 	bool mEnabled;
 	bool mBeRemoved;	/** 将要被移除 */
 	int mCollisionMode;
+	bool mFocused;		/** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
 
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */
 	Map* mMap;								/** 当前entity所属的map */
 	std::shared_ptr<EntityState> mState;	/** entity 的状态组件 */
 	std::shared_ptr<Movement> mMovement;	/** entity 的运动组件 */
+
+	Entity* mFacingEntity;
+	Entity* mOverlapEntity;
 
 	std::vector<NamedSpritePtr> mSprites;	/** entity 所拥有的用于展示的sprites */
 	SpritePtr mDebugSprite;

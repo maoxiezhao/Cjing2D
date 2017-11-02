@@ -15,13 +15,16 @@ Entity::Entity():
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
+	mFacingEntity(nullptr),
+	mOverlapEntity(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
 	mDebugSprite(nullptr),
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
-	mBeRemoved(false)
+	mBeRemoved(false),
+	mFocused(false)
 {
 }
 
@@ -33,13 +36,16 @@ Entity::Entity(const string & name, const Point2 & pos, const Size & size, int l
 	mType(EntityType::UNKNOW),
 	mState(nullptr),
 	mMovement(nullptr),
+	mFacingEntity(nullptr),
+	mOverlapEntity(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
 	mDebugSprite(nullptr),
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
-	mBeRemoved(false)
+	mBeRemoved(false),
+	mFocused(false)
 {
 }
 
@@ -114,6 +120,30 @@ void Entity::ClearMovements()
 {
 }
 
+/**
+*	\brief 设置状态为被关注状态
+*/
+void Entity::SetFocused(bool bFocused)
+{
+	if (mFocused != bFocused)
+	{
+		//if (bFocused)
+		//{
+		//	// notifyGetFocused()
+		//}
+		//else
+		//{
+		//	// notifyLoseFocused()
+		//}
+		mFocused = bFocused;
+	}
+}
+
+bool Entity::IsFosused() const
+{
+	return mFocused;
+}
+
 const string Entity::GetLuaObjectName() const
 {
 	return string();
@@ -133,12 +163,18 @@ void Entity::DrawDebugBounding()
 
 void Entity::NotifyCommandPressed(const GameCommand & command)
 {
-	// do nothing
+	if (mState != nullptr)
+	{
+		mState->NotifyCommandPressed(command);
+	}
 }
 
 void Entity::NotifyCommandReleased(const GameCommand & command)
 {
-	// do nothing
+	if (mState != nullptr)
+	{
+		mState->NotifyCommandReleased(command);
+	}
 }
 
 void Entity::NotifyMovementChanged()
@@ -173,6 +209,34 @@ void Entity::NotifyBeRemoved()
 {
 	// luaContext->onRemovedEneity(*this) 响应lua
 	mBeRemoved = true;
+}
+
+/**
+*	\brief 响应facingEntity的改变
+*/
+void Entity::NotifyFacingEntityChanged(Entity * entity)
+{
+	// do nothing
+}
+
+/**
+*	\brief 响应overlapEntity的改变
+*/
+void Entity::NotifyOverlapEntityChanged(Entity * entity)
+{
+	// do nothing
+}
+
+/**
+*	\brief 响应交互键的按下
+*	\param interactEntity 发起交互的实体
+*	\return true当交互成功发生，false改实体无法交互
+*
+*	对于道具、NPC会在该函数中做出响应	
+*/
+bool Entity::NotifyCommandInteractPressed(Entity& interactEntity)
+{
+	return false;
 }
 
 /**
@@ -408,6 +472,10 @@ void Entity::CheckCollision(Entity & otherEntity)
 	if (HasCollisionMode(CollisionMode::COLLISION_OVERLAPING) &&
 		TestCollisionWithRect(otherEntity))
 	{
+		if (otherEntity.GetOverlapEntity() == nullptr)
+		{
+			otherEntity.SetOverlapEntity(this);
+		}
 		NotifyCollision(otherEntity, CollisionMode::COLLISION_OVERLAPING);
 	}
 	else if (HasCollisionMode(CollisionMode::COLLISION_CONTAINING) &&
@@ -516,6 +584,12 @@ Point2 Entity::GetCenterPos() const
 	return Point2(pos.x + size.width / 2,
 		pos.y + size.height / 2);
 }
+
+Point2 Entity::GetLeftTopPos() const
+{
+	return mBounding.GetPos();
+}
+
 void Entity::SetPos(const Point2& pos)
 {
 	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
@@ -547,5 +621,27 @@ const string& Entity::GetName()const
 EntityType Entity::GetEntityType()const
 {
 	return mType;
+}
+
+void Entity::SetFacingEntity(Entity * entity)
+{
+	NotifyFacingEntityChanged(entity);
+	mFacingEntity = entity;
+}
+
+Entity * Entity::GetFacingEntity()
+{
+	return mFacingEntity;
+}
+
+void Entity::SetOverlapEntity(Entity * entity)
+{
+	NotifyOverlapEntityChanged(entity);
+	mOverlapEntity = entity;
+}
+
+Entity * Entity::GetOverlapEntity()
+{
+	return mOverlapEntity;
 }
 

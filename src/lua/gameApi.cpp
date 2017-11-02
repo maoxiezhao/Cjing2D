@@ -96,7 +96,7 @@ int LuaContext::game_api_load(lua_State*l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		const string& fileName = LuaTools::CheckString(l, 1);
 
-		auto saveGame = std::make_shared<Savegame>(fileName);
+		auto saveGame = std::make_shared<Savegame>(GetLuaContext(l).GetApp(), fileName);
 		saveGame->Init();
 
 		PushGame(l, *saveGame);
@@ -146,7 +146,7 @@ int LuaContext::game_api_start(lua_State*l)
 		}
 		else
 		{	// 新的游戏，则创建一个新的Game
-			App& app = *savegame->GetLuaContext()->GetApp();
+			App& app = savegame->GetLuaContext().GetApp();
 			Game* game = new Game(&app, savegame);
 			app.SetGame(game);
 		}

@@ -376,6 +376,12 @@
     <ClCompile Include="src\game\itemBeg.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\lua\windowsApi.cpp">
+      <Filter>gui\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\enemy.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -717,6 +723,15 @@
     <ClInclude Include="src\game\itemBeg.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\reflect.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\luaBinder.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\luaBinder_private.h">
+      <Filter>lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -751,5 +766,8 @@
       <Filter>lua</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\utils\reflect.inl">
+      <Filter>utils</Filter>
+    </None>
   </ItemGroup>
 </Project>

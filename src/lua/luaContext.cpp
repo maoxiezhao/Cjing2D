@@ -358,11 +358,32 @@ void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
 }
 
 /**
+*	\brief 注册元表函数
+*	\param moduleName 模块\类名
+*	\param metaKey 注册的元表关键字
+*	\param function 绑定的函数
+*
+*	绑定元表函数，如果元表不存在则创建一个新的元表
+*/
+void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, const std::string & key, FunctionExportToLua function)
+{
+	luaL_getmetatable(l, moduleName.c_str());
+	if (lua_isnil(l, -1))
+	{
+		lua_pop(l, 1);
+		luaL_newmetatable(l, moduleName.c_str());
+	}
+	lua_pushcfunction(l, function);
+	lua_setfield(l, -2, key.c_str());
+	lua_pop(l, 1);
+}
+
+/**
 *	\brief 注册C++ API 函数
 *
 *	获取moduleName的global表，将函数绑定在表上
 */
-void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * functions)
+void LuaContext::RegisterFunction(lua_State * l, const string & moduleName, const luaL_Reg * functions)
 {
 	if (!moduleName.empty())
 	{
@@ -392,7 +413,8 @@ void LuaContext::RegisterFunction(const string & moduleName, const luaL_Reg * fu
 /**
 *	\brief 注册一个C++对象类型
 */
-void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functions, const luaL_Reg * methods, const luaL_Reg * metamethods)
+
+void LuaContext::RegisterType(lua_State * l, const string & moduleName, const luaL_Reg * functions, const luaL_Reg * methods, const luaL_Reg * metamethods) 
 {
 	luaL_getmetatable(l, moduleName.c_str());
 	Debug::CheckAssertion(lua_isnil(l, -1), string("Type:") + moduleName + " has already registered.");
@@ -400,7 +422,7 @@ void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functi
 	// 注册函数
 	if (functions != nullptr )
 	{
-		RegisterFunction(moduleName, functions);
+		RegisterFunction(l, moduleName, functions);
 	}
 
 	luaL_newmetatable(l, moduleName.c_str());
@@ -411,12 +433,12 @@ void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functi
 	// 注册方法
 	if (methods != nullptr )
 	{
-		RegisterFunction("", methods);
+		RegisterFunction(l, "", methods);
 	}
 	// 注册元表方法
 	if (metamethods != nullptr)
 	{
-		RegisterFunction("", metamethods);
+		RegisterFunction(l, "", metamethods);
 	}						// meta
 	lua_getfield(l, -1, "__index");
 							// meta index/nil
@@ -436,15 +458,15 @@ void LuaContext::RegisterType(const string & moduleName, const luaL_Reg * functi
 *	在使用该方法前必须保证baseModule存在，并已经注册
 *	bug:目前使用该方法会导致父类metatable的gc方法调用
 */
-void LuaContext::RegisterType(const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, 
-				const luaL_Reg* methods, const luaL_Reg* metamethods)
+void LuaContext::RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, 
+		const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods)
 {
 	// base module 必须已经注册
 	luaL_getmetatable(l, baseModuleName.c_str());
 	Debug::CheckAssertion(!lua_isnil(l, -1), string("Base Type:") + baseModuleName + " has not registered.");
 	lua_pop(l, 1);
 				// --
-	RegisterType(moduleName, functions, methods, metamethods);
+	RegisterType(l, moduleName, functions, methods, metamethods);
 
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
@@ -926,6 +948,7 @@ void LuaContext::RegisterModules()
 	RegisterEntityModule();
 	RegisterParticle();
 	RegisterItem();
+	//RegisterWindowModule();
 }
 
 LuaContext& LuaContext::GetLuaContext(lua_State* l)

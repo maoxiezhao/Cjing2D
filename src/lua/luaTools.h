@@ -66,6 +66,9 @@ namespace LuaTools
 
 	template<typename E>
 	E CheckFiledEnum(lua_State*l, int tableIndex, const string& name);
+
+	template<typename T>
+	struct LuaBindingUserdata;
 }
 
 #include"luaTools.inl"

@@ -63,4 +63,58 @@ E CheckFiledEnum(lua_State * l, int tableIndex, const string & name)
 }
 
 
+/**
+*	\brief 用于直接创建userdata中的数据
+*/
+template<typename T>
+struct LuaBindingUserdata
+{
+	static void PushMetatable(lua_State*l, const std::string& name)
+	{
+		luaL_getmetatable(l, name.c_str());
+		if (lua_istable(l, 1))
+		{
+			return;
+		}
+		lua_pop(l, 1);
+		luaL_newmetatable(l, name.c_str());
+		lua_pushcfunction(l, LuaUserdataGC);
+		lua_setfield(l, -2, "__gc");
+	}
+
+	template<typename... Args>
+	static T* Create(lua_State*l, const std::string& name, Args&&... args)
+	{
+		T* obj = new(lua_newuserdata(l, sizeof(T)))T(std::forward<Args>(args)...);
+
+		PushMetatable(l, name);
+		lua_setmetatable(l, -2);
+
+		return obj;
+	}
+
+	// 临时gc方法
+	static int LuaUserdataGC(lua_State* l)
+	{
+		return LuaTools::ExceptionBoundary(l, [&] {
+			if (lua_gettop(l) == 0)
+			{
+				LuaTools::Error(l, "Gc function called without self.");
+				return 0;
+			}
+
+			T* obj = static_cast<T*>(lua_touserdata(l, 1));
+			if (obj == nullptr)
+			{
+				LuaTools::Error(l, "The userdata is null when called gc.");
+				return 0;
+			}
+
+			obj->~T();
+			return 0;
+		});
+	}
+};
+
+
 }

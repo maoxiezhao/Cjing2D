@@ -9,6 +9,7 @@
 #include"game\sprite.h"
 #include"game\drawable.h"
 #include"entity\entityData.h"
+#include"gui\widget\window.h"
 
 #include<set>
 #include<map>
@@ -62,13 +63,10 @@ public:
 	static bool LoadFile(lua_State*l, const string& name);
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
-	void RegisterFunction(const string& moduleName, const luaL_Reg* functions);
-	void RegisterType(const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
-	void RegisterType(const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	LuaRef CreateRef();
 	void PushRef(lua_State*l,const LuaRef& luaref);
 	void PrintLuaStack(lua_State*l);
-	
+
 	// userdata
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
 	static const bool IsUserdata(lua_State*l, int index, const string& name);
@@ -108,6 +106,8 @@ public:
 	void RegisterSoundModule();
 	void RegisterParticle();
 	void RegisterItem();
+	// gui register
+	void RegisterWindowModule();
 
 	// binding function
 	using FunctionExportToLua = int(lua_State* l);
@@ -239,12 +239,22 @@ public:
 		entity_api_create_destimation,
 		entity_api_create_dynamic_title,
 		entity_api_create_pickable,
+		// window
+		window_api_create,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
 		userdata_meta_index
 		;
 		
+
+	// register api
+	static void RegisterMetaFunction(lua_State*l, const string &moduleName, const std::string& key, FunctionExportToLua function);
+	static void RegisterFunction(lua_State*l, const string& moduleName, const luaL_Reg* functions);
+	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
+	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
+
+
 	// main api	-- test 
 	void PushMain(lua_State*l);
 	void OnMainStart();
@@ -335,6 +345,7 @@ public:
 	static void PushMap(lua_State*l, Map& map);
 	static void PushParticle(lua_State*l, ParticleSystem& particle);
 	static void PushItem(lua_State*l, Item& item);
+	static void PushWindow(lua_State*l, gui::Window& window);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -361,6 +372,8 @@ public:
 	static bool IsParticle(lua_State*l, int index);
 	static std::shared_ptr<Item> CheckItem(lua_State*l, int index);
 	static bool IsItem(lua_State*l, int index);
+	static std::shared_ptr<gui::Window> CheckWindow(lua_State*l, int index);
+	static bool IsWindow(lua_State*l, int index);
 
 	// modules name
 	static const string module_name;
@@ -386,6 +399,8 @@ public:
 	static const string module_animation_name;
 	// entity
 	static const string module_entity_name;
+	// widget
+	static const string module_window_name;
 
 private:
 	App& mApp;

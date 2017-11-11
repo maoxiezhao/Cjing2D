@@ -111,6 +111,7 @@
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\entity\animatedTilePattern.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
+    <ClCompile Include="src\entity\enemy.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\entity\entityData.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\distributor.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
+    <ClCompile Include="src\gui\lua\windowsApi.cpp" />
     <ClCompile Include="src\gui\widget\button.cpp" />
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
     <ClCompile Include="src\gui\widget\grid.cpp" />
@@ -280,6 +282,8 @@
     <ClInclude Include="src\gui\widget\toggleButton.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
     <ClInclude Include="src\gui\widget\window.h" />
+    <ClInclude Include="src\lua\luaBinder.h" />
+    <ClInclude Include="src\lua\luaBinder_private.h" />
     <ClInclude Include="src\lua\luaObject.h" />
     <ClInclude Include="src\lua\luaContext.h" />
     <ClInclude Include="src\lua\luaData.h" />
@@ -306,6 +310,7 @@
     <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\quadTree.h" />
     <ClInclude Include="src\utils\rectangle.h" />
+    <ClInclude Include="src\utils\reflect.h" />
     <ClInclude Include="src\utils\size.h" />
     <ClInclude Include="src\utils\typeSet.h" />
     <ClInclude Include="src\utils\vec2.h" />
@@ -322,6 +327,7 @@
     <None Include="src\utils\point.inl" />
     <None Include="src\utils\quadTree.inl" />
     <None Include="src\utils\rectangle.inl" />
+    <None Include="src\utils\reflect.inl" />
     <None Include="src\utils\size.inl" />
     <None Include="src\utils\vec2.inl" />
     <None Include="src\utils\vec3.inl" />

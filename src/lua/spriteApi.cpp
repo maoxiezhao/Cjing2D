@@ -41,7 +41,7 @@ void LuaContext::RegisterSpriteModule()
 		{"__gc", drawable_meta_api_gc },
 		{nullptr, nullptr}
 	};
-	RegisterType(module_sprite_name, function, methods, metamethods);
+	RegisterType(l, module_sprite_name, function, methods, metamethods);
 }
 
 /**

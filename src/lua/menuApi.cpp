@@ -10,7 +10,7 @@ void LuaContext::RegisterMenuModule()
 		{"Stop",menu_api_stop},
 		{ nullptr,nullptr }
 	};
-	RegisterFunction(module_menu_name, functions);
+	RegisterFunction(l, module_menu_name, functions);
 }
 
 /**

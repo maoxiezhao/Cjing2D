@@ -1,10 +1,9 @@
 #pragma once
 
-#include"lua\luaTools.inl"
+#include"lua\luaTools.h"
 #include"lua\luaData.h"
 #include"lua\luaContext.h"
 #include"lua\luaBinder_private.h"
-#include"utils\reflect.h"
 
 #include<functional>
 #include<vector>
@@ -127,7 +126,14 @@ inline LuaBindClass<T>::LuaBindClass(lua_State* l, const std::string& name, cons
 	mName(name),
 	l(l)
 {
-	LuaContext::RegisterFunction(l, name, nullptr);
+	if (baseName.size() == 0)
+	{
+		LuaContext::RegisterType(l, name, nullptr, nullptr, nullptr);
+	}
+	else
+	{
+		LuaContext::RegisterType(l, name, baseName, nullptr, nullptr, nullptr);
+	}
 	LuaBinder::GetInstance().PushModuleLuaState(mName, l);
 }
 
@@ -143,6 +149,15 @@ inline void LuaBindClass<T>::AddFunction(const std::string & funcName, RetType(*
 {
 	lua_getglobal(l, LuaContext::module_name.c_str());
 	lua_getfield(l, -1, mName.c_str());
+	if (lua_isnil(l, -1))
+	{
+		lua_pop(l, 1);
+		lua_newtable(l);
+		// cjing module
+		lua_pushvalue(l, -1);
+		// cjing module module
+		lua_setfield(l, -3, mName.c_str());
+	}
 	// cjing module
 	lua_pushstring(l, funcName.c_str());
 	// cjing module funcName
@@ -161,6 +176,15 @@ inline void LuaBindClass<T>::AddFunction(const std::string & funcName, void(*f)(
 {
 	lua_getglobal(l, LuaContext::module_name.c_str());
 	lua_getfield(l, -1, mName.c_str());
+	if (lua_isnil(l, -1))
+	{
+		lua_pop(l, 1);
+		lua_newtable(l);
+		// cjing module
+		lua_pushvalue(l, -1);
+		// cjing module module
+		lua_setfield(l, -3, mName.c_str());
+	}
 	// cjing module
 	lua_pushstring(l, funcName.c_str());
 	// cjing module funcName

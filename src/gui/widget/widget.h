@@ -5,6 +5,7 @@
 #include"utils\point.h"
 #include"gui\core\dispatcher.h"
 #include"gui\core\builderWindow.h"
+#include"lua\luaObject.h"
 
 namespace gui
 {
@@ -15,7 +16,7 @@ class Grid;
 /**
 *	\brief widget»ùÀà
 */
-class Widget : public Dispatcher, public std::enable_shared_from_this<Widget>
+class Widget : public Dispatcher, public LuaObject
 {
 	/*** *** *** *** *** property. *** *** *** *** ***/
 public:
@@ -54,6 +55,7 @@ public:
 	void DrawChildren(const Point2& offset);
 	void DrawDebugGround();
 
+	virtual const string GetLuaObjectName()const;
 private:
 	virtual void ImplDrawBackground(const Point2& offset);
 	virtual void ImplDrawForeground(const Point2& offset);

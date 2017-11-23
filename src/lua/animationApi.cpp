@@ -28,7 +28,7 @@ void LuaContext::RegisterAnimationModule()
 		{ nullptr, nullptr }
 	};
 
-	RegisterType(module_animation_name,module_sprite_name,
+	RegisterType(l, module_animation_name,module_sprite_name,
 		function,methods, metamethods);
 }
 

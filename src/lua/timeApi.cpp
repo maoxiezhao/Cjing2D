@@ -10,7 +10,7 @@ void LuaContext::RegisterTimeModule()
 		{ "start",time_api_start },
 		{ nullptr,nullptr }
 	};
-	RegisterFunction(module_time_name, functions);
+	RegisterFunction(l, module_time_name, functions);
 }
 
 /**

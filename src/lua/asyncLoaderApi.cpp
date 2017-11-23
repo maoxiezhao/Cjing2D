@@ -22,7 +22,7 @@ void LuaContext::RegisterAsyncLoaderModule()
 		{ nullptr, nullptr }
 	};
 
-	RegisterType(module_async_loader_name, function, methods, metamethods);
+	RegisterType(l, module_async_loader_name, function, methods, metamethods);
 }
 
 void LuaContext::UpdateAsyncLoaders()

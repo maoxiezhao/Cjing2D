@@ -48,7 +48,7 @@ void LuaContext::RegisterFontModule()
 		{nullptr, nullptr},
 	};
 
-	RegisterType(module_font_name, functions, methods, metamethods);
+	RegisterType(l, module_font_name, functions, methods, metamethods);
 }
 
 /**

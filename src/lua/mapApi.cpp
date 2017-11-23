@@ -16,7 +16,7 @@ void LuaContext::RegisterMapModule()
 		{ "__gc", userdata_meta_gc },
 		{ nullptr, nullptr }
 	};
-	RegisterType(module_map_name, nullptr, methods, metamethos);
+	RegisterType(l, module_map_name, nullptr, methods, metamethos);
 }
 
 void LuaContext::PushMap(lua_State*l, Map& map)

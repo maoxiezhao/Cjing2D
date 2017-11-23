@@ -10,7 +10,7 @@ void LuaContext::RegisterSoundModule()
 		{ "stopMusic",sound_api_stop_music },
 		{ nullptr,nullptr }
 	};
-	RegisterFunction(module_sound_name, functions);
+	RegisterFunction(l, module_sound_name, functions);
 }
 
 /**

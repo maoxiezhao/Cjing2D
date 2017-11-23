@@ -21,7 +21,7 @@ void LuaContext::RegisterItem()
 		{ nullptr, nullptr }
 	};
 
-	RegisterType(module_item_name, nullptr, methods, metamethos);
+	RegisterType(l, module_item_name, nullptr, methods, metamethos);
 }
 
 /**

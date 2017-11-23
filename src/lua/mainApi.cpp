@@ -12,7 +12,7 @@ void LuaContext::RegisterMainModule()
 		{nullptr,nullptr }
 	};
 
-	RegisterFunction(module_main_name, functions);
+	RegisterFunction(l, module_main_name, functions);
 
 	lua_getglobal(l, module_name.c_str());
 							// cjing

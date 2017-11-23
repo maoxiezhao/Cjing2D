@@ -21,7 +21,7 @@ void LuaContext::RegisterMovementModule()
 		{ "__gc", movement_api_api_gc },
 		{ nullptr, nullptr }
 	};
-	RegisterType(module_movement_name, nullptr, methods, nullptr);
+	RegisterType(l, module_movement_name, nullptr, methods, nullptr);
 
 	// straight movement
 	static const luaL_Reg straightFunctions[] = {
@@ -37,7 +37,7 @@ void LuaContext::RegisterMovementModule()
 		{ "getMaxDistance",movement_straight_api_get_max_distance},
 		{nullptr, nullptr}
 	};
-	RegisterType(module_straight_movement_name, module_movement_name,
+	RegisterType(l, module_straight_movement_name, module_movement_name,
 		straightFunctions, straightMethods, metamethods);
 
 	// target movement
@@ -52,7 +52,7 @@ void LuaContext::RegisterMovementModule()
 		{ "getTarget", movement_target_api_get_target},
 		{ nullptr, nullptr }
 	};
-	RegisterType(module_target_movement_name, module_straight_movement_name,
+	RegisterType(l, module_target_movement_name, module_straight_movement_name,
 		targetFunctions, targetMethods, metamethods);
 }
 

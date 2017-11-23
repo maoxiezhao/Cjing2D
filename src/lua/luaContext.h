@@ -39,6 +39,8 @@ class ItemAcquired;
  *  其中的提供的scripts包括main,sprite,map,entity等
  *  其中所有的script运行在同一个luaContext
  *
+ *	2017.11.22 以luaBinder形式注册模板
+ *
  *	2017.8.29 添加font接口
  *
  *	同时考虑未来优化绑定结构，能将绑定函数分离到各个模块
@@ -239,8 +241,6 @@ public:
 		entity_api_create_destimation,
 		entity_api_create_dynamic_title,
 		entity_api_create_pickable,
-		// window
-		window_api_create,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,

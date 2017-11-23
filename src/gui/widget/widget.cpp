@@ -228,7 +228,8 @@ void Widget::SetHorizontalAlignment(const unsigned int align)
 	{
 		return;
 	}
-	parentGrid->SetChildrenAlignment(this->shared_from_this(), align, gui::ALIGN_VERTICAL_MASK);
+	parentGrid->SetChildrenAlignment(std::dynamic_pointer_cast<Widget>(this->shared_from_this()), 
+			align, gui::ALIGN_VERTICAL_MASK);
 }
 
 /**
@@ -241,7 +242,8 @@ void Widget::SetVerticalAlignment(const unsigned int align)
 	{
 		return;
 	}
-	parentGrid->SetChildrenAlignment(this->shared_from_this(), align, gui::ALIGN_VERTICAL_MASK);
+	parentGrid->SetChildrenAlignment(std::dynamic_pointer_cast<Widget>(this->shared_from_this()),
+		align, gui::ALIGN_VERTICAL_MASK);
 }
 
 bool Widget::CanWrap() const
@@ -345,6 +347,11 @@ void Widget::DrawDebugGround()
 		mDebugSprite->SetSize(mSize);
 		mDebugSprite->Draw();
 	}
+}
+
+const string Widget::GetLuaObjectName() const
+{
+	return string();
 }
 
 void Widget::ImplDrawBackground(const Point2& offset)

@@ -31,7 +31,7 @@ void LuaContext::RegisterParticle()
 		{ nullptr, nullptr },
 	};
 
-	RegisterType(module_particle_name, functions, methods, metamethods);
+	RegisterType(l, module_particle_name, functions, methods, metamethods);
 }
 
 /**

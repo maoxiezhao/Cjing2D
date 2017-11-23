@@ -32,7 +32,7 @@ void LuaContext::RegisterGameModule()
 		{ "__gc", userdata_meta_gc },
 		{nullptr, nullptr}
 	};
-	RegisterType(module_game_name, functions, methods, metamethos);
+	RegisterType(l, module_game_name, functions, methods, metamethos);
 }
 
 void LuaContext::PushGame(lua_State*l, Savegame& saveGame)

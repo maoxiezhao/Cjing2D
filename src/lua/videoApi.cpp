@@ -20,7 +20,7 @@ void LuaContext::RegisterVideoModule()
 		{"loadProgram", video_api_load_program},
 		{nullptr,nullptr}
 	};
-	RegisterFunction(module_video_name, functions);
+	RegisterFunction(l, module_video_name, functions);
 }
 
 

@@ -33,7 +33,7 @@ bool ItemAcquired::GiveItemToPlayer()
 	bool giveSuccessed = false;
 	if (!item.IsHasLua())
 	{
-		giveSuccessed = equipment.PushItemIntoBeg(item);
+		giveSuccessed = equipment.PushItemIntoBeg(*this);
 	}
 	else
 	{

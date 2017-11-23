@@ -4,7 +4,8 @@
 #include "game\item.h"
 
 Equipment::Equipment(Savegame & savegame):
-	mSavegame(savegame)
+	mSavegame(savegame),
+	mItemBegs(*this)
 {
 }
 
@@ -59,7 +60,7 @@ const Item & Equipment::GetItem(const std::string & itemName) const
 	return *itor->second;
 }
 
-bool Equipment::PushItemIntoBeg(Item & item)
+bool Equipment::PushItemIntoBeg(ItemAcquired & item)
 {
 	return true;
 }

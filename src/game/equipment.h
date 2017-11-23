@@ -2,6 +2,8 @@
 
 #include"common\common.h"
 #include"game\item.h"
+#include"game\itemBeg.h"
+#include"game\itemAcquired.h"
 
 class Savegame;
 
@@ -25,7 +27,7 @@ public:
 	Item& GetItem(const std::string& itemName);
 	const Item& GetItem(const std::string& itemName)const;
 
-	bool PushItemIntoBeg(Item& item);
+	bool PushItemIntoBeg(ItemAcquired& item);
 
 	/** Setter/Getter */
 	int GetLife()const;
@@ -37,6 +39,6 @@ public:
 private:
 	Savegame& mSavegame;
 	std::map<std::string, ItemPtr> mAllItems;	// 保存管理当前所有注册itme
-	std::vector<ItemPtr> mItemBegs;				// 当前物品背包
-
+	ItemBeg mItemBegs;							// 当前游戏背包
+	//std::vector<ItemPtr> mItemBegs;				// 当前物品背包
 };

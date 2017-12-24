@@ -7,11 +7,15 @@ const string LuaContext::module_window_name = "Window";
 /**
 *	\brief  µœ÷cjing.Window.create(x, y, w, h)
 */
-int window_api_create(lua_State* l)
+//int window_api_create(lua_State* l)
+//{
+//	return LuaTools::ExceptionBoundary(l, [&] {
+//		return 0;
+//	});
+//}
+
+void window_api_create()
 {
-	return LuaTools::ExceptionBoundary(l, [&] {
-		return 0;
-	});
 }
 
 int RegisterFunction(lua_State* l)

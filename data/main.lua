@@ -89,3 +89,27 @@ function cjing.Main:preProcessPraticle(drawable)
 	--drawable:setPos(100,100)
 end
 
+
+
+-------------------------------------------------------------------------
+--  重构
+-------------------------------------------------------------------------
+
+-- 初始化所有的模块
+local function OnMainStart()
+
+end
+
+-- 每帧的更新
+local function OnMainUpdate()
+
+end
+
+-- 模块的释放
+local function OnMainExit()
+
+end
+
+SystemExport[1] = OnMainStart
+SystemExport[2] = OnMainUpdate
+SystemExport[3] = OnMainExit

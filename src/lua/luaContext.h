@@ -39,12 +39,12 @@ class ItemAcquired;
  *  其中的提供的scripts包括main,sprite,map,entity等
  *  其中所有的script运行在同一个luaContext
  *
+ *	2017.12.13 调整luaENV，所有的注册使用的新的lua环境
+ *
  *	2017.11.22 以luaBinder形式注册模板
  *
  *	2017.8.29 添加font接口
  *
- *	同时考虑未来优化绑定结构，能将绑定函数分离到各个模块
- *	或者使用luabind库
  */
 class LuaContext
 {
@@ -61,7 +61,8 @@ public:
 
 	// script
 	static LuaContext& GetLuaContext(lua_State* l);
-	bool DoFileIfExists(lua_State*l,const string& name);
+	static bool DoLuaString(lua_State*l, const string& luaString);
+	static bool DoFileIfExists(lua_State*l,const string& name);
 	static bool LoadFile(lua_State*l, const string& name);
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
@@ -91,7 +92,11 @@ public:
 	bool OnMouseReleased(const InputEvent& event);
 	bool OnMouseMotion(const InputEvent& event);
 
-	// modules
+	// RegisterModules前加载模块
+	void InitUserdataEnv(lua_State* l);
+	void RegisterFileData(lua_State* l);
+
+	// modules 注册分先后顺序
 	void RegisterModules();
 	void RegisterMainModule();
 	void RegisterGameModule();
@@ -250,6 +255,7 @@ public:
 
 	// register api
 	static void RegisterMetaFunction(lua_State*l, const string &moduleName, const std::string& key, FunctionExportToLua function);
+	static void RegisterFunction(lua_State*l, const luaL_Reg* functions);
 	static void RegisterFunction(lua_State*l, const string& moduleName, const luaL_Reg* functions);
 	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);

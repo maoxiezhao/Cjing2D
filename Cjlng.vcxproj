@@ -164,6 +164,7 @@
     <ClCompile Include="src\lua\asyncLoaderApi.cpp" />
     <ClCompile Include="src\lua\drawableApi.cpp" />
     <ClCompile Include="src\lua\entityApi.cpp" />
+    <ClCompile Include="src\lua\fileDataApi.cpp" />
     <ClCompile Include="src\lua\fontApi.cpp" />
     <ClCompile Include="src\lua\gameApi.cpp" />
     <ClCompile Include="src\lua\itemApi.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />
     <ClInclude Include="src\core\logger.h" />
+    <ClInclude Include="src\core\mp3Decoder.h" />
     <ClInclude Include="src\core\music.h" />
     <ClInclude Include="src\core\oggDecoder.h" />
     <ClInclude Include="src\core\quadCommand.h" />
@@ -222,6 +224,7 @@
     <ClInclude Include="src\core\sound.h" />
     <ClInclude Include="src\core\system.h" />
     <ClInclude Include="src\core\texture.h" />
+    <ClInclude Include="src\core\textureCache.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\entity\animatedTilePattern.h" />

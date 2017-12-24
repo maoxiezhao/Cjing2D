@@ -301,9 +301,6 @@
     <ClCompile Include="src\entity\entityState.cpp">
       <Filter>entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\renderCommandPool.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\tileRegions.cpp">
       <Filter>entity</Filter>
     </ClCompile>
@@ -381,6 +378,12 @@
     </ClCompile>
     <ClCompile Include="src\entity\enemy.cpp">
       <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderCommandPool.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\fileDataApi.cpp">
+      <Filter>lua\luaApi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -651,9 +654,6 @@
     <ClInclude Include="src\utils\objectPool.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\renderCommandPool.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\tileRegions.h">
       <Filter>entity</Filter>
     </ClInclude>
@@ -731,6 +731,15 @@
     </ClInclude>
     <ClInclude Include="src\lua\luaBinder_private.h">
       <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\mp3Decoder.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderCommandPool.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\textureCache.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,16 @@
 #include"game\enumInfo.h"
 #include<sstream>
 
+/**
+*	\brief 初始化lua环境的字符序列
+*/
+const std::string luaEnvInitScript = 
+	"SystemEnvTables = {}\n"
+	"SystemEnvTables.Enum = {}\n"
+	"SystemEnvTables.Const = SystemEnvTables.Enum\n"
+	"SystemEnvTables.CApi = {}\n"
+	"";
+
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 const string LuaContext::module_name = "cjing";
 
@@ -31,41 +41,31 @@ void LuaContext::Initialize()
 	luaL_openlibs(l);
 	mLuaContexts[l] = this;
 
-	// 创建userdata 表,设置模式为弱表
-	lua_newtable(l);
-					// userdata
-	lua_newtable(l);
-					// userdata meta
-	lua_pushstring(l, "v");
-					// userdata meta v
-	lua_setfield(l, -2, "__mode");
-					// userdata meta
-	lua_setmetatable(l, -2);
-					// userdata
-	lua_setfield(l, LUA_REGISTRYINDEX, "all_userdata");
+	// 初始化userdata环境
+	InitUserdataEnv(l);
 
-	// 创建userdata_table
-	lua_newtable(l);
-	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
-
-	lua_newtable(l);
-	lua_setglobal(l, module_name.c_str());
-	// 注册函数
-	RegisterModules();
-
-	// 加载全局函数
-	DoFileIfExists(l, "script/libFunction");
+	// 初始化lua文件系统的注册
+	RegisterFileData(l);
 
 	// 自定义lua require 加载器，用于解析打包的资源文件
+	if (!DoLuaString(l, luaEnvInitScript))
+	{
+		Debug::Error("Failed to load lua initialzed scripts.");
+		return;
+	}
 
+	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
+	DoFileIfExists(l, "script/libFunction");
 
+	// 注册模块
+	RegisterModules();
+	
 	// 加载main脚本,并从start出开始执行
 	Debug::CheckAssertion(lua_gettop(l) == 0, "The lua stack is not empty.");
 	DoFileIfExists(l,"main");
 	Debug::CheckAssertion(lua_gettop(l) == 0, "The lua stack is not empty.");
 
 	OnMainStart();
-
 }
 
 /**
@@ -133,6 +133,16 @@ bool LuaContext::NotifyInput(const InputEvent & event)
 	return handle;
 }
 
+bool LuaContext::DoLuaString(lua_State*l, const string& luaString)
+{
+	if (luaL_loadstring(l, luaString.c_str()) != 0)
+	{
+		LuaTools::CallFunction(l, 0, 0, "Load Lua String.");
+		return true;
+	}
+	return false;
+}
+
 bool LuaContext::DoFileIfExists(lua_State* l, const string& name)
 {
 	if (LoadFile(l, name))
@@ -143,6 +153,7 @@ bool LuaContext::DoFileIfExists(lua_State* l, const string& name)
 	}
 	return false;
 }
+
 
 /**
 *	\brief 加载一个lua文件，如果文件存在则置于栈顶
@@ -160,7 +171,6 @@ bool LuaContext::LoadFile(lua_State* l, const string& name)
 
 	const string buffer = FileData::ReadFile(fileName);
 	int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), fileName.c_str());
-
 	if (result != 0)
 	{
 		lua_pop(l, 1);
@@ -197,6 +207,29 @@ bool LuaContext::FindMethod(const string & name, int index)
 	lua_pushvalue(l, positiveIndex);// object要作为参数
 							// -- object -- function object
 	return true;
+}
+
+void LuaContext::InitUserdataEnv(lua_State* l)
+{
+	// 创建userdata 表,设置模式为弱表
+	lua_newtable(l);
+	// userdata
+	lua_newtable(l);
+	// userdata meta
+	lua_pushstring(l, "v");
+	// userdata meta v
+	lua_setfield(l, -2, "__mode");
+	// userdata meta
+	lua_setmetatable(l, -2);
+	// userdata
+	lua_setfield(l, LUA_REGISTRYINDEX, "all_userdata");
+
+	// 创建userdata_table
+	lua_newtable(l);
+	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
+
+	lua_newtable(l);
+	lua_setglobal(l, module_name.c_str());
 }
 
 /**
@@ -376,6 +409,14 @@ void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, 
 	lua_pushcfunction(l, function);
 	lua_setfield(l, -2, key.c_str());
 	lua_pop(l, 1);
+}
+
+/**
+*	\brief 将函数注册在全局表的CAPI上
+*/
+void LuaContext::RegisterFunction(lua_State*l, const luaL_Reg* functions)
+{
+
 }
 
 /**

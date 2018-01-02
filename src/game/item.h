@@ -1,6 +1,7 @@
 #pragma once
 
 #include"lua\luaObject.h"
+#include"entity\entity.h"
 #include<memory>
 
 class Equipment;
@@ -15,6 +16,7 @@ public:
 	Item(const std::string& itemName, Equipment& equipment);
 
 	void Initialize();
+	bool UseItem(size_t count, Entity& usedEntity);
 
 	/** status */
 	const std::string& GetPickedSound()const;

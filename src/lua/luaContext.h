@@ -255,7 +255,7 @@ public:
 
 	// register api
 	static void RegisterMetaFunction(lua_State*l, const string &moduleName, const std::string& key, FunctionExportToLua function);
-	static void RegisterFunction(lua_State*l, const luaL_Reg* functions);
+	static void RegisterFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function);
 	static void RegisterFunction(lua_State*l, const string& moduleName, const luaL_Reg* functions);
 	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
@@ -395,6 +395,7 @@ public:
 	static const string module_sound_name;
 	static const string module_particle_name;
 	static const string module_item_name;
+	static const string module_file_data_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -430,7 +431,7 @@ private:
 
 	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
 																				该数据存储仅用于快速的查找是否存在指定key */
-
+	static int mSystemCApiRef;
 };
 
 #endif

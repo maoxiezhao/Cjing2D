@@ -142,7 +142,7 @@ namespace FileData
 		return string(buffer.data(), size);
 	}
 	
-	void SaveFile(const string& name, const string&buffer)
+	bool SaveFile(const string& name, const string&buffer)
 	{
 		PHYSFS_File* file = PHYSFS_openWrite(name.c_str());
 		if (file == nullptr)
@@ -152,6 +152,7 @@ namespace FileData
 			Debug::Die(string("the file:") + name + "writed failed.");
 
 		PHYSFS_close(file);
+		return true;
 	}
 
 	bool DeleteFile(const string& name)

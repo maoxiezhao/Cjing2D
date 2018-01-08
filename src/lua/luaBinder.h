@@ -120,6 +120,8 @@ private:
 	lua_State* l;
 };
 
+class LuaBinderSpacingClass {};	// 用于设置默认绑定类的空白类
+using DefaultLuaBinder = LuaBindClass<LuaBinderSpacingClass>; // 默认的绑定类
 
 template<typename T>
 inline LuaBindClass<T>::LuaBindClass(lua_State* l, const std::string& name, const std::string& baseName) :
@@ -196,6 +198,7 @@ inline void LuaBindClass<T>::AddFunction(const std::string & funcName, void(*f)(
 	// cjing module
 	lua_pop(l, 2);
 }
+
 
 template<typename T>
 template<typename RetType, typename ...Args>
@@ -294,4 +297,32 @@ inline void LuaBindClass<T>::AddMethod(const std::string & methodName, void(T::*
 	lua_pushcclosure(l, Implemention::UnWraperLuaClassFunction<T, void, Args...>, 2);
 	lua_settable(l, -3);
 	lua_pop(l, 2);
+}
+
+namespace LuaSystemBind {
+/**
+*	\brief 用于定义全局函数，该函数解析传入的参数和返回值
+*	调用luaContext的registerFunction将函数绑定到全局CAPI中
+*/
+template<typename RetType, typename ...Args>
+void RegisterSystemFunction(lua_State*l,  std::string& funcName, RetType(*f)(Args...), int resultCount = 1)
+{
+	lua_pushlightuserdata(l, reinterpret_cast<void*>(f));
+	lua_pushinteger(l, resultCount);
+	lua_pushcclosure(l, Implemention::UnWraperLuaFunction<RetType, Args...>, 2);
+	// func	
+	LuaContext::RegisterFunction(l, funcName, lua_tocfunction(l, -1));
+}
+
+template<typename... Args>
+void RegisterSystemFunction(const std::string& funcName, void(*f)(Args...))
+{
+	lua_pushlightuserdata(l, reinterpret_cast<void*>(f));
+	lua_pushinteger(l, resultCount);
+	lua_pushcclosure(l, Implemention::UnWraperLuaFunction<void, Args...>, 2);
+	// func	
+	LuaContext::RegisterFunction(l, funcName, lua_tocfunction(l, -1));
+}
+	
+
 }

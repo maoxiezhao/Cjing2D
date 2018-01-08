@@ -18,7 +18,7 @@ namespace FileData
 	bool IsFileExists(const string& name);
 	char* ReadFileBytes(const string& name);
 	string ReadFile(const string& name);
-	void SaveFile(const string& name,const string&buffer);
+	bool SaveFile(const string& name,const string&buffer);
 	bool DeleteFile(const string& name);
 }
 

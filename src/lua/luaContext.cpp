@@ -74,6 +74,7 @@ const std::string luaEnvInitScript =
 
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 const string LuaContext::module_name = "cjing";
+int LuaContext::mSystemCApiRef = LUA_REFNIL;
 
 LuaContext::LuaContext(App& app):
 	mApp(app)
@@ -109,6 +110,19 @@ void LuaContext::Initialize()
 		Debug::Error("Failed to load lua initialzed scripts.");
 		return;
 	}
+
+	lua_getglobal(l, "SystemEnvTables");
+	if (lua_isnil(l, -1))
+	{
+		Debug::Error("Faile to load lua iitialized scripts");
+		return;
+	}
+	lua_getfield(l, -1, "CApi");
+	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
+	mSystemCApiRef = luaL_ref(l, LUA_REGISTRYINDEX);
+
+	lua_pop(l, 1);	// pop SystemEnvTables
+
 
 	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
 	DoFileIfExists(l, "script/libFunction");
@@ -470,9 +484,16 @@ void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, 
 /**
 *	\brief 将函数注册在全局表的CAPI上
 */
-void LuaContext::RegisterFunction(lua_State*l, const luaL_Reg* functions)
+void LuaContext::RegisterFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function)
 {
-
+	lua_rawgeti(l, LUA_REGISTRYINDEX, mSystemCApiRef);
+	if (!lua_isnil(l, -1) && function != nullptr)
+	{
+		lua_pushcfunction(l, function);
+		lua_setfield(l, -2, funcName.c_str());
+		lua_pop(l, 1);
+	}
+	lua_pop(l, 1);
 }
 
 /**

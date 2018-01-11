@@ -31,11 +31,10 @@ const std::string luaEnvInitScript =
 "return f(...)\n"
 "end\n"
 "\n"
-// 初始化文件执行基本方法
+// 初始化lua 执行文件接口
 "SystemDoFile = function(script, env, ...)\n"
-//"local fileData = FileData.GetFileData()"
-//"local buf = fileData:Load(script)"
-"local buf = nil\n"
+"if cjing.FileData.Exists(script) then error('File '..script..' not exists.'); return; end\n"
+"local buf = cjing.FileData.Read(script)"
 "local f,err = load(buf, script, env or _ENV) \n"
 "if f==nil then error(err) end\n"
 "return f(...)"
@@ -43,8 +42,8 @@ const std::string luaEnvInitScript =
 "\n"
 "local traceBack = debug.traceback\n"
 "local _logger = nil\n"
-"SstemLogErrHandle = function(err)err = _traceback(err,2);return err; end\n"
-"SystemTraceDoFile - function(script, env, ...)\n"
+"SystemLogErrHandle = function(err)err = _traceback(err,2);return err; end\n"
+"SystemTraceDoFile = function(script, env, ...)\n"
 "local ok, res = xpcall(SystemDoFile, SystemLogErrHandle, script, env or _ENV, ...)\n"
 "if ok then return res end\n"
 "end\n"
@@ -60,17 +59,10 @@ const std::string luaEnvInitScript =
 "  return m\n"
 " end\n"
 "\n"
-" SystemImport = function(name)\n"
-"  local i = imports[name]\n"
-"  if not i then\n"
-"   local m = __script_system_module(name)\n"
-"   i = setmetatable({}, {__index=function(t,k) return rawget(m,k)end, __newindex=function(t,k,v) error('module read only') end })\n"
-"   imports[name] = i\n"
-"  end\n"
-"  return i\n"
-" end\n"
-"end\n"
 ;
+
+
+
 
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 const string LuaContext::module_name = "cjing";
@@ -205,7 +197,7 @@ bool LuaContext::NotifyInput(const InputEvent & event)
 
 bool LuaContext::DoLuaString(lua_State*l, const string& luaString)
 {
-	if (luaL_loadstring(l, luaString.c_str()) != 0)
+	if (luaL_loadstring(l, luaString.c_str()) == 0)
 	{
 		LuaTools::CallFunction(l, 0, 0, "Load Lua String.");
 		return true;

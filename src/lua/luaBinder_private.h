@@ -32,6 +32,10 @@ namespace Implemention
 		template<typename T>
 		inline typename std::enable_if<std::is_same<T, std::string>::value, T>::type
 			UnWraper(lua_State*l, int index) { return static_cast<T>(LuaTools::CheckString(l, index)); }
+		/** userdata */
+		template<typename T>
+		inline typename std::enable_if< !std::is_same<T, std::string>::value && std::is_class<T>::value, T>::type
+			UnWraper(lua_State*l, int index) { return static_cast<T>(T::LuaUnWraper(l, index)); }	// 需要该类提供LuaUnWraper接口
 	}
 
 	/**
@@ -62,6 +66,14 @@ namespace Implemention
 		inline void Wraper(lua_State*l, const std::string& value)
 		{
 			lua_pushstring(l, value.c_str());
+		}
+
+		/** userdata 需要该类提供LuaWraper接口*/																
+		template<typename T>
+		inline std::enable_if_t<std::is_class<T>::value>
+			Wraper(lua_State*l, T value)
+		{
+			T.LuaWraper(l);
 		}
 	}
 

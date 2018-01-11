@@ -261,6 +261,7 @@
     <ClInclude Include="src\game\mapData.h" />
     <ClInclude Include="src\game\particleData.h" />
     <ClInclude Include="src\game\particleSystem.h" />
+    <ClInclude Include="src\game\quest.h" />
     <ClInclude Include="src\game\savegame.h" />
     <ClInclude Include="src\game\setting.h" />
     <ClInclude Include="src\game\sprite.h" />

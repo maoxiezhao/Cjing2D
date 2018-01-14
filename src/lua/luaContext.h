@@ -68,6 +68,7 @@ public:
 	bool FindMethod(const string& name, int index);
 	LuaRef CreateRef();
 	void PushRef(lua_State*l,const LuaRef& luaref);
+	bool DoLuaExportFunction(const std::string& funcName, ...);
 	void PrintLuaStack(lua_State*l);
 
 	// userdata
@@ -259,7 +260,7 @@ public:
 	static void RegisterFunction(lua_State*l, const string& moduleName, const luaL_Reg* functions);
 	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
-
+	static void AddEnum(lua_State*l, const std::string& enumStr, int value);
 
 	// main api	-- test 
 	void PushMain(lua_State*l);
@@ -432,6 +433,8 @@ private:
 	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
 																				该数据存储仅用于快速的查找是否存在指定key */
 	static int mSystemCApiRef;
+	static int mSystemEnumRef;
+	static int mSystemExports;
 };
 
 #endif

@@ -67,6 +67,8 @@ const std::string luaEnvInitScript =
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 const string LuaContext::module_name = "cjing";
 int LuaContext::mSystemCApiRef = LUA_REFNIL;
+int LuaContext::mSystemEnumRef = LUA_REFNIL;
+int LuaContext::mSystemExports = LUA_REFNIL;
 
 LuaContext::LuaContext(App& app):
 	mApp(app)
@@ -103,6 +105,7 @@ void LuaContext::Initialize()
 		return;
 	}
 
+	// 设置Lua环境表
 	lua_getglobal(l, "SystemEnvTables");
 	if (lua_isnil(l, -1))
 	{
@@ -110,10 +113,22 @@ void LuaContext::Initialize()
 		return;
 	}
 	lua_getfield(l, -1, "CApi");
-	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
+	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
 	mSystemCApiRef = luaL_ref(l, LUA_REGISTRYINDEX);
 
+	lua_getfield(l, -1, "Enum");
+	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
+	mSystemEnumRef = luaL_ref(l, LUA_REGISTRYINDEX);
+
+	//lua_getfield(l, -1, "Const");
+	//Debug::CheckAssertion(!lua_isnil(l, -1), "Lua env initialized failed.");
+	//lua_rawseti(l, LUA_REGISTRYINDEX, LUA_RIDX_CONSTS);
+
 	lua_pop(l, 1);	// pop SystemEnvTables
+
+	lua_getglobal(l, "Global_Exports");
+	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
+	mSystemExports = luaL_ref(l, LUA_REGISTRYINDEX);
 
 
 	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
@@ -595,6 +610,25 @@ void LuaContext::RegisterType(lua_State*l, const string& moduleName, const strin
 }
 
 /**
+*	\brief 添加一个枚举值，暂时使用这个接口
+*/
+void LuaContext::AddEnum(lua_State * l, const std::string & enumStr, int value)
+{
+	lua_getglobal(l, "SystemEnvTables");
+	if (lua_isnil(l, -1))
+	{
+		Debug::Error("Faile to load lua iitialized scripts");
+		return;
+	}
+
+	lua_getfield(l, -1, "Enum");
+	lua_pushinteger(l, value);
+	lua_setfield(l, -2, enumStr.c_str());
+
+	lua_pop(l, 1);	// pop SystemEnvTables
+}
+
+/**
 *	\brief 为栈顶元素创建一个新的LuaRef引用
 */
 LuaRef LuaContext::CreateRef()
@@ -616,6 +650,16 @@ void LuaContext::PushRef(lua_State * l, const LuaRef & luaref)
 	}
 	// need to judge these lua_State?
 	luaref.Push();
+}
+
+/**
+*	\brief 执行lua Export表中的全局函数
+*
+* lua export表中的函数必然是void类型且任意参数
+*/
+bool LuaContext::DoLuaExportFunction(const std::string & funcName, ...)
+{
+	return false;
 }
 
 /**

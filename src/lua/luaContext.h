@@ -64,10 +64,11 @@ public:
 	static bool DoLuaString(lua_State*l, const string& luaString);
 	static bool DoFileIfExists(lua_State*l,const string& name);
 	static bool LoadFile(lua_State*l, const string& name);
+	static void PushRef(lua_State*l, const LuaRef& luaref);
+	static LuaRef CreateRef(lua_State* l);
+
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
-	LuaRef CreateRef();
-	void PushRef(lua_State*l,const LuaRef& luaref);
 	bool DoLuaExportFunction(const std::string& funcName, ...);
 	void PrintLuaStack(lua_State*l);
 
@@ -382,8 +383,12 @@ public:
 	static std::shared_ptr<gui::Window> CheckWindow(lua_State*l, int index);
 	static bool IsWindow(lua_State*l, int index);
 
-	// modules name
-	static const string module_name;
+	// system ref
+	static LuaRef mSystemCApiRef;
+	static LuaRef mSystemEnumRef;
+	static LuaRef mSystemExports;
+	static LuaRef mSystemModulesRef;
+
 	// base modules name
 	static const string module_main_name;
 	static const string module_game_name;
@@ -410,6 +415,7 @@ public:
 	// widget
 	static const string module_window_name;
 
+
 private:
 	App& mApp;
 	lua_State* l;
@@ -432,9 +438,6 @@ private:
 
 	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
 																				该数据存储仅用于快速的查找是否存在指定key */
-	static int mSystemCApiRef;
-	static int mSystemEnumRef;
-	static int mSystemExports;
 };
 
 #endif

@@ -149,7 +149,7 @@ template<typename T>
 template<typename RetType, typename ...Args>
 inline void LuaBindClass<T>::AddFunction(const std::string & funcName, RetType(*f)(Args...), int resultCount)
 {
-	lua_getglobal(l, LuaContext::module_name.c_str());
+	LuaContext::PushRef(l, LuaContext::mSystemModulesRef);
 	lua_getfield(l, -1, mName.c_str());
 	if (lua_isnil(l, -1))
 	{
@@ -176,7 +176,7 @@ template<typename T>
 template<typename ...Args>
 inline void LuaBindClass<T>::AddFunction(const std::string & funcName, void(*f)(Args...), int resultCount)
 {
-	lua_getglobal(l, LuaContext::module_name.c_str());
+	LuaContext::PushRef(l, LuaContext::mSystemModulesRef);
 	lua_getfield(l, -1, mName.c_str());
 	if (lua_isnil(l, -1))
 	{

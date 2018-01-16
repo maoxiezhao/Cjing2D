@@ -385,6 +385,12 @@
     <ClCompile Include="src\lua\fileDataApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\quest.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\uiStage.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -742,6 +748,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\game\quest.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\uiStage.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

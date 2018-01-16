@@ -142,11 +142,13 @@
     <ClCompile Include="src\game\mapData.cpp" />
     <ClCompile Include="src\game\particleData.cpp" />
     <ClCompile Include="src\game\particleSystem.cpp" />
+    <ClCompile Include="src\game\quest.cpp" />
     <ClCompile Include="src\game\savegame.cpp" />
     <ClCompile Include="src\game\setting.cpp" />
     <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\textDrawable.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
+    <ClCompile Include="src\game\uiStage.cpp" />
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\distributor.cpp" />
@@ -268,6 +270,7 @@
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
+    <ClInclude Include="src\game\uiStage.h" />
     <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />

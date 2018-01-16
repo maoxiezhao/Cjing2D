@@ -18,7 +18,7 @@ const std::string luaEnvInitScript =
 "SystemEnvTables.Modules = {}\n"
 "SystemEnvTables.Imports = {}\n"
 "\n"
-"Global_Exports = setmetatable({}, {__index = _ENV, __newindex=function(t,k,v)rawset(_ENV, k, v)  end})\n"
+"Global_Exports = setmetatable({}, {__index = _ENV, __newindex=function(t,k,v)rawset(_ENV, k, v);  end})\n"
 "setmetatable(_ENV, {__index = SystemEnvTables.CApi })\n"
 // 初始化lua基本方法
 "SystemLoadScript = function(script_cxt, name, env) \n"
@@ -48,27 +48,26 @@ const std::string luaEnvInitScript =
 "if ok then return res end\n"
 "end\n"
 // 初始化lua modules环境
-" local modules = SystemEnvTables.Modules\n"
-" local imports = SystemEnvTables.Imports\n"
-" SystemModule = function(name)\n"
+"Global_modules = setmetatable({}, {__index = _ENV, __newindex = function(t,k,v)rawset(_ENV, k, v);rawset(t,k,v);  end})\n"
+"local modules = SystemEnvTables.Modules\n"
+"local imports = SystemEnvTables.Imports\n"
+"SystemModule = function(name)\n"
 "  local m = modules[name]\n"
 "  if not m then\n"
 "   m = setmetatable({}, {__index=_ENV})\n"
 "   modules[name] = m\n"
 "  end\n"
 "  return m\n"
-" end\n"
+"end\n"
 "\n"
 ;
 
-
-
-
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
-const string LuaContext::module_name = "cjing";
-int LuaContext::mSystemCApiRef = LUA_REFNIL;
-int LuaContext::mSystemEnumRef = LUA_REFNIL;
-int LuaContext::mSystemExports = LUA_REFNIL;
+
+LuaRef LuaContext::mSystemCApiRef;
+LuaRef LuaContext::mSystemEnumRef;
+LuaRef LuaContext::mSystemExports;
+LuaRef LuaContext::mSystemModulesRef;
 
 LuaContext::LuaContext(App& app):
 	mApp(app)
@@ -114,11 +113,11 @@ void LuaContext::Initialize()
 	}
 	lua_getfield(l, -1, "CApi");
 	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
-	mSystemCApiRef = luaL_ref(l, LUA_REGISTRYINDEX);
+	mSystemCApiRef = LuaTools::CreateRef(l); 
 
 	lua_getfield(l, -1, "Enum");
 	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
-	mSystemEnumRef = luaL_ref(l, LUA_REGISTRYINDEX);
+	mSystemEnumRef = LuaTools::CreateRef(l);
 
 	//lua_getfield(l, -1, "Const");
 	//Debug::CheckAssertion(!lua_isnil(l, -1), "Lua env initialized failed.");
@@ -128,8 +127,12 @@ void LuaContext::Initialize()
 
 	lua_getglobal(l, "Global_Exports");
 	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
-	mSystemExports = luaL_ref(l, LUA_REGISTRYINDEX);
-
+	mSystemExports = LuaTools::CreateRef(l);
+	
+	lua_getglobal(l, "Global_modules");
+	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
+	mSystemModulesRef = LuaTools::CreateRef(l);
+	
 
 	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
 	DoFileIfExists(l, "script/libFunction");
@@ -304,9 +307,6 @@ void LuaContext::InitUserdataEnv(lua_State* l)
 	// 创建userdata_table
 	lua_newtable(l);
 	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
-
-	lua_newtable(l);
-	lua_setglobal(l, module_name.c_str());
 }
 
 /**
@@ -493,7 +493,7 @@ void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, 
 */
 void LuaContext::RegisterFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function)
 {
-	lua_rawgeti(l, LUA_REGISTRYINDEX, mSystemCApiRef);
+	LuaContext::PushRef(l, mSystemCApiRef);
 	if (!lua_isnil(l, -1) && function != nullptr)
 	{
 		lua_pushcfunction(l, function);
@@ -512,10 +512,10 @@ void LuaContext::RegisterFunction(lua_State * l, const string & moduleName, cons
 {
 	if (!moduleName.empty())
 	{
-		lua_getglobal(l, module_name.c_str());
-		// cjing
+		LuaContext::PushRef(l, mSystemModulesRef);
+		// global_module
 		lua_getfield(l, -1, moduleName.c_str());
-		// cjing module/nil
+		// global_module module/nil
 		if (lua_isnil(l, -1))
 		{
 			lua_pop(l, 1);
@@ -524,10 +524,9 @@ void LuaContext::RegisterFunction(lua_State * l, const string & moduleName, cons
 		}
 		if (functions != nullptr)
 			luaL_setfuncs(l, functions, 0);
+
 		lua_setfield(l, -2, moduleName.c_str());
-		// cjing
 		lua_pop(l, 1);
-		// --
 	}
 	else
 	{
@@ -631,7 +630,7 @@ void LuaContext::AddEnum(lua_State * l, const std::string & enumStr, int value)
 /**
 *	\brief 为栈顶元素创建一个新的LuaRef引用
 */
-LuaRef LuaContext::CreateRef()
+LuaRef LuaContext::CreateRef(lua_State* l)
 {
 	return LuaTools::CreateRef(l);
 }
@@ -1053,6 +1052,16 @@ bool LuaContext::OnKeyReleased(const InputEvent & event)
 			lua_pop(l, 2);
 	}
 	return handle;
+}
+
+bool LuaContext::OnMousePressed(const InputEvent & event)
+{
+	return false;
+}
+
+bool LuaContext::OnMouseReleased(const InputEvent & event)
+{
+	return false;
 }
 
 /**

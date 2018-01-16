@@ -14,8 +14,7 @@ void LuaContext::RegisterMainModule()
 
 	RegisterFunction(l, module_main_name, functions);
 
-	lua_getglobal(l, module_name.c_str());
-							// cjing
+	LuaContext::PushRef(l, LuaContext::mSystemModulesRef);
 	lua_getfield(l, -1, "Main");
 	lua_setfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
 							// cjing

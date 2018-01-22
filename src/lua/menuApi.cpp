@@ -105,7 +105,7 @@ int LuaContext::menu_api_start(lua_State* l)
 
 		// 参数2必须是table
 		LuaTools::CheckType(l, 2, LUA_TTABLE);
-		const LuaRef& menuRef = luaContext.CreateRef();
+		const LuaRef& menuRef = luaContext.CreateRef(l);
 		luaContext.AddMenu(1, menuRef);
 
 		return 0;

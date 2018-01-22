@@ -391,6 +391,21 @@
     <ClCompile Include="src\game\uiStage.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\example_gl3.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\demo.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\perf.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\nanovg.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\core\uiRender.cpp">
+      <Filter>gui\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -752,6 +767,39 @@
     </ClInclude>
     <ClInclude Include="src\game\uiStage.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\string.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\demo.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\perf.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\stb_image_write.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\stb_image.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\stb_truetype.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\nanovg.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\nanovg_gl.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\nanovg_gl_utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\perf.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\core\uiRender.h">
+      <Filter>gui\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

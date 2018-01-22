@@ -43,6 +43,7 @@ void Video::Initialize()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// ´´½¨´°¿Ú
+	Logger::Info("[Video] create main window");
 	tilename = configProperties.GetTitle();
 	mainMonitor = glfwGetPrimaryMonitor();
 	mainWindow = glfwCreateWindow(wantedWindowSize.width, wantedWindowSize.height, tilename.c_str(), fullScreenWindow ? mainMonitor : nullptr, nullptr);

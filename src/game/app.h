@@ -9,9 +9,8 @@
 #include"game\sprite.h"
 #include"game\animationSprite.h"
 #include"game\game.h"
+#include"game\uiStage.h"
 #include"entity\player.h"
-#include"gui\core\handler.h"
-#include"gui\widget\window.h"
 
 /**
 *	\brief 程序的主循环
@@ -41,11 +40,14 @@ private:
 	bool mExiting;				/** 是否退出 */
 
 	std::unique_ptr<LuaContext> mLuaContext; /** 脚本管理者 */
+
 	std::unique_ptr<Game> mCurrGame;		/** 当前游戏 */
-	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */					
-	std::unique_ptr<gui::GUIManager> mGUI;	
+
+	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */		
+
 	std::shared_ptr<gui::Window> mWindow;
 
+	std::unique_ptr<UIStage> mMainStge;	/** ui主场景 */
 };
 
 #endif

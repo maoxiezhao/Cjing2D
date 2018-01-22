@@ -48,7 +48,6 @@ const std::string luaEnvInitScript =
 "if ok then return res end\n"
 "end\n"
 // 初始化lua modules环境
-"Global_modules = setmetatable({}, {__index = _ENV, __newindex = function(t,k,v)rawset(_ENV, k, v);rawset(t,k,v);  end})\n"
 "local modules = SystemEnvTables.Modules\n"
 "local imports = SystemEnvTables.Imports\n"
 "SystemModule = function(name)\n"
@@ -112,11 +111,11 @@ void LuaContext::Initialize()
 		return;
 	}
 	lua_getfield(l, -1, "CApi");
-	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
+	Debug::CheckAssertion(!lua_isnil(l, -1), "Lua env initialized failed.");
 	mSystemCApiRef = LuaTools::CreateRef(l); 
 
 	lua_getfield(l, -1, "Enum");
-	Debug::CheckAssertion(!lua_isnil(l, -11), "Lua env initialized failed.");
+	Debug::CheckAssertion(!lua_isnil(l, -1), "Lua env initialized failed.");
 	mSystemEnumRef = LuaTools::CreateRef(l);
 
 	//lua_getfield(l, -1, "Const");
@@ -127,12 +126,7 @@ void LuaContext::Initialize()
 
 	lua_getglobal(l, "Global_Exports");
 	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
-	mSystemExports = LuaTools::CreateRef(l);
-	
-	lua_getglobal(l, "Global_modules");
-	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
-	mSystemModulesRef = LuaTools::CreateRef(l);
-	
+	mSystemExports = LuaTools::CreateRef(l);	
 
 	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
 	DoFileIfExists(l, "script/libFunction");
@@ -188,6 +182,11 @@ void LuaContext::Exit()
 		DestoryDrawables();
 		DestoryAsyncLoaders();
 		CloseUserdatas();
+
+		mSystemCApiRef.Clear();
+		mSystemEnumRef.Clear();
+		mSystemExports.Clear();
+		mSystemModulesRef.Clear();
 
 		lua_close(l);
 		mLuaContexts.erase(l);
@@ -307,6 +306,18 @@ void LuaContext::InitUserdataEnv(lua_State* l)
 	// 创建userdata_table
 	lua_newtable(l);
 	lua_setfield(l, LUA_REGISTRYINDEX, "userdata_tables");
+
+	// 创建系统模块表,这里提前做，用于注册LuaFileData
+	const std::string modulesLuaStr =
+		"Global_modules = setmetatable({}, { __index = _ENV, __newindex = function(t,k,v)rawset(_ENV, k, v); rawset(t,k,v);  end })\n";
+	if (!DoLuaString(l, modulesLuaStr.c_str()))
+	{
+		Debug::Error("Failed to initialzed system modules.");
+	}
+
+	lua_getglobal(l, "Global_modules");
+	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
+	mSystemModulesRef = LuaTools::CreateRef(l);
 }
 
 /**

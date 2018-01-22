@@ -31,7 +31,7 @@ static const unsigned int TEXT_ALIGN_MASK = 7 << TEXT_ALIGN_SHIFT;
 *	最多的一系列字形，每次update时，会删除使用最少的字
 *	以便为新增加的字形提供空间.Font的渲染采用状态模式
 *
-*	未来会使用Pangocario作为文字引擎
+*	近期将添加动态版本
 */
 class Font
 {

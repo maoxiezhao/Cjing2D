@@ -42,24 +42,24 @@ namespace Logger {
 	void Logger::Print(const string & msg, std::ostream & out)
 	{
 		auto timeStr = GetCurSystemTimeStr();
-		out << timeStr << msg << std::endl;
+		out << timeStr << "    " << msg << std::endl;
 	}
 
 	void Debug(const string & msg)
 	{
-		Print("Debug:" + msg);
+		Print("Debug: " + msg);
 	} 
 
 	void Logger::Info(const string & msg)
 	{
 		SetLoggerConsoleFontColor(CONSOLE_FONT_GREEN);
-		Print("Info:" + msg);
+		Print("[Info]  " + msg);
 	}
 
 	void Logger::Warning(const string & msg)
 	{
 		SetLoggerConsoleFontColor(CONSOLE_FONT_YELLOW);
-		string warningMsg = "Warning:" + msg;
+		string warningMsg = "[Warning]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
 	}
@@ -67,7 +67,7 @@ namespace Logger {
 	void Logger::Error(const string & msg)
 	{
 		SetLoggerConsoleFontColor(CONSOLE_FONT_RED);
-		string warningMsg = "Error:" + msg;
+		string warningMsg = "[Error]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
 	}
@@ -75,7 +75,7 @@ namespace Logger {
 	void Fatal(const string& msg)
 	{
 		SetLoggerConsoleFontColor(CONSOLE_FONT_WHITE);
-		string warningMsg = "Fatal:" + msg;
+		string warningMsg = "[Fatal]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
 	}

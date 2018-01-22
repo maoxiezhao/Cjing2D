@@ -1,7 +1,7 @@
 -- global setting
 package.path = package.path .. ";data/?.lua"
 
-function cjing.Main:onStarted()
+function Main:onStarted()
 	print "[lua] Main:onStarted normal."
 
 	

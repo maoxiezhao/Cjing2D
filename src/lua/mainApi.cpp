@@ -92,7 +92,8 @@ int LuaContext::main_api_exit(lua_State*l)
 
 void LuaContext::PushMain(lua_State*l)
 {
-	lua_getfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
+	lua_getglobal(l, module_main_name.c_str());
+//	lua_getfield(l, LUA_REGISTRYINDEX, module_main_name.c_str());
 }
 
 /**

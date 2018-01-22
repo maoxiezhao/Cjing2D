@@ -94,10 +94,10 @@ int LuaContext::video_api_set_cursor(lua_State* l)
 		// 这里对图片的读取不使用texture,因为无需对该资源后续维护
 		int w, h;
 		const string data = FileData::ReadFile(cursorImgPath);
-		unsigned char* imageData = SOIL_load_image_from_memory((unsigned char*)data.c_str(), 
-				data.length(), &w, &h, 0, SOIL_LOAD_RGBA);
+	//	unsigned char* imageData = SOIL_load_image_from_memory((unsigned char*)data.c_str(), 
+	//			data.length(), &w, &h, 0, SOIL_LOAD_RGBA);
 
-		Video::SetImageCursor(imageData, w, h);
+	//	Video::SetImageCursor(imageData, w, h);
 		return 0;
 	});
 }

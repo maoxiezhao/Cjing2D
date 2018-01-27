@@ -43,6 +43,9 @@ App::App() :
 	Logger::Info("Initialize Lua context");
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(*this));
 	mLuaContext->Initialize();
+
+	// test
+	sprite = std::make_shared<Sprite>("test.png");
 }
 
 App::~App()
@@ -185,6 +188,8 @@ void App::CheckInput()
 void App::Render()
 {
 	Video::CleanCanvas();
+
+	sprite->Draw();
 
 	if (mCurrGame != nullptr)
 	{

@@ -406,6 +406,9 @@
     <ClCompile Include="src\gui\core\uiRender.cpp">
       <Filter>gui\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\vertexArray.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -800,6 +803,9 @@
     </ClInclude>
     <ClInclude Include="src\gui\core\uiRender.h">
       <Filter>gui\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\vertexArray.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,8 @@ QuadCommand::QuadCommand():
 	mTextureID(0),
 	mQuadCounts(0),
 	mQuads(),
-	mShadeState(0)
+	mShadeState(0),
+	mIsDeferredShade(false)
 {
 }
 
@@ -87,6 +88,16 @@ Matrix4 QuadCommand::GetTransfomr() const
 Matrix4 QuadCommand::GetModelView() const
 {
 	return mModelView;
+}
+
+bool QuadCommand::IsDeferredShade() const
+{
+	return mIsDeferredShade;
+}
+
+void QuadCommand::SetDeferredShade(bool isDeferred)
+{
+	mIsDeferredShade = isDeferred;
 }
 
 /**

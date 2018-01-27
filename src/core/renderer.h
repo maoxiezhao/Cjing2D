@@ -3,9 +3,14 @@
 
 #include"common\common.h"
 #include"core\types.h"
+#include"core\vertexArray.h"
 #include"utils\matrix4.h"
 
 #include<stack>
+
+/**
+*	1/27/2018 预计重构，将渲染过程以PASS方式提取
+*/
 
 class RenderCommand;
 class QuadCommand;
@@ -48,11 +53,13 @@ public:
 	bool IsInitialized();
 	void PushCommand(RenderCommand* command);
 	void PushCommand(RenderCommand* command, int groupIndex);
-
-	// render
 	void RenderClear();
 	void Render();
 	void RenderAfterClean();
+
+	// light
+	void PushLight();
+	void FlushAllLights();
 
 	// data
 	Matrix4 GetCameraMatrix()const;
@@ -64,32 +71,47 @@ private:
 
 	void InitCamearMatrix();
 	void InitDefaultProgram();
-	void InitIndices();
+	void InitGBuffer();
 	void InitVAOandVBO();
 	void VisitRenderQueue(const RenderQueue& queue);
 	void Flush();
-	void DrawQuadBatches();
+	void DeferredDrawQuadBatches();
+	void ForwardDrawQuadBatches();
 	void TransformQuadsToWorld(Quad* mQuads, int quadCount,const Matrix4 transform);
+	void PostRenderQuad();
 
+private:
 	std::vector<RenderQueue> mRenderGroups;
 	std::stack<int> mRenderGroupsStack;
 
 	bool mInitialized;
 	bool mIsRenderer;
 
-	GLuint mVAO;
-	GLuint mVBO;
-	GLuint mVEO;
+	GLuint mGBuffer;	// global frame buffer
+	unsigned int mGPosition, mGNormal, mGColor;
 
 	// render data
 	static const uint32_t VBO_SIZE = 65536;
-	Quad mQuads[VBO_SIZE];
-	GLushort mIndices[VBO_SIZE * 6];
-	int mQuadsCounts;
-	std::vector<QuadCommand*>mQuadBatches;
+	std::unique_ptr<VertexBuffer> mForwardBuffer;
+	std::unique_ptr<VertexBuffer> mDeferredBuffer;
+
+	int mForwardQuadsCounts;
+	int mDeferredQuadsCounts;
+
+	std::vector<QuadCommand*>mQuadDeferredBatches;
+	std::vector<QuadCommand*>mQuadForwardBatches;
+
 	int mViewWidth, mViewHeight;
 	Matrix4 mCamearMatrix;			// 全局统一的相机变换矩阵
 
+	//GLuint mVAO;
+	//GLuint mVBO;
+	//GLuint mVEO;
+	//GLuint mGBuffer;
+
+	//Quad mForwardQuads[VBO_SIZE];	// 前向渲染quad顶点数据
+	//Quad mDeferredQuads[VBO_SIZE];	// 延迟渲染quad顶点数据
+	//GLushort mIndices[VBO_SIZE * 6];
 };
 
 #endif

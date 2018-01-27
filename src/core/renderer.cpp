@@ -3,7 +3,10 @@
 #include"quadCommand.h"
 #include"debug.h"
 #include"renderCommandPool.h"
+#include"video.h"
 #include<algorithm>
+
+#define _ENABLE_DEFERRED_SHADE_
 
 namespace
 {
@@ -96,14 +99,17 @@ Renderer& Renderer::GetInstance()
 
 Renderer::Renderer() :
 	mInitialized(false),
-	mVAO(0),
-	mVBO(0),
-	mQuadsCounts(0)
+	mForwardQuadsCounts(0),
+	mDeferredQuadsCounts(0),
+	mForwardBuffer(nullptr),
+	mDeferredBuffer(nullptr)
 {
 	mRenderGroupsStack.push(DEFAULT_RENDER_QUEUE);
 	RenderQueue defaultRenderQeueue;
 	mRenderGroups.push_back(defaultRenderQeueue);
-	mQuadBatches.reserve(QUAD_BATHCHES_RESERVE);
+
+	mQuadForwardBatches.reserve(QUAD_BATHCHES_RESERVE);
+	mQuadDeferredBatches.reserve(QUAD_BATHCHES_RESERVE);
 }
 
 Renderer::~Renderer()
@@ -123,7 +129,9 @@ void Renderer::Initialize(int w,int h)
 	// 初始化渲染状态
 	SetViewSize(w, h);
 	InitCamearMatrix();
-	InitIndices();
+#if defined _ENABLE_DEFERRED_SHADE_
+	InitGBuffer();
+#endif
 	InitVAOandVBO();
 	mInitialized = true;
 	// 初始化命令池
@@ -150,19 +158,50 @@ void Renderer::InitDefaultProgram()
 }
 
 /**
-*	\brief 初始化indices
+*	\brief 初始化Gbuffer，用于延迟着色(后处理)
 */
-void Renderer::InitIndices()
+void Renderer::InitGBuffer()
 {
-	for (int i = 0; i < VBO_SIZE; ++i)
+	Debug::CheckAssertion(mGBuffer == 0, "The gBuffer already assign.");
+
+	const Size srcSize = Video::GetScreenSize();
+	// 初始化gbuffer
+	glGenFramebuffers(1, &mGBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer);
+
+	// position
+	glGenTextures(1, &mGPosition);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, srcSize.width, srcSize.height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGPosition, 0);
+
+	// normal
+	glGenTextures(1, &mGNormal);
+	glBindTexture(GL_TEXTURE_2D, mGNormal);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, srcSize.width, srcSize.height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGNormal, 0);
+
+	// color
+	glGenTextures(1, &mGColor);
+	glBindTexture(GL_TEXTURE_2D, mGColor);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, srcSize.width, srcSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGColor, 0);
+
+	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, attachments);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		mIndices[i*6+0] = (GLushort)(i * 4 + 0);
-		mIndices[i*6+1] = (GLushort)(i * 4 + 1);
-		mIndices[i*6+2] = (GLushort)(i * 4 + 2);
-		mIndices[i*6+3] = (GLushort)(i * 4 + 2);
-		mIndices[i*6+4] = (GLushort)(i * 4 + 3);
-		mIndices[i*6+5] = (GLushort)(i * 4 + 0);
+		Debug::Error("[Render] Failed to gen frame buffer");
+		return;
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 /**
@@ -170,31 +209,13 @@ void Renderer::InitIndices()
 */
 void Renderer::InitVAOandVBO()
 {
-	Debug::CheckAssertion(mVAO == 0 && mVBO == 0, "The VAO and VBO already assign.");
+	// 前向渲染缓冲
+	mForwardBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE));
+	mForwardBuffer->Initialize();
 
-	glGenVertexArrays(1, &mVAO);	// VAO
-	glGenBuffers(1, &mVBO);			// 顶点数据
-	glGenBuffers(1, &mVEO);			// 顶点索引
-
-	// 绑定顶点数据缓冲区
-	glBindVertexArray(mVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(mQuads[0])*VBO_SIZE, mQuads, GL_DYNAMIC_DRAW);
-	// 设置vao
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, vertices));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF,colors));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(V3F_4CB_2TF), (GLvoid*)offsetof(V3F_4CB_2TF, texs));
-	// 绑定顶点索引
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVEO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(mIndices[0])*VBO_SIZE * 6, mIndices, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-
+	// 延迟渲染缓冲
+	mDeferredBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE));
+	mDeferredBuffer->Initialize();
 }
 
 /**
@@ -205,12 +226,14 @@ void Renderer::Quit()
 	if (!mInitialized)
 		return;
 	mRenderGroups.clear();
-	mQuadBatches.clear();
-	glDeleteBuffers(1, &mVBO);
-	glDeleteBuffers(1, &mVEO);
-	mVAO = mVBO = mVEO = 0;
-	mInitialized = false;
+	mQuadForwardBatches.clear();
+	mQuadDeferredBatches.clear();
 
+	mForwardBuffer->Quit();
+	mDeferredBuffer->Quit();
+
+	mGBuffer = 0;
+	mInitialized = false;
 	RenderCommandPool::GetInstance().Quit();
 }
 
@@ -257,17 +280,34 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 		if (commandType == RenderCommand::COMMAND_QUAD)
 		{
 			auto quadCommand = dynamic_cast<QuadCommand*>(command);
-			if (mQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
-			{	// 当前quad数量超过最大值，则先渲染之前保存的
-				Debug::Warning("The quad counts More than the maximum value");
-				Flush();
-			}
-			memcpy(mQuads + mQuadsCounts, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
-			TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(),quadCommand->GetTransfomr());
-	//		TransformQuadsToWorld(mQuads + mQuadsCounts, quadCommand->GetQuadCounts(), quadCommand->GetModelView());
+			if (quadCommand->IsDeferredShade())	// 是否重新定义为RenderCommand的派生类
+			{
+				if (mDeferredQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
+				{	// 当前quad数量超过最大值，则先渲染之前保存的
+					Debug::Warning("The quad counts More than the maximum value");
+					DeferredDrawQuadBatches();
+				}
+				Quad* quads = mDeferredBuffer->GetQuadBuffer() + mDeferredQuadsCounts;
+				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
+				TransformQuadsToWorld(quads, quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
 
-			mQuadBatches.push_back(quadCommand);
-			mQuadsCounts += quadCommand->GetQuadCounts();
+				mQuadDeferredBatches.push_back(quadCommand);
+				mDeferredQuadsCounts += quadCommand->GetQuadCounts();
+			}
+			else
+			{
+				if (mForwardQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
+				{	
+					Debug::Warning("The quad counts More than the maximum value");
+					ForwardDrawQuadBatches();
+				}
+				Quad* quads = mForwardBuffer->GetQuadBuffer() + mForwardQuadsCounts;
+				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
+				TransformQuadsToWorld(quads, quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
+
+				mQuadForwardBatches.push_back(quadCommand);
+				mForwardQuadsCounts += quadCommand->GetQuadCounts();
+			}
 		}
 		else if (commandType == RenderCommand::COMMAND_BATCH)
 		{
@@ -308,57 +348,100 @@ void Renderer::SetViewSize(int w, int h)
 *
 *	在VisitRenderQueue之后已经得到全部的quanCommand放置于
 *	mQuadBathces中，调用DrawQuadBathches，执行真正渲染功能
+*	先执行延迟着色，在执行正向着色
 */
 void Renderer::Flush()
 {
-	DrawQuadBatches();
+#if defined _ENABLE_DEFERRED_SHADE_
+	DeferredDrawQuadBatches();
+#endif
+	ForwardDrawQuadBatches();
+}
+
+namespace
+{
+	/**
+	*	\brief 绘制QuadBatches
+	*/
+	void DrawQuadBatches(VertexBuffer& vertexBuffer, int quadCounts, const std::vector<QuadCommand*>& quadBatches)
+	{
+		vertexBuffer.BeginDraw(quadCounts);
+
+		GLushort* indices = vertexBuffer.GetIndices();
+		int quadToDraw = 0;
+		int startQuad = 0;
+		uint32_t lastQuadState = quadBatches[0]->GetShadeState();
+		quadBatches[0]->UseShade();
+		for (auto& command : quadBatches)
+		{
+			uint32_t currQuadState = command->GetShadeState();
+			if (quadToDraw > 0 && currQuadState != lastQuadState)
+			{	// 如果当前渲染状态不等，则执行渲染
+				glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(indices[0])*startQuad * 6));
+				startQuad += quadToDraw;
+				quadToDraw = 0;
+				lastQuadState = currQuadState;
+
+				// 更改为新的着色状态
+				command->UseShade();
+			}
+			quadToDraw++;	// += command->getQuadCount();
+
+		}
+		// 绘制最后的quads
+		if (quadToDraw > 0)
+		{
+			glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(indices[0])*startQuad * 6));
+		}
+
+		vertexBuffer.EndDraw();
+	}
 }
 
 /**
-*	\brief 遍历mQuadBatches对其执行批绘制处理    
+*	\brief 遍历mQuadBatches对其执行延迟批绘制处理
 */
-void Renderer::DrawQuadBatches()
+void Renderer::DeferredDrawQuadBatches()
 {
-	if (mQuadsCounts <= 0 || mQuadBatches.empty())
+	if (mDeferredQuadsCounts <= 0 || mQuadDeferredBatches.empty())
 		return;
-	// 重新分配VBO绑定缓冲区大小
-	glBindVertexArray(mVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(mQuads[0])*mQuadsCounts, nullptr, GL_DYNAMIC_DRAW);
-	void*buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-	size_t allocSize = sizeof(mQuads[0])*mQuadsCounts;
-	memcpy_s(buf, allocSize, mQuads, allocSize);
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+	// geometry pass
+	glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	int quadToDraw = 0;
-	int startQuad = 0;
-	uint32_t lastQuadState = mQuadBatches[0]->GetShadeState();
-	mQuadBatches[0]->UseShade();
-	for (auto& command : mQuadBatches)
-	{
-		uint32_t currQuadState = command->GetShadeState();
-		if (quadToDraw > 0 && currQuadState != lastQuadState)
-		{	// 如果当前渲染状态不等，则执行渲染
-			glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(mIndices[0])*startQuad * 6));
-			startQuad += quadToDraw;
-			quadToDraw = 0;
-			lastQuadState = currQuadState;
+	DrawQuadBatches(*mDeferredBuffer, mDeferredQuadsCounts, mQuadDeferredBatches);
+	mDeferredQuadsCounts = 0;
+	mQuadDeferredBatches.clear();
 
-			// 更改为新的着色状态
-			command->UseShade();
-		}
-		quadToDraw++;	// += command->getQuadCount();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	}
-	// 绘制最后的quads
-	if (quadToDraw > 0)
-	{
-		glDrawElements(GL_TRIANGLES, (GLsizei)quadToDraw * 6, GL_UNSIGNED_SHORT, (GLvoid*)(sizeof(mIndices[0])*startQuad*6));
-	}
+	// lighting pass
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGNormal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mGColor);
 
-	glBindVertexArray(0);
-	mQuadsCounts = 0;
-	mQuadBatches.clear();
+	// 遍历光源信息
+	FlushAllLights();
+	
+	// 后处理渲染，在片段着色器处理GBUFFER
+	PostRenderQuad();
+}
+
+/**
+*	\brief 遍历mQuadBatches对其执行正向批绘制处理    
+*/
+void Renderer::ForwardDrawQuadBatches()
+{
+	if (mForwardQuadsCounts <= 0 || mQuadForwardBatches.empty())
+		return;
+
+	DrawQuadBatches(*mForwardBuffer, mForwardQuadsCounts, mQuadForwardBatches);
+
+	mForwardQuadsCounts = 0;
+	mQuadForwardBatches.clear();
 }
 
 /**
@@ -373,6 +456,15 @@ void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 
 		transform.Transform(mQuads[index].rt.vertices);
 		transform.Transform(mQuads[index].rb.vertices);
 	}
+}
+
+/**
+*	\brief 后处理渲染
+*
+*	当开启延迟着色时的最后阶段调用
+*/
+void Renderer::PostRenderQuad()
+{
 }
 
 bool Renderer::IsInitialized()
@@ -397,4 +489,18 @@ void Renderer::PushCommand(RenderCommand * command, int groupIndex)
 	Debug::CheckAssertion(groupIndex >= 0, "Invaild:render group index.");
 	Debug::CheckAssertion(command->GetCommandType() != RenderCommand::COMMAND_UNKNOW, "Invalild: Unknow render command.");
 	mRenderGroups[groupIndex].PushCommand(command);
+}
+
+/**
+*	\brief 添加光源信息
+*/
+void Renderer::PushLight()
+{
+}
+
+/**
+*	\brief 遍历所有光源，并传入到着色器中
+*/
+void Renderer::FlushAllLights()
+{
 }

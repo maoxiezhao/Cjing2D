@@ -63,7 +63,7 @@ bool UIStage::NotifyInput(const InputEvent & ent)
 
 void UIStage::Draw()
 {
-
+	gui::UIRender::RenderDebugDemo();
 }
 
 void UIStage::Update()

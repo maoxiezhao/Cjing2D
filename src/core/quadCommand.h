@@ -24,6 +24,8 @@ public:
 	BlendFunc GetBlendFunc()const;
 	Matrix4 GetTransfomr()const;
 	Matrix4 GetModelView()const;
+	bool IsDeferredShade()const;
+	void SetDeferredShade(bool isDeferred);
 
 private:
 	void GenerateShadeState();
@@ -36,6 +38,7 @@ private:
 	uint32_t mShadeState;
 	Matrix4 mTransform;
 	Matrix4 mModelView;
+	bool mIsDeferredShade;
 };
 
 using QuadCommandPtr = std::shared_ptr<QuadCommand>;

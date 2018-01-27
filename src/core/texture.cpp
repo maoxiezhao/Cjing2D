@@ -2,6 +2,7 @@
 #include"core\fileData.h"
 #include"core\debug.h"
 #include"thirdparty\SOIL.h"
+#include"thirdparty\stb_image.h"
 
 Texture2D::Texture2D():
 	mTextureID(0),
@@ -51,15 +52,15 @@ bool Texture2D::InitWithFile(const string & texname)
 		return false;
 	}
 
-	int w, h;
+	int w, h, n;
 	const string data = FileData::ReadFile(texname);
+	unsigned char* imageData = stbi_load_from_memory((unsigned char*)data.c_str(), data.length(), &w, &h, &n, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
 //	unsigned char* imageData = SOIL_load_image_from_memory((unsigned char*)data.c_str(),data.length(),&w,&h,0, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
 //	unsigned char* imageData = SOIL_load_image(texname.c_str(), &w, &h, 0, mImageFormat == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);	
 	mWidth = (GLuint)w;
 	mHeight = (GLuint)h;
 	
-//	return InitWithChars(imageData);
-	return false;
+	return InitWithChars(imageData);
 }
 
 /**

@@ -108,6 +108,7 @@
     <ClCompile Include="src\core\system.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\types.cpp" />
+    <ClCompile Include="src\core\vertexArray.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\entity\animatedTilePattern.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="src\core\texture.h" />
     <ClInclude Include="src\core\textureCache.h" />
     <ClInclude Include="src\core\types.h" />
+    <ClInclude Include="src\core\vertexArray.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\entity\animatedTilePattern.h" />
     <ClInclude Include="src\entity\camera.h" />

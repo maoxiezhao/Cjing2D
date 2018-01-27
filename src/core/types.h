@@ -30,14 +30,30 @@ struct V3F_4CB_2TF
 };
 
 /**
+*	\brief 用于绘制的顶点结构,带法向量
+*/
+struct V3F_4CB_2TF_3NF
+{
+	Vec3f   vertices;
+	Color4B colors;
+	Tex2    texs;
+	Vec3f	normalsl;
+};
+
+/**
 *	\brief quad
 */
 struct Quad
 {
-	V3F_4CB_2TF lt;
-	V3F_4CB_2TF lb;
-	V3F_4CB_2TF rb;
-	V3F_4CB_2TF rt;
+	//V3F_4CB_2TF lt;
+	//V3F_4CB_2TF lb;
+	//V3F_4CB_2TF rb;
+	//V3F_4CB_2TF rt;
+
+	V3F_4CB_2TF_3NF lt;
+	V3F_4CB_2TF_3NF lb;
+	V3F_4CB_2TF_3NF rb;
+	V3F_4CB_2TF_3NF rt;
 };
 
 /**

@@ -1,4 +1,5 @@
 #include"resourceCache.h"
+#include"logger.h"
 
 ResourceCache::ResourceCache():
 	mPrograms()
@@ -45,6 +46,20 @@ void ResourceCache::LoadDefaultProgram()
 		GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME + ".frag");
 	colorProgram->Link();
 	mPrograms[GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME] = colorProgram;
+
+	// 加载默认的deferred geometry program
+	auto deferredProgram = std::make_shared<GLProgram>();
+	deferredProgram->InitWithFileNames(GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME + ".frag");
+	deferredProgram->Link();
+	mPrograms[GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME] = deferredProgram;
+
+	// 加载默认的deferred light program
+	auto deferredLightProgram = std::make_shared<GLProgram>();
+	deferredLightProgram->InitWithFileNames(GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME + ".frag");
+	deferredLightProgram->Link();
+	mPrograms[GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME] = deferredLightProgram;
 
 	// 记载默认的outlined sprite program
 	auto outLined = std::make_shared<GLProgram>();
@@ -103,6 +118,16 @@ void ResourceCache::LoadDefaultProgramState()
 	newProgramState = std::make_shared<GLProgramState>();
 	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME));
 	mProgramStates[GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的deferred geometry program state
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的deferred light program state
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME] = newProgramState;
 
 	// 加载默认的font program state
 	newProgramState = std::make_shared<GLProgramState>();

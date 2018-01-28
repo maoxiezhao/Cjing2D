@@ -2,12 +2,18 @@
 #include "core\debug.h"
 
 VertexBuffer::VertexBuffer():
-	mMaxVertex(0)
+	mMaxVertex(0),
+	mVAO(0),
+	mVBO(0),
+	mVEO(0)
 {
 }
 
 VertexBuffer::VertexBuffer(int maxVertex):
-	mMaxVertex(maxVertex)
+	mMaxVertex(maxVertex),
+	mVAO(0),
+	mVBO(0),
+	mVEO(0)
 {
 }
 

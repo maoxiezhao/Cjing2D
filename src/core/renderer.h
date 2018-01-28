@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"core\types.h"
 #include"core\vertexArray.h"
+#include"core\glProgramState.h"
 #include"utils\matrix4.h"
 
 #include<stack>
@@ -64,6 +65,8 @@ public:
 	// data
 	Matrix4 GetCameraMatrix()const;
 	void SetViewSize(int w, int h);
+	void SetDeferredProgramState(GLProgramStatePtr programState);
+	GLProgramStatePtr GetDeferredProgramState();
 
 private:
 	Renderer();
@@ -73,6 +76,7 @@ private:
 	void InitDefaultProgram();
 	void InitGBuffer();
 	void InitVAOandVBO();
+
 	void VisitRenderQueue(const RenderQueue& queue);
 	void Flush();
 	void DeferredDrawQuadBatches();
@@ -89,6 +93,7 @@ private:
 
 	GLuint mGBuffer;	// global frame buffer
 	unsigned int mGPosition, mGNormal, mGColor;
+	GLProgramStatePtr mDeferredProgramState;
 
 	// render data
 	static const uint32_t VBO_SIZE = 65536;

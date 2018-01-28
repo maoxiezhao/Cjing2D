@@ -79,9 +79,9 @@ void Video::Initialize()
 	mRenderer = &Renderer::GetInstance();
 	mRenderer->Initialize(wantedWindowSize.width,wantedWindowSize.height);
 
-	// 初始化着色资源模块
-	ResourceCache::GetInstance().LoadDefaultProgram();
-	ResourceCache::GetInstance().LoadDefaultProgramState();
+	// 初始化着色资源模块, 暂时移动到Render::Initialize中
+	//ResourceCache::GetInstance().LoadDefaultProgram();
+	//ResourceCache::GetInstance().LoadDefaultProgramState();
 }
 
 void Video::Quit()

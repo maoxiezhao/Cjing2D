@@ -1,9 +1,12 @@
 #include"core\glProgram.h"
 #include"core\fileData.h"
 #include"core\debug.h"
+#include"core\logger.h"
 
 const string GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME = "normal_sprite";
 const string GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME = "color_sprite";
+const string GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME = "gBuffer";
+const string GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME = "deferred_light_shade";
 const string GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME = "outlined_sprite";
 const string GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME = "normal_text";
 
@@ -58,6 +61,7 @@ bool GLProgram::InitWithChars(const GLchar * vsChars, const GLchar * fsChars)
 */
 bool GLProgram::InitWithFileNames(const string & vsname, const string & fsname)
 {
+	Logger::Info(string("[Render] Load GLProgram vsname:'") + vsname + "'  fsname:'" + fsname);
 	string vsString = FileData::ReadFile("shaders/" + vsname);
 	string fsString = FileData::ReadFile("shaders/" + fsname);
 	return InitWithChars(vsString.c_str(), fsString.c_str());

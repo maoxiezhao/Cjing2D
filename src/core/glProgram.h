@@ -27,6 +27,8 @@ public:
 
 	static const string DEFAULT_SPRITE_NORMAL_PROGRAM_NAME;
 	static const string DEFAULT_SPRITE_COLOR_PROGRAM_NAME;
+	static const string DEFAULT_G_BUFFER_PROGRAM_NAME;
+	static const string DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME;
 	static const string DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAM_NAME;
 

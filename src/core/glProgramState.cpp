@@ -3,6 +3,8 @@
 
 const string GLProgramState::DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME = "normal_sprite_state";
 const string GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME = "color_sprite_state";
+const string GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME = "gBuffer";
+const string GLProgramState::DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME = "deferred_light_state";
 const string GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME = "normal_text_state";
 
 uint32_t GLProgramState::ProgramStateID = 0;

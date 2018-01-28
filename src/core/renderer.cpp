@@ -2,8 +2,11 @@
 #include"renderCommand.h"
 #include"quadCommand.h"
 #include"debug.h"
+#include"logger.h"
 #include"renderCommandPool.h"
 #include"video.h"
+#include"resourceCache.h"
+
 #include<algorithm>
 
 #define _ENABLE_DEFERRED_SHADE_
@@ -126,6 +129,7 @@ void Renderer::Initialize(int w,int h)
 {
 	if (mInitialized)
 		return;
+
 	// 初始化渲染状态
 	SetViewSize(w, h);
 	InitCamearMatrix();
@@ -133,9 +137,11 @@ void Renderer::Initialize(int w,int h)
 	InitGBuffer();
 #endif
 	InitVAOandVBO();
-	mInitialized = true;
+	InitDefaultProgram();
+	
 	// 初始化命令池
 	RenderCommandPool::GetInstance().Initialize();
+	mInitialized = true;
 }
 
 /**
@@ -155,6 +161,11 @@ void Renderer::InitCamearMatrix()
 */
 void Renderer::InitDefaultProgram()
 {
+	ResourceCache::GetInstance().LoadDefaultProgram();
+	ResourceCache::GetInstance().LoadDefaultProgramState();
+
+	mDeferredProgramState = ResourceCache::GetInstance().GetGLProgramState(
+		GLProgramState::DEFAULT_DEFERRED_PROGRAMSTATE_NAME);
 }
 
 /**
@@ -344,6 +355,23 @@ void Renderer::SetViewSize(int w, int h)
 }
 
 /**
+*	\brief 设置当前的延迟着色器状态
+*/
+void Renderer::SetDeferredProgramState(GLProgramStatePtr programState)
+{
+	if (programState && programState != mDeferredProgramState)
+	{
+		Logger::Info("[Render] Change the deferred program state.");
+		mDeferredProgramState = programState;
+	}
+}
+
+GLProgramStatePtr Renderer::GetDeferredProgramState()
+{
+	return mDeferredProgramState;
+}
+
+/**
 *	\brief 执行批绘制任务
 *
 *	在VisitRenderQueue之后已经得到全部的quanCommand放置于
@@ -396,6 +424,39 @@ namespace
 
 		vertexBuffer.EndDraw();
 	}
+
+	GLuint quadVAO = 0;
+	GLuint quadVBO = 0;
+	// 简易的四边形顶点数据V3F_2TF
+	float SimpleQuadVertices[] = {
+		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f,   1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f,  -1.0f, 0.0f, 1.0f, 0.0f,
+	};
+
+	/**
+	*	\brief 绘制一个Quad四边形
+	*/
+	void DrawSimpleQuad()
+	{
+		if (quadVAO == 0)
+		{
+			glGenVertexArrays(1, &quadVAO);
+			glGenBuffers(1, &quadVBO);
+			glBindVertexArray(quadVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(SimpleQuadVertices), &SimpleQuadVertices, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		}
+		glBindVertexArray(quadVAO);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glBindVertexArray(0);
+	}
+
 }
 
 /**
@@ -414,19 +475,8 @@ void Renderer::DeferredDrawQuadBatches()
 	mQuadDeferredBatches.clear();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// lighting pass
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mGNormal);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, mGColor);
-
-	// 遍历光源信息
-	FlushAllLights();
 	
-	// 后处理渲染，在片段着色器处理GBUFFER
+	// deferred pass;后处理渲染，在片段着色器处理GBUFFER
 	PostRenderQuad();
 }
 
@@ -465,6 +515,21 @@ void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 
 */
 void Renderer::PostRenderQuad()
 {
+	mDeferredProgramState->Apply();
+
+	// gFrameBuffer texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGNormal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mGColor);
+
+	// 遍历光源信息
+	FlushAllLights();
+
+	// 绘制一个屏幕大小的四边形并输出GBuffer
+	DrawSimpleQuad();
 }
 
 bool Renderer::IsInitialized()

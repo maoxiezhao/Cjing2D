@@ -18,6 +18,7 @@ namespace
 	Size positionWindow;
 	string tilename;
 	Renderer* mRenderer = nullptr;
+	uint32_t frameDelat = 0;
 	uint32_t fps = 0;
 	GLFWimage cursorImage;
 	GLFWcursor* cursor = nullptr;
@@ -110,13 +111,15 @@ void Video::CleanCanvas()
 /**
 *	\brief 绘制画布
 *
-*	先调用Renderer的render，再执行交换缓冲
+*	先调用Renderer的render，再执行交换缓冲, 同时传入guiStage
+*	为了在渲染之后调用，接下来应该会用一个全局接口代替stage实例
 */
-void Video::Rendercanvas()
+void Video::Rendercanvas(UIStage& uiStage)		
 {
 	if (!IsInitialized())
 		return;
 	mRenderer->Render();
+	uiStage.Draw();
 	glfwSwapBuffers(mainWindow);
 }
 
@@ -175,9 +178,15 @@ bool Video::IsFullScreen()
 	return fullScreenWindow;
 }
 
-void Video::SetFPS(uint32_t f)
+void Video::SetFrameDelat(uint32_t f)
 {
+	frameDelat = f;
 	fps = f;
+}
+
+uint32_t Video::GetFrameDelta()
+{
+	return frameDelat;
 }
 
 uint32_t Video::GetFPS()

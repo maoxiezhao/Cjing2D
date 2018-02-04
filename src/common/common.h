@@ -27,10 +27,15 @@ using std::string;
 #define DEFAULT_WINDOW_HEIGHT 480
 
 using wchar = unsigned int;
+using ubyte = unsigned char;
 
 #define DEFAULT_APP_WRITE_DIR "Cjing"
 
 #undef min
 #undef max
+
+// nanovg 编译开关,使用GL3和GLEW
+#define NANOVG_GL3_IMPLEMENTATION
+#define NANOVG_GLEW
 
 #endif

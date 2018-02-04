@@ -2,6 +2,7 @@
 #define _VIDEO_H_
 
 #include"common\common.h"
+#include"gui\uiStage.h"
 #include"utils\size.h"
 
 /**
@@ -14,14 +15,15 @@ public:
 	static void Quit();
 	static bool IsInitialized();
 	static void CleanCanvas();
-	static void Rendercanvas();
+	static void Rendercanvas(UIStage& uiStage);
 	static bool IsExiting();
 	static void SetTitleName(const string& tname);
 	static string GetTitleName();
 	static void SetFullScreen(bool fullscreen);
 	static void SetWindowScreen();
 	static bool IsFullScreen();
-	static void SetFPS(uint32_t f);
+	static void SetFrameDelat(uint32_t f);
+	static uint32_t GetFrameDelta();
 	static uint32_t GetFPS();
 	static const Size& GetScreenSize();
 	static void SetImageCursor(unsigned char* imgData, int w, int h);

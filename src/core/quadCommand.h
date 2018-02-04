@@ -15,7 +15,12 @@ public:
 	QuadCommand();
 	virtual ~QuadCommand();
 
-	void Init(float globalOrder,GLProgramStatePtr programState,GLuint textureID,Quad quads,int quadCounts,const BlendFunc&blendFunc,const Matrix4& transfomr,const Matrix4& modelView, bool autoReleased = false);
+	void Init(float globalOrder,GLProgramStatePtr programState,
+			GLuint textureID, GLuint normalTextureID, Quad quads,
+			int quadCounts,const BlendFunc&blendFunc,
+			const Matrix4& transfomr,const Matrix4& modelView, 
+			bool autoReleased = false);
+
 	void UseShade();
 
 	int GetQuadCounts()const;
@@ -26,12 +31,14 @@ public:
 	Matrix4 GetModelView()const;
 	bool IsDeferredShade()const;
 	void SetDeferredShade(bool isDeferred);
+	void SetNormalTexture(GLuint normalTextureID);
 
 private:
 	void GenerateShadeState();
 
 	GLProgramStatePtr mProgramState;
 	GLuint mTextureID;
+	GLuint mNormalTextureID;
 	Quad  mQuads;
 	int   mQuadCounts;
 	BlendFunc mBlendFunc;

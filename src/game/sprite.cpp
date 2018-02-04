@@ -13,6 +13,7 @@ Sprite::Sprite():
 	mProgramState(nullptr),
 	mPreProgramState(nullptr),
 	mTexture(nullptr),
+	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
@@ -34,6 +35,7 @@ Sprite::Sprite(const std::string & name):
 	mProgramState(nullptr),
 	mPreProgramState(nullptr),
 	mTexture(nullptr),
+	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0,0),
@@ -52,10 +54,11 @@ Sprite::Sprite(const std::string & name):
 /**
 *	\brief 创建一个基于纹理的精灵实例
 */
-Sprite::Sprite(TexturePtr & tex):
+Sprite::Sprite(TexturePtr tex, TexturePtr normalTex):
 	mProgramState(nullptr),
 	mPreProgramState(nullptr),
 	mTexture(tex),
+	mNormalTexture(normalTex),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
@@ -80,6 +83,7 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mProgramState(nullptr),
 	mPreProgramState(nullptr),
 	mTexture(nullptr),
+	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
 	mAnchor(0, 0),
@@ -220,6 +224,7 @@ void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 
 	mQuadCommand.Init(GetGlobalOrder(),mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID(): 0,	// 这里需要考虑无纹理色块
+		mNormalTexture != nullptr ? mNormalTexture->GetTextureID() : 0,
 		mQuad, 1, mBlendFunc,transform,mModelView);
 
 	renderer.PushCommand(&mQuadCommand);
@@ -232,6 +237,7 @@ void Sprite::MultiplyDraw(Renderer & renderer, const Matrix4 & transform)
 	auto quadCommand = new QuadCommand();
 	quadCommand->Init(0, mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
+		mNormalTexture != nullptr ? mNormalTexture->GetTextureID() : 0,
 		mQuad, 1, mBlendFunc, transform, mModelView, true);
 
 	renderer.PushCommand(quadCommand);

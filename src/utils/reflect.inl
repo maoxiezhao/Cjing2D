@@ -1,17 +1,7 @@
+#include "reflect.h"
 #pragma once
 
-inline Instance util::Meta::Apply(Instance* args[], size_t argc, const std::string& funcName)
-{
-	auto funcInfo = mFunctions.find(funcName);
-	if (funcInfo == mFunctions.end())
-	{
-		Debug::Error("Call the non-exists meta function.");
-	}
-	FuncType funcType = funcInfo->second.funcType;
-	Instance result = funcType(args, argc);
-
-	return std::move(result);
-}
+using namespace util::refel;
 
 namespace Implemention
 {
@@ -26,7 +16,7 @@ namespace Implemention
 }
 
 template<typename ...Args>
-inline Instance util::Meta::Call(const std::string& funcName, Args&&... args)
+inline Instance util::refel::Meta::Call(const std::string & funcName, Args && ...args)
 {
 	std::vector<Instance> mInstances;
 	std::vector<Instance*> mPointerInstance;
@@ -39,7 +29,7 @@ inline Instance util::Meta::Call(const std::string& funcName, Args&&... args)
 }
 
 template<typename ...Args>
-inline Instance util::Meta::CallByInstances(const std::string& funcName, Args&&... args)
+inline Instance Meta::CallByInstances(const std::string& funcName, Args&&... args)
 {
 	Instance* instances[sizeof...(args)] = { &const_cast<Instance&>(args)... };
 	return Apply(instances, sizeof...(args), funcName);
@@ -126,7 +116,7 @@ inline void Meta::Function(const std::string & funcName, RetType(*f)(Args...))
 }
 
 template<typename ...Args>
-inline void util::Meta::Function(const std::string & funcName, void(*f)(Args...))
+inline void Meta::Function(const std::string & funcName, void(*f)(Args...))
 {
 	Meta::FuncInfo funcInfo;
 	RecordFunctionArgs(std::function<void(Args...)>(f), funcInfo.funcArgs);
@@ -147,13 +137,13 @@ inline void util::Meta::Function(const std::string & funcName, void(*f)(Args...)
 *	时则通过(t.*f)(args...)调用
 */
 template<typename T, typename ReturnType, typename ...Args>
-inline void util::Meta::Function(const std::string & funcName, ReturnType(T::* f)(Args...))
+inline void Meta::Function(const std::string & funcName, ReturnType(T::* f)(Args...))
 {
 }
 
 
 template<typename T, typename... Args>
-inline void util::Meta::Function(const std::string& funcName, void(T::*f)(Args...))
+inline void Meta::Function(const std::string& funcName, void(T::*f)(Args...))
 {
 	Meta::FuncInfo funcInfo;
 	RecordFunctionArgs(std::function<void(T&t, Args...)>(f), funcInfo.funcArgs);

@@ -3,6 +3,7 @@
 #include"core\video.h"
 #include"core\sound.h"
 #include"core\random.h"
+#include"utils\reflect.h"
 #include<Windows.h>
 
 uint32_t System::mInitDate = 0;
@@ -15,7 +16,8 @@ uint32_t System::Now()
 
 uint32_t System::RealTime()
 {
-	return (uint32_t)GetTickCount();
+	//return (uint32_t)GetTickCount();
+	return (uint32_t)(glfwGetTime() * 1000);
 }
 
 void System::Sleeps(uint32_t duration)
@@ -28,6 +30,13 @@ void System::Initialize()
 {
 	mInitDate = RealTime();
 	mTicks = 0;
+	glfwSetTime(0.0);
+
+	auto& metaManager = util::refel::MetaManager::GetInstance();
+	metaManager.Initialize();
+	metaManager.RegisterClass<int>(GL_INT);
+	metaManager.RegisterClass<float>(GL_FLOAT);
+	metaManager.RegisterClass<ubyte>(GL_UNSIGNED_BYTE);
 
 	// “¿¥Œ≥ı ºªØinput,audio,video
 	InputEvent::Initialize();

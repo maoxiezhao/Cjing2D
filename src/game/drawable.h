@@ -2,6 +2,7 @@
 #define _DRAWABLE_H_
 
 #include"common\common.h"
+#include"core\light.h"
 #include"utils\point.h"
 #include"lua\luaObject.h"
 

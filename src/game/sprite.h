@@ -21,7 +21,7 @@ class Sprite : public Drawable
 {
 public:
 	Sprite(const std::string& name);
-	Sprite(TexturePtr& tex);
+	Sprite(TexturePtr tex, TexturePtr normalTex = nullptr);
 	Sprite(const Color4B& color, const Size& size);
 	~Sprite();
 
@@ -96,8 +96,11 @@ protected:
 	QuadCommand mQuadCommand;
 	GLProgramStatePtr mProgramState;
 	GLProgramStatePtr mPreProgramState;		/** 仅保存上一个programState */
-	TexturePtr mTexture;
+
+	TexturePtr mTexture;		/** diffuse 贴图 */
+	TexturePtr mNormalTexture;	/** 法线贴图 */
 	Rect mTextureRect;
+
 	Size mSize;
 	Point2 mAnchor;
 	BlendFunc mBlendFunc;

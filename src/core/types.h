@@ -86,5 +86,6 @@ struct EnumInfoTraits<GLenum>
 	static const EnumInfo<GLenum>::nameType names;
 };
 
+// 2Dπ‚’’¿‡–Õ
 
 #endif

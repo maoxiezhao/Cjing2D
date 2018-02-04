@@ -36,8 +36,8 @@ namespace util
 			FuncType funcType;
 			FuncArgVector funcArgs;
 		};
-		Meta(const std::string& name, const type_info& typeInfo) :
-			mName(name), mTypeInfo(typeInfo) {};
+		Meta(const std::string& name, const type_info& typeInfo, size_t size) :
+			mName(name), mTypeInfo(typeInfo), mSize(size) {};
 
 		/** status */
 		template<typename T>
@@ -47,6 +47,8 @@ namespace util
 		}
 
 		const type_info& GetTypeInfo() { return mTypeInfo; }
+
+		size_t GetSize() { return mSize; }
 
 		bool HasFunction(const std::string& funcName)const
 		{
@@ -120,6 +122,7 @@ namespace util
 
 	private:
 		std::string mName;
+		size_t mSize;
 		const type_info& mTypeInfo;
 		std::map<std::string, FuncInfo> mFunctions;
 	};
@@ -217,7 +220,18 @@ namespace util
 			mClassNames[className] = hashCode;
 
 			return static_cast<ClassMeta<T>&>(mMetas.insert(
-				std::make_pair(hashCode, Meta(className, typeid(T)))).first->second);
+				std::make_pair(hashCode, Meta(className, typeid(T), sizeof(T)))).first->second);
+		}
+
+		/**
+		*	\brief 通过整形类型注册，只是将整型转换成字符串
+		*	 注册，应注意防止和字符串重复注册
+		*/
+		template<typename T>
+		ClassMeta<T>& RegisterClass(int key)
+		{
+			std::string className = std::to_string(key);
+			return RegisterClass<T>(className);
 		}
 
 		template<typename T>
@@ -249,6 +263,13 @@ namespace util
 				Debug::Error("The class has not registered.");
 			}
 			return metaIt->second;
+		}
+
+		Meta& GetMeta(int key)
+		{
+			std::string className = std::to_string(key);
+			return GetMeta(className);
+
 		}
 
 		static MetaManager& GetInstance()
@@ -425,6 +446,19 @@ namespace util
 			return Instance::Make<T>(t);
 		}
 	};
+
+	inline Instance Meta::Apply(Instance* args[], size_t argc, const std::string& funcName)
+	{
+		auto funcInfo = mFunctions.find(funcName);
+		if (funcInfo == mFunctions.end())
+		{
+			Debug::Error("Call the non-exists meta function.");
+		}
+		FuncType funcType = funcInfo->second.funcType;
+		Instance result = funcType(args, argc);
+
+		return std::move(result);
+	}
 
 #include"utils\reflect.inl"
 	}

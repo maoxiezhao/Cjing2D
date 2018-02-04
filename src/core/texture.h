@@ -26,7 +26,7 @@ public:
 	bool IsInitialized()const;
 	bool GenerateMipmap(unsigned char * data);
 
-private:
+protected:
 	GLuint mTextureID;
 	GLuint mWidth;
 	GLuint mHeight;
@@ -40,5 +40,24 @@ private:
 };
 
 using TexturePtr = std::shared_ptr<Texture2D>;
+
+
+/**
+*	\brief 可渲染至纹理的纹理
+*
+*	使用帧缓冲方式将当前渲染绘制到texture中
+*	因为会占用大量的GPU带宽，不推荐频繁使用
+*/
+class RenderTexture : Texture2D
+{
+public:
+	RenderTexture();
+
+	void BeginDraw();
+	void EndDraw();
+
+private:
+
+};
 
 #endif

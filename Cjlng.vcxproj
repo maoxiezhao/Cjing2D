@@ -95,14 +95,17 @@
     <ClCompile Include="src\core\glProgram.cpp" />
     <ClCompile Include="src\core\glProgramState.cpp" />
     <ClCompile Include="src\core\inputEvent.cpp" />
+    <ClCompile Include="src\core\light.cpp" />
     <ClCompile Include="src\core\logger.cpp" />
     <ClCompile Include="src\core\music.cpp" />
     <ClCompile Include="src\core\oggDecoder.cpp" />
+    <ClCompile Include="src\core\perf.cpp" />
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
     <ClCompile Include="src\core\renderCommandPool.cpp" />
     <ClCompile Include="src\core\renderer.cpp" />
+    <ClCompile Include="src\core\renderPass.cpp" />
     <ClCompile Include="src\core\resourceCache.cpp" />
     <ClCompile Include="src\core\sound.cpp" />
     <ClCompile Include="src\core\system.cpp" />
@@ -141,6 +144,7 @@
     <ClCompile Include="src\game\itemBeg.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\mapData.cpp" />
+    <ClCompile Include="src\game\mapGenerate.cpp" />
     <ClCompile Include="src\game\particleData.cpp" />
     <ClCompile Include="src\game\particleSystem.cpp" />
     <ClCompile Include="src\game\quest.cpp" />
@@ -149,13 +153,13 @@
     <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\textDrawable.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
-    <ClCompile Include="src\game\uiStage.cpp" />
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\distributor.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
     <ClCompile Include="src\gui\core\uiRender.cpp" />
     <ClCompile Include="src\gui\lua\windowsApi.cpp" />
+    <ClCompile Include="src\gui\uiStage.cpp" />
     <ClCompile Include="src\gui\widget\button.cpp" />
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
     <ClCompile Include="src\gui\widget\grid.cpp" />
@@ -219,6 +223,7 @@
     <ClInclude Include="src\core\glProgram.h" />
     <ClInclude Include="src\core\glProgramState.h" />
     <ClInclude Include="src\core\inputEvent.h" />
+    <ClInclude Include="src\core\light.h" />
     <ClInclude Include="src\core\logger.h" />
     <ClInclude Include="src\core\mp3Decoder.h" />
     <ClInclude Include="src\core\music.h" />
@@ -229,6 +234,7 @@
     <ClInclude Include="src\core\renderCommand.h" />
     <ClInclude Include="src\core\renderCommandPool.h" />
     <ClInclude Include="src\core\renderer.h" />
+    <ClInclude Include="src\core\renderPass.h" />
     <ClInclude Include="src\core\resourceCache.h" />
     <ClInclude Include="src\core\sound.h" />
     <ClInclude Include="src\core\system.h" />
@@ -246,6 +252,7 @@
     <ClInclude Include="src\entity\entityInfo.h" />
     <ClInclude Include="src\entity\entityState.h" />
     <ClInclude Include="src\entity\groundInfo.h" />
+    <ClInclude Include="src\entity\lightSource.h" />
     <ClInclude Include="src\entity\noAnimatedTilePattern.h" />
     <ClInclude Include="src\entity\pickable.h" />
     <ClInclude Include="src\entity\player.h" />
@@ -269,6 +276,7 @@
     <ClInclude Include="src\game\itemBeg.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\mapData.h" />
+    <ClInclude Include="src\game\mapGenerate.h" />
     <ClInclude Include="src\game\particleData.h" />
     <ClInclude Include="src\game\particleSystem.h" />
     <ClInclude Include="src\game\quest.h" />
@@ -278,7 +286,6 @@
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
-    <ClInclude Include="src\game\uiStage.h" />
     <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
@@ -288,6 +295,7 @@
     <ClInclude Include="src\gui\core\message.h" />
     <ClInclude Include="src\gui\core\uiRender.h" />
     <ClInclude Include="src\gui\core\widgetDefinition.h" />
+    <ClInclude Include="src\gui\uiStage.h" />
     <ClInclude Include="src\gui\widget\button.h" />
     <ClInclude Include="src\gui\widget\containerBase.h" />
     <ClInclude Include="src\gui\widget\grid.h" />
@@ -346,6 +354,7 @@
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="src\game\enumInfo.inl" />
+    <None Include="src\lua\luaContext.inl" />
     <None Include="src\lua\luaTools.inl" />
     <None Include="src\utils\color.inl" />
     <None Include="src\utils\matrix4.inl" />

@@ -20,7 +20,7 @@ QuadCommand::~QuadCommand()
 /**
 *	\brief 初始化quadCommand
 */
-void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, Quad quads, int quadCounts, 
+void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint textureID, GLuint normalTextureID, Quad quads, int quadCounts,
 									const BlendFunc & blendFunc, const Matrix4& transfomr, const Matrix4& modelView, bool autoReleased)
 {
 	Debug::CheckAssertion(programState != nullptr, "Invalid programState in QuadCommand::Init().");
@@ -32,10 +32,11 @@ void QuadCommand::Init(float globalOrder, GLProgramStatePtr programState, GLuint
 	mModelView = modelView;
 	SetAutoReleased(autoReleased);
 
-	if (mTextureID != textureID || mBlendFunc != blendFunc || mProgramState != programState)
+	if (mTextureID != textureID || mNormalTextureID != normalTextureID ||mBlendFunc != blendFunc || mProgramState != programState)
 	{
 		mProgramState = programState;
 		mTextureID = textureID;
+		mNormalTextureID = normalTextureID;
 		mBlendFunc = blendFunc;
 		GenerateShadeState();
 	}
@@ -56,6 +57,11 @@ void QuadCommand::UseShade()
 	// 绑定纹理
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	if (mNormalTextureID != 0)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mNormalTextureID);
+	}
 //	mProgramState->SetTexture("Texture0", mTextureID);
 	mProgramState->SetUniformMatrix4("projection", mModelView);			// 这里设计存在问题
 }
@@ -100,6 +106,10 @@ void QuadCommand::SetDeferredShade(bool isDeferred)
 	mIsDeferredShade = isDeferred;
 }
 
+void QuadCommand::SetNormalTexture(GLuint normalTextureID)
+{
+}
+
 /**
 *	\brief 生成当前着色状态
 *
@@ -108,8 +118,8 @@ void QuadCommand::SetDeferredShade(bool isDeferred)
 void QuadCommand::GenerateShadeState()
 {
 	int program = mProgramState->GetProgram();
-	int hashArray[5] = { program,static_cast<int>(mProgramState->GetProgramStateID()),
-		(int)mTextureID,(int)mBlendFunc.srcBlend ,(int)mBlendFunc.dstBlend };
+	int hashArray[6] = { program,static_cast<int>(mProgramState->GetProgramStateID()),
+		(int)mTextureID, (int)mNormalTextureID, (int)mBlendFunc.srcBlend ,(int)mBlendFunc.dstBlend };
 
 	mShadeState = XXH32((const void*)hashArray, sizeof(hashArray), 0);
 }

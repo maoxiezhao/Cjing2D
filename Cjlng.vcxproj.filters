@@ -388,9 +388,6 @@
     <ClCompile Include="src\game\quest.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\uiStage.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="src\main\example_gl3.c">
       <Filter>main</Filter>
     </ClCompile>
@@ -405,6 +402,21 @@
     </ClCompile>
     <ClCompile Include="src\gui\core\uiRender.cpp">
       <Filter>gui\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\perf.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\light.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\mapGenerate.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderPass.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\uiStage.cpp">
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="src\core\vertexArray.cpp">
       <Filter>core</Filter>
@@ -768,9 +780,6 @@
     <ClInclude Include="src\game\quest.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\uiStage.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\main\string.h">
       <Filter>main</Filter>
     </ClInclude>
@@ -806,6 +815,21 @@
     </ClInclude>
     <ClInclude Include="src\core\vertexArray.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\light.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\mapGenerate.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderPass.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\lightSource.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\uiStage.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -843,6 +867,9 @@
     <None Include="ClassDiagram.cd" />
     <None Include="src\utils\reflect.inl">
       <Filter>utils</Filter>
+    </None>
+    <None Include="src\lua\luaContext.inl">
+      <Filter>lua</Filter>
     </None>
   </ItemGroup>
 </Project>

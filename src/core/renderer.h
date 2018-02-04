@@ -5,6 +5,7 @@
 #include"core\types.h"
 #include"core\vertexArray.h"
 #include"core\glProgramState.h"
+#include"core\light.h"
 #include"utils\matrix4.h"
 
 #include<stack>
@@ -59,7 +60,7 @@ public:
 	void RenderAfterClean();
 
 	// light
-	void PushLight();
+	void PushLight(LightPtr light);
 	void FlushAllLights();
 
 	// data
@@ -108,6 +109,8 @@ private:
 
 	int mViewWidth, mViewHeight;
 	Matrix4 mCamearMatrix;			// 全局统一的相机变换矩阵
+
+	std::vector<LightPtr> mLights;
 
 	//GLuint mVAO;
 	//GLuint mVBO;

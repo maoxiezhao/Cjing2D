@@ -609,7 +609,7 @@ void Font::Render(Renderer & renderer, const Matrix4 & transform)
 
 	quadCommand->Init(0, mProgramState,
 		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
-		mQuad, 1, mBlendFunc, transform, mModelView, true);
+		0, mQuad, 1, mBlendFunc, transform, mModelView, true);
 
 	renderer.PushCommand(quadCommand);
 }

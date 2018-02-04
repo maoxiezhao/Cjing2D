@@ -8,6 +8,7 @@
 #include"core\video.h"
 #include"core\renderer.h"
 #include"core\fontAtlas.h"
+#include"core\perf.h"
 
 App::App() :
 	mLuaContext(nullptr),
@@ -88,7 +89,7 @@ void App::Run()
 		// 计算帧
 		if (lastFrameDuration > 0)
 		{
-			Video::SetFPS(uint32_t(1000 / lastFrameDuration));
+			Video::SetFrameDelat(lastFrameDuration);
 			//std::cout << Video::GetFPS() << std::endl;
 		}
 		// 有可能因为一些情况（比如加载大文件)导致这一帧时间
@@ -198,9 +199,7 @@ void App::Render()
 
 	mLuaContext->OnMainDraw();
 
-	mMainStge->Draw();
-
-	Video::Rendercanvas();
+	Video::Rendercanvas(*mMainStge);
 }
 
 /**

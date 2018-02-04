@@ -123,3 +123,15 @@ bool Texture2D::GenerateMipmap(unsigned char * data)
 //	gluBuild2DMipmaps(GL_TEXTURE_2D, mImageFormat, mWidth, mHeight, mImageFormat, GL_UNSIGNED_BYTE, data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+RenderTexture::RenderTexture()
+{
+}
+
+void RenderTexture::BeginDraw()
+{
+}
+
+void RenderTexture::EndDraw()
+{
+}

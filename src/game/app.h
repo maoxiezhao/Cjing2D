@@ -9,7 +9,7 @@
 #include"game\sprite.h"
 #include"game\animationSprite.h"
 #include"game\game.h"
-#include"game\uiStage.h"
+#include"gui\uiStage.h"
 #include"entity\player.h"
 
 /**

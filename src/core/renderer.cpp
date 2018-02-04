@@ -165,7 +165,8 @@ void Renderer::InitDefaultProgram()
 	ResourceCache::GetInstance().LoadDefaultProgramState();
 
 	mDeferredProgramState = ResourceCache::GetInstance().GetGLProgramState(
-		GLProgramState::DEFAULT_DEFERRED_PROGRAMSTATE_NAME);
+		GLProgramState::DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME);
+	mDeferredProgramState->SetUniform3f("lights[1].Position", { 1.0, 1.0, 1.0 });
 }
 
 /**
@@ -221,11 +222,25 @@ void Renderer::InitGBuffer()
 void Renderer::InitVAOandVBO()
 {
 	// 前向渲染缓冲
-	mForwardBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE));
+	mForwardBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE, VBO_SIZE,
+	{
+		{GL_FLOAT, 3},
+		{GL_UNSIGNED_BYTE, 4},
+		{GL_FLOAT, 2},
+		{GL_FLOAT, 3},
+		true
+	}));
 	mForwardBuffer->Initialize();
 
 	// 延迟渲染缓冲
-	mDeferredBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE));
+	mDeferredBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(VBO_SIZE, VBO_SIZE,
+	{
+		{ GL_FLOAT, 3 },
+		{ GL_UNSIGNED_BYTE, 4 },
+		{ GL_FLOAT, 2 },
+		{ GL_FLOAT, 3 },
+		true
+	}));
 	mDeferredBuffer->Initialize();
 }
 
@@ -291,16 +306,16 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 		if (commandType == RenderCommand::COMMAND_QUAD)
 		{
 			auto quadCommand = dynamic_cast<QuadCommand*>(command);
-			if (quadCommand->IsDeferredShade())	// 是否重新定义为RenderCommand的派生类
+			if (!quadCommand->IsDeferredShade())	// 是否重新定义为RenderCommand的派生类
 			{
 				if (mDeferredQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
 				{	// 当前quad数量超过最大值，则先渲染之前保存的
 					Debug::Warning("The quad counts More than the maximum value");
 					DeferredDrawQuadBatches();
 				}
-				Quad* quads = mDeferredBuffer->GetQuadBuffer() + mDeferredQuadsCounts;
+				char* quads = mDeferredBuffer->GetDataBuffer() + mDeferredQuadsCounts * mDeferredBuffer->GetDataSize();
 				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
-				TransformQuadsToWorld(quads, quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
+				TransformQuadsToWorld(reinterpret_cast<Quad*>(quads), quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
 
 				mQuadDeferredBatches.push_back(quadCommand);
 				mDeferredQuadsCounts += quadCommand->GetQuadCounts();
@@ -312,9 +327,9 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 					Debug::Warning("The quad counts More than the maximum value");
 					ForwardDrawQuadBatches();
 				}
-				Quad* quads = mForwardBuffer->GetQuadBuffer() + mForwardQuadsCounts;
+				char* quads = mForwardBuffer->GetDataBuffer() + mForwardQuadsCounts * mForwardBuffer->GetDataSize();
 				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
-				TransformQuadsToWorld(quads, quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
+				TransformQuadsToWorld(reinterpret_cast<Quad*>(quads), quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
 
 				mQuadForwardBatches.push_back(quadCommand);
 				mForwardQuadsCounts += quadCommand->GetQuadCounts();
@@ -338,6 +353,8 @@ void Renderer::RenderAfterClean()
 {
 	for (auto& queue : mRenderGroups)
 		queue.Clear();
+
+	mLights.clear();
 }
 
 Matrix4 Renderer::GetCameraMatrix() const
@@ -438,7 +455,7 @@ namespace
 	/**
 	*	\brief 绘制一个Quad四边形
 	*/
-	void DrawSimpleQuad()
+	void DrawPostRenderQuad()
 	{
 		if (quadVAO == 0)
 		{
@@ -529,7 +546,7 @@ void Renderer::PostRenderQuad()
 	FlushAllLights();
 
 	// 绘制一个屏幕大小的四边形并输出GBuffer
-	DrawSimpleQuad();
+	DrawPostRenderQuad();
 }
 
 bool Renderer::IsInitialized()
@@ -559,8 +576,12 @@ void Renderer::PushCommand(RenderCommand * command, int groupIndex)
 /**
 *	\brief 添加光源信息
 */
-void Renderer::PushLight()
+void Renderer::PushLight(LightPtr light)
 {
+	if (light != nullptr)
+	{
+		mLights.push_back(light);
+	}
 }
 
 /**
@@ -568,4 +589,9 @@ void Renderer::PushLight()
 */
 void Renderer::FlushAllLights()
 {
+	for (auto& light : mLights)
+	{
+		light->Render();
+		light->SetLightToProgram();
+	}
 }

@@ -19,6 +19,20 @@ struct Tex2
 	Tex2() :u(.0f), v(.0f) {}
 };
 
+struct V3F_C4B
+{
+	Vec3f vertices;
+	Color4B colors;
+
+	V3F_C4B(float v1, float v2, float v3, GLubyte c1, GLubyte c2, GLubyte c3, GLubyte c4) :
+		vertices(v1, v2, v3), colors(c1, c2, c3, c4) {}
+};
+
+/**
+*	\brief 暂时设定多边形为V3F_C4B顶点格式集合
+*/
+using PolygonVertex = std::vector<V3F_C4B>;
+
 /**
 *	\brief 用于绘制的顶点结构
 */

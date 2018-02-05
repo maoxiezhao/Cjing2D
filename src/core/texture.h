@@ -38,9 +38,7 @@ protected:
 	GLuint mFilterMax;
 
 };
-
 using TexturePtr = std::shared_ptr<Texture2D>;
-
 
 /**
 *	\brief 可渲染至纹理的纹理
@@ -52,12 +50,17 @@ class RenderTexture : Texture2D
 {
 public:
 	RenderTexture();
+	~RenderTexture();
 
+	bool InitWithSize(int32_t w, int32_t h, bool depthTest = false);
 	void BeginDraw();
 	void EndDraw();
 
 private:
-
+	GLuint mFrameBuffer;
+	GLuint mDepthRenderBuffer;
+	bool mInitialized;
 };
+using RenderTexturePtr = std::shared_ptr<RenderTexture>;
 
 #endif

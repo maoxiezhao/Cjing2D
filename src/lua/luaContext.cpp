@@ -33,9 +33,9 @@ const std::string luaEnvInitScript =
 "\n"
 // 初始化lua 执行文件接口
 "SystemDoFile = function(script, env, ...)\n"
-"if cjing.FileData.Exists(script) then error('File '..script..' not exists.'); return; end\n"
-"local buf = cjing.FileData.Read(script)"
-"local f,err = load(buf, script, env or _ENV) \n"
+"if not FileData.Exists(script) then error('File '..script..' not exists.'); return; end\n"
+"local buf = FileData.Read(script)"
+"local f,err = load(buf, script, 'bt', env or _ENV) \n"
 "if f==nil then error(err) end\n"
 "return f(...)"
 "end\n"

@@ -29,7 +29,7 @@ void ResourceCache::Clear()
 }
 
 /**
-*	\brief 加载默认的着色器程序
+*	\brief 加载默认的着色器程序,目前的加载方式需要重构
 */
 void ResourceCache::LoadDefaultProgram()
 {
@@ -74,6 +74,13 @@ void ResourceCache::LoadDefaultProgram()
 		GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME + ".frag");
 	fontProgram->Link();
 	mPrograms[GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME] = fontProgram;
+
+	// 加载默认的polygon program
+	auto colorPolygonProgram = std::make_shared<GLProgram>();
+	colorPolygonProgram->InitWithFileNames(GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME + ".frag");
+	colorPolygonProgram->Link();
+	mPrograms[GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME] = colorPolygonProgram;
 }
 
 /**
@@ -133,6 +140,11 @@ void ResourceCache::LoadDefaultProgramState()
 	newProgramState = std::make_shared<GLProgramState>();
 	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME));
 	mProgramStates[GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的polygon color program state
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME] = newProgramState;
 }
 
 /**
@@ -200,6 +212,11 @@ TexturePtr ResourceCache::CreateTexture2DBySize(const string & texname, const Si
 	newTex->InitWithChars(nullptr);
 	mTextures[texname] = newTex;
 	return newTex;
+}
+
+RenderTexturePtr ResourceCache::CreateRenderTexture2DBySize(const string & name, const Size & size)
+{
+	return RenderTexturePtr();
 }
 
 

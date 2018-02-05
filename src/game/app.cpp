@@ -190,7 +190,7 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
-	sprite->Draw();
+	//sprite->Draw();
 
 	if (mCurrGame != nullptr)
 	{

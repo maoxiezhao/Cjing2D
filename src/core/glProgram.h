@@ -31,6 +31,7 @@ public:
 	static const string DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME;
 	static const string DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAM_NAME;
+	static const string DEFAULT_POLYGON_COLOR_PROGRAM_NAME;
 
 	bool InitWithChars(const GLchar* vsChars, const GLchar* fsChars);
 	bool InitWithFileNames(const string& vsname,const string& fsname);

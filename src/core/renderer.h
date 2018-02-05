@@ -12,6 +12,7 @@
 
 /**
 *	1/27/2018 预计重构，将渲染过程以PASS方式提取
+			  同时shader散文件写到一个文件中， 以字符串分隔各个shader
 */
 
 class RenderCommand;
@@ -58,6 +59,8 @@ public:
 	void RenderClear();
 	void Render();
 	void RenderAfterClean();
+	void PushPolygon(const PolygonVertex& polygon);
+	void RenderPolygons();
 
 	// light
 	void PushLight(LightPtr light);
@@ -111,6 +114,11 @@ private:
 	Matrix4 mCamearMatrix;			// 全局统一的相机变换矩阵
 
 	std::vector<LightPtr> mLights;
+
+	static const uint32_t POLYGON_SIZE = 8192;
+	int mPolygonCount;
+	std::vector<int> mPolygonsEachCount;
+	std::unique_ptr<VertexBuffer> mPolygonsBuffer;
 
 	//GLuint mVAO;
 	//GLuint mVBO;

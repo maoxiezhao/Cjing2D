@@ -203,9 +203,9 @@ bool VertexBuffer::InitVertexBuffer()
 	return true;
 }
 
-void VertexBuffer::BeginDraw(int quadCount)
+void VertexBuffer::BeginDraw(int vertexCount)
 {
-	size_t allocSize = mDataInfo.dataSize*quadCount;
+	size_t allocSize = mDataInfo.dataSize*vertexCount;
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glBufferData(GL_ARRAY_BUFFER, allocSize, nullptr, GL_DYNAMIC_DRAW);

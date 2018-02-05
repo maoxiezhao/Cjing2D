@@ -124,14 +124,65 @@ bool Texture2D::GenerateMipmap(unsigned char * data)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-RenderTexture::RenderTexture()
+RenderTexture::RenderTexture():
+	Texture2D(),
+	mFrameBuffer(0),
+	mDepthRenderBuffer(0),
+	mInitialized(false)
 {
+}
+
+RenderTexture::~RenderTexture()
+{
+}
+
+bool RenderTexture::InitWithSize(int32_t w, int32_t h, bool depthTest)
+{
+	if (mInitialized)
+		return;
+
+	Debug::CheckAssertion(mFrameBuffer == 0, "The texture frameBuffer already assign.");
+	Debug::CheckAssertion(mDepthRenderBuffer == 0, "The texture renderbuffer is already init.");
+
+	glGenFramebuffers(1, &mFrameBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
+
+	// 绑定颜色纹理
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mInitialized, 0);
+
+	// 是否添加深度缓冲
+	if (depthTest)
+	{
+		glGenRenderbuffers(1, &mDepthRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, mDepthRenderBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, mDepthRenderBuffer);
+	}
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		Debug::Error("[Render] Failed to gen frame buffer");
+		return;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	mInitialized = true;
+	return true;
 }
 
 void RenderTexture::BeginDraw()
 {
+	// if(!mInitialized) return
+	glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderTexture::EndDraw()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

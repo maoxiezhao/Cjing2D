@@ -84,6 +84,7 @@ public:
 	static const string DEFAULT_G_BUFFER_PROGRAMSTATE_NAME;
 	static const string DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME;
+	static const string DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME;
 
 private:
 	void Init(GLProgramPtr program);

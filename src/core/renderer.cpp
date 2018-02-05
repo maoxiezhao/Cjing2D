@@ -105,7 +105,8 @@ Renderer::Renderer() :
 	mForwardQuadsCounts(0),
 	mDeferredQuadsCounts(0),
 	mForwardBuffer(nullptr),
-	mDeferredBuffer(nullptr)
+	mDeferredBuffer(nullptr),
+	mPolygonCount(0)
 {
 	mRenderGroupsStack.push(DEFAULT_RENDER_QUEUE);
 	RenderQueue defaultRenderQeueue;
@@ -242,6 +243,17 @@ void Renderer::InitVAOandVBO()
 		true
 	}));
 	mDeferredBuffer->Initialize();
+
+	// 多边形渲染缓冲
+	mPolygonsBuffer = std::unique_ptr<VertexBuffer>(new VertexBuffer(POLYGON_SIZE, POLYGON_SIZE,
+	{
+		{ GL_FLOAT, 3 },
+		{ GL_UNSIGNED_BYTE, 4 },
+		{ GL_FLOAT, 0 },
+		{ GL_FLOAT, 0 },
+		true
+	}));
+	mPolygonsBuffer->Initialize();
 }
 
 /**
@@ -254,9 +266,11 @@ void Renderer::Quit()
 	mRenderGroups.clear();
 	mQuadForwardBatches.clear();
 	mQuadDeferredBatches.clear();
+	mPolygonsEachCount.clear();
 
 	mForwardBuffer->Quit();
 	mDeferredBuffer->Quit();
+	mPolygonsBuffer->Quit();
 
 	mGBuffer = 0;
 	mInitialized = false;
@@ -355,6 +369,54 @@ void Renderer::RenderAfterClean()
 		queue.Clear();
 
 	mLights.clear();
+	
+	mPolygonCount = 0;
+	mPolygonsEachCount.clear();
+}
+
+/**
+*	\brief 添加需要绘制的polygon
+*
+*	PushPolygon只是添加绘制的多边形，真正的绘制过程
+*	调用RenderPolygons执行
+*/
+void Renderer::PushPolygon(const PolygonVertex & polygon)
+{
+	if (polygon.size() <= 0)
+		return;
+
+	int polygonCount = polygon.size();
+	char* data = mPolygonsBuffer->GetDataBuffer() + mPolygonCount * sizeof(V3F_C4B);
+	memcpy(data, polygon.data(), polygonCount * sizeof(V3F_C4B));
+
+	mPolygonsEachCount.push_back(polygonCount);
+	mPolygonCount += polygonCount;
+}
+
+/**
+*	\brief 绘制多边形
+*
+*	顶点格式固定为V3F_C4B，该接口默认由其他模块调用
+*	在其他模块中需要自行指定对应的着色器，且格式符合
+*	V3F_C4B
+*/
+void Renderer::RenderPolygons()
+{
+	if (mPolygonsEachCount.size() == 0 || mPolygonCount <= 0)
+		return;
+
+	mPolygonsBuffer->BeginDraw(mPolygonCount);
+	int polyToDraw = 0;
+	for (auto polygonCount : mPolygonsEachCount)
+	{
+		glDrawArrays(GL_TRIANGLE_FAN, polyToDraw, polygonCount);
+		polyToDraw += polygonCount;
+	}
+
+	mPolygonsBuffer->EndDraw();
+
+	mPolygonCount = 0;
+	mPolygonsEachCount.clear();
 }
 
 Matrix4 Renderer::GetCameraMatrix() const
@@ -410,7 +472,7 @@ namespace
 	*/
 	void DrawQuadBatches(VertexBuffer& vertexBuffer, int quadCounts, const std::vector<QuadCommand*>& quadBatches)
 	{
-		vertexBuffer.BeginDraw(quadCounts);
+		vertexBuffer.BeginDraw(quadCounts*4);
 
 		GLushort* indices = vertexBuffer.GetIndices();
 		int quadToDraw = 0;
@@ -502,6 +564,35 @@ void Renderer::DeferredDrawQuadBatches()
 */
 void Renderer::ForwardDrawQuadBatches()
 {
+	// test
+	//PolygonVertex pv = { 
+	//	{ 0.0f,0.0f,0.0f,255,255,0,255 },
+	//	{ 100.0f,0.0f,0.0f,255,255,0,255 },
+	//	{ 100.0f,100.0f,0.0f,255,255,0,255 },
+	//	{ 200.0f,400.0f,0.0f,255,255,0,255 },
+	//	{ 100.0f,200.0f,0.0f,255,255,0,255 },
+	//	{ 50.0f,400.0f,0.0f,255,255,0,255 }
+	//};
+	//PushPolygon(pv);
+
+	//PolygonVertex ppv = {
+	//	{ 0.0f,0.0f,0.0f,0,0,255,255 },
+	//	{ 100.0f,0.0f,0.0f,0,0,255,255 },
+	//	{ 100.0f,100.0f,0.0f,0,0,255,255 }
+	//};
+	//PushPolygon(ppv);
+
+	auto programState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME);
+	if (programState)
+	{
+		// 设定混合模式
+		glBlendFunc(GL_ONE, GL_ONE);
+		programState->Apply();
+		programState->SetUniformMatrix4("projection", mCamearMatrix);
+
+		RenderPolygons();
+	}
+
 	if (mForwardQuadsCounts <= 0 || mQuadForwardBatches.empty())
 		return;
 

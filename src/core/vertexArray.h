@@ -75,7 +75,7 @@ public:
 
 	bool Initialize();
 	void Quit();
-	void BeginDraw(int quadCount);
+	void BeginDraw(int vertexCount);
 	void EndDraw();
 
 	/**

@@ -145,12 +145,12 @@ namespace Implemention
 			}
 			RetType result = FuncCaller(l, 1, std::function<RetType(Args...)>(func));
 			WrapperValue::Wraper(l, result);
-			// 返回值个数检查
-			if (lua_gettop(l) - returnCount <= sizeof...(Args))
-			{
-				Debug::Error("The returnValue count is error.");
-				return 0;
-			}
+			// 返回值个数检查,?????????
+			//if (lua_gettop(l) - returnCount <= sizeof...(Args))
+			//{
+			//	Debug::Error("The returnValue count is error.");
+			//	return 0;
+			//}
 			return returnCount;
 		});
 	}

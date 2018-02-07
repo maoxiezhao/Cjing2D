@@ -831,6 +831,9 @@
     <ClInclude Include="src\gui\uiStage.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\ray.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

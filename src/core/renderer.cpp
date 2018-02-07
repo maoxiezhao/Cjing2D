@@ -106,7 +106,10 @@ Renderer::Renderer() :
 	mDeferredQuadsCounts(0),
 	mForwardBuffer(nullptr),
 	mDeferredBuffer(nullptr),
-	mPolygonCount(0)
+	mPolygonCount(0),
+	mUsedHDR(false),
+	mDeferredProgramState(nullptr),
+	mPostProcessProgramState(nullptr)
 {
 	mRenderGroupsStack.push(DEFAULT_RENDER_QUEUE);
 	RenderQueue defaultRenderQeueue;
@@ -134,11 +137,12 @@ void Renderer::Initialize(int w,int h)
 	// 初始化渲染状态
 	SetViewSize(w, h);
 	InitCamearMatrix();
+	InitDefaultProgram();
 #if defined _ENABLE_DEFERRED_SHADE_
 	InitGBuffer();
 #endif
+	InitPostBuffer();
 	InitVAOandVBO();
-	InitDefaultProgram();
 	
 	// 初始化命令池
 	RenderCommandPool::GetInstance().Initialize();
@@ -167,11 +171,13 @@ void Renderer::InitDefaultProgram()
 
 	mDeferredProgramState = ResourceCache::GetInstance().GetGLProgramState(
 		GLProgramState::DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME);
-	mDeferredProgramState->SetUniform3f("lights[1].Position", { 1.0, 1.0, 1.0 });
+
+	mPostProcessProgramState = ResourceCache::GetInstance().GetGLProgramState(
+		GLProgramState::DEFAULT_POST_PROCESS_PROGRAMSTATE_NAME);
 }
 
 /**
-*	\brief 初始化Gbuffer，用于延迟着色(后处理)
+*	\brief 初始化Gbuffer，用于延迟着色(
 */
 void Renderer::InitGBuffer()
 {
@@ -212,6 +218,42 @@ void Renderer::InitGBuffer()
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		Debug::Error("[Render] Failed to gen frame buffer");
+		return;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	if (mDeferredProgramState)
+	{
+		mDeferredProgramState->ApplyProgram();
+		mDeferredProgramState->SetSample2D("texturePosition", 0);
+		mDeferredProgramState->SetSample2D("textureNormal", 1);
+		mDeferredProgramState->SetSample2D("textureColor", 2);
+	}
+}
+
+/**
+*	\brief 初始化PostFramebuffer，用于后处理HDR、泛光
+*/
+void Renderer::InitPostBuffer()
+{
+	Debug::CheckAssertion(mPostProcessBuffer == 0, "The post farme buffer already assign.");
+
+	// 初始化gbuffer
+	glGenFramebuffers(1, &mPostProcessBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, mPostProcessBuffer);
+
+	// color
+	const Size srcSize = Video::GetScreenSize();
+	glGenTextures(1, &mPostColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, mPostColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srcSize.width, srcSize.height, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mPostColorBuffer, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		Debug::Error("[Render] Failed to gen post frame buffer");
 		return;
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -450,6 +492,11 @@ GLProgramStatePtr Renderer::GetDeferredProgramState()
 	return mDeferredProgramState;
 }
 
+void Renderer::SetUsingHDR(bool hdr)
+{
+	mUsedHDR = hdr;
+}
+
 /**
 *	\brief 执行批绘制任务
 *
@@ -552,9 +599,10 @@ void Renderer::DeferredDrawQuadBatches()
 	DrawQuadBatches(*mDeferredBuffer, mDeferredQuadsCounts, mQuadDeferredBatches);
 	mDeferredQuadsCounts = 0;
 	mQuadDeferredBatches.clear();
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
+	RenderClear();
 	// deferred pass;后处理渲染，在片段着色器处理GBUFFER
 	PostRenderQuad();
 }
@@ -564,8 +612,8 @@ void Renderer::DeferredDrawQuadBatches()
 */
 void Renderer::ForwardDrawQuadBatches()
 {
-	// test
-	//PolygonVertex pv = { 
+	//// test
+	//PolygonVertex pv = {
 	//	{ 0.0f,0.0f,0.0f,255,255,0,255 },
 	//	{ 100.0f,0.0f,0.0f,255,255,0,255 },
 	//	{ 100.0f,100.0f,0.0f,255,255,0,255 },
@@ -623,8 +671,13 @@ void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 
 */
 void Renderer::PostRenderQuad()
 {
-	mDeferredProgramState->Apply();
+	if (mUsedHDR)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mPostProcessBuffer);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
 
+	mDeferredProgramState->Apply();
 	// gFrameBuffer texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
@@ -638,6 +691,18 @@ void Renderer::PostRenderQuad()
 
 	// 绘制一个屏幕大小的四边形并输出GBuffer
 	DrawPostRenderQuad();
+
+	if (mUsedHDR)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// 后处理阶段（HDR、泛光）
+		mPostProcessProgramState->Apply();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mPostColorBuffer);
+
+		DrawPostRenderQuad();
+	}
 }
 
 bool Renderer::IsInitialized()
@@ -680,9 +745,14 @@ void Renderer::PushLight(LightPtr light)
 */
 void Renderer::FlushAllLights()
 {
+	int lightIndex = 0;
 	for (auto& light : mLights)
 	{
 		light->Render();
-		light->SetLightToProgram();
+		light->DebugRender();
+		light->SetLightToProgram(*mDeferredProgramState, lightIndex);
+		
+		lightIndex++;
 	}
+	mDeferredProgramState->SetUniform1i("lightCount", lightIndex);
 }

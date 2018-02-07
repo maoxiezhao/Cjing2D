@@ -78,6 +78,7 @@ public:
 	void SetUniform1f(const string&name, float f1);
 	void SetUniform3f(const string&name, const Vec3f& vec3f);
 	void SetUniformMatrix4(const string& name, const Matrix4& mat);
+	void SetSample2D(const string& name, int value);
 
 	static const string DEFAULT_SPRITE_NORMAL_PROGRAMSTATE_NAME;
 	static const string DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME;
@@ -85,7 +86,7 @@ public:
 	static const string DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME;
 	static const string DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME;
 	static const string DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME;
-
+	static const string DEFAULT_POST_PROCESS_PROGRAMSTATE_NAME;
 private:
 	void Init(GLProgramPtr program);
 	void ResetProgram();

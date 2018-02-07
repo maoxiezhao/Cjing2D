@@ -1,3 +1,4 @@
+#include "color.h"
 
 constexpr Color4B::Color4B():
 	r(0),g(0),b(0),a(0)
@@ -33,6 +34,16 @@ inline void Color4B::SetColors(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 	this->g = g;
 	this->b = b;
 	this->a = a;
+}
+
+inline Vec3f Color4B::GetColorRGB3F() const
+{
+	return Vec3f((float)(r / 255.0f), (float)(g / 255.0f), (float)(b / 255.0f));
+}
+
+inline Vec3i Color4B::GetColorRGB3B() const
+{
+	return Vec3i((int)r, (int)g, (int)b);
 }
 
 constexpr bool operator==(const Color4B& lhs, const Color4B& rhs)

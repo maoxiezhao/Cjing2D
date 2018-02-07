@@ -5,11 +5,12 @@
 
 const string GLProgram::DEFAULT_SPRITE_NORMAL_PROGRAM_NAME = "normal_sprite";
 const string GLProgram::DEFAULT_SPRITE_COLOR_PROGRAM_NAME = "color_sprite";
-const string GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME = "gBuffer";
+const string GLProgram::DEFAULT_G_BUFFER_PROGRAM_NAME = "g_buffer";
 const string GLProgram::DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME = "deferred_shade";
 const string GLProgram::DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME = "outlined_sprite";
 const string GLProgram::DEFAULT_FONT_NORMAL_PROGRAM_NAME = "normal_text";
 const string GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME = "color_polygon";
+const string GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME = "post_process";
 
 GLProgram::GLProgram():
 	mProgram(0),

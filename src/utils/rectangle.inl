@@ -159,6 +159,43 @@ inline bool Rect::Overlaps(const Rect & rect) const
 		y + height < rect.y || y > rect.y + rect.height);
 }
 
+/**
+*	\brief 射线相交检测
+*	\param mint 得到的最小t
+*	\param maxt 得到的最大t
+*	\return bool 是否发生相交
+*
+*	基本思路就是对每一轴计算最大和最小的t值，当发生记录
+*	最小的t值大于记录最大的，说明未相交
+*/
+inline bool Rect::Intersect(const Ray & ray, float & mint, float & maxt)
+{
+	float t1 = ray.mMint, t2 = ray.mMaxt;
+	auto CheckIntesertAsix = [&t1, &t2](int origin, int dir, int dstMin, int dstMax)->bool {
+		float invDir = float(1.0f / dir);
+		float tNear = (dstMin - origin) * invDir;
+		float tFar = (dstMax - origin) * invDir;
+
+		if (tNear > tFar)
+			std::swap(tNear, tFar);
+
+		t1 = std::max(tNear, t1);
+		t2 = std::min(tFar, t2);
+
+		if (t1 > t2)
+			return false;
+		return true;
+	};
+
+	if (!CheckIntesertAsix(ray.mOrgin.x, ray.mDirection.x, x, x + width) ||
+		!CheckIntesertAsix(ray.mOrgin.y, ray.mDirection.y, y, y + height) )
+		return false;
+
+	mint = t1;
+	maxt = t2;
+	return true;
+}
+
 constexpr bool operator==(const Rect& lhs, const Rect& rhs)
 {
 	return lhs.x == rhs.x && lhs.y == rhs.y &&

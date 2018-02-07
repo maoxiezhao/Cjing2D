@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"utils\point.h"
 #include"utils\size.h"
+#include"utils\ray.h"
 
 /**
 *	\brief ¾ØÐÎ½á¹¹
@@ -42,6 +43,7 @@ public:
 	bool Contains(const Point2& point)const;
 	bool Contains(const Rect& rect)const;
 	bool Overlaps(const Rect& rect)const;
+	bool Intersect(const Ray& ray, float& mint, float& maxt);
 
 	Rect& operator &=(const Rect& rect);
 	Rect& operator |=(const Rect& rect);

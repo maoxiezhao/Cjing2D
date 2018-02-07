@@ -2,6 +2,7 @@
 #define _COLOR_H_
 
 #include"common\common.h"
+#include"utils\vec3.h"
 
 /**
 *	\brief 短整型颜色结构
@@ -16,6 +17,8 @@ public:
 	void SetAlpha(GLubyte a);
 	void GetColors(GLubyte& r, GLubyte& g, GLubyte& b, GLubyte&a)const;
 	void SetColors(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
+	Vec3i GetColorRGB3B()const;
+	Vec3f GetColorRGB3F()const;
 
 	static const Color4B WHITE;
 	static const Color4B YELLOW;

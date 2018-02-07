@@ -25,13 +25,14 @@ public:
 	GLProgram();
 	virtual ~GLProgram();
 
-	static const string DEFAULT_SPRITE_NORMAL_PROGRAM_NAME;
-	static const string DEFAULT_SPRITE_COLOR_PROGRAM_NAME;
-	static const string DEFAULT_G_BUFFER_PROGRAM_NAME;
-	static const string DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME;
-	static const string DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME;
-	static const string DEFAULT_FONT_NORMAL_PROGRAM_NAME;
-	static const string DEFAULT_POLYGON_COLOR_PROGRAM_NAME;
+	static const string DEFAULT_SPRITE_NORMAL_PROGRAM_NAME;		/** 默认sprite着色器 */
+	static const string DEFAULT_SPRITE_COLOR_PROGRAM_NAME;	    /** 纯色sprite着色器 */
+	static const string DEFAULT_G_BUFFER_PROGRAM_NAME;			/** 延迟着色非光照阶段着色器 */
+	static const string DEFAULT_DEFERRED_LIGHT_PROGRAM_NAME;    /** 延迟着色光照阶段着色器 */
+	static const string DEFAULT_SPRITE_OUTLINED_PROGRAM_NAME;	/** sprite描边着色器 */
+	static const string DEFAULT_FONT_NORMAL_PROGRAM_NAME;	    /** font着色器 */
+	static const string DEFAULT_POLYGON_COLOR_PROGRAM_NAME;		/** 颜色多边形着色器 */
+	static const string DEFAULT_POST_PROCESS_PROGRAM_NAME;		/** hdr、泛光等后处理着色器*/
 
 	bool InitWithChars(const GLchar* vsChars, const GLchar* fsChars);
 	bool InitWithFileNames(const string& vsname,const string& fsname);

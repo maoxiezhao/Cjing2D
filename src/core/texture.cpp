@@ -139,7 +139,7 @@ RenderTexture::~RenderTexture()
 bool RenderTexture::InitWithSize(int32_t w, int32_t h, bool depthTest)
 {
 	if (mInitialized)
-		return;
+		return false;
 
 	Debug::CheckAssertion(mFrameBuffer == 0, "The texture frameBuffer already assign.");
 	Debug::CheckAssertion(mDepthRenderBuffer == 0, "The texture renderbuffer is already init.");
@@ -167,7 +167,7 @@ bool RenderTexture::InitWithSize(int32_t w, int32_t h, bool depthTest)
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		Debug::Error("[Render] Failed to gen frame buffer");
-		return;
+		return false;
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

@@ -12,6 +12,8 @@
 #include"gui\uiStage.h"
 #include"entity\player.h"
 
+#include"core\light.h"
+
 /**
 *	\brief 程序的主循环
 */
@@ -47,6 +49,7 @@ private:
 
 	/**** **** test **** ****/
 	SpritePtr sprite;
+	LightPtr mLight;
 };
 
 #endif

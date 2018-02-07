@@ -174,7 +174,7 @@ bool VertexBuffer::InitVertexBuffer()
 	if (mVertexFormat.mColorCount > 0)
 	{
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, mVertexFormat.mColorCount, mVertexFormat.mColorType, GL_FALSE, dataSize, (GLvoid*)(offset[index]));
+		glVertexAttribPointer(index, mVertexFormat.mColorCount, mVertexFormat.mColorType, GL_TRUE, dataSize, (GLvoid*)(offset[index]));
 		index++;
 	}
 	if (mVertexFormat.mTextureCount > 0)

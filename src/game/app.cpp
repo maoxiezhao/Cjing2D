@@ -14,7 +14,8 @@ App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
 	mCurrGame(nullptr),
-	mNextGame(nullptr)
+	mNextGame(nullptr),
+	mLight(nullptr)
 {
 	Logger::Info("Cjing start initializing.");
 
@@ -47,6 +48,9 @@ App::App() :
 
 	// test
 	sprite = std::make_shared<Sprite>("test.png");
+	sprite->SetSize({ 1000, 600 });
+	sprite->SetProgramState(ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME));
+	mLight = std::make_shared<PointLight>(Vec3i(500,300,70), 200, Color4B(255,255,0,255));
 }
 
 App::~App()
@@ -191,6 +195,7 @@ void App::Render()
 	Video::CleanCanvas();
 
 	//sprite->Draw();
+	Renderer::GetInstance().PushLight(mLight);
 
 	if (mCurrGame != nullptr)
 	{

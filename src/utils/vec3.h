@@ -42,6 +42,15 @@ public:
 	void  Normalized();
 	Vec3<T> GetNormalized()const;
 
+	template<typename E>
+	Vec3<E> ToVecE()
+	{
+		return Vec3<E>(
+			static_cast<E>(x),
+			static_cast<E>(y),
+			static_cast<E>(z));
+	}
+
 	T x, y, z;
 };
 

@@ -72,6 +72,8 @@ public:
 	void SetDeferredProgramState(GLProgramStatePtr programState);
 	GLProgramStatePtr GetDeferredProgramState();
 
+	void SetUsingHDR(bool hdr);
+
 private:
 	Renderer();
 	~Renderer();
@@ -79,6 +81,7 @@ private:
 	void InitCamearMatrix();
 	void InitDefaultProgram();
 	void InitGBuffer();
+	void InitPostBuffer();
 	void InitVAOandVBO();
 
 	void VisitRenderQueue(const RenderQueue& queue);
@@ -94,10 +97,17 @@ private:
 
 	bool mInitialized;
 	bool mIsRenderer;
+	bool mUsedHDR;	
 
+	// deferred frame buffer
 	GLuint mGBuffer;	// global frame buffer
 	unsigned int mGPosition, mGNormal, mGColor;
 	GLProgramStatePtr mDeferredProgramState;
+
+	// hdr post process frame buffer
+	GLuint mPostProcessBuffer;
+	unsigned int mPostColorBuffer;
+	GLProgramStatePtr mPostProcessProgramState;
 
 	// render data
 	static const uint32_t VBO_SIZE = 65536;
@@ -119,15 +129,6 @@ private:
 	int mPolygonCount;
 	std::vector<int> mPolygonsEachCount;
 	std::unique_ptr<VertexBuffer> mPolygonsBuffer;
-
-	//GLuint mVAO;
-	//GLuint mVBO;
-	//GLuint mVEO;
-	//GLuint mGBuffer;
-
-	//Quad mForwardQuads[VBO_SIZE];	// 前向渲染quad顶点数据
-	//Quad mDeferredQuads[VBO_SIZE];	// 延迟渲染quad顶点数据
-	//GLushort mIndices[VBO_SIZE * 6];
 };
 
 #endif

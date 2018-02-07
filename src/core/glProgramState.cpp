@@ -7,6 +7,7 @@ const string GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME = "gBuffer";
 const string GLProgramState::DEFAULT_DEFERRED_LIGHT_PROGRAMSTATE_NAME = "deferred_shade";
 const string GLProgramState::DEFAULT_FONT_NORMAL_PROGRAMSTATE_NAME = "normal_text_state";
 const string GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME = "color_polygon_state";
+const string GLProgramState::DEFAULT_POST_PROCESS_PROGRAMSTATE_NAME = "post_process_state";
 
 uint32_t GLProgramState::ProgramStateID = 0;
 
@@ -48,8 +49,9 @@ void UniformValue::Apply()
 		mProgram->SetUniformMatrix4f(mUniform->location, mValue.matrixValue);
 		break;
 	case GL_SAMPLER_2D:
-		mProgram->SetUniform1i(mUniform->location, mValue.mTextureId);
-		glBindTexture(GL_TEXTURE_2D, mValue.mTextureId);
+		// Sampler2D 不重复赋值
+		//mProgram->SetUniform1i(mUniform->location, mValue.mTextureId);
+		//glBindTexture(GL_TEXTURE_2D, mValue.mTextureId);
 		break;
 	default:
 		Debug::Error("Invalid Uniform Value.");
@@ -95,6 +97,7 @@ void UniformValue::SetTexture(GLuint textureId)
 {
 	Debug::CheckAssertion(mUniform->type == GL_SAMPLER_2D, "Invalid SetUniform operator.");
 	mValue.mTextureId = textureId;
+	mProgram->SetUniform1i(mUniform->location, mValue.mTextureId);
 }
 
 void UniformValue::SetUniform(Uniform* uniform)
@@ -139,7 +142,7 @@ void GLProgramState::ApplyProgram()
 		for (auto& uniform : mUniformNames)
 			mUniforms[uniform.second].SetUniform(mProgram->GetUniform(uniform.first));
 
-		mUniformValueDirty = true;
+		mUniformValueDirty = false;
 	}
 	mProgram->Use();
 }
@@ -254,6 +257,18 @@ void GLProgramState::SetUniformMatrix4(const string & name, const Matrix4 & mat)
 	UniformValue* uniform = GetUniform(name);
 	if (uniform)
 		uniform->SetMat4(mat);
+	else
+		Debug::Error("Can not find uniform value named by " + name);
+}
+
+/**
+*	\brief 设置Sampler2D值，和其他值不同，该值不保存其直接通过program设置
+*/
+void GLProgramState::SetSample2D(const string & name, int value)
+{
+	UniformValue* uniform = GetUniform(name);
+	if (uniform)
+		uniform->SetTexture(value);
 	else
 		Debug::Error("Can not find uniform value named by " + name);
 }

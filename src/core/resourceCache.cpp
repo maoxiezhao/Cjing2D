@@ -29,7 +29,8 @@ void ResourceCache::Clear()
 }
 
 /**
-*	\brief 加载默认的着色器程序,目前的加载方式需要重构
+*	\brief 加载默认的着色器程序,目前的加载方式需要重构,散
+*	文件过多，需要将所有着色器写在一个文件中解析
 */
 void ResourceCache::LoadDefaultProgram()
 {
@@ -81,6 +82,13 @@ void ResourceCache::LoadDefaultProgram()
 		GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME + ".frag");
 	colorPolygonProgram->Link();
 	mPrograms[GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME] = colorPolygonProgram;
+
+	// 加载默认的post process program
+	auto postProcessProgram = std::make_shared<GLProgram>();
+	postProcessProgram->InitWithFileNames(GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME + ".vs",
+		GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME + ".frag");
+	postProcessProgram->Link();
+	mPrograms[GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME] = postProcessProgram;
 }
 
 /**
@@ -145,6 +153,11 @@ void ResourceCache::LoadDefaultProgramState()
 	newProgramState = std::make_shared<GLProgramState>();
 	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_POLYGON_COLOR_PROGRAM_NAME));
 	mProgramStates[GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME] = newProgramState;
+
+	// 加载默认的polygon post process program state
+	newProgramState = std::make_shared<GLProgramState>();
+	newProgramState->Set(GetGLProgram(GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME));
+	mProgramStates[GLProgramState::DEFAULT_POST_PROCESS_PROGRAMSTATE_NAME] = newProgramState;
 }
 
 /**

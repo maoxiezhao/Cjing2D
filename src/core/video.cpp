@@ -79,7 +79,7 @@ void Video::Initialize()
 	// 初始化渲染模块
 	mRenderer = &Renderer::GetInstance();
 	mRenderer->Initialize(wantedWindowSize.width,wantedWindowSize.height);
-
+	mRenderer->SetUsingHDR(true);
 	// 初始化着色资源模块, 暂时移动到Render::Initialize中
 	//ResourceCache::GetInstance().LoadDefaultProgram();
 	//ResourceCache::GetInstance().LoadDefaultProgramState();

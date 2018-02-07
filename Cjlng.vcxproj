@@ -340,6 +340,7 @@
     <ClInclude Include="src\utils\objectPool.h" />
     <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\quadTree.h" />
+    <ClInclude Include="src\utils\ray.h" />
     <ClInclude Include="src\utils\rectangle.h" />
     <ClInclude Include="src\utils\reflect.h" />
     <ClInclude Include="src\utils\size.h" />

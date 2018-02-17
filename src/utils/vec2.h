@@ -13,7 +13,7 @@ public:
 
 	Vec2<T> operator+(const Vec2<T>& other)const;
 	Vec2<T> operator-(const Vec2<T>& other)const;
-	Vec2<T> operator*(int factor)const;
+	Vec2<T> operator*(float factor)const;
 	Vec2<T> operator/(int divisior)const;
 
 	Vec2<T>&operator+= (const Vec2<T>& other);

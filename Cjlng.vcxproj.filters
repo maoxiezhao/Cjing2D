@@ -421,6 +421,9 @@
     <ClCompile Include="src\core\vertexArray.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\utilsApi.cpp">
+      <Filter>lua\luaApi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">

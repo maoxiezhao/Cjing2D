@@ -21,11 +21,11 @@ public:
 
 	// uniform
 	void SetUniform(Uniform* uniform);
-	void SetInteger(int value);
-	void SetFloat(float value);
-	void SetVec3i(const Vec3i& vec3i);
-	void SetVec3f(const Vec3f& vec3f);
-	void SetMat4(const Matrix4& mat);
+	void SetInteger(int value, bool setImmediately = false);
+	void SetFloat(float value, bool setImmediately = false);
+	void SetVec3i(const Vec3i& vec3i, bool setImmediately = false);
+	void SetVec3f(const Vec3f& vec3f, bool setImmediately = false);
+	void SetMat4(const Matrix4& mat, bool setImmediately = false);
 	void SetTexture(GLuint textureId);
 
 private:

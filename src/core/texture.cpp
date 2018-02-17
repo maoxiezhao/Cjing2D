@@ -10,6 +10,7 @@ Texture2D::Texture2D():
 	mHeight(0),
 	mInternalFormat(GL_RGBA),
 	mImageFormat(GL_RGBA),
+	mType(GL_UNSIGNED_BYTE),
 	mFilterMax(GL_LINEAR),
 	mFilterMin(GL_LINEAR),
 	mWrapS(GL_REPEAT),
@@ -30,7 +31,7 @@ bool Texture2D::InitWithChars(unsigned char * data)
 {
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, mImageFormat, mWidth, mHeight, 0, mImageFormat, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, mInternalFormat, mWidth, mHeight, 0, mImageFormat, mType, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mWrapT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
@@ -68,11 +69,11 @@ bool Texture2D::InitWithFile(const string & texname)
 *
 *	一般而言参与到渲染流水线的纹理，会由Renderer自动绑定
 */
-void Texture2D::Bind() const
+void Texture2D::Bind(GLuint textureActivity) const
 {
-	if (IsInitialized())
-		glBindTexture(GL_TEXTURE_2D, mTextureID);
-	
+	if (IsInitialized()) {
+		glActiveTexture(textureActivity);		glBindTexture(GL_TEXTURE_2D, mTextureID);
+	}
 }
 
 GLuint Texture2D::GetTextureID() const
@@ -99,6 +100,11 @@ void Texture2D::SetInternalFormat(GLuint format)
 void Texture2D::SetImageFormat(GLuint format)
 {
 	mImageFormat = format;
+}
+
+void Texture2D::SetIntenalType(GLuint type)
+{
+	mType = type;
 }
 
 bool Texture2D::IsInitialized() const
@@ -136,6 +142,24 @@ RenderTexture::~RenderTexture()
 {
 }
 
+/**
+*	\brief 重写方法避免调用
+*/
+bool RenderTexture::InitWithChars(unsigned char * data)
+{
+	Debug::Warning("Render Texture can only InitWithSize.");
+	return false;
+}
+
+/**
+*	\brief 重写方法避免调用
+*/
+bool RenderTexture::InitWithFile(const string & texname)
+{
+	Debug::Warning("Render Texture can only InitWithSize.");
+	return false;
+}
+
 bool RenderTexture::InitWithSize(int32_t w, int32_t h, bool depthTest)
 {
 	if (mInitialized)
@@ -150,10 +174,10 @@ bool RenderTexture::InitWithSize(int32_t w, int32_t h, bool depthTest)
 	// 绑定颜色纹理
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, mImageFormat, w, h, 0, mImageFormat, mType, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mInitialized, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTextureID, 0);
 
 	// 是否添加深度缓冲
 	if (depthTest)

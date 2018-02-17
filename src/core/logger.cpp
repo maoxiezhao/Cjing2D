@@ -27,7 +27,7 @@ namespace Logger {
 		}
 
 		// 设置当前控制台字体颜色
-		const int CONSOLE_FONT_WHITE = 0;
+		const int CONSOLE_FONT_WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
 		const int CONSOLE_FONT_BLUE = FOREGROUND_BLUE;
 		const int CONSOLE_FONT_YELLOW = FOREGROUND_RED | FOREGROUND_GREEN;
 		const int CONSOLE_FONT_GREEN = FOREGROUND_GREEN;
@@ -54,6 +54,7 @@ namespace Logger {
 	{
 		SetLoggerConsoleFontColor(CONSOLE_FONT_GREEN);
 		Print("[Info]  " + msg);
+		SetLoggerConsoleFontColor(CONSOLE_FONT_WHITE);
 	}
 
 	void Logger::Warning(const string & msg)
@@ -62,6 +63,7 @@ namespace Logger {
 		string warningMsg = "[Warning]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
+		SetLoggerConsoleFontColor(CONSOLE_FONT_WHITE);
 	}
 
 	void Logger::Error(const string & msg)
@@ -70,6 +72,7 @@ namespace Logger {
 		string warningMsg = "[Error]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
+		SetLoggerConsoleFontColor(CONSOLE_FONT_WHITE);
 	}
 
 	void Fatal(const string& msg)

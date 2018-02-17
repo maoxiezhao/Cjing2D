@@ -6,61 +6,6 @@
 #include"game\enumInfo.h"
 #include<sstream>
 
-/**
-*	\brief 初始化lua环境的字符序列
-*/
-const std::string luaEnvInitScript =
-// 初始化lua脚本环境
-"SystemEnvTables = {__G__ = _ENV}\n"
-"SystemEnvTables.Enum = {}\n"
-"SystemEnvTables.Const = SystemEnvTables.Enum\n"
-"SystemEnvTables.CApi = {}\n"
-"SystemEnvTables.Modules = {}\n"
-"SystemEnvTables.Imports = {}\n"
-"\n"
-"Global_Exports = setmetatable({}, {__index = _ENV, __newindex=function(t,k,v)rawset(_ENV, k, v);  end})\n"
-"setmetatable(_ENV, {__index = SystemEnvTables.CApi })\n"
-// 初始化lua基本方法
-"SystemLoadScript = function(script_cxt, name, env) \n"
-"assert(env, 'env must exist.')\n"
-"return load(script_cxt, name, 'bt', env)\n"
-"end\n"
-"SystemDoString = function(script, name, env, ...)\n"
-"local f,err = SystemLoadScript(script, name, env or _ENV)\n"
-"if f==nil then error(err) end\n"
-"return f(...)\n"
-"end\n"
-"\n"
-// 初始化lua 执行文件接口
-"SystemDoFile = function(script, env, ...)\n"
-"if not FileData.Exists(script) then error('File '..script..' not exists.'); return; end\n"
-"local buf = FileData.Read(script)"
-"local f,err = load(buf, script, 'bt', env or _ENV) \n"
-"if f==nil then error(err) end\n"
-"return f(...)"
-"end\n"
-"\n"
-"local traceBack = debug.traceback\n"
-"local _logger = nil\n"
-"SystemLogErrHandle = function(err)err = _traceback(err,2);return err; end\n"
-"SystemTraceDoFile = function(script, env, ...)\n"
-"local ok, res = xpcall(SystemDoFile, SystemLogErrHandle, script, env or _ENV, ...)\n"
-"if ok then return res end\n"
-"end\n"
-// 初始化lua modules环境
-"local modules = SystemEnvTables.Modules\n"
-"local imports = SystemEnvTables.Imports\n"
-"SystemModule = function(name)\n"
-"  local m = modules[name]\n"
-"  if not m then\n"
-"   m = setmetatable({}, {__index=_ENV})\n"
-"   modules[name] = m\n"
-"  end\n"
-"  return m\n"
-"end\n"
-"\n"
-;
-
 std::map<lua_State*, LuaContext*> LuaContext::mLuaContexts;
 
 LuaRef LuaContext::mSystemCApiRef;
@@ -124,7 +69,7 @@ void LuaContext::Initialize()
 
 	lua_pop(l, 1);	// pop SystemEnvTables
 
-	lua_getglobal(l, "Global_Exports");
+	lua_getglobal(l, "SystemExports");
 	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
 	mSystemExports = LuaTools::CreateRef(l);	
 
@@ -163,7 +108,6 @@ void LuaContext::Update()
 		// nil,这里是临时解决办法
 		lua_settop(l, 0);
 	}
-
 
 	Debug::CheckAssertion(lua_gettop(l) == 0,
 		"There are something in lua stack after update");
@@ -509,7 +453,6 @@ void LuaContext::RegisterFunction(lua_State*l, const std::string& funcName, Func
 	{
 		lua_pushcfunction(l, function);
 		lua_setfield(l, -2, funcName.c_str());
-		lua_pop(l, 1);
 	}
 	lua_pop(l, 1);
 }
@@ -670,6 +613,25 @@ void LuaContext::PushRef(lua_State * l, const LuaRef & luaref)
 bool LuaContext::DoLuaExportFunction(const std::string & funcName, ...)
 {
 	return false;
+}
+
+/**
+*	\brief 通過索引执行系统函数
+*
+*	该接口意在加快系统lua函数的调用
+*/
+bool LuaContext::DoLuaSystemFunctionWithIndex(int systemIndex)
+{
+	Debug::CheckAssertion(!mSystemExports.IsEmpty());
+	mSystemExports.Push();
+	lua_rawgeti(l, -1, systemIndex);
+	if (!LuaTools::CallFunction(l, 0, 0, ""))
+	{
+		lua_pop(l, 1);
+		return false;
+	}
+	lua_pop(l, 1);
+	return true;
 }
 
 /**
@@ -1107,6 +1069,8 @@ bool LuaContext::OnMouseMotion(const InputEvent & event)
 */
 void LuaContext::RegisterModules()
 {
+	RegisterUtils(l);
+
 	RegisterMainModule();
 	RegisterSoundModule();
 	RegisterGameModule();

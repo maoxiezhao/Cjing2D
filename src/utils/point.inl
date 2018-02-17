@@ -56,14 +56,24 @@ constexpr bool operator!=(const Point2&lhs, const Point2& rhs)
 	return lhs.x != rhs.x || lhs.y != rhs.y;
 }
 
+constexpr bool operator<(const Point2&lhs, const Point2& rhs)
+{
+	return lhs.x < rhs.x && lhs.y < rhs.y;
+}
+
 constexpr Point2 operator+(const Point2&lhs, const Point2& rhs)
 {
 	return Point2(lhs.x + rhs.x, lhs.y + rhs.y);
 }
 
-constexpr Point2 operator-(const Point2&lhs, const Point2& rhs)
+//constexpr Point2 operator-(const Point2&lhs, const Point2& rhs)
+//{
+//	return Point2(lhs.x - rhs.x, lhs.y - rhs.y);
+//}
+
+inline Vec2i operator-(const Point2&lhs, const Point2& rhs)
 {
-	return Point2(lhs.x - rhs.x, lhs.y - rhs.y);
+	return Vec2i(lhs.x - rhs.x, lhs.y - rhs.y);
 }
 
 constexpr Point2 operator*(const Point2&lhs, int factor)

@@ -97,6 +97,14 @@ inline Point2 Rect::GetCenterPos() const
 	return Point2(x + width / 2, y + height / 2);
 }
 
+inline std::vector<Point2> Rect::GetPoints() const
+{
+	return {{ x,y }, 
+			{x + width, y},
+			{x, y + height},
+			{x + width, y + height} };
+}
+
 inline void Rect::AddX(int dx)
 {
 	x += dx;
@@ -191,8 +199,18 @@ inline bool Rect::Intersect(const Ray & ray, float & mint, float & maxt)
 		!CheckIntesertAsix(ray.mOrgin.y, ray.mDirection.y, y, y + height) )
 		return false;
 
-	mint = t1;
-	maxt = t2;
+	// 首先判断光线原点,是否在rect中，如果在则必然发生相交
+	if (Contains(ray.mOrgin))
+	{
+		mint = t2;
+		maxt = t1;
+	}
+	else
+	{
+		mint = t1;
+		maxt = t2;
+	}
+
 	return true;
 }
 
@@ -206,6 +224,12 @@ constexpr bool operator!=(const Rect& lhs, const Rect& rhs)
 {
 	return lhs.x != rhs.x || lhs.y != rhs.y ||
 		lhs.width != rhs.width || lhs.height != rhs.height;
+}
+
+constexpr bool operator<(const Rect& lhs, const Rect& rhs)
+{
+	return lhs.x < rhs.x && lhs.y < rhs.y &&
+		lhs.width < rhs.width && lhs.height < rhs.height;
 }
 
 /**
@@ -244,3 +268,4 @@ inline Rect& Rect::operator |=(const Rect& rect)
 		*this = Rect(Point2(lx, ly), Point2(rx, ry));
 	return *this;
 }
+

@@ -30,9 +30,9 @@ inline Vec2<T> Vec2<T>::operator-(const Vec2<T>& other) const
 }
 
 template<typename T>
-inline Vec2<T> Vec2<T>::operator*(int factor) const
+inline Vec2<T> Vec2<T>::operator*(float factor) const
 {
-	return Vec2<T>(x*factor, y*factor);
+	return Vec2<T>((T)((float)x*factor), (T)((float)y*factor));
 }
 
 template<typename T>

@@ -49,6 +49,13 @@ class ItemAcquired;
 class LuaContext
 {
 public:
+	enum SystemFunctionIndex {
+		CLIENT_LUA_MAIN_START = 1,
+		CLIENT_LUA_MAIN_UPDATE,
+		CLIENT_LUA_MAIN_STOP,
+		CLIENT_LUA_MAIN_RENDER,
+	};
+
 	LuaContext(App& app);
 	~LuaContext();
 
@@ -70,6 +77,7 @@ public:
 	bool FindMethod(const string& name);
 	bool FindMethod(const string& name, int index);
 	bool DoLuaExportFunction(const std::string& funcName, ...);
+	bool DoLuaSystemFunctionWithIndex(int systemIndex);
 	void PrintLuaStack(lua_State*l);
 
 	// userdata
@@ -97,6 +105,7 @@ public:
 	// RegisterModules前加载模块
 	void InitUserdataEnv(lua_State* l);
 	void RegisterFileData(lua_State* l);
+	void RegisterUtils(lua_State* l);
 
 	// modules 注册分先后顺序
 	void RegisterModules();
@@ -402,6 +411,7 @@ public:
 	static const string module_particle_name;
 	static const string module_item_name;
 	static const string module_file_data_name;
+	static const string module_utils_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -439,5 +449,7 @@ private:
 	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
 																				该数据存储仅用于快速的查找是否存在指定key */
 };
+
+#include"lua\luaContext.inl"
 
 #endif

@@ -108,8 +108,10 @@ Renderer::Renderer() :
 	mDeferredBuffer(nullptr),
 	mPolygonCount(0),
 	mUsedHDR(false),
+	mMultyLightBatch(true),
 	mDeferredProgramState(nullptr),
-	mPostProcessProgramState(nullptr)
+	mPostProcessProgramState(nullptr),
+	mAreaLight(nullptr)
 {
 	mRenderGroupsStack.push(DEFAULT_RENDER_QUEUE);
 	RenderQueue defaultRenderQeueue;
@@ -144,6 +146,9 @@ void Renderer::Initialize(int w,int h)
 	InitPostBuffer();
 	InitVAOandVBO();
 	
+	Light::Initialize();
+	mAreaLight = std::make_shared<AreaLight>(Vec3i(0,0,0), 200, Color4B(255,255,255,255));
+
 	// 初始化命令池
 	RenderCommandPool::GetInstance().Initialize();
 	mInitialized = true;
@@ -228,6 +233,7 @@ void Renderer::InitGBuffer()
 		mDeferredProgramState->SetSample2D("texturePosition", 0);
 		mDeferredProgramState->SetSample2D("textureNormal", 1);
 		mDeferredProgramState->SetSample2D("textureColor", 2);
+		mDeferredProgramState->SetSample2D("textureLight", 3);
 	}
 }
 
@@ -362,7 +368,7 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 		if (commandType == RenderCommand::COMMAND_QUAD)
 		{
 			auto quadCommand = dynamic_cast<QuadCommand*>(command);
-			if (!quadCommand->IsDeferredShade())	// 是否重新定义为RenderCommand的派生类
+			if (quadCommand->IsDeferredShade())	// 是否重新定义为RenderCommand的派生类
 			{
 				if (mDeferredQuadsCounts + quadCommand->GetQuadCounts() > VBO_SIZE)
 				{	// 当前quad数量超过最大值，则先渲染之前保存的
@@ -461,6 +467,10 @@ void Renderer::RenderPolygons()
 	mPolygonsEachCount.clear();
 }
 
+void Renderer::RenderCustomon(GLProgramStatePtr programState, void * data)
+{
+}
+
 Matrix4 Renderer::GetCameraMatrix() const
 {
 	return mCamearMatrix;
@@ -540,6 +550,7 @@ namespace
 				command->UseShade();
 			}
 			quadToDraw++;	// += command->getQuadCount();
+			break;
 
 		}
 		// 绘制最后的quads
@@ -630,16 +641,16 @@ void Renderer::ForwardDrawQuadBatches()
 	//};
 	//PushPolygon(ppv);
 
-	auto programState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME);
-	if (programState)
-	{
-		// 设定混合模式
-		glBlendFunc(GL_ONE, GL_ONE);
-		programState->Apply();
-		programState->SetUniformMatrix4("projection", mCamearMatrix);
+	//auto programState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME);
+	//if (programState)
+	//{
+	//	// 设定混合模式
+	//	glBlendFunc(GL_ONE, GL_ONE);
+	//	programState->Apply();
+	//	programState->SetUniformMatrix4("projection", mCamearMatrix);
 
-		RenderPolygons();
-	}
+	//	RenderPolygons();
+	//}
 
 	if (mForwardQuadsCounts <= 0 || mQuadForwardBatches.empty())
 		return;
@@ -671,13 +682,137 @@ void Renderer::TransformQuadsToWorld(Quad * mQuads, int quadCount,const Matrix4 
 */
 void Renderer::PostRenderQuad()
 {
-	if (mUsedHDR)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mPostProcessBuffer);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// 如果需要考虑hdr则drawPass中则需要绑定gBuffer
+	std::function<void(const std::vector<LightPtr>& lights, int drawCall)> DrawPassFunction = nullptr;
+	if (mUsedHDR){
+		DrawPassFunction = [this](const std::vector<LightPtr>& lights, int drawCall) {
+			bool firstDraw = (drawCall == 0);
+			DrawLightMeshTexture(lights);
+			BindGBuffer(firstDraw);
+			FlushAllLights(lights, PointLight::mLightTexture, firstDraw);
+			DrawPostRenderQuad();
+			EndGBuffer();
+		};
+	}else{
+		DrawPassFunction = [this](const std::vector<LightPtr>& lights, int drawCall) {
+			bool firstDraw = (drawCall == 0);
+			DrawLightMeshTexture(lights);
+			FlushAllLights(lights, PointLight::mLightTexture, firstDraw);
+			DrawPostRenderQuad();
+		};
 	}
 
+	// 光照阶段，目前做法有点僵硬，日后想办法优化
+	// 光照阶段根据是否开开启多光照开关分为两种处理方式
+	// 1.同时最多传入32个光源信息，并渲染到一张光照区域图
+	// 2.每次处理一个光照，每个光照绘制单独的光照区域图,該做法存疑？
+	int maxRenderLightNum = 0;
+	if (mMultyLightBatch)
+		maxRenderLightNum = PointLight::MAX_RENDER_LIGHT_COUNT;
+	else
+		maxRenderLightNum = 1;
+
+	std::vector<LightPtr> lights;
+	int lightDrawCount = 0;
+	int drawCall = 0;
+	for(auto& light : mLights)
+	{
+		if (light->GetType() == LIGHT_TYPE_POINT) {
+			lights.push_back(light);
+			lightDrawCount++;
+
+			if (lightDrawCount >= maxRenderLightNum)
+			{
+				DrawPassFunction(lights, drawCall);
+				lightDrawCount = 0;
+				drawCall++;
+			}
+		}
+	}
+	if (lightDrawCount >= 0)	// 如果不存在光照，也需要一次渲染
+	{
+		DrawPassFunction(lights, drawCall);
+		lightDrawCount = 0;
+	}
+
+	// post process
+	if (mUsedHDR)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// 后处理阶段（HDR、泛光）
+		mPostProcessProgramState->Apply();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mPostColorBuffer);
+		DrawPostRenderQuad();
+	}
+}
+
+/**
+*	\brief 遍历所有光源，并传入到着色器中
+*/
+void Renderer::FlushAllLights(const std::vector<LightPtr>& lights, RenderTexture& lightTexture, bool firstDraw)
+{
+	// 环境光照
+	if (firstDraw)
+		mAreaLight->SetLightToProgram(*mDeferredProgramState, 0);
+
+	// 点光源
+	int lightIndex = 0;
+	for (auto& light : mLights)
+	{
+		light->DebugRender();
+		light->SetLightToProgram(*mDeferredProgramState, lightIndex);
+		lightIndex++;
+	}
+	mDeferredProgramState->SetUniform1i("lightCount", lightIndex);
+
+	// bind light texture
+	lightTexture.Bind(GL_TEXTURE3);
+}
+
+/**
+*	\brief 绘制光照可见性网格
+*/
+void Renderer::DrawLightMeshTexture(const std::vector<LightPtr>& lights)
+{
+	auto& lightMeshTexture = PointLight::mLightTexture;
+	lightMeshTexture.BeginDraw();
+	for (auto& light : lights)
+	{
+		light->Render();	// hide while debugging
+	}
+
+	auto programState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_POLYGON_COLOR_PROGRAMSTATE_NAME);
+	if (programState)
+	{
+		// 设定混合模式
+		glBlendFunc(GL_ONE, GL_ONE);
+		programState->Apply();
+		programState->SetUniformMatrix4("projection", mCamearMatrix);
+
+		RenderPolygons();
+	}
+
+	lightMeshTexture.EndDraw();
+
+	// 对于单次处理的光照纹理进行模糊处理
+	if (!mMultyLightBatch)
+	{
+		// nothing now.
+	}
+}
+
+/**
+*	\brief 绑定当前FrameBuffer为gbuffer
+*/
+void Renderer::BindGBuffer(bool clearBuffer)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, mPostProcessBuffer);
+	if (clearBuffer)glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	mDeferredProgramState->SetUniform1i("firstDraw", clearBuffer ? 1 : 0);
 	mDeferredProgramState->Apply();
+	
 	// gFrameBuffer texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
@@ -686,23 +821,12 @@ void Renderer::PostRenderQuad()
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGColor);
 
-	// 遍历光源信息
-	FlushAllLights();
+	glBlendFunc(GL_ONE, GL_ONE);
+}
 
-	// 绘制一个屏幕大小的四边形并输出GBuffer
-	DrawPostRenderQuad();
-
-	if (mUsedHDR)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// 后处理阶段（HDR、泛光）
-		mPostProcessProgramState->Apply();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mPostColorBuffer);
-
-		DrawPostRenderQuad();
-	}
+void Renderer::EndGBuffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 bool Renderer::IsInitialized()
@@ -741,18 +865,17 @@ void Renderer::PushLight(LightPtr light)
 }
 
 /**
-*	\brief 遍历所有光源，并传入到着色器中
+*	\brief 设置区域光照（环境光照）
 */
-void Renderer::FlushAllLights()
+void Renderer::SetAreaLight(std::shared_ptr<AreaLight> areaLight)
 {
-	int lightIndex = 0;
-	for (auto& light : mLights)
+	if (mAreaLight != areaLight)
 	{
-		light->Render();
-		light->DebugRender();
-		light->SetLightToProgram(*mDeferredProgramState, lightIndex);
-		
-		lightIndex++;
+		mAreaLight = areaLight;
 	}
-	mDeferredProgramState->SetUniform1i("lightCount", lightIndex);
+}
+
+std::shared_ptr<AreaLight> Renderer::GetAreaLight()
+{
+	return mAreaLight;
 }

@@ -148,6 +148,17 @@ bool Matrix4::MakeInverse()
 		return true;
 	}
 }
+void Matrix4::Transform(Vec2i & vec) const
+{
+	int x = vec.x, y = vec.y;
+	vec.x = (int)(M[0] * x + M[1] * y + M[2] * 0.f + M[3]);
+	vec.y = (int)(M[4] * x + M[5] * y + M[6] * 0.f + M[7]);
+}
+void Matrix4::Transform(const Vec2i & in, Vec2i & out) const
+{
+	out.x = (int)(M[0] * in.x + M[1] * in.y + M[2] * 0.f + M[3]);
+	out.y = (int)(M[4] * in.x + M[5] * in.y + M[6] * 0.f + M[7]);
+}
 void Matrix4::Transform(Vec3f& vec)const
 {
 	float x = vec.x, y = vec.y, z = vec.z;
@@ -156,11 +167,38 @@ void Matrix4::Transform(Vec3f& vec)const
 	vec.z = M[8] * x + M[9] * y + M[10] * z + M[11];
 }
 
-void Matrix4::Transfomr(const Vec3f& in, Vec3f& out)const
+void Matrix4::Transform(const Vec3f& in, Vec3f& out)const
 {
 	out.x = in.x*M[0] + in.y*M[1] + in.z*M[2] + M[3];
 	out.y = in.x*M[4] + in.y*M[5] + in.z*M[6] + M[7];
 	out.z = in.x*M[8] + in.y*M[9] + in.z*M[10] + M[11];
+}
+
+void Matrix4::Transform(Point2 & point) const
+{
+	int x = point.x, y = point.y;
+	point.x = (int)(M[0] * x + M[1] * y + M[2] * 0.f + M[3]);
+	point.y = (int)(M[4] * x + M[5] * y + M[6] * 0.f + M[7]);
+}
+
+void Matrix4::Transform(const Point2 & in, Point2 & out) const
+{
+	out.x = (int)(M[0] * in.x + M[1] * in.y + M[2] * 0.f + M[3]);
+	out.y = (int)(M[4] * in.x + M[5] * in.y + M[6] * 0.f + M[7]);
+}
+
+void Matrix4::Transform(Ray & ray) const
+{
+//	Transform(ray.mOrgin, ray.mOrgin);
+	Transform(ray.mDirection, ray.mDirection);
+	ray.mDegree = Geometry::GetAngle(ray.mDirection);
+}
+
+void Matrix4::Transform(const Ray & in, Ray & out) const
+{
+//	Transform(in.mOrgin, out.mOrgin);
+	Transform(in.mDirection, out.mDirection);
+	out.mDegree = Geometry::GetAngle(out.mDirection);
 }
 
 
@@ -183,6 +221,10 @@ Matrix4 Matrix4::Scale(float x, float y, float z)
 					0, 0, 0, 1);
 }
 
+/**
+*	\brief ÈÆxÖáÐý×ª
+*	\param angle ½Ç¶Èdegree
+*/
 Matrix4 Matrix4::RotateX(float angle)
 {
 	float sint = sinf((float)Geometry::Radians(angle));
@@ -193,6 +235,10 @@ Matrix4 Matrix4::RotateX(float angle)
 					0, 0, 0, 1);
 }
 
+/**
+*	\brief ÈÆyÖáÐý×ª
+*	\param angle ½Ç¶Èdegree
+*/
 Matrix4 Matrix4::RotateY(float angle)
 {
 	float sint = sinf((float)Geometry::Radians(angle));
@@ -204,6 +250,10 @@ Matrix4 Matrix4::RotateY(float angle)
 					0, 0, 0, 1);
 }
 
+/**
+*	\brief ÈÆzÖáÐý×ª
+*	\param angle ½Ç¶Èdegree
+*/
 Matrix4 Matrix4::RotateZ(float angle)
 {
 	float sint = sinf((float)Geometry::Radians(angle));

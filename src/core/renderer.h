@@ -12,7 +12,9 @@
 
 /**
 *	1/27/2018 预计重构，将渲染过程以PASS方式提取
-			  同时shader散文件写到一个文件中， 以字符串分隔各个shader
+*			  同时shader散文件写到一个文件中， 以字符串分隔各个shader
+*
+*	2/16/2018 预计使用opengl4.0，采用子程序方式代替多个着色器程序
 */
 
 class RenderCommand;
@@ -61,10 +63,12 @@ public:
 	void RenderAfterClean();
 	void PushPolygon(const PolygonVertex& polygon);
 	void RenderPolygons();
+	void RenderCustomon(GLProgramStatePtr programState, void* data);
 
 	// light
 	void PushLight(LightPtr light);
-	void FlushAllLights();
+	void SetAreaLight(std::shared_ptr<AreaLight> areaLight);
+	std::shared_ptr<AreaLight> GetAreaLight();
 
 	// data
 	Matrix4 GetCameraMatrix()const;
@@ -90,6 +94,11 @@ private:
 	void ForwardDrawQuadBatches();
 	void TransformQuadsToWorld(Quad* mQuads, int quadCount,const Matrix4 transform);
 	void PostRenderQuad();
+	void FlushAllLights(const std::vector<LightPtr>& lights, RenderTexture& lightTexture, bool firstDraw);
+	void DrawLightMeshTexture(const std::vector<LightPtr>& lights);
+
+	void BindGBuffer(bool clearBuffer = false);
+	void EndGBuffer();
 
 private:
 	std::vector<RenderQueue> mRenderGroups;
@@ -98,6 +107,7 @@ private:
 	bool mInitialized;
 	bool mIsRenderer;
 	bool mUsedHDR;	
+	bool mMultyLightBatch;	
 
 	// deferred frame buffer
 	GLuint mGBuffer;	// global frame buffer
@@ -123,8 +133,11 @@ private:
 	int mViewWidth, mViewHeight;
 	Matrix4 mCamearMatrix;			// 全局统一的相机变换矩阵
 
+	// light info
+	std::shared_ptr<AreaLight> mAreaLight;
 	std::vector<LightPtr> mLights;
 
+	// poly render
 	static const uint32_t POLYGON_SIZE = 8192;
 	int mPolygonCount;
 	std::vector<int> mPolygonsEachCount;

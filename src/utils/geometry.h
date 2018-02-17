@@ -17,7 +17,8 @@ namespace Geometry
 	constexpr double INV_FOURPI  = 0.07957747154594766788;
 	constexpr double PI_OVER_2   = 1.57079632679489661923;
 	constexpr double PI_OVER_4   = 0.78539816339744830961;
-	constexpr double EPSILON = 1e-3f;
+
+	constexpr float  EPSILON = 1e-3f;
 
 	inline double Radians(double angle)
 	{
@@ -74,6 +75,20 @@ namespace Geometry
 		if (angle < 0.0)
 		{
 			angle += PI_2;
+		}
+		return angle;
+	}
+
+	inline float GetAngle(const Vec2i& vec)
+	{
+		if (vec.x == 0 && vec.y == 0)
+		{
+			return (float)PI_OVER_2;
+		}
+		float angle = std::atan2((float)-vec.y, (float)vec.x);
+		if (angle < 0.0)
+		{
+			angle += (float)PI_2;
 		}
 		return angle;
 	}

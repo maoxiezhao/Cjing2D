@@ -31,7 +31,7 @@ bool file_api_save_file(const std::string& path, const std::string& buf )
 
 void LuaContext::RegisterFileData(lua_State* l)
 {
-	DefaultLuaBinder bindClass(l, "FileData");
+	DefaultLuaBinder bindClass(l, module_file_data_name);
 
 	bindClass.AddFunction("Read", file_api_read_file);
 	bindClass.AddFunction("Exists", file_api_exists_file);

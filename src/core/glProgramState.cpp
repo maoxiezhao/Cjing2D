@@ -59,38 +59,48 @@ void UniformValue::Apply()
 	}
 }
 
-void UniformValue::SetInteger(int value)
+void UniformValue::SetInteger(int value, bool setImmediately)
 {
 	Debug::CheckAssertion(mUniform->type == GL_INT, "Invalid SetUniform operator.");
 	mValue.intValue = value;
+	if (setImmediately)
+		mProgram->SetUniform1i(mUniform->location, value);
 }
 
-void UniformValue::SetFloat(float value)
+void UniformValue::SetFloat(float value, bool setImmediately)
 {
 	Debug::CheckAssertion(mUniform->type == GL_FLOAT, "Invalid SetUniform operator.");
 	mValue.flaotValue = value;
+	if (setImmediately)
+		mProgram->SetUniform1f(mUniform->location, value);
 }
 
-void UniformValue::SetVec3i(const Vec3i & vec3i)
+void UniformValue::SetVec3i(const Vec3i & vec3i, bool setImmediately)
 {
 	Debug::CheckAssertion(mUniform->type == GL_INT_VEC3, "Invalid SetUniform operator.");
 	mValue.intArray[0] = vec3i.x;
 	mValue.intArray[1] = vec3i.y;
 	mValue.intArray[2] = vec3i.z;
+	if (setImmediately)
+		mProgram->SetUniform3i(mUniform->location, mValue.intArray[0], mValue.intArray[1], mValue.intArray[2]);
 }
 
-void UniformValue::SetVec3f(const Vec3f & vec3f)
+void UniformValue::SetVec3f(const Vec3f & vec3f, bool setImmediately)
 {
 	Debug::CheckAssertion(mUniform->type == GL_FLOAT_VEC3, "Invalid SetUniform operator.");
 	mValue.floatArray[0] = vec3f.x;
 	mValue.floatArray[1] = vec3f.y;
 	mValue.floatArray[2] = vec3f.z;
+	if(setImmediately)
+		mProgram->SetUniform3f(mUniform->location, mValue.floatArray[0], mValue.floatArray[1], mValue.floatArray[2]);
 }
 
-void UniformValue::SetMat4(const Matrix4 & mat)
+void UniformValue::SetMat4(const Matrix4 & mat, bool setImmediately )
 {
 	Debug::CheckAssertion(mUniform->type == GL_FLOAT_MAT4, "Invalid SetUniform operator.");
 	memcpy(mValue.matrixValue, &mat, sizeof(mValue.matrixValue));
+	if(setImmediately)
+		mProgram->SetUniformMatrix4f(mUniform->location, mValue.matrixValue);
 }
 
 void UniformValue::SetTexture(GLuint textureId)

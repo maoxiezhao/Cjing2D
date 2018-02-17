@@ -15,13 +15,14 @@ public:
 
 	bool InitWithChars(unsigned char* data);
 	bool InitWithFile(const string& texname);
-	void Bind()const;
+	void Bind(GLuint textureActivity = GL_TEXTURE0)const;
 
 	GLuint GetTextureID()const;
 	Size GetSize()const;
 	void SetSize(const Size& size);
 	void SetInternalFormat(GLuint format);
 	void SetImageFormat(GLuint format);
+	void SetIntenalType(GLuint type);
 
 	bool IsInitialized()const;
 	bool GenerateMipmap(unsigned char * data);
@@ -32,6 +33,7 @@ protected:
 	GLuint mHeight;
 	GLuint mInternalFormat;
 	GLuint mImageFormat;
+	GLuint mType;
 	GLuint mWrapS;
 	GLuint mWrapT;
 	GLuint mFilterMin;
@@ -46,12 +48,14 @@ using TexturePtr = std::shared_ptr<Texture2D>;
 *	使用帧缓冲方式将当前渲染绘制到texture中
 *	因为会占用大量的GPU带宽，不推荐频繁使用
 */
-class RenderTexture : Texture2D
+class RenderTexture : public Texture2D
 {
 public:
 	RenderTexture();
 	~RenderTexture();
 
+	bool InitWithChars(unsigned char* data);
+	bool InitWithFile(const string& texname);
 	bool InitWithSize(int32_t w, int32_t h, bool depthTest = false);
 	void BeginDraw();
 	void EndDraw();

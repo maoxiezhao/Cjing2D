@@ -26,23 +26,26 @@ void LuaContext::RegisterMainModule()
 */
 void LuaContext::OnMainStart()
 {
-	PushMain(l);
-	OnStart();
-	lua_pop(l, 1);
+	//PushMain(l);
+	//OnStart();
+	//lua_pop(l, 1);
+	DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_MAIN_START);
 }
 
 void LuaContext::OnMainUpdate()
 {
-	PushMain(l);
-	OnUpdate();
-	lua_pop(l, 1);
+	//PushMain(l);
+	//OnUpdate();
+	//lua_pop(l, 1);
+	DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_MAIN_UPDATE);
 }
 
 void LuaContext::OnMainFinish()
 {
-	PushMain(l);
-	OnFinish();
-	lua_pop(l, 1);
+	//PushMain(l);
+	//OnFinish();
+	//lua_pop(l, 1);
+	DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_MAIN_STOP);
 }
 
 /**
@@ -50,10 +53,11 @@ void LuaContext::OnMainFinish()
 */
 void LuaContext::OnMainDraw()
 {
-	PushMain(l);
-	OnDraw();
-	OnMenuDraw(-1);
-	lua_pop(l, 1);
+	//PushMain(l);
+	//OnDraw();
+	//OnMenuDraw(-1);
+	//lua_pop(l, 1);
+	DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_MAIN_RENDER);
 }
 
 /**

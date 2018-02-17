@@ -1,6 +1,9 @@
 #pragma once
 
+#include"utils\vec2.h"
 #include"utils\vec3.h"
+#include"utils\point.h"
+#include"utils\ray.h"
 #include"common\common.h"
 
 /**
@@ -43,10 +46,14 @@ public:
 	static Matrix4 Ortho(float width, float height, float zNear, float zFar);
 	
 	// transform
+	void Transform(Vec2i& vec)const;
+	void Transform(const Vec2i& in, Vec2i& out)const;
 	void Transform(Vec3f& vec)const;
-	void Transfomr(const Vec3f& in, Vec3f& out)const;
-//	void Transform(Point& point)const;
-//	void Transfomr(const Point& in, Point& out)const;
+	void Transform(const Vec3f& in, Vec3f& out)const;
+	void Transform(Point2& point)const;
+	void Transform(const Point2& in, Point2& out)const;
+	void Transform(Ray& ray)const;
+	void Transform(const Ray& in, Ray& out)const;
 
 private:
 	union 
@@ -55,20 +62,3 @@ private:
 		float _M[4][4];
 	};
 };
-
-
-
-/*
-Matrix4 Translate(const Vec3f& delta);
-Matrix4 Scale(float x, float y, float z);
-Matrix4 RotateX(float angle);
-Matrix4 RotateY(float angle);
-Matrix4 RotateZ(float angle);
-Matrix4 Rotate(const Vec3f& axis, float angle);
-Matrix4 LookAt(const Vec2f& pos, const Vec2f& look, const Vec3f& up);
-Matrix4 Perspective(float fov, float n, float f);
-Matrix4 Ortho(float width, float height, float zNear, float zFar);
-
-#include"matrix4.inl"
-*/
-

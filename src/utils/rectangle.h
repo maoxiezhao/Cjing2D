@@ -30,6 +30,7 @@ public:
 	Point2 GetPos()const;
 	Size GetSize()const;
 	Point2 GetCenterPos()const;
+	std::vector<Point2> GetPoints()const;
 
 	void AddX(int dx);
 	void AddY(int dy);
@@ -50,7 +51,7 @@ public:
 
 	friend constexpr bool operator==(const Rect& lhs, const Rect& rhs);
 	friend constexpr bool operator!=(const Rect& lhs, const Rect& rhs);
-
+	friend constexpr bool operator<(const Rect& lhs, const Rect& rhs);
 public:
 	int x, y;
 	int width, height;

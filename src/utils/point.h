@@ -23,10 +23,11 @@ public:
 
 constexpr bool operator==(const Point2&lhs, const Point2& rhs);
 constexpr bool operator!=(const Point2&lhs, const Point2& rhs);
+constexpr bool operator<(const Point2&lhs, const Point2& rhs);
 
 constexpr Point2 operator+(const Point2&lhs, const Point2& rhs);
-constexpr Point2 operator-(const Point2&lhs, const Point2& rhs);
-//constexpr Vec2i operator-(const Point2&lhs, const Point2& rhs);
+//constexpr Point2 operator-(const Point2&lhs, const Point2& rhs);
+inline Vec2i operator-(const Point2&lhs, const Point2& rhs);
 
 constexpr Point2 operator*(const Point2&lhs, int factor);
 constexpr Point2 operator/(const Point2&lhs, int divisor);

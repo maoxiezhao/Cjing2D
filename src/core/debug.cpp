@@ -9,7 +9,8 @@ namespace Debug{
 		bool debugStringEnabled = false;
 		bool ShowMsgBox = false; 
 		bool AbortOnDie = false;
-		bool DieOnError = false;
+		bool DieOnError = true;
+		bool debugWarningPause = true;
 	}
 
 	void SetDebugStringEnable(bool t)

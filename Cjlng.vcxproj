@@ -190,6 +190,7 @@
     <ClCompile Include="src\lua\soundApi.cpp" />
     <ClCompile Include="src\lua\spriteApi.cpp" />
     <ClCompile Include="src\lua\timeApi.cpp" />
+    <ClCompile Include="src\lua\utilsApi.cpp" />
     <ClCompile Include="src\lua\videoApi.cpp" />
     <ClCompile Include="src\main\demo.c" />
     <ClCompile Include="src\main\example_gl3.c" />

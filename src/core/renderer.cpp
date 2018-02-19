@@ -375,7 +375,7 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 					Debug::Warning("The quad counts More than the maximum value");
 					DeferredDrawQuadBatches();
 				}
-				char* quads = mDeferredBuffer->GetDataBuffer() + mDeferredQuadsCounts * mDeferredBuffer->GetDataSize();
+				char* quads = mDeferredBuffer->GetDataBuffer() + mDeferredQuadsCounts * mDeferredBuffer->GetDataSize() * 4;
 				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
 				TransformQuadsToWorld(reinterpret_cast<Quad*>(quads), quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
 
@@ -389,7 +389,7 @@ void Renderer::VisitRenderQueue(const RenderQueue & queue)
 					Debug::Warning("The quad counts More than the maximum value");
 					ForwardDrawQuadBatches();
 				}
-				char* quads = mForwardBuffer->GetDataBuffer() + mForwardQuadsCounts * mForwardBuffer->GetDataSize();
+				char* quads = mForwardBuffer->GetDataBuffer() + mForwardQuadsCounts * mForwardBuffer->GetDataSize() * 4;
 				memcpy(quads, quadCommand->GetQuads(), sizeof(Quad)*quadCommand->GetQuadCounts());
 				TransformQuadsToWorld(reinterpret_cast<Quad*>(quads), quadCommand->GetQuadCounts(), quadCommand->GetTransfomr());
 
@@ -550,9 +550,8 @@ namespace
 				command->UseShade();
 			}
 			quadToDraw++;	// += command->getQuadCount();
-			break;
-
 		}
+
 		// 绘制最后的quads
 		if (quadToDraw > 0)
 		{

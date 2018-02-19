@@ -36,6 +36,7 @@ void Tile::Build()
 		Debug::Error("The tileset's image is not exists.");
 	}
 	mTileSprite = std::make_shared<Sprite>(tilesetImage->GetTexture());
+	mTileSprite->SetDeferredDraw(true);
 }
 
 EntityType Tile::GetEntityType() const

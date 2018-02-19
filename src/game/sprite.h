@@ -55,6 +55,7 @@ public:
 	void SetScale(float x, float y);
 	void SetFlipX(bool fliped);
 	void SetFlipY(bool fliped);
+	void SetDeferredDraw(bool deferred);
 	virtual void SetSuspended(bool suspended);
 
 	TexturePtr GetTexture()const;
@@ -111,6 +112,8 @@ protected:
 
 	bool mVisible;
 	bool mDirty;			/** 是否需要重新填充quad */
+	bool mDeferred;			/** 是否延迟渲染 */
+	bool mPreDeferred;		/** 上一个programState是否是deferred的，仅仅为了配合mPreProgramState */
 
 	uint32_t mBlinkDelay;
 	uint32_t mBlinkNextDate;

@@ -207,6 +207,7 @@ void VertexBuffer::BeginDraw(int vertexCount)
 {
 	size_t allocSize = mDataInfo.dataSize*vertexCount;
 	glBindVertexArray(mVAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVEO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glBufferData(GL_ARRAY_BUFFER, allocSize, nullptr, GL_DYNAMIC_DRAW);
 	void*buf = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);

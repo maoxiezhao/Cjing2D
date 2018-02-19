@@ -119,7 +119,6 @@ void PointLight::Render()
 	}
 
 	Renderer::GetInstance().PushPolygon(pv);
-	mLightMesh.clear();
 }
 
 /**
@@ -195,6 +194,8 @@ void PointLight::CalucateLightMesh()
 {
 	if (!mDirty)
 		return;
+
+	mLightMesh.clear();
 
 	// 0.Ä¬ÈÏÌí¼Ólight·¶Î§rect
 	for (auto& point : mLightRect.GetPoints())

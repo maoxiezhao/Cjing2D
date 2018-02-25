@@ -23,29 +23,30 @@ public:
 	Grid(const Size& size, const Size& cellSize);
 	~Grid() { Clear(); }
 
-	void Add(const T& element, const Rect& boundingBox);
-
+	bool Add(const T& element, const Rect& boundingBox);
 	std::vector<T> GetElements(int cellIndex)const;
 	std::vector<T> GetElements(const Rect& boundingBox)const;
 	void GetElements(const Rect& boundingBox, std::vector<T>& elements)const;
-
-	void Clear()
-	{
-		for (auto& cell : mCells)
-		{
+	
+	void Clear(){
+		for (auto& cell : mCells){
 			cell.Clear();
 		}
 		mCells.clear();
 	}
-
-	Size GetGridSize()const
-	{
+	Size GetGridSize()const{
 		return mSize;
 	}
-
-	Size GetCellSize()const
-	{
+	Size GetCellSize()const{
 		return mCellSize;
+	}
+	void SetCellCapacity(int capacity)	{
+		mCellCapacity = capacity;
+		for (auto& cell : mCells)
+			cell.SetCellCapacity(capacity);
+	}
+	int GetCellCapacity()const{
+		return mCellCapacity;
 	}
 
 private:
@@ -63,9 +64,13 @@ private:
 		{
 			mObjects.push_back(t);
 		}
-		void Add(const T& t)
+		bool Add(const T& t)
 		{
+			if (mCellCapacity >= 0 && mObjects.size() >= mCellCapacity)
+				return false;
+
 			mObjects.push_back(t);
+			return true;
 		}
 		void Clear()
 		{
@@ -75,7 +80,12 @@ private:
 		{
 			return mObjects;
 		}
+		void SetCellCapacity(int capacity)
+		{
+			mCellCapacity = capacity;
+		}
 	private:
+		int mCellCapacity;
 		std::vector<T> mObjects;
 	};
 
@@ -84,11 +94,13 @@ private:
 	Size mCellSize;
 	int mColsCount;
 	int mRowCount;
+	int mCellCapacity;
 	std::vector<Cell > mCells;
 };
 
 template<typename T>
-Grid<T>::Grid(const std::vector<T>& objs)
+Grid<T>::Grid(const std::vector<T>& objs):
+	mCellCapacity(-1)
 {
 	for (auto& obj : objs)
 	{
@@ -99,7 +111,8 @@ Grid<T>::Grid(const std::vector<T>& objs)
 template<typename T>
 inline Grid<T>::Grid(const Size & size, const Size & cellSize) :
 	mSize(size),
-	mCellSize(cellSize)
+	mCellSize(cellSize),
+	mCellCapacity(-1)
 {
 	mColsCount = mSize.width / mCellSize.width  + (mSize.width % mCellSize.width != 0 ? 1 : 0 );
 	mRowCount = mSize.height / mCellSize.height + (mSize.height % mCellSize.height != 0 ? 1 : 0);;
@@ -108,7 +121,7 @@ inline Grid<T>::Grid(const Size & size, const Size & cellSize) :
 }
 
 template<typename T>
-inline void Grid<T>::Add(const T & element, const Rect & boundingBox)
+inline bool Grid<T>::Add(const T & element, const Rect & boundingBox)
 {
 	int colStart = boundingBox.x / mCellSize.width;
 	int colEnd = (boundingBox.x + boundingBox.width) / mCellSize.width;
@@ -130,9 +143,11 @@ inline void Grid<T>::Add(const T & element, const Rect & boundingBox)
 
 			int index = row * mColsCount + col;
 			auto& cell = mCells[index];
-			cell.Add(element);
+			if (!cell.Add(element))
+				return false;
 		}
 	}
+	return true;
 }
 
 template<typename T>

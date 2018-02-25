@@ -4,6 +4,7 @@
 #include"common\common.h"
 #include"lua\luaObject.h"
 #include"game\drawable.h"
+#include"game\mapGenerate.h"
 #include"utils\size.h"
 #include"utils\rectangle.h"
 #include"entity\groundInfo.h"
@@ -101,6 +102,7 @@ private:
 
 	std::unique_ptr<Entities> mEntities;
 
+	MapGenerate mMapGenerate;
 };
 
 #endif

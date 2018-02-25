@@ -38,4 +38,6 @@ using ubyte = unsigned char;
 #define NANOVG_GL3_IMPLEMENTATION
 #define NANOVG_GLEW
 
+#define CJING_DEBUG 
+
 #endif

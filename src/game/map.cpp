@@ -73,6 +73,13 @@ void Map::Load(Game * game)
 	
 	mCamera = mEntities->GetCamear();
 	mIsLoaded = true;
+
+	// debug map load
+	if (!mMapGenerate.LoadMap(GetMapID()))
+	{
+		Debug::Die("Failed to load map file '" + GetMapID());
+		return;
+	}
 }
 
 void Map::UnLoad()
@@ -324,6 +331,9 @@ void Map::Draw()
 	{
 		return;
 	}
+	// test
+	mMapGenerate.DrawDebug();
+
 	DrawBackground();
 	mEntities->Draw();
 	DrawForeground();

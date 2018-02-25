@@ -20,6 +20,7 @@ namespace FileData
 	string ReadFile(const string& name);
 	bool SaveFile(const string& name,const string&buffer);
 	bool DeleteFile(const string& name);
+	string GetPositivePath(const string& srcPath, const string& curPath);
 }
 
 #endif

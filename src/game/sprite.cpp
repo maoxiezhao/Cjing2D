@@ -16,6 +16,8 @@ Sprite::Sprite():
 	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
+	mDeferred(false),
+	mPreDeferred(false),
 	mAnchor(0, 0),
 	mBlendFunc(),
 	mBlinkDelay(0),
@@ -38,6 +40,8 @@ Sprite::Sprite(const std::string & name):
 	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
+	mDeferred(false),
+	mPreDeferred(false),
 	mAnchor(0,0),
 	mBlendFunc(),
 	mBlinkDelay(0),
@@ -61,6 +65,8 @@ Sprite::Sprite(TexturePtr tex, TexturePtr normalTex):
 	mNormalTexture(normalTex),
 	mVisible(true),
 	mDirty(true),
+	mDeferred(false),
+	mPreDeferred(false),
 	mAnchor(0, 0),
 	mBlendFunc(),
 	mBlinkDelay(0),
@@ -86,6 +92,8 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mNormalTexture(nullptr),
 	mVisible(true),
 	mDirty(true),
+	mDeferred(false),
+	mPreDeferred(false),
 	mAnchor(0, 0),
 	mBlendFunc(),
 	mBlinkDelay(0),
@@ -226,7 +234,7 @@ void Sprite::Draw(Renderer & renderer, const Matrix4 & transform)
 		mTexture != nullptr ? mTexture->GetTextureID(): 0,	// 这里需要考虑无纹理色块
 		mNormalTexture != nullptr ? mNormalTexture->GetTextureID() : 0,
 		mQuad, 1, mBlendFunc,transform,mModelView);
-
+	mQuadCommand.SetDeferredShade(mDeferred);
 	renderer.PushCommand(&mQuadCommand);
 }
 
@@ -239,7 +247,7 @@ void Sprite::MultiplyDraw(Renderer & renderer, const Matrix4 & transform)
 		mTexture != nullptr ? mTexture->GetTextureID() : 0,	// 这里需要考虑无纹理色块
 		mNormalTexture != nullptr ? mNormalTexture->GetTextureID() : 0,
 		mQuad, 1, mBlendFunc, transform, mModelView, true);
-
+	quadCommand->SetDeferredShade(mDeferred);
 	renderer.PushCommand(quadCommand);
 }
 
@@ -348,8 +356,9 @@ void Sprite::SetDefaultNormalState()
 */
 void Sprite::SetDefaultColorProgramState()
 {
-	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME);
-	mModelView = Renderer::GetInstance().GetCameraMatrix();
+	// 着色器优化，避免Link过多的着色器
+	//mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME);
+	//mModelView = Renderer::GetInstance().GetCameraMatrix();
 }
 
 /**
@@ -457,6 +466,23 @@ void Sprite::SetFlipY(bool fliped)
 		mFlipY = fliped;
 		Rect rect = Rect(GetPos(), GetSize());
 		SetTextureRect(rect);
+	}
+}
+
+/**
+*	\brief 设置当前sprite为延迟绘制
+*/
+void Sprite::SetDeferredDraw(bool deferred)
+{
+	if (mDeferred != deferred)
+	{
+		if (deferred)	{
+			SetProgramState(ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME));
+			mDeferred = true;
+		}else{
+			SetDefaultNormalState();
+			mDeferred = false;
+		}
 	}
 }
 
@@ -625,6 +651,7 @@ void Sprite::SetOutLine(float outLineWidth)
 		mPreProgramState = GetProgramState();
 		SetProgramState(outLinedprogramState);
 		mOutLineWidth = outLineWidth;
+		mPreDeferred = mDeferred;
 	}
 	else if(outLineWidth <= 0.0f)
 	{
@@ -632,6 +659,7 @@ void Sprite::SetOutLine(float outLineWidth)
 			"The previous programState is nullptr.");
 		SetProgramState(mPreProgramState);
 		mOutLineWidth = outLineWidth;
+		mDeferred = mPreDeferred;
 	}
 }
 

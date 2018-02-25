@@ -162,4 +162,29 @@ namespace FileData
 		return true;
 	}
 
+	/**
+	*	\brief 获取相对路劲
+	*
+	*	根据curPath会计算相对路劲，其中curPath中开头包含./
+	*	则会从srcPath上一级目录下寻找文件
+	*/
+	string GetPositivePath(const string & srcPath, const string & curPath)
+	{
+		std::string path = srcPath;
+		std::string filePath = curPath;
+		for (const auto& c : curPath)
+		{
+			if (c != '.')
+				break;
+			int pos = path.rfind("/", path.length() - 2);
+			if (pos != std::string::npos)
+			{
+				filePath = filePath.substr(1);
+				path = path.substr(0, pos);
+			}
+		}
+		return path + filePath;
+	}
+
+
 }

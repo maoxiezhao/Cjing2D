@@ -185,8 +185,8 @@ bool LuaContext::LoadFile(lua_State* l, const string& name)
 {
 	string fileName(name);
 	// 如果不存在，在末尾加上Lua后再尝试
-	if(!FileData::IsFileExists(fileName))
-		fileName += ".lua";
+	//if (!FileData::IsFileExists(fileName))
+	fileName += ".lua";
 
 	// 如果依旧不存在则返回
 	if (!FileData::IsFileExists(fileName))

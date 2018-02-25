@@ -6,6 +6,8 @@
 #include"player\mouseState.h"
 #include"player\playerSprite.h"
 
+#include"gui\core\uiRender.h"
+
 Player::Player(Equipment & equipment) :
 	Entity("", { 50, 50 }, {22, 20}, 0),	// testing data
 	mPlayerSprites(nullptr),
@@ -56,6 +58,12 @@ void Player::Draw()
 //	DrawDebugBounding();
 
 	mPlayerSprites->Draw();
+
+#if defined CJING_DEBUG
+	std::ostringstream oss;
+	oss << "player pos: x " << GetPos().x << "  y " << GetPos().y;
+	gui::UIRender::renderDebugString(oss.str());
+#endif
 }
 
 void Player::Initalized()

@@ -4,6 +4,7 @@
 #include"lua\luaData.h"
 #include"utils\size.h"
 #include"utils\point.h"
+#include"utils\rectangle.h"
 #include"entity\EntityData.h"
 
 #include<deque>
@@ -35,6 +36,7 @@ public:
 	void SetTitlesetID(const string& id);
 	const string& getTitlesetID()const;
 	bool IsValidLayer(int layer)const;
+	Rect GetRect()const;
 
 	/***** ***** ****** entity ***** ***** ******/
 
@@ -57,3 +59,5 @@ private:
 	std::map<int, EntityDataList> mEntitiesByLayer;	/** 存储每层的entity数据信息 */
 
 };
+
+using MapDataPtr = std::shared_ptr<MapData>;

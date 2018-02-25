@@ -11,6 +11,15 @@ bool LuaData::ImportFromFile(const string & filename)
 		return false;
 	}
 
+	mFileName = filename;
+	mFilePath = "";
+	int pos = filename.rfind("/");
+	if (pos != std::string::npos)
+	{
+		mFileName = filename.substr(pos + 1);
+		mFilePath = filename.substr(0, pos + 1);
+	}
+	
 	const string buffer = FileData::ReadFile(filename);
 	lua_State* l = luaL_newstate();
 	if ( luaL_loadbuffer(l, buffer.data(), buffer.size(), filename.c_str()) != 0)
@@ -22,4 +31,14 @@ bool LuaData::ImportFromFile(const string & filename)
 	bool success = ImportFromLua(l);
 	lua_close(l);
 	return success;
+}
+
+std::string LuaData::GetFileName() const
+{
+	return mFileName;
+}
+
+std::string LuaData::GetFilePath() const
+{
+	return mFilePath;
 }

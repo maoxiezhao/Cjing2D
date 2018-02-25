@@ -74,6 +74,11 @@ bool MapData::IsValidLayer(int layer) const
 		layer <= mMaxLayer);
 }
 
+Rect MapData::GetRect() const
+{
+	return Rect(mPosition, mSize);
+}
+
 /**
 *	\brief 添加一个entityData
 *	\return 添加成功返回true,反之返回false

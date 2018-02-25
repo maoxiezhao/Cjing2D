@@ -38,10 +38,12 @@ void PlayerSprite::BuildSprites()
 	// 创建影子的sprite
 	mShadowSprite = mPlayer.CreateAnimationSprite("entities/shadow", "big");
 	mShadowSprite->SetAnchorFloat(0.5f, 0.85f);
+	mShadowSprite->SetDeferredDraw(true);
 
 	// 创建身体的sprite
 	mBodySprite = mPlayer.CreateAnimationSprite("players/player", walkAnimationName); 
 	mBodySprite->SetCurrDirection(0);
+	mBodySprite->SetDeferredDraw(true);
 
 	SetAnimationDirection4(Direction4::DIRECTION4_DOWN);
 	SetStopNormalAnimation();

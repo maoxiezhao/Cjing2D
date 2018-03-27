@@ -72,7 +72,7 @@ public:
 
 	// render function 
 	static void RenderImage(const ImageRenderInfo& imageInfo);
-	static void RenderText();
+	static void RenderText(const std::string& str, int x, int y);
 	static void RenderShape(const Rect& rect, const Color4B& color);
 
 	// debug

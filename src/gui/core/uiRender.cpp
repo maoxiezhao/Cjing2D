@@ -17,7 +17,8 @@ namespace
 
 	struct DebugRect { Rect rect; Color4B color; };
 	std::vector<DebugRect> mRenderDebugRect;	/** 绘制的rect,当前临时这么做 */
-
+	struct DebugText { Point2 pos; std::string text; };
+	std::vector<DebugText> mRenderDebugText;
 	/**
 	*	\brief 检查是否需要九宫格处理
 	*/
@@ -128,6 +129,14 @@ void UIRender::RenderImage(const ImageRenderInfo & imageInfo)
 			}
 		}
 	}
+}
+
+void UIRender::RenderText(const std::string & str, int x, int y)
+{
+	DebugText debugText;
+	debugText.pos = Point2(x, y);
+	debugText.text = str;
+	mRenderDebugText.push_back(debugText);
 }
 
 /**
@@ -308,6 +317,17 @@ void UIRender::renderDebugBoard(float x, float y, float w, float h)
 		nvgFill(vg);
 	}
 	mRenderDebugRect.clear();
+
+	// 绘制debugText
+	for (auto debugText : mRenderDebugText)
+	{
+		auto& text = debugText.text;
+		const char *start = text.data();
+		const char* end = start + strlen(text.c_str());
+		nvgBeginPath(vg);
+		nvgText(vg, debugText.pos.x, debugText.pos.y, start, end);
+	}
+	mRenderDebugText.clear();
 }
 
 /**

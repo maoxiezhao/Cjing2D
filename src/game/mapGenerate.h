@@ -7,7 +7,6 @@
 /**
 *	\brief 随机地图生成
 */
-
 /**
 *	\brief MapGenerateData
 *
@@ -46,13 +45,6 @@ public:
 	
 	void AddRoomInfo(const std::string& roomID, MapRoomInfo roomInfo);
 	const std::map<string, MapRoomInfo>& GetRoomInfos()const { return mRoomInfos; }
-
-	//std::string GetMapID()const { return mMapID; }
-	//Point2 GetPos()const { return mPos; }
-	//Size GetSize()const { return mSize; }
-	//int GetMinLayer()const { return mMinLayer; }
-	//int GetMaxLayer()const { return mMaxLayer; }
-	//bool IsRandomGenerate()const { return mRandomGenerate; }
 	
 private:
 	string mMapID;
@@ -90,24 +82,39 @@ public:
 	std::unordered_map<string, int> GetMapRoomCount()const;
 	std::vector<string> GetMapRoomIDs()const;
 
-	static const int cellSize = 32;
+	static const int cellSize = 32 * 3;
 	static const int maxTryTimes = 50;
+
+	enum HallWayType {
+		HallWayUp,
+		HallWayDown,
+		HallWayLeft,
+		HallWayRight,
+	};
 
 private:
 	void AddMapData(const std::string& name, MapDataPtr mapData, int count);
 	bool RandomGenerateMap();
-	bool RandomGenerateHallWay();
-
+	bool RandomGenerateHallWay(util::Grid<int>& grid);
+	bool QuickGenerateHallWay(util::Grid<int>& grid);
+	bool ConnectRegions(util::Grid<int>& grid, const std::vector<int>& regions);
+	bool RemoveDeadWay(util::Grid<int>& grid);
 private:
 	std::string mMapID;
 	Point2 mPos;
 	Size mSize;
 	int mMinLayer, mMaxLayer;
 	int mRoomCount;
+	bool mRandomGenerateHallWay;
 
 	std::vector<string> mMapRoomIDs;
 	std::unordered_map<string, MapDataPtr> mMapRooms;
 	std::unordered_map<string, int> mMapRoomCount;
 	std::unordered_map<string, std::vector<Rect> > mMapRoomRect;
 
+	// hallway data
+	float mWindingPrecent;
+
+	// debug data
+	std::vector<int> mDebugGrid;
 };

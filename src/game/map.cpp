@@ -334,9 +334,9 @@ void Map::Draw()
 	// test
 	mMapGenerate.DrawDebug();
 
-	DrawBackground();
-	mEntities->Draw();
-	DrawForeground();
+	//DrawBackground();
+	//mEntities->Draw();
+	//DrawForeground();
 
 	GetLuaContext().OnMapDraw(*this);
 }

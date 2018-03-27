@@ -331,6 +331,7 @@
     <ClInclude Include="src\player\mouseState.h" />
     <ClInclude Include="src\player\movementState.h" />
     <ClInclude Include="src\player\playerSprite.h" />
+    <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\geometry.h" />
     <ClInclude Include="src\utils\grid.h" />
@@ -358,6 +359,7 @@
     <None Include="src\game\enumInfo.inl" />
     <None Include="src\lua\luaContext.inl" />
     <None Include="src\lua\luaTools.inl" />
+    <None Include="src\utils\bevTree.inl" />
     <None Include="src\utils\color.inl" />
     <None Include="src\utils\matrix4.inl" />
     <None Include="src\utils\point.inl" />

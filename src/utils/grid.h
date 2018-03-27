@@ -24,6 +24,8 @@ public:
 	~Grid() { Clear(); }
 
 	bool Add(const T& element, const Rect& boundingBox);
+	bool Add(const T& element, int col, int row);
+	std::vector<T> GetElements(int col, int row)const;
 	std::vector<T> GetElements(int cellIndex)const;
 	std::vector<T> GetElements(const Rect& boundingBox)const;
 	void GetElements(const Rect& boundingBox, std::vector<T>& elements)const;
@@ -48,7 +50,12 @@ public:
 	int GetCellCapacity()const{
 		return mCellCapacity;
 	}
-
+	int GetCols()const {
+		return mColsCount;
+	}
+	int GetRows()const {
+		return mRowCount;
+	}
 private:
 	/**
 	*	\brief Cell 网格子结构
@@ -124,17 +131,17 @@ template<typename T>
 inline bool Grid<T>::Add(const T & element, const Rect & boundingBox)
 {
 	int colStart = boundingBox.x / mCellSize.width;
-	int colEnd = (boundingBox.x + boundingBox.width) / mCellSize.width;
+	int colEnd = (boundingBox.x + boundingBox.width - 1) / mCellSize.width;
 	int rowStart = boundingBox.y / mCellSize.height;
-	int rowEnd = (boundingBox.y + boundingBox.height) / mCellSize.height;
+	int rowEnd = (boundingBox.y + boundingBox.height - 1) / mCellSize.height;
 
-	for (int row = rowStart; row <= rowEnd; row++)
+	for (int row = rowStart; row <= rowEnd; row++)  
 	{
 		if (row < 0 || row >= mRowCount)
 		{
 			continue;
 		}
-		for (int col = colStart; col <= colEnd; col++)
+		for (int col = colStart; col <= colEnd; col++) 
 		{
 			if (col < 0 || col >= mColsCount)
 			{
@@ -151,11 +158,32 @@ inline bool Grid<T>::Add(const T & element, const Rect & boundingBox)
 }
 
 template<typename T>
+inline bool Grid<T>::Add(const T & element, int col, int row)
+{
+	int index = row * mColsCount + col;
+	Debug::CheckAssertion(index >= 0 && index < mColsCount * mRowCount,
+		"Invalid index Add elements in grid. col:" + std::to_string(col) + ",row:" + std::to_string(row));
+	auto& cell = mCells[index];
+	if (!cell.Add(element))
+		return false;
+	return true;
+}
+
+template<typename T>
+inline std::vector<T> Grid<T>::GetElements(int col, int row) const
+{
+	return GetElements(row * mColsCount + col);
+}
+
+template<typename T>
 inline std::vector<T> Grid<T>::GetElements(int cellIndex) const
 {
-	Debug::CheckAssertion(cellIndex >= 0 && cellIndex < mColsCount * mRowCount,
-		"Invalid index getting elements in grid.");
-	return mCells.at(index);
+	/*Debug::CheckAssertion(cellIndex >= 0 && cellIndex < mColsCount * mRowCount,
+		"Invalid index getting elements in grid.");*/
+	if (cellIndex >= 0 && cellIndex < mColsCount * mRowCount)
+		return mCells.at(cellIndex).GetElements();
+	else
+		return std::vector<T>();
 }
 
 template<typename T>
@@ -181,7 +209,6 @@ inline std::vector<T> Grid<T>::GetElements(const Rect & boundingBox) const
 				continue;
 			}
 		
-
 			int index = row * mColsCount + col;
 			auto& cell = mCells[index];
 			for (auto& element : cell.GetElements())

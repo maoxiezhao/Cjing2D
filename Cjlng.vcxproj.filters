@@ -837,6 +837,9 @@
     <ClInclude Include="src\utils\ray.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\bevTree.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -876,6 +879,9 @@
     </None>
     <None Include="src\lua\luaContext.inl">
       <Filter>lua</Filter>
+    </None>
+    <None Include="src\utils\bevTree.inl">
+      <Filter>utils</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -16,6 +16,8 @@ class App;
 *	设置（例如按键绑定，屏幕设定）
 *
 *	目前按键绑定保存到文档中，未来考虑保存成单独的Input dat文件
+*
+*	saveGame 作为全局对象，可以任意存储lua table格式 2018.3.15
 */
 class Savegame : public LuaObject
 {

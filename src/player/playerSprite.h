@@ -23,6 +23,7 @@ public:
 	/** Animation control */
 	void SetWalkingNormalAnimation();
 	void SetStopNormalAnimation();
+	void SetShiftNormalAnimation();
 
 	/** Status */
 	void SetAnimationDirection4(Direction4 direction);

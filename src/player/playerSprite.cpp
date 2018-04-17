@@ -4,6 +4,7 @@
 namespace{
 	const std::string walkAnimationName = "walking";
 	const std::string stopAnimationName = "stopping";
+	const std::string shiftAnimationName = "shifting";
 
 	// 4方向动画方向，用于多个方向产生时确定
 	// 真正移动的方向,仅用在4方向行走图
@@ -37,11 +38,12 @@ void PlayerSprite::BuildSprites()
 
 	// 创建影子的sprite
 	mShadowSprite = mPlayer.CreateAnimationSprite("entities/shadow", "big");
-	mShadowSprite->SetAnchorFloat(0.5f, 0.85f);
+	mShadowSprite->SetSize({20, 10});
+	mShadowSprite->SetAnchorFloat(0.8f, 1.5f);
 	mShadowSprite->SetDeferredDraw(true);
 
 	// 创建身体的sprite
-	mBodySprite = mPlayer.CreateAnimationSprite("players/player", walkAnimationName); 
+	mBodySprite = mPlayer.CreateAnimationSprite("players/player_a", walkAnimationName); 
 	mBodySprite->SetCurrDirection(0);
 	mBodySprite->SetDeferredDraw(true);
 
@@ -92,6 +94,15 @@ void PlayerSprite::SetWalkingNormalAnimation()
 void PlayerSprite::SetStopNormalAnimation()
 {
 	mBodySprite->SetCurrAnimation(stopAnimationName);
+	mBodySprite->StartAnimation();
+}
+
+/**
+*	\brief 设置当前动画为快速位移动画
+*/
+void PlayerSprite::SetShiftNormalAnimation()
+{
+	mBodySprite->SetCurrAnimation(shiftAnimationName);
 	mBodySprite->StartAnimation();
 }
 

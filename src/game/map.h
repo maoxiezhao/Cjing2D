@@ -5,6 +5,7 @@
 #include"lua\luaObject.h"
 #include"game\drawable.h"
 #include"game\mapGenerate.h"
+#include"game\sprite.h"
 #include"utils\size.h"
 #include"utils\rectangle.h"
 #include"entity\groundInfo.h"
@@ -75,6 +76,7 @@ public:
 	Size GetSize()const;
 	int GetWidth()const;
 	int GetHeight()const;
+	void SetBackground(SpritePtr background);
 
 	// test collison
 	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);
@@ -97,10 +99,12 @@ private:
 	/** entity */
 	string mTilesetId;
 	std::shared_ptr<Tileset> mTileset;
-
 	std::shared_ptr<Camera> mCamera;
-
 	std::unique_ptr<Entities> mEntities;
+
+	/** background */
+	SpritePtr mBackGround;
+	SpritePtr mFrontGround;
 
 	MapGenerate mMapGenerate;
 };

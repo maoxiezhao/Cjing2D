@@ -180,6 +180,8 @@ bool MapGenerate::SaveMap()
 */
 void MapGenerate::DrawDebug()
 {
+	return;
+
 	const Size screenSize = Video::GetScreenSize();
 	float ratioX = (float)mSize.width / screenSize.width;
 	float ratioY = (float)mSize.height / screenSize.height;

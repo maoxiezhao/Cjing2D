@@ -129,6 +129,7 @@
     <ClCompile Include="src\entity\tilepattern.cpp" />
     <ClCompile Include="src\entity\tileRegions.cpp" />
     <ClCompile Include="src\entity\tileset.cpp" />
+    <ClCompile Include="src\entity\trigger.cpp" />
     <ClCompile Include="src\game\animation.cpp" />
     <ClCompile Include="src\game\animationData.cpp" />
     <ClCompile Include="src\game\animationSet.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="src\game\drawable.cpp" />
     <ClCompile Include="src\game\equipment.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\gameBevTree.cpp" />
     <ClCompile Include="src\game\gameCommands.cpp" />
     <ClCompile Include="src\game\gameResources.cpp" />
     <ClCompile Include="src\game\item.cpp" />
@@ -261,6 +263,7 @@
     <ClInclude Include="src\entity\tilepattern.h" />
     <ClInclude Include="src\entity\tileRegions.h" />
     <ClInclude Include="src\entity\tileset.h" />
+    <ClInclude Include="src\entity\trigger.h" />
     <ClInclude Include="src\game\animation.h" />
     <ClInclude Include="src\game\animationSet.h" />
     <ClInclude Include="src\game\animationSprite.h" />
@@ -269,6 +272,7 @@
     <ClInclude Include="src\game\enumInfo.h" />
     <ClInclude Include="src\game\equipment.h" />
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\gameBevTree.h" />
     <ClInclude Include="src\game\gameCommands.h" />
     <ClInclude Include="src\game\gameResources.h" />
     <ClInclude Include="src\game\gameResourceType.h" />

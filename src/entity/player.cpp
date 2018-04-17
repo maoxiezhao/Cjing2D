@@ -9,14 +9,15 @@
 #include"gui\core\uiRender.h"
 
 Player::Player(Equipment & equipment) :
-	Entity("", { 50, 50 }, {22, 20}, 0),	// testing data
+	Entity("", { 50, 50 }, {26, 20}, 0),	// testing data
 	mPlayerSprites(nullptr),
 	mEquipment(equipment),
 	mNormalWalkingSpeed(100),
 	mCurWalkingSpeed(100),
+	mShiftSpeed(300),
 	mIsBindDirectionByGameCommand(true)
 {
-	SetOrigin({ -9, -22 });
+	SetOrigin({ -3, -22 });
 	SetDrawOnYOrder(true);
 
 	// 设置当前player sprites
@@ -55,7 +56,7 @@ void Player::Draw()
 	// now testing data
 	Debug::CheckAssertion(mPlayerSprites != nullptr, "Player sprites is null.");
 
-//	DrawDebugBounding();
+	//DrawDebugBounding();
 
 	mPlayerSprites->Draw();
 
@@ -97,6 +98,14 @@ int Player::GetWalkingSpeed() const
 	return mCurWalkingSpeed;
 }
 
+/**
+*	\brief 获取当前瞬移速度
+*/
+int Player::GetShiftSpeed() const
+{
+	return mShiftSpeed;
+}
+
 PlayerSprite & Player::GetPlayerSprites()
 {
 	return *mPlayerSprites;
@@ -114,6 +123,15 @@ EntityType Player::GetEntityType() const
 void Player::SetBindDirectoinByGameCommand(bool binded)
 {
 	mIsBindDirectionByGameCommand = binded;
+}
+
+/**
+*	\brief 获取sprite的方向
+*	\return 以8方向形式返回
+*/
+Direction8 Player::GetDirection8() const
+{
+	return mPlayerSprites->GetAnimationDirection8();
 }
 
 /**

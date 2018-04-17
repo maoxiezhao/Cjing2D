@@ -18,6 +18,7 @@ const EnumInfo<InputEvent::KeyboardKey>::nameType EnumInfoTraits<InputEvent::Key
 	{InputEvent::KEY_SLASH,"slash"},
 	{InputEvent::KEY_SEMICOLON,"semicolor"},
 	{InputEvent::KEY_BACKSLASH,"backslash"},
+	{InputEvent::KEY_SPACE, "space"},
 
 	{InputEvent::KEY_0,"0" },
 	{InputEvent::KEY_1,"1" },

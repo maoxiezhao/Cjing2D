@@ -9,6 +9,7 @@
 class Timer
 {
 public:
+	Timer();
 	Timer(uint32_t duration);
 
 	void Update();

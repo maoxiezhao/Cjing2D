@@ -36,6 +36,9 @@ void EntityState::NotifyCommandPressed(const GameCommand & command)
 	case GameCommand::GAME_COMMAND_INTERACT:
 		NotifyCommandInteractPressed();
 		break;
+	case GameCommand::GAME_COMMAND_SHIFT:
+		NotifyCommandShiftPressed();
+		break;
 	default:
 		break;
 	}
@@ -83,6 +86,10 @@ void EntityState::NotifyCommandDirectionReleased(Direction4 direction)
 void EntityState::NotifyCommandInteractPressed()
 {
 	// do nothing
+}
+
+void EntityState::NotifyCommandShiftPressed()
+{
 }
 
 Direction8 EntityState::GetWantedDirection8() const

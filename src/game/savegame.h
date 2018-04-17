@@ -48,6 +48,7 @@ public:
 	static const std::string GAMECOMMAND_KEYBOARD_DOWN;
 	static const std::string GAMECOMMAND_KEYBOARD_LEFT;
 	static const std::string GAMECOMMAND_KEYBOARD_INTERACT;
+	static const std::string GAMECOMMAND_KEYBOARD_SHIFT;
 
 	/*** *** 当前游戏数值的Keyword *** ***/
 	static const std::string KEYWORD_START_MAP;

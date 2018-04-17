@@ -45,6 +45,18 @@ void MovementState::NotifyMovementChanged()
 	{
 		SetPlayerWalkingAnimation();
 	}
+
+	// 设置快速位移动画
+	if (mPlayerMovement->IsShifting())
+	{
+		SetPlayerShiftingAnimation();
+	}
+}
+
+void MovementState::NotifyCommandShiftPressed()
+{
+	auto& player = dynamic_cast<Player&>(GetEntity());
+	mPlayerMovement->StartShift(player.GetShiftSpeed());
 }
 
 void MovementState::SetPlayerWalkingAnimation()
@@ -57,4 +69,10 @@ void MovementState::SetPlayerStopAnimation()
 {
 	auto& player = dynamic_cast<Player&>(GetEntity());
 	player.GetPlayerSprites().SetStopNormalAnimation();;
+}
+
+void MovementState::SetPlayerShiftingAnimation()
+{
+	auto& player = dynamic_cast<Player&>(GetEntity());
+	player.GetPlayerSprites().SetShiftNormalAnimation();
 }

@@ -48,11 +48,12 @@ public:
 	virtual bool IsStarted()const;
 
 	// lua
-	void NotifyPositonChanged();
-	void NotifyMovementChanged();
-	void NotifyMovementFinished();
-	void NotifyObstacleReached();
+	virtual void NotifyPositonChanged();
+	virtual void NotifyMovementChanged();
+	virtual void NotifyMovementFinished();
+	virtual void NotifyObstacleReached();
 	virtual const string GetLuaObjectName()const;
+
 	void SetFinishedCallBack(const LuaRef& callback);
 
 	// test collision
@@ -76,7 +77,6 @@ private:
 	Entity* mEntity;
 
 	LuaRef mFinishedCallBack;
-	
 };
 
 using MovementPtr = std::shared_ptr<Movement>;

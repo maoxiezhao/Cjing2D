@@ -11,6 +11,7 @@ const std::string Savegame::GAMECOMMAND_KEYBOARD_RIGHT = "keyboard_right";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_DOWN = "keyboard_down";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_LEFT = "keyboard_left";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_INTERACT = "keyboard_interact";
+const std::string Savegame::GAMECOMMAND_KEYBOARD_SHIFT = "keyboard_shift";
 
 const std::string Savegame::KEYWORD_START_MAP = "keyword_start_map";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
@@ -258,6 +259,7 @@ void Savegame::SetDefaultCommandMappingKeyBoard()
 	SetString(GAMECOMMAND_KEYBOARD_DOWN, EnumToString(InputEvent::KEY_s));
 	SetString(GAMECOMMAND_KEYBOARD_LEFT, EnumToString(InputEvent::KEY_a));
 	SetString(GAMECOMMAND_KEYBOARD_INTERACT, EnumToString(InputEvent::KEY_e));
+	SetString(GAMECOMMAND_KEYBOARD_SHIFT, EnumToString(InputEvent::KEY_SPACE));
 }
 
 /**

@@ -20,9 +20,11 @@ public:
 
 	virtual Direction8 GetWantedDirection8()const;
 	virtual void NotifyMovementChanged();
+	virtual void NotifyCommandShiftPressed();
 
 	virtual void SetPlayerWalkingAnimation();
 	virtual void SetPlayerStopAnimation();
+	virtual void SetPlayerShiftingAnimation();
 private:
 	std::shared_ptr<PlayerMovement> mPlayerMovement;
 

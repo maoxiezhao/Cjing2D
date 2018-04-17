@@ -1,6 +1,15 @@
 #include"timer.h"
 #include"core\system.h"
 
+Timer::Timer():
+	mExpirationDate(System::Now()),
+	mDuration(0),
+	mFinished(true),
+	mSuspensed(false),
+	mSuspensedTime(0)
+{
+}
+
 Timer::Timer(uint32_t duration):
 	mExpirationDate(System::Now() + duration),
 	mDuration(duration),

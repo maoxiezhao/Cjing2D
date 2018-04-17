@@ -1,13 +1,16 @@
 #include "movements\playerMovement.h"
 #include "entity\entity.h"
+#include "entity\player.h"
 #include "game\game.h"
 #include "game\gameCommands.h"
+#include "game\timer.h"
 #include "utils\geometry.h"
 
 PlayerMovement::PlayerMovement(int speed):
 	StraightMovement(false),
 	mMovingSpeed(speed),
-	mDirection(Direction8::DIRECTION8_NONE)
+	mDirection(Direction8::DIRECTION8_NONE),
+	mIsShift(false)
 {
 }
 
@@ -19,6 +22,15 @@ PlayerMovement::PlayerMovement(int speed):
 void PlayerMovement::Update()
 {
 	StraightMovement::Update();
+
+	// 位移中则不处理
+	if (mIsShift)
+	{
+		mShiftTimer.Update();
+		if (mShiftTimer.IsFinished())
+			StopShift();
+		return;
+	}
 
 	// 如果强制结束，则直接结束
 	if (IsStop() && mDirection != Direction8::DIRECTION8_NONE)
@@ -62,4 +74,41 @@ void PlayerMovement::ComputeMovement()
 		SetSpeed((double)mMovingSpeed);
 		SetAngle((double)Geometry::Radians((float)angle));
 	}
+}
+
+void PlayerMovement::StartShift(int shiftSpeed)
+{
+	if (!mIsShift)
+	{
+		mIsShift = true;
+
+		auto direction = mDirection;
+		if (direction == Direction8::DIRECTION8_NONE)
+		{
+			auto& player = dynamic_cast<Player&>(*GetEntity());
+			direction = player.GetDirection8();
+		}
+
+		double angle = static_cast<double>(direction) * 45;
+		SetSpeed((double)shiftSpeed);
+		SetAngle((double)Geometry::Radians((float)angle));
+
+		mShiftTimer.SetDuration(250);
+	}
+}
+ 
+void PlayerMovement::StopShift()
+{
+	mIsShift = false;
+	Stop();
+}
+
+bool PlayerMovement::IsShifting() const
+{
+	return mIsShift;
+}
+
+void PlayerMovement::NotifyObstacleReached()
+{
+	//StopShift();
 }

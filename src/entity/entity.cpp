@@ -158,6 +158,7 @@ void Entity::DrawDebugBounding()
 
 	mDebugSprite->SetPos(mBounding.GetPos());
 	mDebugSprite->SetSize(mBounding.GetSize());
+	mDebugSprite->SetDeferredDraw(false);
 	GetMap().DrawOnMap(*mDebugSprite);
 }
 

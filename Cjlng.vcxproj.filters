@@ -44,6 +44,21 @@
     <Filter Include="player">
       <UniqueIdentifier>{f0ef9234-51e0-49e9-a045-a45b29689131}</UniqueIdentifier>
     </Filter>
+    <Filter Include="graphics">
+      <UniqueIdentifier>{ba5223b6-34e3-40a4-b7be-a29b6083ea85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics\resource">
+      <UniqueIdentifier>{733e836d-0c49-4866-9c5b-3215c9debb14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics\renderer">
+      <UniqueIdentifier>{caeb853c-c327-4d75-a8f6-436bbb22914e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics\renderer\pass">
+      <UniqueIdentifier>{219b23b1-dbe5-4149-9997-74ba464675a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics\renderer\command">
+      <UniqueIdentifier>{8ca58aed-111d-4f3f-9254-bb473bb2ed5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -103,32 +118,11 @@
     <ClCompile Include="src\lua\videoApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\renderer.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\renderCommand.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\color.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\quadCommand.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\matrix4.cpp">
       <Filter>utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\glProgram.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\texture.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\resourceCache.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\glProgramState.cpp">
-      <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\xxhash.c">
       <Filter>utils</Filter>
@@ -379,9 +373,6 @@
     <ClCompile Include="src\entity\enemy.cpp">
       <Filter>entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\renderCommandPool.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\lua\fileDataApi.cpp">
       <Filter>lua\luaApi</Filter>
     </ClCompile>
@@ -406,23 +397,53 @@
     <ClCompile Include="src\core\perf.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\light.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\mapGenerate.cpp">
       <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\renderPass.cpp">
-      <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="src\gui\uiStage.cpp">
       <Filter>gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\vertexArray.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="src\lua\utilsApi.cpp">
       <Filter>lua\luaApi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\trigger.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\gameBevTree.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderer.cpp">
+      <Filter>graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\vertexArray.cpp">
+      <Filter>graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\glProgram.cpp">
+      <Filter>graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\glProgramState.cpp">
+      <Filter>graphics\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\texture.cpp">
+      <Filter>graphics\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\resourceCache.cpp">
+      <Filter>graphics\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderCommand.cpp">
+      <Filter>graphics\renderer\command</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderCommandPool.cpp">
+      <Filter>graphics\renderer\command</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\renderPass.cpp">
+      <Filter>graphics\renderer\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\quadCommand.cpp">
+      <Filter>graphics\renderer\command</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\light.cpp">
+      <Filter>graphics\resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -474,17 +495,11 @@
     <ClInclude Include="src\lua\luaData.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\renderer.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\enumInfo.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\main\test.h">
       <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\renderCommand.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\types.h">
       <Filter>core</Filter>
@@ -495,9 +510,6 @@
     <ClInclude Include="src\utils\vec3.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\quadCommand.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\vec2.h">
       <Filter>utils</Filter>
     </ClInclude>
@@ -507,12 +519,6 @@
     <ClInclude Include="src\game\drawable.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\glProgram.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\glProgramState.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\matrix4.h">
       <Filter>utils</Filter>
     </ClInclude>
@@ -521,12 +527,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\point.h">
       <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\texture.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\resourceCache.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\quadTree.h">
       <Filter>utils</Filter>
@@ -774,12 +774,6 @@
     <ClInclude Include="src\core\mp3Decoder.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\renderCommandPool.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\textureCache.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\quest.h">
       <Filter>game</Filter>
     </ClInclude>
@@ -816,17 +810,8 @@
     <ClInclude Include="src\gui\core\uiRender.h">
       <Filter>gui\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\vertexArray.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\light.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\mapGenerate.h">
       <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\renderPass.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\lightSource.h">
       <Filter>entity</Filter>
@@ -839,6 +824,48 @@
     </ClInclude>
     <ClInclude Include="src\utils\bevTree.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\trigger.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\gameBevTree.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderer.h">
+      <Filter>graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\vertexArray.h">
+      <Filter>graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\glProgram.h">
+      <Filter>graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\glProgramState.h">
+      <Filter>graphics\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\texture.h">
+      <Filter>graphics\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\textureCache.h">
+      <Filter>graphics\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resourceCache.h">
+      <Filter>graphics\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderCommand.h">
+      <Filter>graphics\renderer\command</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderCommandPool.h">
+      <Filter>graphics\renderer\command</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\renderPass.h">
+      <Filter>graphics\renderer\pass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\quadCommand.h">
+      <Filter>graphics\renderer\command</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\light.h">
+      <Filter>graphics\resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

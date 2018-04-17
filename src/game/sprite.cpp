@@ -357,8 +357,8 @@ void Sprite::SetDefaultNormalState()
 void Sprite::SetDefaultColorProgramState()
 {
 	// 着色器优化，避免Link过多的着色器
-	//mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME);
-	//mModelView = Renderer::GetInstance().GetCameraMatrix();
+	mProgramState = ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_SPRITE_COLOR_PROGRAMSTATE_NAME);
+	mModelView = Renderer::GetInstance().GetCameraMatrix();
 }
 
 /**
@@ -420,6 +420,8 @@ void Sprite::SetOpacity(int opacity)
 	mQuad.lb.colors.SetAlpha(opacity);
 	mQuad.rb.colors.SetAlpha(opacity);
 	mQuad.rt.colors.SetAlpha(opacity);
+
+	SetDirty(true);
 }
 
 void Sprite::SetScale(float s)

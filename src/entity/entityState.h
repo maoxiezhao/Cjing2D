@@ -29,6 +29,7 @@ public:
 	virtual void NotifyCommandDirectionPressed(Direction4 direction);
 	virtual void NotifyCommandDirectionReleased(Direction4 direction);
 	virtual void NotifyCommandInteractPressed();
+	virtual void NotifyCommandShiftPressed();
 
 	virtual Direction8 GetWantedDirection8()const;
 

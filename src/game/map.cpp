@@ -20,7 +20,9 @@ Map::Map():
 	mIsStarted(false),
 	mCamera(nullptr),
 	mTileset(nullptr),
-	mEntities(nullptr)
+	mEntities(nullptr),
+	mBackGround(nullptr),
+	mFrontGround(nullptr)
 {
 }
 
@@ -75,11 +77,11 @@ void Map::Load(Game * game)
 	mIsLoaded = true;
 
 	// debug map load
-	if (!mMapGenerate.LoadMap(GetMapID()))
-	{
-		Debug::Die("Failed to load map file '" + GetMapID());
-		return;
-	}
+	//if (!mMapGenerate.LoadMap(GetMapID()))
+	//{
+	//	Debug::Die("Failed to load map file '" + GetMapID());
+	//	return;
+	//}
 }
 
 void Map::UnLoad()
@@ -240,6 +242,13 @@ int Map::GetHeight()const
 	return mHeight;
 }
 
+void Map::SetBackground(SpritePtr background)
+{
+	mBackGround = background;
+	mBackGround->SetGlobalOrder(-1);
+	mBackGround->SetDeferredDraw(true);
+}
+
 /**
 *	\brief ²âÊÔentityÓëÕÏ°­ÎïµÄÅö×²¼ì²â
 *	\param rect ²âÊÔentityµÄ°üÎ§ºÐrect
@@ -334,8 +343,8 @@ void Map::Draw()
 	// test
 	mMapGenerate.DrawDebug();
 
-	//DrawBackground();
-	//mEntities->Draw();
+	DrawBackground();
+	mEntities->Draw();
 	//DrawForeground();
 
 	GetLuaContext().OnMapDraw(*this);
@@ -346,6 +355,8 @@ void Map::Draw()
 */
 void Map::DrawBackground()
 {
+	if (mBackGround)
+		mBackGround->Draw();
 }
 
 /**
@@ -353,6 +364,8 @@ void Map::DrawBackground()
 */
 void Map::DrawForeground()
 {
+	if (mFrontGround)
+		mFrontGround->Draw();
 }
 
 /**

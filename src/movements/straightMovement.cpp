@@ -217,6 +217,7 @@ void StraightMovement::Stop()
 	double oldAngle = this->mAngle;
 	SetSpeedX(0);
 	SetSpeedY(0);
+	SetMaxDistance(0);
 	mDirectionX = 0;
 	mDirectionY = 0;
 	this->mAngle = oldAngle;

@@ -34,10 +34,11 @@ public:
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;
+	int GetShiftSpeed()const;
 	PlayerSprite& GetPlayerSprites();
 	virtual EntityType GetEntityType()const;
 	void SetBindDirectoinByGameCommand(bool binded);
-
+	Direction8 GetDirection8()const;
 private:
 	std::unique_ptr<PlayerSprite> mPlayerSprites;	// 当前的sprite合集
 	Equipment& mEquipment;		// 当前player数值管理者，包括装备管理
@@ -47,6 +48,7 @@ private:
 
 	int mNormalWalkingSpeed;
 	int mCurWalkingSpeed;
+	int mShiftSpeed;
 };
 
 #endif

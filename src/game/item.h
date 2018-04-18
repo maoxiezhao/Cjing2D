@@ -15,7 +15,10 @@ class Item : public LuaObject
 public:
 	Item(const std::string& itemName, Equipment& equipment);
 
-	void Initialize();
+	virtual void Initialize();
+	virtual void Update();
+	virtual void Uninitialize();
+
 	bool UseItem(size_t count, Entity& usedEntity);
 
 	/** status */
@@ -33,9 +36,11 @@ public:
 	bool IsAutoPicked()const;
 	bool IsHasLua()const;
 
+	virtual bool IsWeapon()const;
+
 	LuaContext& GetLuaContext();
 	virtual const string GetLuaObjectName()const;
-
+	
 private:
 	Equipment& mEquipment;
 
@@ -88,6 +93,11 @@ inline void Item::SetAutoPicked(bool autoPicked)
 inline bool Item::IsHasLua() const
 {
 	return mHasLua;
+}
+
+inline bool Item::IsWeapon() const
+{
+	return false;
 }
 
 inline bool Item::IsAutoPicked() const

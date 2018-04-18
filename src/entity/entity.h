@@ -94,6 +94,7 @@ public:
 	void SetVisible(bool visibled);
 	bool IsBeRemoved()const;
 	virtual EntityType GetEntityType()const;
+	virtual float GetFacingDegree()const;
 
 	// special status
 	void SetFacingEntity(Entity* entity);
@@ -119,8 +120,8 @@ public:
 	void ClearRemovedSprite();
 
 	/**** ***** state manager ***** ****/
-	const std::shared_ptr<EntityState>& GetState();
-	void SetState(const std::shared_ptr<EntityState>& state);
+	EntityState& GetState()const;
+	void SetState(EntityState* state);
 	void UpdateState();
 
 	/***** **** movement manager ***** *****/
@@ -157,7 +158,10 @@ private:
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */
 	Map* mMap;								/** 当前entity所属的map */
-	std::shared_ptr<EntityState> mState;	/** entity 的状态组件 */
+	//std::shared_ptr<EntityState> mState;	/** entity 的状态组件 */
+	std::unique_ptr<EntityState> mState;
+	std::vector<std::unique_ptr<EntityState>> mOldState;
+
 	std::shared_ptr<Movement> mMovement;	/** entity 的运动组件 */
 
 	Entity* mFacingEntity;

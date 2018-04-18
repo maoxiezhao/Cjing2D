@@ -155,6 +155,7 @@
     <ClCompile Include="src\game\sprite.cpp" />
     <ClCompile Include="src\game\textDrawable.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
+    <ClCompile Include="src\game\weapon.cpp" />
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\distributor.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="src\player\mouseState.cpp" />
     <ClCompile Include="src\player\movementState.cpp" />
     <ClCompile Include="src\player\playerSprite.cpp" />
+    <ClCompile Include="src\player\playerState.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\nanovg.c" />
@@ -291,6 +293,8 @@
     <ClInclude Include="src\game\animationData.h" />
     <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
+    <ClInclude Include="src\game\weapon.h" />
+    <ClInclude Include="src\game\weaponFactory.h" />
     <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
@@ -335,6 +339,7 @@
     <ClInclude Include="src\player\mouseState.h" />
     <ClInclude Include="src\player\movementState.h" />
     <ClInclude Include="src\player\playerSprite.h" />
+    <ClInclude Include="src\player\playerState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\geometry.h" />

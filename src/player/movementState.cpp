@@ -3,21 +3,21 @@
 #include "player\playerSprite.h"
 
 MovementState::MovementState(Entity & entity):
-	EntityState(entity),
+	PlayerState(entity),
 	mPlayerMovement(nullptr)
 {
 }
 
 void MovementState::Start(EntityState & state)
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	mPlayerMovement = std::make_shared<PlayerMovement>(player.GetWalkingSpeed());
 	player.StartMovement(mPlayerMovement);
 }
 
 void MovementState::Stop(EntityState & state)
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	player.ClearMovements();
 	mPlayerMovement = nullptr;
 }
@@ -55,24 +55,24 @@ void MovementState::NotifyMovementChanged()
 
 void MovementState::NotifyCommandShiftPressed()
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	mPlayerMovement->StartShift(player.GetShiftSpeed());
 }
 
 void MovementState::SetPlayerWalkingAnimation()
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	player.GetPlayerSprites().SetWalkingNormalAnimation();
 }
 
 void MovementState::SetPlayerStopAnimation()
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	player.GetPlayerSprites().SetStopNormalAnimation();;
 }
 
 void MovementState::SetPlayerShiftingAnimation()
 {
-	auto& player = dynamic_cast<Player&>(GetEntity());
+	auto& player = GetPlayer();
 	player.GetPlayerSprites().SetShiftNormalAnimation();
 }

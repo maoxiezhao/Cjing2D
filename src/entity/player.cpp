@@ -29,8 +29,8 @@ Player::Player(Equipment & equipment) :
 	mPlayerSprites = std::unique_ptr<PlayerSprite>(playerSprite);
 
 	// 设置当前状态
-	auto movementState = std::make_shared<MouseState>(*this);
-	SetState(movementState);
+	//auto movementState = std::make_shared<MouseState>(*this);
+	SetState(new MouseState(*this));
 }
 
 void Player::Update()
@@ -41,8 +41,11 @@ void Player::Update()
 	// movement update
 	GetMovement()->Update();
 
+	// equipment update
+	GetEquipment().Update();
+
 	// state update
-	GetState()->Update();
+	GetState().Update();
 
 }
 
@@ -135,6 +138,48 @@ Direction8 Player::GetDirection8() const
 }
 
 /**
+*	\brief 能否攻击的判定
+*/
+bool Player::CanAttack() const
+{
+	bool result = GetState().CanAttack() &&
+		GetEquipment().HasCurWeapon();
+	return result;
+}
+
+Equipment & Player::GetEquipment()
+{
+	return mEquipment;
+}
+
+const Equipment & Player::GetEquipment() const
+{
+	return mEquipment;
+}
+
+float Player::GetFacingDegree() const
+{
+	return GetState().GetFacingDegree();
+}
+
+/**
+*	\brief 进行攻击行为
+*/
+void Player::Attack()
+{
+	if (!CanAttack())
+	{
+		Debug::Warning("Can not attack now.");
+		return;
+	}
+
+	// 这里有个问题，是在这里直接做一个攻击判断还是
+	// 在状态里做判断，目前直接在这里做判断
+	auto& curWeapon = GetEquipment().GetCurWeapon();
+	curWeapon.Attack();
+}
+
+/**
 *	\brief 响应移动改变
 *
 *	需要重新设置当前方向
@@ -144,7 +189,7 @@ void Player::NotifyMovementChanged()
 	// 当前的animation directions是否会受到gameCommand影响
 	if (mIsBindDirectionByGameCommand)
 	{
-		Direction8 wantedDirection = GetState()->GetWantedDirection8();
+		Direction8 wantedDirection = GetState().GetWantedDirection8();
 		if (wantedDirection != Direction8::DIRECTION8_NONE)
 		{
 			Direction4 animationDirection = mPlayerSprites->GetAnimationDirection4();
@@ -159,7 +204,7 @@ void Player::NotifyMovementChanged()
 		}
 	}
 	// 响应中设置动画的播放暂停
-	GetState()->NotifyMovementChanged();	
+	GetState().NotifyMovementChanged();	
 }
 
 /**

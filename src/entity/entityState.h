@@ -14,7 +14,7 @@
 class EntityState 
 {
 public:
-	EntityState(Entity& entity);
+	EntityState(Entity& entity, const std::string& name);
 
 	virtual void Start(EntityState& state);
 	virtual void Stop(EntityState& state);
@@ -30,12 +30,17 @@ public:
 	virtual void NotifyCommandDirectionReleased(Direction4 direction);
 	virtual void NotifyCommandInteractPressed();
 	virtual void NotifyCommandShiftPressed();
+	virtual void NotifyCommandAttackPressed();
 
+	std::string GetName()const;
 	virtual Direction8 GetWantedDirection8()const;
+	virtual bool CanAttack()const;
+	virtual float GetFacingDegree()const;
 
 	Entity& GetEntity();
+	const Entity& GetEntity()const;
 
 private:
 	Entity& mEntity;
-
+	std::string mName;
 };

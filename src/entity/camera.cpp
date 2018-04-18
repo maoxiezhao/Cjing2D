@@ -20,7 +20,7 @@ namespace {
 	};
 
 	TracingState::TracingState(Camera& camera, Entity & tracingEntity):
-		EntityState(camera),
+		EntityState(camera, "TraceState"),
 		mTracingEntity(tracingEntity)
 	{
 	}
@@ -118,5 +118,5 @@ void Camera::AdaptToMapBound()
 */
 void Camera::TracingEntity(Entity & entity)
 {
-	SetState(std::make_shared<TracingState>(*this, entity));
+	SetState(new TracingState(*this, entity));
 }

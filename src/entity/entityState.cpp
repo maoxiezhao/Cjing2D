@@ -1,7 +1,8 @@
 #include "entityState.h"
 
-EntityState::EntityState(Entity & entity):
-	mEntity(entity)
+EntityState::EntityState(Entity & entity, const std::string& name):
+	mEntity(entity),
+	mName(name)
 {
 }
 
@@ -38,6 +39,9 @@ void EntityState::NotifyCommandPressed(const GameCommand & command)
 		break;
 	case GameCommand::GAME_COMMAND_SHIFT:
 		NotifyCommandShiftPressed();
+		break;
+	case GameCommand::GAME_COMMAND_ATTACK:
+		NotifyCommandAttackPressed();
 		break;
 	default:
 		break;
@@ -92,12 +96,36 @@ void EntityState::NotifyCommandShiftPressed()
 {
 }
 
+void EntityState::NotifyCommandAttackPressed()
+{
+}
+
+std::string EntityState::GetName() const
+{
+	return mName;
+}
+
 Direction8 EntityState::GetWantedDirection8() const
 {
 	return Direction8::DIRECTION8_NONE;
 }
 
+bool EntityState::CanAttack() const
+{
+	return false;
+}
+
+float EntityState::GetFacingDegree() const
+{
+	return 0.0f;
+}
+
 Entity & EntityState::GetEntity()
+{
+	return mEntity;
+}
+
+const Entity & EntityState::GetEntity() const
 {
 	return mEntity;
 }

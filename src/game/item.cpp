@@ -27,6 +27,14 @@ void Item::Initialize()
 	}
 }
 
+void Item::Update()
+{
+}
+
+void Item::Uninitialize()
+{
+}
+
 /**
 *	\brief 使用道具
 *	\param count 使用道具的数量

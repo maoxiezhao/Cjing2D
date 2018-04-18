@@ -391,26 +391,29 @@ void Entity::ClearRemovedSprite()
 	}
 }
 
-const std::shared_ptr<EntityState>& Entity::GetState()
+EntityState& Entity::GetState()const
 {
-	return mState;
+	return *(mState.get());
 }
 
-/**
-*	\brief 设置当前状态
-*/
-void Entity::SetState(const std::shared_ptr<EntityState>& state)
+void Entity::SetState(EntityState * state)
 {
-	auto oldState = GetState();
-	if (state != oldState)
+	auto oldState = mState.get();
+	if (oldState)
 	{
-		if (oldState != nullptr)
+		oldState->Stop(*state);
+		if (oldState != mState.get())
 		{
-			oldState->Stop(*state);
+			// 可能在oldState::Stop中非法改变了当前的state
+			Debug::Error("Invalid Change Entity State:" + oldState->GetName());
+			return;
 		}
-		mState = state;
-		state->Start(*oldState);
 	}
+	// 这里做一个延迟删除，一帧可能会被调用到
+	mOldState.emplace_back(std::move(mState));
+
+	mState = std::unique_ptr<EntityState>(state);
+	mState->Start(*oldState);
 }
 
 void Entity::UpdateState()
@@ -419,6 +422,7 @@ void Entity::UpdateState()
 	{
 		mState->Update();
 	}
+	mOldState.clear();
 }
 
 void Entity::StopMovement()
@@ -622,6 +626,11 @@ const string& Entity::GetName()const
 EntityType Entity::GetEntityType()const
 {
 	return mType;
+}
+
+float Entity::GetFacingDegree() const
+{
+	return 0.0f;
 }
 
 void Entity::SetFacingEntity(Entity * entity)

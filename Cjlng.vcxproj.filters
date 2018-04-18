@@ -445,6 +445,12 @@
     <ClCompile Include="src\core\light.cpp">
       <Filter>graphics\resource</Filter>
     </ClCompile>
+    <ClCompile Include="src\player\playerState.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\weapon.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -866,6 +872,15 @@
     </ClInclude>
     <ClInclude Include="src\core\light.h">
       <Filter>graphics\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\playerState.h">
+      <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\weapon.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\weaponFactory.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

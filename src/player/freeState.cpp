@@ -42,4 +42,12 @@ void FreeState::SetPlayerStopAnimation()
 	player.GetPlayerSprites().SetStopNormalAnimation();;
 }
 
+/**
+*	\brief 自由状体下可以攻击
+*/
+bool FreeState::CanAttack() const
+{
+	return true;
+}
+
 

@@ -5,8 +5,21 @@
 
 Equipment::Equipment(Savegame & savegame):
 	mSavegame(savegame),
-	mItemBegs(*this)
+	mItemBegs(*this),
+	mCurEquipSlot(0),
+	mMaxEquipSlot(3)
 {
+	mEquipdWeapons.resize(mMaxEquipSlot, nullptr);
+}
+
+void Equipment::Update()
+{
+	if (HasCurWeapon())
+	{
+		auto& weapon = GetCurWeapon();
+		if (weapon.IsEquiped())
+			weapon.Update();
+	}
 }
 
 /**
@@ -27,7 +40,6 @@ void Equipment::LoadAllItems()
 		Item& item = *kvp.second;
 		item.Initialize();
 	}
-
 }
 
 /**
@@ -100,4 +112,64 @@ void Equipment::SetMaxLife(int maxLife)
 Savegame & Equipment::GetSavegame()
 {
 	return mSavegame;
+}
+
+void Equipment::LoadAllWeapon()
+{
+	// 创建所有item对象
+	const auto& itemsInfo = GameResource::GetGameResource().GetGameResourcesInfos(GameResourceType::ITEM);
+	for (const auto& itemId : itemsInfo)
+	{
+		std::shared_ptr<Item> item = std::make_shared<Item>(itemId, *this);
+		mAllItems[itemId] = item;
+	}
+	// 初始化所有脚本
+	for (auto& kvp : mAllItems)
+	{
+		Item& item = *kvp.second;
+		item.Initialize();
+	}
+}
+
+void Equipment::EquipWeapon(const std::string & name)
+{
+	// 穿装备的逻辑是，装备首先在slot中，先从slot中取出
+	// 装备，再装备该装备。
+	
+
+}
+
+void Equipment::EquipWeapon(Weapon & weapon)
+{
+}
+
+int Equipment::GetCurEquipSlot() const
+{
+	return mCurEquipSlot;
+}
+
+bool Equipment::HasCurWeapon() const
+{
+	return HasWeaponBySlot(mCurEquipSlot);
+}
+
+bool Equipment::HasWeaponBySlot(int curSlot)const
+{
+	Debug::CheckAssertion(curSlot >= 0 && curSlot < mMaxEquipSlot,
+		"Invalid equipment slot:" + std::to_string(curSlot));
+
+	return mEquipdWeapons.size() > curSlot &&
+		mEquipdWeapons[curSlot] != nullptr;
+}
+
+Weapon & Equipment::GetWeaponBySlot(int curSlot)
+{
+	Debug::CheckAssertion(curSlot >= 0 && curSlot < mMaxEquipSlot, 
+		"Invalid equipment slot:" + std::to_string(curSlot));
+	return *mEquipdWeapons[curSlot].get();
+}
+
+Weapon & Equipment::GetCurWeapon()
+{
+	return GetWeaponBySlot(mCurEquipSlot);
 }

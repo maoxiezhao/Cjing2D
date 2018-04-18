@@ -31,6 +31,7 @@ public:
 	/** status manager */
 	void PlaceOnMap(Map& map);
 	void CheckPosition();
+	void Attack();
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;
@@ -39,6 +40,10 @@ public:
 	virtual EntityType GetEntityType()const;
 	void SetBindDirectoinByGameCommand(bool binded);
 	Direction8 GetDirection8()const;
+	bool CanAttack()const;
+	Equipment& GetEquipment();
+	const Equipment& GetEquipment()const;
+	virtual float GetFacingDegree()const;
 private:
 	std::unique_ptr<PlayerSprite> mPlayerSprites;	// 当前的sprite合集
 	Equipment& mEquipment;		// 当前player数值管理者，包括装备管理

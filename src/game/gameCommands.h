@@ -45,6 +45,7 @@ enum class GameCommand
 	GAME_COMMAND_DOWN,
 	GAME_COMMAND_INTERACT,
 	GAME_COMMAND_SHIFT,
+	GAME_COMMAND_ATTACK,
 };
 
 /**
@@ -74,6 +75,8 @@ public:
 private:
 	void KeyBoardKeyPressed(const InputEvent::KeyboardKey& key);
 	void KeyBoardKeyReleased(const InputEvent::KeyboardKey& key);
+	void MouseKeyPressed(const InputEvent::MouseButton& button);
+	void MouseKeyReleased(const InputEvent::MouseButton& button);
 
 	InputEvent::KeyboardKey GetSavegameMappingKeyboard(GameCommand command);
 

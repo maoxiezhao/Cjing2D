@@ -6,7 +6,8 @@
 #include "utils\geometry.h"
 
 MouseState::MouseState(Entity & entity):
-	MovementState(entity)
+	MovementState(entity),
+	mDegree(0.0f)
 {
 }
 
@@ -73,9 +74,20 @@ void MouseState::Update()
 		angle = Geometry::PI_2 - angle;
 	}
 	angle += Geometry::PI_OVER_4;
+	mDegree = (float)angle;
 
 	Direction4 direction = static_cast<Direction4>(
 		(int)(angle / Geometry::PI_OVER_2));
 
 	player.GetPlayerSprites().SetAnimationDirection4(direction);
+}
+
+float MouseState::GetFacingDegree() const
+{
+	return mDegree;
+}
+
+bool MouseState::CanAttack() const
+{
+	return true;
 }

@@ -20,6 +20,7 @@ public:
 	virtual void SetPlayerWalkingAnimation();
 	virtual void SetPlayerStopAnimation();
 
+	virtual bool CanAttack()const;
 private:
 
 };

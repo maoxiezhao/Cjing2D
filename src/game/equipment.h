@@ -4,6 +4,7 @@
 #include"game\item.h"
 #include"game\itemBeg.h"
 #include"game\itemAcquired.h"
+#include"game\weapon.h"
 
 class Savegame;
 
@@ -22,11 +23,12 @@ class Equipment
 public:
 	Equipment(Savegame& savegame);
 
+	void Update();
+
 	/** item manager */
 	void LoadAllItems();
 	Item& GetItem(const std::string& itemName);
 	const Item& GetItem(const std::string& itemName)const;
-
 	bool PushItemIntoBeg(ItemAcquired& item);
 
 	/** Setter/Getter */
@@ -36,9 +38,29 @@ public:
 	void SetMaxLife(int maxLife);
 	Savegame& GetSavegame();
 
+	/** Weapon Manager */
+	struct WeaponConfig	// 这里装备不和物品同步，保存的是数据，实时创建
+	{					// 装备实体(物品使用的是早期的想法）
+		WeaponData data;
+		int count;
+	};
+	void LoadAllWeapon();
+	void EquipWeapon(const std::string& name);
+	void EquipWeapon(Weapon& weapon);
+	int GetCurEquipSlot()const;
+	bool HasCurWeapon()const;
+	bool HasWeaponBySlot(int curSlot)const;
+	Weapon& GetWeaponBySlot(int curSlot);
+	Weapon& GetCurWeapon();
+
 private:
 	Savegame& mSavegame;
-	std::map<std::string, ItemPtr> mAllItems;	// 保存管理当前所有注册itme
+	std::map<std::string, ItemPtr> mAllItems;	// 保存管理当前所有注册item
 	ItemBeg mItemBegs;							// 当前游戏背包
-	//std::vector<ItemPtr> mItemBegs;				// 当前物品背包
+	//std::vector<ItemPtr> mItemBegs;			// 当前物品背包
+	
+	std::map<std::string, WeaponConfig> mAllWeapons;
+	int mCurEquipSlot;
+	int mMaxEquipSlot;
+	std::vector<WeaponPtr> mEquipdWeapons;
 };

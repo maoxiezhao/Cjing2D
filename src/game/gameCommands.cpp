@@ -83,9 +83,11 @@ void GameCommands::NotifyInput(const InputEvent & ent)
 	}
 	else if (keyEvent.type == InputEvent::EventType::EVENT_MOUSE_BUTTONDOWN)
 	{
+		MouseKeyPressed(keyEvent.mousebutton);
 	}
 	else if (keyEvent.type == InputEvent::EventType::EVENT_MOUSE_BUTTONUP)
 	{
+		MouseKeyReleased(keyEvent.mousebutton);
 	}
 	else if (keyEvent.type == InputEvent::EventType::EVENT_MOUSE_MOTION)
 	{
@@ -169,6 +171,19 @@ void GameCommands::KeyBoardKeyReleased(const InputEvent::KeyboardKey & key)
 		GameCommand command = it->second;
 		GameCommandReleased(command);
 	}
+}
+
+void GameCommands::MouseKeyPressed(const InputEvent::MouseButton & button)
+{
+	// 这里不对鼠标按键做映射处理了，直接粗暴
+	// 判断传入攻击命令
+	if(button == InputEvent::MouseButton::MOUSE_BUTTON_LEFT)
+		GameCommandPressed(GameCommand::GAME_COMMAND_ATTACK);
+}
+
+void GameCommands::MouseKeyReleased(const InputEvent::MouseButton & button)
+{
+
 }
 
 InputEvent::KeyboardKey GameCommands::GetSavegameMappingKeyboard(GameCommand command)

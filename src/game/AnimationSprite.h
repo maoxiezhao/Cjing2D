@@ -38,6 +38,8 @@ public:
 	int GetNumFrames()const;
 	void SetSize(const Size& size);// sizeºÊ»›Œ Ã‚
 	Size GetSize()const;
+	void SetFlipX(bool fliped);	 // overlaps
+	void SetFlipY(bool fliped);
 
 	virtual void SetSuspended(bool suspended);
 
@@ -55,6 +57,7 @@ public:
 	void SetCurrAnimationSetId(const string& id);
 	string GetCurrAnimationSetId()const;
 	bool HasAnimation(const string& name)const;
+	std::string GetCurAnimationName()const;
 
 	// notify
 	void NotifyFinished();

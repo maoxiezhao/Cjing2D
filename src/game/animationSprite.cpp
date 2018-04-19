@@ -177,7 +177,8 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 		// 先初始化texture，在根据animation设置rect
 		SetCurrFrame(0);
 		SetFrameChanged(true);
-		
+		//UpdateFramedChanged();	
+
 		InitWithTexture(mTexture);
 		Rect rect = mCurrAnimation->GetAniamtionRect(mCurrFrame, mCurrDirection);
 		mSize = Size(rect.width, rect.height);
@@ -185,6 +186,7 @@ void AnimationSprite::SetCurrAnimation(const string & name)
 		// luaContext可能会存在一些操作
 		// 如onFrameChanged 或 onDirectionChanged
 		// 待加
+		UpdateFramedChanged();	// 强刷一波？
 	}
 }
 
@@ -234,12 +236,25 @@ int AnimationSprite::GetNumFrames() const
 
 void AnimationSprite::SetSize(const Size & size)
 {
+	Sprite::SetSize(size);
 	mSize = size;
 }
 
 Size AnimationSprite::GetSize() const
 {
 	return mSize;
+}
+
+void AnimationSprite::SetFlipX(bool fliped)
+{
+	Sprite::SetFlipX(fliped);
+	SetFrameChanged(true);
+}
+
+void AnimationSprite::SetFlipY(bool fliped)
+{
+	Sprite::SetFlipY(fliped);
+	SetFrameChanged(true);
 }
 
 /**
@@ -338,6 +353,11 @@ string AnimationSprite::GetCurrAnimationSetId() const
 bool AnimationSprite::HasAnimation(const string & name) const
 {
 	return mCurrAnimationSet.HasAnimation(name);
+}
+
+std::string AnimationSprite::GetCurAnimationName() const
+{
+	return mCurrAnimationName;
 }
 
 void AnimationSprite::NotifyFinished()

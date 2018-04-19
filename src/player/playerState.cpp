@@ -2,10 +2,20 @@
 #include "entity\player.h"
 #include "player\playerSprite.h"
 #include "game\equipment.h"
+#include "game\game.h"
 
 PlayerState::PlayerState(Entity & entity):
 	EntityState(entity, "PlayerState")
 {
+}
+
+void PlayerState::Update()
+{
+	auto& gameCommand = GetPlayer().GetGame().GetGameCommands();
+	if (gameCommand.IsGameCommandPressed(GameCommand::GAME_COMMAND_ATTACK))
+	{
+		NotifyCommandAttackPressed();
+	}
 }
 
 Player & PlayerState::GetPlayer()

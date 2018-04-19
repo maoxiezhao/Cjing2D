@@ -19,6 +19,10 @@ Sprite::Sprite():
 	mDeferred(false),
 	mPreDeferred(false),
 	mAnchor(0, 0),
+	mAnchorX(0.0f),
+	mAnchorY(0.0f),
+	mRotateAnchorX(0.0f),
+	mRotateAnchorY(0.0f),
 	mBlendFunc(),
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
@@ -43,6 +47,10 @@ Sprite::Sprite(const std::string & name):
 	mDeferred(false),
 	mPreDeferred(false),
 	mAnchor(0,0),
+	mAnchorX(0.0f),
+	mAnchorY(0.0f),
+	mRotateAnchorX(0.0f),
+	mRotateAnchorY(0.0f),
 	mBlendFunc(),
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
@@ -68,6 +76,10 @@ Sprite::Sprite(TexturePtr tex, TexturePtr normalTex):
 	mDeferred(false),
 	mPreDeferred(false),
 	mAnchor(0, 0),
+	mAnchorX(0.0f),
+	mAnchorY(0.0f),
+	mRotateAnchorX(0.0f),
+	mRotateAnchorY(0.0f),
 	mBlendFunc(),
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
@@ -95,6 +107,10 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mDeferred(false),
 	mPreDeferred(false),
 	mAnchor(0, 0),
+	mAnchorX(0.0f),
+	mAnchorY(0.0f),
+	mRotateAnchorX(0.0f),
+	mRotateAnchorY(0.0f),
 	mBlendFunc(),
 	mBlinkDelay(0),
 	mBlinkNextDate(0),
@@ -186,9 +202,15 @@ void Sprite::Draw(const Point2 & pos, float rotate)
 	transfomr =  Matrix4::Translate(Vec3f((float)pos.x,(float)pos.y, .0f));
 
 	// 移动到原点旋转后移回
-	transfomr *= Matrix4::Translate(Vec3f(mSize.width*0.5f, mSize.height*0.5f, 0.0f));
+	// 旋转的锚点暂时使用和位置一致的 
+	//transfomr *= Matrix4::Translate(Vec3f(mSize.width*0.5f, mSize.height*0.5f, 0.0f));
+	//transfomr *= Matrix4::Rotate(Vec3f(0.0f, 0.0f, 1.0f), rotate);
+	//transfomr *= Matrix4::Translate(Vec3f(-mSize.width*0.5f, -mSize.height*0.5f, 0.0f));
+
+	// 额外设置旋转锚点
+	transfomr *= Matrix4::Translate(Vec3f(mRotateAnchorX, mRotateAnchorY, 0.0f));
 	transfomr *= Matrix4::Rotate(Vec3f(0.0f, 0.0f, 1.0f), rotate);
-	transfomr *= Matrix4::Translate(Vec3f(-mSize.width*0.5f, -mSize.height*0.5f, 0.0f));
+	transfomr *= Matrix4::Translate(Vec3f(-mRotateAnchorX, -mRotateAnchorY, 0.0f));
 
 	Draw(Renderer::GetInstance(), transfomr);
 }
@@ -306,7 +328,7 @@ void Sprite::SetTextureCroods(const Rect & rect)
 	}
 	if (mFlipY)
 	{
-		std::swap(top, right);
+		std::swap(top, bottom);
 	}
 
 	mQuad.lt.texs.u = left;
@@ -325,6 +347,7 @@ void Sprite::SetTextureCroods(const Rect & rect)
 void Sprite::SetSize(const Size & size)
 {
 	mSize = size;
+	SetAnchorFloat(mAnchorX, mAnchorY);
 	SetDirty(true);
 }
 
@@ -382,7 +405,9 @@ void Sprite::SetDirty(bool dirty)
 */
 void Sprite::SetAnchor(const Point2 & anchor)
 {
-	mAnchor = anchor;
+	mAnchorX = -(float)(anchor.x) / (float)mSize.width;
+	mAnchorY = -(float)(anchor.y) / (float)mSize.height;
+	mAnchor = -anchor;
 	SetDirty(true);
 }
 
@@ -391,8 +416,16 @@ void Sprite::SetAnchor(const Point2 & anchor)
 */
 void Sprite::SetAnchorFloat(float x, float y)
 {
+	mAnchorX = x;
+	mAnchorY = y;
 	mAnchor = Point2((int)(-x*mSize.width),int(-y*mSize.height));
 	SetDirty(true);
+}
+
+void Sprite::SetRotateAnchor(float x, float y)
+{
+	mRotateAnchorX = x;
+	mRotateAnchorY = y;
 }
 
 /**

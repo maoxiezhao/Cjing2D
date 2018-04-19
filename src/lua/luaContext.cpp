@@ -132,6 +132,8 @@ void LuaContext::Exit()
 		mSystemExports.Clear();
 		mSystemModulesRef.Clear();
 
+		mLoadFileSets.clear();
+
 		lua_close(l);
 		mLuaContexts.erase(l);
 		l = nullptr;
@@ -422,6 +424,36 @@ void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
 	}
 }
 
+void LuaContext::CallFileWithUserdata(const std::string & name, LuaObject & userdata)
+{
+	if (!LoadFile(l, name))
+	{
+		Debug::Warning("Load the lua file +'" + name + "' failed.");
+		return;
+	}
+	PushUserdata(l, userdata);
+	LuaTools::CallFunction(l, 1, 0, "CallFileFunction");
+}
+
+void LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::string & funcName, std::function<int(lua_State*l)> paramFunc)
+{
+	if (!IsUserdataHasField(userdata, funcName))
+	{
+		Debug::Warning("Failed to call userdata function:" + funcName);
+		return;
+	}
+	PushUserdata(l, userdata);
+	if (FindMethod(funcName))
+	{
+		int paramNum = 1;
+		if (paramFunc != nullptr)
+			paramNum = paramFunc(l);
+		LuaTools::CallFunction(l, paramNum, 0, funcName);
+	}
+	lua_pop(l, 1);
+
+}
+
 /**
 *	\brief 注册元表函数
 *	\param moduleName 模块\类名
@@ -662,6 +694,11 @@ void LuaContext::PrintLuaStack(lua_State * l)
 		oss << endl;
 	}
 	Logger::Debug(oss.str());
+}
+
+bool LuaContext::HasFileLoaded(const std::string & fileName) const
+{
+	return false;
 }
 
 /**

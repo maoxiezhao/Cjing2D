@@ -9,6 +9,9 @@
 class PlayerSprite;
 class Equipment;
 
+// test
+class Weapon;
+
 /**
 *	\brief 可操纵的玩家类基类
 */
@@ -54,6 +57,9 @@ private:
 	int mNormalWalkingSpeed;
 	int mCurWalkingSpeed;
 	int mShiftSpeed;
+
+	// test
+	std::shared_ptr<Weapon> mWeapon;
 };
 
 #endif

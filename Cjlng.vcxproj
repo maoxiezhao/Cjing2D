@@ -156,6 +156,7 @@
     <ClCompile Include="src\game\textDrawable.cpp" />
     <ClCompile Include="src\game\timer.cpp" />
     <ClCompile Include="src\game\weapon.cpp" />
+    <ClCompile Include="src\game\weaponControl.cpp" />
     <ClCompile Include="src\gui\core\builderWindow.cpp" />
     <ClCompile Include="src\gui\core\dispatcher.cpp" />
     <ClCompile Include="src\gui\core\distributor.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="src\game\textDrawable.h" />
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\game\weapon.h" />
+    <ClInclude Include="src\game\weaponControl.h" />
     <ClInclude Include="src\game\weaponFactory.h" />
     <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />

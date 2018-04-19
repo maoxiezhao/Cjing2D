@@ -39,7 +39,7 @@ void PlayerSprite::BuildSprites()
 	// 创建影子的sprite
 	mShadowSprite = mPlayer.CreateAnimationSprite("entities/shadow", "big");
 	mShadowSprite->SetSize({20, 10});
-	mShadowSprite->SetAnchorFloat(0.8f, 1.5f);
+	mShadowSprite->SetAnchorFloat(0.5f, -0.7f);
 	mShadowSprite->SetDeferredDraw(true);
 
 	// 创建身体的sprite
@@ -71,12 +71,11 @@ void PlayerSprite::Draw()
 	const Point2& ltPos = mPlayer.GetLeftTopPos();
 	const Size& size = mPlayer.GetSize();
 
-	mShadowSprite->SetPos({ ltPos.x + size.width/2, ltPos.y + size.height});
-	map.DrawOnMap(*mShadowSprite);
+	mShadowSprite->SetPos({ size.width / 2, size.height});
+	//map.DrawOnMap(*mShadowSprite);
 
-	mBodySprite->SetPos(pos);
-
-	map.DrawOnMap(*mBodySprite);
+	mBodySprite->SetPos({0, 0});
+	//map.DrawOnMap(*mBodySprite);
 }
 
 /**

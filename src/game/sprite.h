@@ -46,6 +46,7 @@ public:
 	void SetDirty(bool dirty);
 	void SetAnchor(const Point2& anchor);
 	void SetAnchorFloat(float x, float y);
+	void SetRotateAnchor(float x, float y);
 	void SetBlendFunc(const BlendFunc& blendFunc);
 	void SetModelView(const Matrix4& modelView);
 	void SetOpacity(int opacity);
@@ -109,6 +110,8 @@ protected:
 	float scaleX, scaleY;
 	bool mFlipX;
 	bool mFlipY;
+	float mAnchorX, mAnchorY;
+	float mRotateAnchorX, mRotateAnchorY;
 
 	bool mVisible;
 	bool mDirty;			/** 是否需要重新填充quad */

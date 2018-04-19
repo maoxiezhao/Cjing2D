@@ -25,6 +25,11 @@ namespace Geometry
 		return PI * angle / 180.0f;
 	}
 
+	inline float Degree(float radians)
+	{
+		return (float)(radians / PI * 180.0f);
+	}
+
 	inline double GetDistance(const Point2& p1, const Point2& p2)
 	{
 		double dx = (double)(p2.x - p1.x);

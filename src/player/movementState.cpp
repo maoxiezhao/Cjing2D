@@ -24,6 +24,7 @@ void MovementState::Stop(EntityState & state)
 
 void MovementState::Update()
 {
+	PlayerState::Update();
 }
 
 Direction8 MovementState::GetWantedDirection8() const

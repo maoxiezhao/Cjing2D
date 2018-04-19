@@ -7,6 +7,7 @@
 #include"player\playerSprite.h"
 
 #include"gui\core\uiRender.h"
+#include"game\weapon.h"
 
 Player::Player(Equipment & equipment) :
 	Entity("", { 50, 50 }, {26, 20}, 0),	// testing data
@@ -31,6 +32,9 @@ Player::Player(Equipment & equipment) :
 	// 设置当前状态
 	//auto movementState = std::make_shared<MouseState>(*this);
 	SetState(new MouseState(*this));
+
+	mWeapon = std::make_shared<Weapon>("usp", equipment);
+	mWeapon->Equiped(*this);
 }
 
 void Player::Update()
@@ -47,6 +51,9 @@ void Player::Update()
 	// state update
 	GetState().Update();
 
+	// weapon update
+	mWeapon->Update();
+
 }
 
 /**
@@ -62,6 +69,9 @@ void Player::Draw()
 	//DrawDebugBounding();
 
 	mPlayerSprites->Draw();
+
+	// 原来把Entity::Draw()注掉了？？？，暂时忘了原因，先使用
+	Entity::Draw();
 
 #if defined CJING_DEBUG
 	std::ostringstream oss;
@@ -142,6 +152,8 @@ Direction8 Player::GetDirection8() const
 */
 bool Player::CanAttack() const
 {
+	return true;
+
 	bool result = GetState().CanAttack() &&
 		GetEquipment().HasCurWeapon();
 	return result;
@@ -167,16 +179,20 @@ float Player::GetFacingDegree() const
 */
 void Player::Attack()
 {
-	if (!CanAttack())
-	{
-		Debug::Warning("Can not attack now.");
-		return;
-	}
+	mWeapon->Attack();
 
-	// 这里有个问题，是在这里直接做一个攻击判断还是
-	// 在状态里做判断，目前直接在这里做判断
-	auto& curWeapon = GetEquipment().GetCurWeapon();
-	curWeapon.Attack();
+	//if (!CanAttack())
+	//{
+	//	Debug::Warning("Can not attack now.");
+	//	return;
+	//}
+
+	//// 这里有个问题，是在这里直接做一个攻击判断还是
+	//// 在状态里做判断，目前直接在这里做判断
+	//auto& curWeapon = GetEquipment().GetCurWeapon();
+	//curWeapon.Attack();
+
+	
 }
 
 /**

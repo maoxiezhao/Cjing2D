@@ -67,14 +67,19 @@ void MouseState::Update()
 	const Point2& mousePos = InputEvent::GetMousePos();
 	const Point2& playerPos = player.GetScreenPos();
 
-	// 角度偏移
+	// 角度偏移 4方向偏移
 	double angle = Geometry::GetAngle(playerPos, mousePos);
-	if (Geometry::PI_2 - angle <= Geometry::PI_OVER_4)
-	{
-		angle = Geometry::PI_2 - angle;
-	}
-	angle += Geometry::PI_OVER_4;
 	mDegree = (float)angle;
+	//if (Geometry::PI_2 - angle <= Geometry::PI_OVER_4)
+	//{
+	//	angle = Geometry::PI_2 - angle;
+	//}
+	//angle += Geometry::PI_OVER_4;
+
+	// 角度偏移 2方向
+	if (Geometry::PI_2 - angle <= Geometry::PI_OVER_2)
+		angle = Geometry::PI_2 - angle;
+	angle += Geometry::PI_OVER_2;
 
 	Direction4 direction = static_cast<Direction4>(
 		(int)(angle / Geometry::PI_OVER_2));

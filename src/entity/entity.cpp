@@ -99,7 +99,8 @@ void Entity::Draw()
 		auto sprite = nameSprite.sprite;
 		if (sprite != nullptr)
 		{
-			GetMap().DrawOnMap(*sprite, GetPos());
+			auto pos = sprite->GetPos() + GetPos();
+			GetMap().DrawOnMap(*sprite, pos);
 		}
 	}
 }
@@ -320,7 +321,7 @@ AnimationSpritePtr Entity::CreateAnimationSprite(const string & animationSetId, 
 	// animationSprite
 	AnimationSpritePtr animationSprite = std::make_shared<AnimationSprite>(animationSetId);
 	animationSprite->SetCurrAnimation(animationID);
-	animationSprite->SetPos(GetPos());
+	//animationSprite->SetPos(GetPos());
 
 	NamedSpritePtr namedSprite;
 	namedSprite.name = animationID;
@@ -356,6 +357,15 @@ bool Entity::RemoveSprite(SpritePtr sprite)
 		}
 	}
 	return false;
+}
+
+bool Entity::RemoveSprite(const std::string & spriteName)
+{
+	bool result = false;
+	auto sprite = GetSprite(spriteName);
+	if (sprite)
+		result = RemoveSprite(sprite);
+	return result;
 }
 
 /**

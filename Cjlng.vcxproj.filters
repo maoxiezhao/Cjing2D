@@ -59,6 +59,9 @@
     <Filter Include="graphics\renderer\command">
       <UniqueIdentifier>{8ca58aed-111d-4f3f-9254-bb473bb2ed5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gui\imgui">
+      <UniqueIdentifier>{efbe1a43-c6be-4871-a62d-83269412bc11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -449,6 +452,9 @@
       <Filter>player</Filter>
     </ClCompile>
     <ClCompile Include="src\game\weapon.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\weaponControl.cpp">
       <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -880,6 +886,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\weaponFactory.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\weaponControl.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

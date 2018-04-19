@@ -16,6 +16,8 @@ class PlayerState : public EntityState
 public:
 	PlayerState(Entity& entity);
 
+	virtual void Update();
+
 	virtual Player& GetPlayer();
 	virtual const Player& GetPlayer()const;
 	virtual PlayerSprite& GetPlayerSprites();

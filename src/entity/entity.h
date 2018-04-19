@@ -116,6 +116,7 @@ public:
 	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID);
 	SpritePtr GetSprite(const string& spriteName);
 	bool RemoveSprite(SpritePtr sprite);
+	bool RemoveSprite(const std::string& spriteName);
 	void ClearSprites();
 	void ClearRemovedSprite();
 

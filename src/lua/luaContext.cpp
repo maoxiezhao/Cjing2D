@@ -439,7 +439,7 @@ void LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::strin
 {
 	if (!IsUserdataHasField(userdata, funcName))
 	{
-		Debug::Warning("Failed to call userdata function:" + funcName);
+		//Debug::Warning("Failed to call userdata function:" + funcName);
 		return;
 	}
 	PushUserdata(l, userdata);

@@ -114,6 +114,10 @@ void Entity::Initalized()
 	Debug::CheckAssertion(mMap != nullptr, "The entity's map is null.");
 	Debug::CheckAssertion(mMap->IsLoaded(), "The entity's map has not ready.");
 
+	NotifyBeforeCreated();
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnCreated");
+	NotifyAfterCreated();
+
 	mIsInitialized = true;
 }
 
@@ -161,6 +165,14 @@ void Entity::DrawDebugBounding()
 	mDebugSprite->SetSize(mBounding.GetSize());
 	mDebugSprite->SetDeferredDraw(false);
 	GetMap().DrawOnMap(*mDebugSprite);
+}
+
+void Entity::NotifyBeforeCreated()
+{
+}
+
+void Entity::NotifyAfterCreated()
+{
 }
 
 void Entity::NotifyCommandPressed(const GameCommand & command)
@@ -260,6 +272,12 @@ void Entity::NotifyMapStarted()
 void Entity::SetMap(Map * map)
 {
 	mMap = map;
+
+	if (!mIsInitialized && mMap->IsLoaded())
+	{	// 可能在游戏中实时创建entity
+		// 则在加入地图时初始化
+		Initalized();
+	}
 }
 
 Map & Entity::GetMap()
@@ -586,6 +604,15 @@ void Entity::SetVisible(bool visibled)
 bool Entity::IsBeRemoved() const
 {
 	return mBeRemoved;
+}
+
+void Entity::SetSuspended(bool suspended)
+{
+}
+
+bool Entity::IsSuspended() const
+{
+	return false;
 }
 
 Point2 Entity::GetPos()const

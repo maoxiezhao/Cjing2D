@@ -345,6 +345,7 @@ void Entities::RemoveEntity(Entity& entity)
 {
 	if (!entity.IsBeRemoved())
 	{
+		// 并不直接销毁，在一帧的最后销毁
 		const auto& sharedEntity = std::dynamic_pointer_cast<Entity>(entity.shared_from_this());
 		mEntityToRemove.push_back(sharedEntity);
 

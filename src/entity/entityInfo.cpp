@@ -8,5 +8,6 @@ const EnumInfo<EntityType>::nameType EnumInfoTraits<EntityType>::names =
 	{ DESTIMATION, "destimation"},
 	{ CAMERA, "camera"},
 	{ PLAYRE, "player"},
-	{ PICKABLE, "pickable"}
+	{ PICKABLE, "pickable"},
+	{ ENEMEY, "enemy"}
 };

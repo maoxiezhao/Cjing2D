@@ -58,6 +58,8 @@ public:
 	virtual const string GetLuaObjectName()const;
 
 	/**** **** **** Notify **** **** ****/
+	virtual void NotifyBeforeCreated();
+	virtual void NotifyAfterCreated();
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
@@ -93,6 +95,8 @@ public:
 	bool IsVisible()const;
 	void SetVisible(bool visibled);
 	bool IsBeRemoved()const;
+	virtual void SetSuspended(bool suspended);
+	bool IsSuspended()const;
 	virtual EntityType GetEntityType()const;
 	virtual float GetFacingDegree()const;
 

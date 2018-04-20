@@ -28,7 +28,7 @@ void Tile::Draw()
 
 void Tile::Build()
 {
-	Entity::Initalized();
+	//Entity::Initalized(); // 非主动调用
 
 	auto tilesetImage = GetMap().GetTileset().GetTileImage();
 	if (tilesetImage == nullptr)

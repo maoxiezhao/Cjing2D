@@ -13,6 +13,7 @@ enum EntityType
 	CAMERA,			/** 相机对象 */
 	PLAYRE,			/** 玩家对象 */
 	PICKABLE,		/** 可拾取对象 */
+	ENEMEY,			/** 敌人 */
 	UNKNOW,			/** 未知的类型 */
 };
 

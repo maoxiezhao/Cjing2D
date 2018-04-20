@@ -38,7 +38,8 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 	{ EntityType::TITLE, entity_api_create_title},
 	{ EntityType::DESTIMATION, entity_api_create_destimation },
 	{ EntityType::DYNAMIC_TITLE, entity_api_create_dynamic_title },
-	{ EntityType::PICKABLE, entity_api_create_pickable }
+	{ EntityType::PICKABLE, entity_api_create_pickable },
+	{ EntityType::ENEMEY, entity_api_create_enemy }
 };
 
 /**
@@ -114,6 +115,16 @@ int LuaContext::entity_api_create_pickable(lua_State* l)
 	});
 }
 
+
+/**
+*	\brief entity_enemy的创建函数
+*/
+int LuaContext::entity_api_create_enemy(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		return 0;
+	});
+}
 
 /**
 *	\brief 创建对应的entity

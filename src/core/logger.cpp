@@ -47,7 +47,10 @@ namespace Logger {
 
 	void Debug(const string & msg)
 	{
-		Print("Debug: " + msg);
+		SetLoggerConsoleFontColor(CONSOLE_FONT_YELLOW);
+		//Print("[Debug] " + msg);
+		Print(msg);
+		SetLoggerConsoleFontColor(CONSOLE_FONT_WHITE);
 	} 
 
 	void Logger::Info(const string & msg)
@@ -81,5 +84,12 @@ namespace Logger {
 		string warningMsg = "[Fatal]  " + msg;
 		Print(warningMsg);
 		Print(warningMsg, GetErrorFile());
+	}
+
+	void PrintConsoleHeader()
+	{
+		std::cout << "Cjing-2d Version 0.0.5" << std::endl;
+		std::cout << "Copyright (c) 2016-2018 ZZZY." << std::endl;
+		std::cout << std::endl;
 	}
 }

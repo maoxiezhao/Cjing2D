@@ -16,6 +16,7 @@ namespace Logger
 	void Warning(const string& msg);
 	void Error(const string& msg);
 	void Fatal(const string& msg);
+	void PrintConsoleHeader();
 }
 
 #endif

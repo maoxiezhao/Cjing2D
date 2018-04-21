@@ -115,7 +115,7 @@ namespace FileData
 
 		size_t size = static_cast<size_t>(PHYSFS_fileLength(file));
 		vector<char> buffer(size);
-
+		
 		PHYSFS_read(file, buffer.data(), 1, (PHYSFS_uint32)size);
 		PHYSFS_close(file);
 

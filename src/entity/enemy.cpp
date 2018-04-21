@@ -1,4 +1,5 @@
 #include"entity\enemy.h"
+#include"game\combat.h"
 #include"lua\luaContext.h"
 
 Enemy::Enemy(Game & game, const std::string & name, int layer, const Point2 & pos):
@@ -34,22 +35,22 @@ void Enemy::Update()
 	/** 如果仅进行脚本更新，则直接终止 */
 	if (!mIsOnlyUpdateInLua)
 	{
-
-
 		/** 程序判断是否死亡，如果死亡则自动移除  */
 		if (IsKilled() && IsKilledAnimationFinished())
 		{
 			RemoveFromMap();
 			NotifyKilled();
 		}
-
 	}
+
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnUpdate");
 }
 
 void Enemy::Draw()
 {
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnBeforeDraw");
 	Entity::Draw();
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnAfterDraw");
 }
 
 EntityType Enemy::GetEntityType() const
@@ -59,24 +60,25 @@ EntityType Enemy::GetEntityType() const
 
 const string Enemy::GetLuaObjectName() const
 {
-	return string();
+	return LuaContext::module_enemy_name;
 }
 
+/**
+*	\brief 创建前执行，此时去执行对应的Lua脚本
+*/
 void Enemy::NotifyBeforeCreated()
 {
 }
 
+/**
+*	\brief 创建后执行，在这里设置一些额外的设置
+*/
 void Enemy::NotifyAfterCreated()
 {
 }
 
 void Enemy::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
 {
-}
-
-bool Enemy::NotifyCommandInteractPressed(Entity & interactEntity)
-{
-	return false;
 }
 
 void Enemy::NotifyKilled()

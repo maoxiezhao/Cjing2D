@@ -23,7 +23,6 @@ public:
 	virtual void NotifyBeforeCreated();
 	virtual void NotifyAfterCreated();
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
-	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
 	virtual void NotifyHurt();
 	virtual void NotifyKilled();
 

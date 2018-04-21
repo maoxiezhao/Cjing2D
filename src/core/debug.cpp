@@ -74,4 +74,12 @@ namespace Debug{
 			std::abort();
 	}
 
+	void SetDebugConsole(SHORT w, SHORT h, int bShow)
+	{
+		HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleScreenBufferSize(handle, { w+1, (SHORT)65536 -1 });
+		SMALL_RECT rc = { 0, 0, w, h - 1}; // 重置窗口位置和大小
+		SetConsoleWindowInfo(handle, true, &rc);
+	}
+
 }

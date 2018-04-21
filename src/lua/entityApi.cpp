@@ -8,7 +8,8 @@
 #include"entity\tileset.h"
 #include"entity\pickable.h"
 
-const string LuaContext::module_entity_name = "Entity";
+const std::string LuaContext::module_entity_name = "Entity";
+const std::string LuaContext::module_enemy_name = "Enemy";
 
 void LuaContext::RegisterEntityModule()
 {

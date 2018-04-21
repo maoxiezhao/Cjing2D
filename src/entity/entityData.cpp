@@ -31,6 +31,11 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 			{ "itemCount", EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0) }
 		}
 	},
+	{
+		EntityType::ENEMEY,{
+			{"direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT ,EntityData::EntityDefaultValue(0)}
+		}
+	},
 };
 }
 

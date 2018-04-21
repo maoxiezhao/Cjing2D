@@ -53,6 +53,8 @@ namespace LuaTools
 	void Error(lua_State*l, const string& message);
 	void ArgError(lua_State*l, int index, const string&message);
 	void PrintLuaStack(lua_State*l);
+	void PrintInIndex(lua_State*l, int index);
+	int GetCallDepth(lua_State*l);
 
 	// template
 	template<typename Callable>

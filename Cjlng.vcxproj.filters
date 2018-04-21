@@ -62,6 +62,9 @@
     <Filter Include="gui\imgui">
       <UniqueIdentifier>{efbe1a43-c6be-4871-a62d-83269412bc11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lua\luaDebug">
+      <UniqueIdentifier>{370ee564-0d2a-4f9f-89fd-08dbd17d7fef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">
@@ -456,6 +459,9 @@
     </ClCompile>
     <ClCompile Include="src\game\weaponControl.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\luaDebug.cpp">
+      <Filter>lua\luaDebug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -890,6 +896,15 @@
     </ClInclude>
     <ClInclude Include="src\game\weaponControl.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\combat.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\luaDebug.h">
+      <Filter>lua\luaDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\commonUtils.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

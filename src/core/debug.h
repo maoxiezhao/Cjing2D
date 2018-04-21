@@ -19,6 +19,8 @@ namespace Debug
 	void CheckAssertion(bool asertion);
 	void CheckAssertion(bool assertion, const string& errorMsg);
 	void Die(const string& dieMsg);
+
+	void SetDebugConsole(SHORT w, SHORT h, int bShow);
 }
 
 #endif

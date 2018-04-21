@@ -1,4 +1,5 @@
 #include"luaContext.h"
+#include"lua\luaDebug.h"
 #include"core\fileData.h"
 #include"core\debug.h"
 #include"core\logger.h"
@@ -14,7 +15,8 @@ LuaRef LuaContext::mSystemExports;
 LuaRef LuaContext::mSystemModulesRef;
 
 LuaContext::LuaContext(App& app):
-	mApp(app)
+	mApp(app),
+	mLuaDebugger(nullptr)
 {
 }
 
@@ -72,6 +74,9 @@ void LuaContext::Initialize()
 	lua_getglobal(l, "SystemExports");
 	Debug::CheckAssertion(!lua_isnil(l, 1), "Lua env initialized failed.");
 	mSystemExports = LuaTools::CreateRef(l);	
+
+	// 初始化调试器
+	mLuaDebugger = std::make_unique<LuaDebug>(l);
 
 	// 加载全局函数, 准备废弃，全局函数在luaEnvScript中定义
 	DoFileIfExists(l, "script/libFunction");
@@ -133,6 +138,8 @@ void LuaContext::Exit()
 		mSystemModulesRef.Clear();
 
 		mLoadFileSets.clear();
+
+		mLuaDebugger->Uninitialize();
 
 		lua_close(l);
 		mLuaContexts.erase(l);

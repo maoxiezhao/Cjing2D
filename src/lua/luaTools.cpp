@@ -21,8 +21,11 @@ namespace LuaTools
 	{
 		if (lua_pcall(l, arguments, results, 0) != 0)
 		{
-			Debug::Error(std::string("In ") + functionName + ": " + lua_tostring(l, -1));
-			lua_pop(l, 1);
+			std::string errMsg = std::string("In ") + functionName + ": " + lua_tostring(l, -1) + "\n";
+			luaL_traceback(l, l, NULL, 1);
+			errMsg += lua_tostring(l, -1);
+			Debug::Error(errMsg);
+			lua_pop(l, 2);
 			return false;
 		}
 		return true;;
@@ -427,6 +430,36 @@ namespace LuaTools
 			oss << endl;
 		}
 		Logger::Debug(oss.str());
+	}
+
+	void PrintInIndex(lua_State * l, int index)
+	{
+		index = LuaTools::GetPositiveIndex(l, index);
+		std::ostringstream oss;
+		switch (lua_type(l, index))
+		{
+		case LUA_TSTRING:
+			oss << "\"" << lua_tostring(l, index) << "\"";
+			break;
+		case LUA_TBOOLEAN:
+			oss << (lua_toboolean(l, index) ? "True" : "False");
+			break;
+		case LUA_TNUMBER:
+			oss << (lua_tonumber(l, index));
+			break;
+		default:
+			oss << lua_typename(l, lua_type(l, index));
+			break;
+		}
+		Logger::Debug(oss.str());
+	}
+
+	int GetCallDepth(lua_State * l)
+	{
+		int depth = 0;
+		lua_Debug info;
+		for (; lua_getstack(l, depth + 1, &info) != 0; depth++);
+		return depth;
 	}
 
 

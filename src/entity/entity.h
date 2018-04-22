@@ -68,6 +68,7 @@ public:
 	virtual void NotifyBeRemoved();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
+	virtual void NotifyDirectionChange(Direction4 oldDir, Direction4 newDir);
 	
 	// game command notify
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
@@ -85,7 +86,7 @@ public:
 	void SetName(const string& name);
 	void SetSize(const Size& size);
 	Size GetSize()const;
-	const string& GetName()const;
+	string GetName()const;
 	Rect GetRectBounding()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
@@ -99,6 +100,8 @@ public:
 	bool IsSuspended()const;
 	virtual EntityType GetEntityType()const;
 	virtual float GetFacingDegree()const;
+	virtual void SetDirection(Direction4 dir);
+	Direction4 GetDirection()const;
 
 	// special status
 	void SetFacingEntity(Entity* entity);
@@ -159,6 +162,7 @@ private:
 	bool mBeRemoved;	/** 将要被移除 */
 	int mCollisionMode;
 	bool mFocused;		/** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
+	Direction4 mDirection;
 
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */

@@ -195,12 +195,15 @@ bool LuaContext::LoadFile(lua_State* l, const string& name)
 	string fileName(name);
 	// 如果不存在，在末尾加上Lua后再尝试
 	//if (!FileData::IsFileExists(fileName))
-	fileName += ".lua";
+	if ((fileName.find(".lua") == std::string::npos )|| 
+		!FileData::IsFileExists(fileName))
+	{
+		fileName += ".lua";
 
-	// 如果依旧不存在则返回
-	if (!FileData::IsFileExists(fileName))
-		return false;
-
+		// 如果依旧不存在则返回
+		if (!FileData::IsFileExists(fileName))
+			return false;
+	}
 	const string buffer = FileData::ReadFile(fileName);
 	int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), fileName.c_str());
 	if (result != 0)
@@ -433,7 +436,7 @@ void LuaContext::NotifyUserdataDestoryed(LuaObject& obj)
 
 void LuaContext::CallFileWithUserdata(const std::string & name, LuaObject & userdata)
 {
-	if (!LoadFile(l, name))
+	if (!LuaContext::LoadFile(l, name))
 	{
 		Debug::Warning("Load the lua file +'" + name + "' failed.");
 		return;
@@ -584,7 +587,6 @@ void LuaContext::RegisterType(lua_State*l, const string& moduleName, const strin
 	lua_pop(l, 1);
 				// --
 	RegisterType(l, moduleName, functions, methods, metamethods);
-
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
 	//lua_newtable(l);
@@ -880,6 +882,13 @@ bool LuaContext::IsUserdataHasField(LuaObject & userdata, const std::string & fi
 	// 检查元表
 	luaL_getmetatable(l, userdata.GetLuaObjectName().c_str());
 							// metatable
+	if (lua_isnil(l, -1))
+	{
+		LuaTools::Error(l, "The userdta metatable is not exists.");
+		lua_pop(l, 1);
+		return false;
+	}
+
 	lua_pushstring(l, fieldName.c_str());
 							// metatable fieldname
 	lua_rawget(l, -2);

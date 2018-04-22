@@ -1,6 +1,8 @@
 #include "luaRef.h"
 #include "luaTools.h"
 
+LuaRef LuaRef::Nil;
+
 LuaRef::LuaRef():
 	l(nullptr),
 	mRef(LUA_REFNIL)

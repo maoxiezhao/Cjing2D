@@ -42,7 +42,6 @@ void Enemy::Update()
 			NotifyKilled();
 		}
 	}
-
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnUpdate");
 }
 
@@ -68,6 +67,8 @@ const string Enemy::GetLuaObjectName() const
 */
 void Enemy::NotifyBeforeCreated()
 {
+	std::string path = "enemies/" + GetName() + ".lua";
+	GetLuaContext()->CallFileWithUserdata(path, *this);
 }
 
 /**

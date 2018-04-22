@@ -27,6 +27,7 @@ public:
 	void Push()const;
 	void Call(const std::string& functionName )const;
 
+	static LuaRef Nil;
 private:
 	lua_State*l;
 	int mRef;

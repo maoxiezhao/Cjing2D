@@ -1,4 +1,5 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
 #include"core\fileData.h"
 #include"game\map.h"
 #include"game\mapData.h"
@@ -7,6 +8,8 @@
 #include"entity\entities.h"
 #include"entity\tileset.h"
 #include"entity\pickable.h"
+#include"entity\enemy.h"
+
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_enemy_name = "Enemy";
@@ -16,19 +19,29 @@ void LuaContext::RegisterEntityModule()
 	// entity base
 	static const luaL_Reg functions[] = {
 		{ nullptr,nullptr }
-	};
-	
+	};	
 	static const luaL_Reg methods[] = {
 		{ nullptr,nullptr }
 	};
-
 	static const luaL_Reg metamethos[] = {
 		{ "__newindex", userdata_meta_newindex },
 		{ "__index", userdata_meta_index },
 		{ "__gc", userdata_meta_gc },
 		{ nullptr, nullptr }
 	};
-	//RegisterType(module_entity_name, functions, methods, metamethos);
+//	RegisterType(l, module_entity_name, functions, methods, metamethos);
+
+	// entity enemy
+	static const luaL_Reg enemy_methods[] = {
+		{ nullptr,nullptr }
+	};
+//	RegisterType(l, module_enemy_name, nullptr, enemy_methods, metamethos);
+	// Enemy
+	LuaBindClass<Enemy> bindClass(l, "Enemy");
+	bindClass.AddMetaFunction("__gc", LuaContext::userdata_meta_gc);
+	bindClass.AddMetaFunction("__index", LuaContext::userdata_meta_index);
+	bindClass.AddMetaFunction("__newindex", LuaContext::userdata_meta_newindex);
+	bindClass.AddMethod("GetName", &Enemy::GetName);
 }
 
 /**
@@ -123,6 +136,32 @@ int LuaContext::entity_api_create_pickable(lua_State* l)
 int LuaContext::entity_api_create_enemy(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
+		Map& map = *CheckMap(l, 1);
+		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
+		Game& game = map.GetGame();
+
+		auto enemy =  Enemy::Create(game,
+			entityData.GetName(), 
+			entityData.GetLayer(), 
+			entityData.GetPos());
+
+		enemy->SetDirection(static_cast<Direction4>(
+			entityData.GetValueInteger("direction")));
+		
+		if (map.IsStarted())
+		{
+			PushUserdata(l, *enemy);
+						// enemy
+			if (lua_isfunction(l, 3))
+			{			// func enemy
+				LuaTools::CallFunction(l, 1, 0, "enemy init");
+			}
+			map.GetEntities().AddEntity(enemy);
+						// --
+			PushUserdata(l, *enemy);
+						// enemy
+			return 1;
+		}
 		return 0;
 	});
 }
@@ -130,9 +169,10 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 /**
 *	\brief 创建对应的entity
 *
-*	其中map和该userdata会作为参数传入
+*	其中map和该userdata会作为参数传入, initCallback会在实体创建完后
+*	地图创建之前调用，一般可用于特殊的初始化需要
 */
-bool LuaContext::CreateEntity(const EntityData& entityData, Map& map)
+bool LuaContext::CreateEntity(const EntityData& entityData, Map& map, LuaRef& initCallback)
 {
 	const EntityType type = entityData.GetEntityType();
 	auto entityCreater = mEntitityCreaters.find(type);
@@ -144,5 +184,11 @@ bool LuaContext::CreateEntity(const EntityData& entityData, Map& map)
 	lua_pushcfunction(l, function);
 	PushMap(l, map);
 	lua_pushlightuserdata(l, const_cast<EntityData*>(&entityData));
-	return LuaTools::CallFunction(l, 2, 1, "create entity");
+
+	bool hasInitCallback = !initCallback.IsEmpty();
+	int argNum = hasInitCallback ? 3 : 2;
+	if (hasInitCallback){
+		initCallback.Push();
+	}
+	return LuaTools::CallFunction(l, argNum, 1, "create entity");
 }

@@ -241,6 +241,10 @@ void Entity::NotifyOverlapEntityChanged(Entity * entity)
 	// do nothing
 }
 
+void Entity::NotifyDirectionChange(Direction4 oldDir, Direction4 newDir)
+{
+}
+
 /**
 *	\brief 响应交互键的按下
 *	\param interactEntity 发起交互的实体
@@ -272,6 +276,7 @@ void Entity::NotifyMapStarted()
 void Entity::SetMap(Map * map)
 {
 	mMap = map;
+	SetLuaContext(&map->GetLuaContext());
 
 	if (!mIsInitialized && mMap->IsLoaded())
 	{	// 可能在游戏中实时创建entity
@@ -656,7 +661,7 @@ Size Entity::GetSize() const
 {
 	return mBounding.GetSize();
 }
-const string& Entity::GetName()const
+string Entity::GetName()const
 {
 	return mName;
 }
@@ -668,6 +673,21 @@ EntityType Entity::GetEntityType()const
 float Entity::GetFacingDegree() const
 {
 	return 0.0f;
+}
+
+void Entity::SetDirection(Direction4 dir)
+{
+	if (dir != mDirection)
+	{
+		auto oldDir = dir;
+		mDirection = dir;
+		NotifyDirectionChange(oldDir, dir);
+	}
+}
+
+Direction4 Entity::GetDirection() const
+{
+	return mDirection;
 }
 
 void Entity::SetFacingEntity(Entity * entity)

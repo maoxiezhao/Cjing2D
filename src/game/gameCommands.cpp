@@ -183,7 +183,10 @@ void GameCommands::MouseKeyPressed(const InputEvent::MouseButton & button)
 
 void GameCommands::MouseKeyReleased(const InputEvent::MouseButton & button)
 {
-
+	// 这里不对鼠标按键做映射处理了，直接粗暴
+	// 判断传入攻击命令
+	if (button == InputEvent::MouseButton::MOUSE_BUTTON_LEFT)
+		GameCommandReleased(GameCommand::GAME_COMMAND_ATTACK);
 }
 
 InputEvent::KeyboardKey GameCommands::GetSavegameMappingKeyboard(GameCommand command)

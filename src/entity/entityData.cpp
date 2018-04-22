@@ -87,12 +87,12 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions>& EntityDat
 */
 EntityData EntityData::CheckEntityData(lua_State * l, int index, EntityType type)
 {
-	LuaTools::CheckType(l, 1, LUA_TTABLE);
+	LuaTools::CheckType(l, index, LUA_TTABLE);
 	// default value
-	int x = LuaTools::CheckFieldInt(l, 1, "x");
-	int y = LuaTools::CheckFieldInt(l, 1, "y");
-	int layer = LuaTools::CheckFieldInt(l, 1, "layer");
-	const std::string name = LuaTools::CheckFieldStringByDefault(l, 1, "name", "");
+	int x = LuaTools::CheckFieldInt(l, index, "x");
+	int y = LuaTools::CheckFieldInt(l, index, "y");
+	int layer = LuaTools::CheckFieldInt(l, index, "layer");
+	const std::string name = LuaTools::CheckFieldStringByDefault(l, index, "name", "");
 
 	EntityData entityData;
 	entityData.SetEntityType(type);
@@ -115,33 +115,33 @@ EntityData EntityData::CheckEntityData(lua_State * l, int index, EntityType type
 		case EntityValueType::VALUE_TYPE_STRING:
 			if (flag == EntityValueFlag::VALUE_FALG_DEFAULT)
 			{
-				tmpStrValue = LuaTools::CheckFieldStringByDefault(l, 1, key, defaultValue.mStringValue);
+				tmpStrValue = LuaTools::CheckFieldStringByDefault(l, index, key, defaultValue.mStringValue);
 			}
 			else
 			{
-				tmpStrValue = LuaTools::CheckFieldString(l, 1, key);
+				tmpStrValue = LuaTools::CheckFieldString(l, index, key);
 			}
 			entityData.SetValueString(key, tmpStrValue);
 			break;
 		case EntityValueType::VALUE_TYPE_BOOLEAN:
 			if (flag == EntityValueFlag::VALUE_FALG_DEFAULT)
 			{
-				tmpIntValue = static_cast<int>(LuaTools::CheckFieldBoolByDefault(l, 1, key, static_cast<bool>(defaultValue.mIntValue)) );
+				tmpIntValue = static_cast<int>(LuaTools::CheckFieldBoolByDefault(l, index, key, static_cast<bool>(defaultValue.mIntValue)) );
 			}
 			else
 			{
-				tmpIntValue = static_cast<int>(LuaTools::CheckFieldBool(l, 1, key));
+				tmpIntValue = static_cast<int>(LuaTools::CheckFieldBool(l, index, key));
 			}
 			entityData.SetValueBoolean(key, tmpIntValue);
 			break;
 		case EntityValueType::VALUE_TYPE_INTEGER:
 			if (flag == EntityValueFlag::VALUE_FALG_DEFAULT)
 			{
-				tmpIntValue = LuaTools::CheckFieldIntByDefault(l, 1, key, defaultValue.mIntValue);
+				tmpIntValue = LuaTools::CheckFieldIntByDefault(l, index, key, defaultValue.mIntValue);
 			}
 			else
 			{
-				tmpIntValue = LuaTools::CheckFieldInt(l, 1, key);
+				tmpIntValue = LuaTools::CheckFieldInt(l, index, key);
 			}
 			entityData.SetValueInteger(key, tmpIntValue);
 		}

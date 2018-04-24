@@ -159,6 +159,17 @@ void Matrix4::Transform(const Vec2i & in, Vec2i & out) const
 	out.x = (int)(M[0] * in.x + M[1] * in.y + M[2] * 0.f + M[3]);
 	out.y = (int)(M[4] * in.x + M[5] * in.y + M[6] * 0.f + M[7]);
 }
+void Matrix4::Transform(Vec2f & vec) const
+{
+	float x = vec.x, y = vec.y;
+	vec.x = M[0] * x + M[1] * y + M[2] * 0.f + M[3];
+	vec.y = M[4] * x + M[5] * y + M[6] * 0.f + M[7];
+}
+void Matrix4::Transform(const Vec2f & in, Vec2f & out) const
+{
+	out.x = (M[0] * in.x + M[1] * in.y + M[2] * 0.f + M[3]);
+	out.y = (M[4] * in.x + M[5] * in.y + M[6] * 0.f + M[7]);
+}
 void Matrix4::Transform(Vec3f& vec)const
 {
 	float x = vec.x, y = vec.y, z = vec.z;

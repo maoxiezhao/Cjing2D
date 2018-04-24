@@ -33,7 +33,7 @@ Player::Player(Equipment & equipment) :
 	//auto movementState = std::make_shared<MouseState>(*this);
 	SetState(new MouseState(*this));
 
-	mWeapon = std::make_shared<Weapon>("usp", equipment);
+	mWeapon = std::make_shared<Weapon>("head", equipment);
 	mWeapon->Equiped(*this);
 }
 

@@ -31,6 +31,7 @@ public:
 	bool IsKilledAnimationFinished()const;
 
 	/** attack */
+	void Restart();
 	void TryHurt();
 	void Hurt();
 	void Kill();

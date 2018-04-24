@@ -100,6 +100,7 @@
     <ClCompile Include="src\core\music.cpp" />
     <ClCompile Include="src\core\oggDecoder.cpp" />
     <ClCompile Include="src\core\perf.cpp" />
+    <ClCompile Include="src\core\pixelCollision.cpp" />
     <ClCompile Include="src\core\quadCommand.cpp" />
     <ClCompile Include="src\core\random.cpp" />
     <ClCompile Include="src\core\renderCommand.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="src\core\music.h" />
     <ClInclude Include="src\core\oggDecoder.h" />
     <ClInclude Include="src\core\perf.h" />
+    <ClInclude Include="src\core\pixelCollision.h" />
     <ClInclude Include="src\core\quadCommand.h" />
     <ClInclude Include="src\core\random.h" />
     <ClInclude Include="src\core\renderCommand.h" />
@@ -354,6 +356,7 @@
     <ClInclude Include="src\utils\nanovg.h" />
     <ClInclude Include="src\utils\nanovg_gl.h" />
     <ClInclude Include="src\utils\nanovg_gl_utils.h" />
+    <ClInclude Include="src\utils\obb.h" />
     <ClInclude Include="src\utils\objectPool.h" />
     <ClInclude Include="src\utils\point.h" />
     <ClInclude Include="src\utils\quadTree.h" />

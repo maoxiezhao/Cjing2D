@@ -94,6 +94,7 @@ void Entity::Update()
 */
 void Entity::Draw()
 {
+	DrawDebugBounding();
 	for (auto& nameSprite : mSprites)
 	{
 		auto sprite = nameSprite.sprite;
@@ -422,6 +423,11 @@ void Entity::ClearRemovedSprite()
 		}
 
 	}
+}
+
+std::vector<Entity::NamedSpritePtr>& Entity::GetSprites()
+{
+	return mSprites;
 }
 
 EntityState& Entity::GetState()const

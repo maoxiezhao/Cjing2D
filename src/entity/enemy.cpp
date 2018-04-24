@@ -1,5 +1,6 @@
 #include"entity\enemy.h"
 #include"game\combat.h"
+#include"game\animationSprite.h"
 #include"lua\luaContext.h"
 
 Enemy::Enemy(Game & game, const std::string & name, int layer, const Point2 & pos):
@@ -76,6 +77,19 @@ void Enemy::NotifyBeforeCreated()
 */
 void Enemy::NotifyAfterCreated()
 {
+	// 如果sprite在OnCreate中创建（约定）
+	// 这时候应该设置统一的方向
+	Direction4 dir = GetDirection();
+	for (const auto& nameSprite : GetSprites())
+	{
+		auto& sprite = nameSprite.sprite;
+		if (sprite && sprite->IsAnimationed()) {
+			auto& animateSprite = dynamic_cast<AnimationSprite&>(*sprite);
+			animateSprite.SetCurrDirection(dir);
+		}
+	}
+	// 重置当前状态
+	Restart();
 }
 
 void Enemy::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
@@ -95,6 +109,16 @@ bool Enemy::IsKilled() const
 bool Enemy::IsKilledAnimationFinished() const
 {
 	return false;
+}
+
+/**
+*	\brief 重置当前Enemy状态,当enemy创建后或者enable状态改变时调用
+*/
+void Enemy::Restart()
+{
+	if (IsKilled())	
+		return;
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnRestart");
 }
 
 void Enemy::TryHurt()

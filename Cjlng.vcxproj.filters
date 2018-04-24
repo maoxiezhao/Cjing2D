@@ -463,6 +463,9 @@
     <ClCompile Include="src\lua\luaDebug.cpp">
       <Filter>lua\luaDebug</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\pixelCollision.cpp">
+      <Filter>graphics\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -904,6 +907,12 @@
       <Filter>lua\luaDebug</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\commonUtils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\pixelCollision.h">
+      <Filter>graphics\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\obb.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

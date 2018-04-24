@@ -48,6 +48,8 @@ public:
 	// transform
 	void Transform(Vec2i& vec)const;
 	void Transform(const Vec2i& in, Vec2i& out)const;
+	void Transform(Vec2f& vec)const;
+	void Transform(const Vec2f& in, Vec2f& out)const;
 	void Transform(Vec3f& vec)const;
 	void Transform(const Vec3f& in, Vec3f& out)const;
 	void Transform(Point2& point)const;

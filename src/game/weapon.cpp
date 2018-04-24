@@ -61,7 +61,8 @@ void Weapon::Equiped(Entity & entity)
 	}
 
 	// 创建装备Sprite
-	mWeaponSprite = entity.CreateAnimationSprite("weapons/usp", normalAnimationName);
+	const std::string animatePath = "weapons/" + GetItemName();
+	mWeaponSprite = entity.CreateAnimationSprite(animatePath, normalAnimationName);
 	mWeaponSprite->SetDeferredDraw(true);
 	
 	auto size = entity.GetSize();

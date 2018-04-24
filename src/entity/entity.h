@@ -126,6 +126,7 @@ public:
 	bool RemoveSprite(const std::string& spriteName);
 	void ClearSprites();
 	void ClearRemovedSprite();
+	std::vector<NamedSpritePtr>& GetSprites();
 
 	/**** ***** state manager ***** ****/
 	EntityState& GetState()const;

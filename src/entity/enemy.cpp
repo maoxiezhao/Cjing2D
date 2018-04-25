@@ -3,8 +3,8 @@
 #include"game\animationSprite.h"
 #include"lua\luaContext.h"
 
-Enemy::Enemy(Game & game, const std::string & name, int layer, const Point2 & pos):
-	Entity(name, pos, Size(0,0), layer),
+Enemy::Enemy(Game & game, const std::string & name, const std::string& templName, int layer, const Point2 & pos):
+	Entity(name, templName, pos, Size(0,0), layer),
 	mGame(game),
 	mLife(1),
 	mDemage(1),
@@ -20,9 +20,9 @@ Enemy::Enemy(Game & game, const std::string & name, int layer, const Point2 & po
 	SetSize({ 32, 32 });
 }
 
-EntityPtr Enemy::Create(Game & game, const std::string & name, int layer, const Point2 & pos)
+EntityPtr Enemy::Create(Game & game, const std::string & name, const std::string& templName, int layer, const Point2 & pos)
 {
-	auto enemyPtr = std::make_shared<Enemy>(game, name, layer, pos);
+	auto enemyPtr = std::make_shared<Enemy>(game, name, templName, layer, pos);
 	return enemyPtr;
 }
 
@@ -68,7 +68,7 @@ const string Enemy::GetLuaObjectName() const
 */
 void Enemy::NotifyBeforeCreated()
 {
-	std::string path = "enemies/" + GetName() + ".lua";
+	std::string path = "enemies/" + GetTemplName() + ".lua";
 	GetLuaContext()->CallFileWithUserdata(path, *this);
 }
 

@@ -303,7 +303,7 @@ void Entities::InitEntities(const MapData& mapData)
 		for (int index = 0; index < mapData.GetEntityCountByLayer(curLayer); index++)
 		{
 			const EntityData& entityData = mapData.GetEntity(curLayer, index);
-			if (!GetLuaContext().CreateEntity(entityData, mMap, LuaRef::Nil))
+			if (!GetLuaContext().CreateEntity(entityData, mMap, LuaRef::Nil, true))
 			{
 				Debug::Error("Failed to create entity.");
 			}

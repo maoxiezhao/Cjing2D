@@ -44,7 +44,7 @@ public:
 	};
 
 	Entity();
-	Entity(const string& name, const Point2& pos, const Size& size, int layer);
+	Entity(const string& name, const string& templName, const Point2& pos, const Size& size, int layer);
 	~Entity();
 
 	virtual void Update();
@@ -84,9 +84,11 @@ public:
 	void SetLayer(int layer);
 	int GetLayer()const;
 	void SetName(const string& name);
+	void SetTemplName(const string& name);
 	void SetSize(const Size& size);
 	Size GetSize()const;
 	string GetName()const;
+	string GetTemplName()const;
 	Rect GetRectBounding()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
@@ -120,7 +122,7 @@ public:
 
 	/**** ***** sprite ***** ****/
 	SpritePtr CreateSprite(const string & spriteName);
-	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID);
+	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID = "");
 	SpritePtr GetSprite(const string& spriteName);
 	bool RemoveSprite(SpritePtr sprite);
 	bool RemoveSprite(const std::string& spriteName);
@@ -151,7 +153,8 @@ public:
 
 private:
 	// status
-	string mName;
+	string mName;		/** 自定义名字，不可相同 */
+	string mTemplName;  /** 模板名字 */
 	Point2 mOrigin;		/** 原点位置 */
 	Rect mBounding;
 	int mLayer;

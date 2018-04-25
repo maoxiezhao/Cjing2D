@@ -27,6 +27,7 @@ void LuaContext::RegisterSpriteModule()
 		{"setBlinking", sprite_api_set_blinking },
 		{"setFlipX", sprite_api_set_flip_x },
 		{"setFlipY", sprite_api_set_flip_y },
+		{"setDeferredDraw", sprite_api_set_deferred },
 		{"draw", sprite_api_draw},
 		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
 		{"getPos", drawable_api_get_pos},	
@@ -314,4 +315,22 @@ int LuaContext::sprite_api_set_flip_y(lua_State*l)
 		return 0;
 	});
 }
+
+
+/**
+*	\brief 实现cjing.Sprite:setDeferredDraw(bool)
+*/
+int LuaContext::sprite_api_set_deferred(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Sprite& sprite = *CheckSprite(l, 1);
+		bool deferred = LuaTools::CheckBoolean(l, 2);
+		sprite.SetDeferredDraw(deferred);
+
+		return 0;
+	});
+}
+
+
+
 

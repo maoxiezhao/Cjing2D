@@ -480,8 +480,12 @@ void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, 
 		lua_pop(l, 1);
 		luaL_newmetatable(l, moduleName.c_str());
 	}
-	lua_pushcfunction(l, function);
-	lua_setfield(l, -2, key.c_str());
+	lua_pushstring(l, key.c_str());
+								// meta key
+	lua_pushcfunction(l, function);		
+								// meta key func							
+	lua_rawset(l, -3);
+								// meta
 	lua_pop(l, 1);
 }
 
@@ -563,7 +567,7 @@ void LuaContext::RegisterType(lua_State * l, const string & moduleName, const lu
 	lua_getfield(l, -1, "__index");
 							// meta index/nil
 	lua_pushvalue(l, -2);
-							// meta __index/nil 
+							// meta __index/nil meta
 	if ( lua_isnil(l, -2))
 	{							
 		lua_setfield(l, -3, "__index");
@@ -589,17 +593,17 @@ void LuaContext::RegisterType(lua_State*l, const string& moduleName, const strin
 	RegisterType(l, moduleName, functions, methods, metamethods);
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
-	//lua_newtable(l);
-	//			// meta table
 	luaL_getmetatable(l, baseModuleName.c_str());
-	//			// meta table basemeta
+	//			// meta basemeta
 	//lua_setfield(l, -2, "__index");
 	//			// meta table
 	lua_setmetatable(l, -2);
 				// meta
+	lua_pushstring(l, "super");
+				// meta super
 	luaL_getmetatable(l, baseModuleName.c_str());
-				// meta basemeta
-	lua_setfield(l, -2, "super");
+				// meta super basemeta
+	lua_rawset(l, -3);
 	lua_settop(l, 0);
 }
 
@@ -1136,9 +1140,9 @@ void LuaContext::RegisterModules()
 	RegisterAnimationModule();
 	RegisterMovementModule();
 	RegisterAsyncLoaderModule();
-	RegisterEntityModule();
 	RegisterParticle();
 	RegisterItem();
+	RegisterEntityModule();
 	//RegisterWindowModule();
 }
 

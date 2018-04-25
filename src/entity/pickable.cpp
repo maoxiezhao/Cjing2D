@@ -10,7 +10,7 @@ namespace
 }
 
 Pickable::Pickable(const std::string itemName, int layer, const Point2 & pos, ItemAcquired& itemAcquired):
-	Entity(itemName, pos, DefaultItemSize, layer ),
+	Entity(itemName, itemName, pos, DefaultItemSize, layer ),
 	mItemAcquired(itemAcquired),
 	mItemSprite(nullptr),
 	mShadowSprite(nullptr),

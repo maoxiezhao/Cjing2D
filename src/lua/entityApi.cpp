@@ -10,38 +10,29 @@
 #include"entity\pickable.h"
 #include"entity\enemy.h"
 
-
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_enemy_name = "Enemy";
+
+const std::vector<std::string> mEntityClassNames = {
+	LuaContext::module_entity_name,
+	LuaContext::module_enemy_name
+};
 
 void LuaContext::RegisterEntityModule()
 {
 	// entity base
-	static const luaL_Reg functions[] = {
-		{ nullptr,nullptr }
-	};	
-	static const luaL_Reg methods[] = {
-		{ nullptr,nullptr }
-	};
-	static const luaL_Reg metamethos[] = {
-		{ "__newindex", userdata_meta_newindex },
-		{ "__index", userdata_meta_index },
-		{ "__gc", userdata_meta_gc },
-		{ nullptr, nullptr }
-	};
-//	RegisterType(l, module_entity_name, functions, methods, metamethos);
+	LuaBindClass<Entity> entityClass(l, "Entity");
+	entityClass.AddMethod("CreateSprite", entity_api_create_sprite);
+	entityClass.AddMethod("GetName", &Entity::GetName);
+	entityClass.AddMethod("SetName", &Entity::SetName);
+	entityClass.AddMethod("SetSize", &Entity::SetSize);
+	entityClass.AddMethod("SetOrigin", &Entity::SetOrigin);
 
-	// entity enemy
-	static const luaL_Reg enemy_methods[] = {
-		{ nullptr,nullptr }
-	};
-//	RegisterType(l, module_enemy_name, nullptr, enemy_methods, metamethos);
 	// Enemy
-	LuaBindClass<Enemy> bindClass(l, "Enemy");
+	LuaBindClass<Enemy> bindClass(l, "Enemy", "Entity");
 	bindClass.AddMetaFunction("__gc", LuaContext::userdata_meta_gc);
 	bindClass.AddMetaFunction("__index", LuaContext::userdata_meta_index);
 	bindClass.AddMetaFunction("__newindex", LuaContext::userdata_meta_newindex);
-	bindClass.AddMethod("GetName", &Enemy::GetName);
 }
 
 /**
@@ -62,7 +53,6 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 int LuaContext::entity_api_create_title(lua_State* l) 
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		//GetLuaContext(l).PrintLuaStack(l);
 		Map& map = *CheckMap(l, 1);
 		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
 
@@ -142,6 +132,7 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 
 		auto enemy =  Enemy::Create(game,
 			entityData.GetName(), 
+			entityData.GetValueString("templ"),
 			entityData.GetLayer(), 
 			entityData.GetPos());
 
@@ -172,7 +163,7 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 *	其中map和该userdata会作为参数传入, initCallback会在实体创建完后
 *	地图创建之前调用，一般可用于特殊的初始化需要
 */
-bool LuaContext::CreateEntity(const EntityData& entityData, Map& map, LuaRef& initCallback)
+bool LuaContext::CreateEntity(const EntityData& entityData, Map& map, LuaRef& initCallback, bool clearStack)
 {
 	const EntityType type = entityData.GetEntityType();
 	auto entityCreater = mEntitityCreaters.find(type);
@@ -190,5 +181,57 @@ bool LuaContext::CreateEntity(const EntityData& entityData, Map& map, LuaRef& in
 	if (hasInitCallback){
 		initCallback.Push();
 	}
-	return LuaTools::CallFunction(l, argNum, 1, "create entity");
+
+	bool result =  LuaTools::CallFunction(l, argNum, 1, "create entity");
+	if (clearStack)
+		lua_pop(l, 1);
+
+	return result;
+}
+
+
+/**-------------------------------------------------------
+*	\brief Entity Lua API
+*///------------------------------------------------------
+
+/**
+*	\brief 检查栈上index索引处是否为sprite userdata
+*	\return the sprite
+*/
+EntityPtr LuaContext::CheckEntity(lua_State*l, int index)
+{
+	return std::static_pointer_cast<Entity>(CheckUserdata(l, index, module_entity_name));
+}
+
+/**
+*	\brief 返回栈上index索引处是否sprite
+*	\return true 如果是sprite
+*/
+bool LuaContext::IsEntity(lua_State*l, int index)
+{
+	for (const auto& name : mEntityClassNames)
+	{
+		if (IsUserdata(l, index, name))
+			return true;
+	}
+	return false;
+}
+
+/**
+*	\brief 创建精灵
+*/
+int LuaContext::entity_api_create_sprite(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Entity& entity = *CheckEntity(l, 1);
+
+		const std::string& name = LuaTools::CheckString(l, 2);
+		std::string id = "";
+		if (lua_isstring(l, 3))
+			id = LuaTools::CheckString(l, 3);
+
+		auto animate = entity.CreateAnimationSprite(name, id);
+		PushAnimation(l, *animate);
+		return 1;
+	});
 }

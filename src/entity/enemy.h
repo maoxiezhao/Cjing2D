@@ -10,8 +10,8 @@ class Game;
 class Enemy : public Entity
 {
 public:
-	Enemy(Game& game, const std::string& name, int layer, const Point2& pos);
-	static EntityPtr Create(Game& game, const std::string& name, int layer, const Point2& pos);
+	Enemy(Game& game, const std::string& name, const std::string& templName, int layer, const Point2& pos);
+	static EntityPtr Create(Game& game, const std::string& name, const std::string& templName, int layer, const Point2& pos);
 
 	/** system */
 	virtual void Update();

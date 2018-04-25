@@ -16,6 +16,7 @@
 #include<list>
 #include<thirdparty\lua.hpp>
 
+class LuaDebug;
 class App;
 class InputEvent;
 class Sprite;
@@ -32,6 +33,7 @@ class Map;
 class ParticleSystem;
 class Item;
 class ItemAcquired;
+class Entity;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -43,7 +45,7 @@ class ItemAcquired;
  *
  *	2017.11.22 以luaBinder形式注册模板
  *
- *	2017.8.29 添加font接口
+ *	2017.8.29  添加font接口
  *
  */
 class LuaContext
@@ -79,6 +81,7 @@ public:
 	bool DoLuaExportFunction(const std::string& funcName, ...);
 	bool DoLuaSystemFunctionWithIndex(int systemIndex);
 	void PrintLuaStack(lua_State*l);
+	bool HasFileLoaded(const std::string& fileName)const;
 
 	// userdata
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
@@ -86,7 +89,9 @@ public:
 	bool IsUserdataHasField(LuaObject& userdata, const std::string& fieldName);
 	void CloseUserdatas();
 	void NotifyUserdataDestoryed(LuaObject& obj);
-
+	void CallFileWithUserdata(const std::string& name, LuaObject& userdata);
+	void CallFunctionWithUserdata(LuaObject& userdata, const std::string& funcName, std::function<int(lua_State*l)>paramFunc = nullptr);
+	
 	// process
 	void OnStart();
 	void OnUpdate();
@@ -148,6 +153,9 @@ public:
 		game_api_get_max_life,
 		game_api_set_life,
 		game_api_set_max_life,
+		// map
+		map_api_set_background,
+		map_api_create_entity,
 		// time
 		time_api_start,
 		// menu
@@ -183,6 +191,7 @@ public:
 		sprite_api_set_blinking,
 		sprite_api_set_flip_x,
 		sprite_api_set_flip_y,
+		sprite_api_set_deferred,
 		sprite_api_draw,
 		// animation
 		animation_api_create,
@@ -251,12 +260,13 @@ public:
 		item_api_set_flow,
 		item_api_set_auto_picked,
 		// entity
-
+		entity_api_create_sprite,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,
 		entity_api_create_dynamic_title,
 		entity_api_create_pickable,
+		entity_api_create_enemy,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -271,7 +281,7 @@ public:
 	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void AddEnum(lua_State*l, const std::string& enumStr, int value);
-
+	
 	// main api	-- test 
 	void PushMain(lua_State*l);
 	void OnMainStart();
@@ -310,7 +320,7 @@ public:
 	void RunItem(Item& item);
 	void OnItemCreated(Item& item);
 	bool OnItemObtained(Item& item, ItemAcquired& itemAcquired);
-
+	
 	// menu api
 	struct MenuData	
 	{	// 菜单数据结构，用于指向菜单的table
@@ -348,7 +358,7 @@ public:
 	void RemoveAsyncLoader(const std::shared_ptr<AsyncLoader>& asyncLoader);
 
 	// entity api
-	bool CreateEntity(const EntityData& entityData, Map& map);
+	bool CreateEntity(const EntityData& entityData, Map& map, LuaRef& initCallback, bool clearStack = false);
 
 	// push data
 	static void PushUserdata(lua_State*l, LuaObject& userData);
@@ -391,6 +401,8 @@ public:
 	static bool IsItem(lua_State*l, int index);
 	static std::shared_ptr<gui::Window> CheckWindow(lua_State*l, int index);
 	static bool IsWindow(lua_State*l, int index);
+	static std::shared_ptr<Entity> CheckEntity(lua_State*l, int index);
+	static bool IsEntity(lua_State*l, int index);
 
 	// system ref
 	static LuaRef mSystemCApiRef;
@@ -412,6 +424,7 @@ public:
 	static const string module_item_name;
 	static const string module_file_data_name;
 	static const string module_utils_name;
+	static const string module_enemy_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -429,6 +442,9 @@ public:
 private:
 	App& mApp;
 	lua_State* l;
+
+	std::unique_ptr<LuaDebug> mLuaDebugger;
+
 	static std::map<lua_State*, LuaContext*>mLuaContexts;/* 用于在lua APi中通过lua_state获取
 														    luaContext */
 
@@ -448,6 +464,7 @@ private:
 
 	std::map<const LuaObject*, std::set<std::string> > mUserdataFields;		/** 保存userdata中作用域中赋值的数据，
 																				该数据存储仅用于快速的查找是否存在指定key */
+	std::set<std::string> mLoadFileSets;		/* 打开文件的映射，避免重复加载 */
 };
 
 #include"lua\luaContext.inl"

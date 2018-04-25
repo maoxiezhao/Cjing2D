@@ -3,7 +3,7 @@
 #include "entity\tileset.h"
 
 Tile::Tile(const TileInfo& tileInfo):
-	Entity("", tileInfo.mPos, tileInfo.mSize, tileInfo.mLayer),
+	Entity("", "", tileInfo.mPos, tileInfo.mSize, tileInfo.mLayer),
 	mPatternID(tileInfo.mPatternID),
 	mPattern(*const_cast<TilePattern*>(tileInfo.mPattern)),
 	mTileSprite(nullptr)

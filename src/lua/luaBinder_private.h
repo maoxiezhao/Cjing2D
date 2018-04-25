@@ -3,6 +3,8 @@
 #include"lua\luaTools.h"
 #include"lua\luaData.h"
 #include"lua\luaContext.h"
+#include"utils\typeSet.h"
+#include"utils\size.h"
 
 #include<string>
 
@@ -11,6 +13,13 @@
 */
 namespace Implemention
 {
+	/** 当前已经注册的Lua Wrapper类,一般仅用于常用Util类 */
+	using WrapperSet = util::typeset<
+		std::string,
+		Size,
+		Point2
+	>;
+
 	/**
 	*	\brief lua到C++数据解析器
 	*/
@@ -32,9 +41,28 @@ namespace Implemention
 		template<typename T>
 		inline typename std::enable_if<std::is_same<T, std::string>::value, T>::type
 			UnWraper(lua_State*l, int index) { return static_cast<T>(LuaTools::CheckString(l, index)); }
+		/** size */
+		template<typename T>
+		inline typename std::enable_if<std::is_same<T, Size>::value, T>::type
+			UnWraper(lua_State*l, int index) {
+			LuaTools::CheckType(l, index, LUA_TTABLE);
+			lua_rawgeti(l, index, 1);
+			lua_rawgeti(l, index, 2);
+			Size size(LuaTools::CheckInt(l, -2),
+				LuaTools::CheckInt(l, -1));
+			lua_pop(l, 2);
+			return static_cast<T>(size);
+		}
+		/** Point2 */
+		template<typename T>
+		inline typename std::enable_if<std::is_same<T, Point2>::value, T>::type
+			UnWraper(lua_State*l, int index) {
+			Point2 point = LuaTools::CheckPoint2(l, index);
+			return static_cast<T>(point);
+		}
 		/** userdata */
 		template<typename T>
-		inline typename std::enable_if< !std::is_same<T, std::string>::value && std::is_class<T>::value, T>::type
+		inline typename std::enable_if<std::is_class<T>::value && !util::typeset_exist<WrapperSet, T>::value, T>::type
 			UnWraper(lua_State*l, int index) { return static_cast<T>(T::LuaUnWraper(l, index)); }	// 需要该类提供LuaUnWraper接口
 	}
 
@@ -67,13 +95,24 @@ namespace Implemention
 		{
 			lua_pushstring(l, value.c_str());
 		}
+		/** size */
+		inline void Wraper(lua_State*l, const Size& value)
+		{
+			lua_newtable(l);
+			lua_pushinteger(l, value.width);
+			lua_rawseti(l, -1, 1);
+			lua_pushinteger(l, value.height);
+			lua_rawseti(l, -1, 2);
+		}
 
 		/** userdata 需要该类提供LuaWraper接口*/																
 		template<typename T>
-		inline std::enable_if_t<std::is_class<T>::value>
+		inline std::enable_if_t<std::is_class<T>::value &&
+		 !util::typeset_exist<WrapperSet, T>::value >
 			Wraper(lua_State*l, T value)
 		{
-			T.LuaWraper(l);
+			T::LuaWraper(l);
+		//	lua_pushinteger(l, 0);
 		}
 	}
 
@@ -93,7 +132,9 @@ namespace Implemention
 	inline RetType FuncCaller(lua_State*l, int index, std::function<RetType(T1, T...)> f)
 	{
 		using ArgType = std::remove_cv<std::remove_reference<T1>::type>::type;
-		std::cout << typeid(ArgType).name() << std::endl;
+		
+		// DEBUG
+		//std::cout << typeid(ArgType).name() << std::endl;
 
 		ArgType arg = UnWrapperValue::UnWraper<ArgType>(l, index);
 		return FuncCaller(l, index + 1, std::function<RetType(T...)>(

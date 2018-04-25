@@ -10,7 +10,7 @@
 #include"game\weapon.h"
 
 Player::Player(Equipment & equipment) :
-	Entity("", { 50, 50 }, {26, 20}, 0),	// testing data
+	Entity("", "", { 50, 50 }, {26, 20}, 0),	// testing data
 	mPlayerSprites(nullptr),
 	mEquipment(equipment),
 	mNormalWalkingSpeed(100),

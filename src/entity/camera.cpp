@@ -35,7 +35,7 @@ namespace {
 }
 
 Camera::Camera(Map& map):
-	Entity("", Point2(0, 0), Video::GetScreenSize(), 0)
+	Entity("", "", Point2(0, 0), Video::GetScreenSize(), 0)
 {
 	SetMap(&map);
 }

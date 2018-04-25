@@ -28,8 +28,9 @@ Entity::Entity():
 {
 }
 
-Entity::Entity(const string & name, const Point2 & pos, const Size & size, int layer):
+Entity::Entity(const string & name, const string& templName, const Point2 & pos, const Size & size, int layer):
 	mName(name),
+	mTemplName(templName),
 	mBounding(pos, size),
 	mOrigin(),
 	mLayer(layer),
@@ -344,9 +345,10 @@ AnimationSpritePtr Entity::CreateAnimationSprite(const string & animationSetId, 
 {
 	// animationSprite
 	AnimationSpritePtr animationSprite = std::make_shared<AnimationSprite>(animationSetId);
-	animationSprite->SetCurrAnimation(animationID);
+	if(animationID != "")
+		animationSprite->SetCurrAnimation(animationID);
 	//animationSprite->SetPos(GetPos());
-
+	animationSprite->SetDeferredDraw(true);
 	NamedSpritePtr namedSprite;
 	namedSprite.name = animationID;
 	namedSprite.sprite = animationSprite;
@@ -647,30 +649,47 @@ void Entity::SetPos(const Point2& pos)
 {
 	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
 }
+
 void Entity::SetLayer(int layer)
 {
 	mLayer = layer;
 }
+
 int Entity::GetLayer()const
 {
 	return mLayer;
 }
+
 void Entity::SetName(const string& name)
 {
 	mName = name;
 }
+
+void Entity::SetTemplName(const string & name)
+{
+	mTemplName = name;
+}
+
 void Entity::SetSize(const Size & size)
 {
 	mBounding.SetSize(size.width, size.height);
 }
+
 Size Entity::GetSize() const
 {
 	return mBounding.GetSize();
 }
+
 string Entity::GetName()const
 {
 	return mName;
 }
+
+string Entity::GetTemplName() const
+{
+	return mTemplName;
+}
+
 EntityType Entity::GetEntityType()const
 {
 	return mType;

@@ -114,6 +114,8 @@ public:
 	void AddMethod(const std::string& methodName, RetType(T::*f)(Args...)const);
 	template<typename... Args>
 	void AddMethod(const std::string& methodName, void(T::*f)(Args...)const);
+	
+	void AddMethod(const std::string& funcName, FunctionExportToLua func);
 
 private:
 	std::string mName;
@@ -143,6 +145,12 @@ template<typename T>
 inline void LuaBindClass<T>::AddMetaFunction(const std::string& key, FunctionExportToLua func)
 {
 	LuaContext::RegisterMetaFunction(l, mName, key, func);
+}
+
+template<typename T>
+inline void LuaBindClass<T>::AddMethod(const std::string & funcName, FunctionExportToLua func)
+{
+	LuaContext::RegisterMetaFunction(l, mName, funcName, func);
 }
 
 template<typename T>
@@ -247,7 +255,7 @@ inline void LuaBindClass<T>::AddMethod(const std::string & methodName, void(T::*
 	lua_pushstring(l, mName.c_str());
 	lua_pushcclosure(l, Implemention::UnWraperLuaClassFunction<T, void, Args...>, 2);
 	lua_settable(l, -3);
-	lua_pop(l, 2);
+	lua_pop(l, 1);
 }
 
 
@@ -272,7 +280,7 @@ inline void LuaBindClass<T>::AddMethod(const std::string & methodName, RetType(T
 	lua_pushstring(l, mName.c_str());
 	lua_pushcclosure(l, Implemention::UnWraperLuaClassFunction<T, RetType, Args...>, 2);
 	lua_settable(l, -3);
-	lua_pop(l, 2);
+	lua_pop(l, 1);
 }
 
 template<typename T>

@@ -33,7 +33,8 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 	},
 	{
 		EntityType::ENEMEY,{
-			{"direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT ,EntityData::EntityDefaultValue(0)}
+			{ "templ",      EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+			{ "direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0)}
 		}
 	},
 };

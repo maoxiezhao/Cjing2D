@@ -16,5 +16,5 @@ void main()
 	vec3 mappingColor = vec3(1.0) - exp(-color * exposure);
 	// gammma
 	//mappingColor = pow(mappingColor, vec3(1.0 / gamma));
-	FragColor = vec4(mappingColor, 1.0);
+	FragColor = vec4(color, 1.0);
 }

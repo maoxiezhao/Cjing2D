@@ -69,9 +69,9 @@ void PlayerSprite::Draw()
 	auto& map = mPlayer.GetMap();
 	const Point2& pos = mPlayer.GetPos();
 	const Point2& ltPos = mPlayer.GetLeftTopPos();
-	const Size& size = mPlayer.GetSize();
+	const Size& size = mBodySprite->GetSize();
 
-	mShadowSprite->SetPos({ size.width / 2, size.height});
+	mShadowSprite->SetPos({ size.width / 2, (int)(size.height*0.6f)});
 	//map.DrawOnMap(*mShadowSprite);
 
 	mBodySprite->SetPos({0, 0});

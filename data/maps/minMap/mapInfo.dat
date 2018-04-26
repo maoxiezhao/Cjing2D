@@ -1,0 +1,40 @@
+-- mapInfo
+-- by zy 第一版试做 2018/2/20
+
+-- 地图信息结构体，包含了当前地图的房间池，以及总的地图大小
+-- 总的地图事件由mapInfo.lua决定，各个房间的事件则由各个房间的lua文件决定
+
+mapInfo{
+  -- main property
+  name = "test",
+  x = 0,
+  y = 0,
+  width = 2000,
+  height = 2000,
+  minlayer = 0,
+  maxlayer = 2,
+  minRooms = 5,  -- 最少房间数
+  maxRooms = 5,  -- 最大房间数
+
+  -- hallway data
+  hallWayUp = "",
+  hallWayRight = "",
+  hallWayDown = "",
+  hallWayLeft = "",
+
+  -- room data
+  random = true,   -- 是否随机大地图，true随机、false不随机
+  rooms = {
+      {
+        -- 房间信息，如果未设置为随机，位置则取x,y，
+        -- 否则取随机位置, 同时房间的大小要符合cellSize整数倍
+        name = "room1", 
+        path = "./minMap",
+        x = 0,
+        y = 0,
+        count = 7,         -- 房间个数
+        linkMask = "1111",  --房间链接信息，必然为4长度数字字符串，左到右为“上右下左”
+      },                  -- 先默认所有出口在各个墙的中间
+
+  },
+}

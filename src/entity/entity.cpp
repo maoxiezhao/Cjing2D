@@ -5,6 +5,7 @@
 #include "entity\entities.h"
 #include "entity\entityState.h"
 #include "entity\camera.h"
+#include "entity\enemy.h"
 #include "movements\movement.h"
 
 Entity::Entity():
@@ -158,6 +159,7 @@ const string Entity::GetLuaObjectName() const
 
 void Entity::DrawDebugBounding()
 {
+	return;
 	if (mDebugSprite == nullptr)
 	{
 		mDebugSprite = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
@@ -206,6 +208,10 @@ void Entity::NotifyMovementChanged()
 */
 void Entity::NotifyPositonChanged()
 {
+	// 当本身存在碰撞时，需要告知其他entity对该entity
+	if (IsHaveCollision())
+		CheckCollisionFromEntities();
+
 	CheckCollisionWithEntities();
 }
 
@@ -215,6 +221,10 @@ void Entity::NotifyPositonChanged()
 *	\param collisonMode 发生的碰撞类型
 */
 void Entity::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
+{
+}
+
+void Entity::NotifyCollisionWithEnemy(Enemy & enemy)
 {
 }
 
@@ -490,10 +500,15 @@ const std::shared_ptr<Movement>& Entity::GetMovement()
 void Entity::CheckCollisionWithEntities()
 {
 	if (!IsOnMap())
-	{
 		return;
-	}
 	GetMap().CheckCollisionWithEntities(*this);
+}
+
+void Entity::CheckCollisionFromEntities()
+{
+	if (!IsOnMap())
+		return;
+	GetMap().CheckCollisionFromEntities(*this);
 }
 
 /**

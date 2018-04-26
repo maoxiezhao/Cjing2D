@@ -1,6 +1,6 @@
 config{
-	title = "Cjing v0.0.1",
+	title = "深空失忆 by Cjing v0.0.1",
 	write_dir = "cjing",
-	normal_width = 1000,
+	normal_width = 800,
 	normal_height= 600,
 }

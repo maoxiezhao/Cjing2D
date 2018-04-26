@@ -5,7 +5,7 @@
 #include"player\freeState.h"
 #include"player\mouseState.h"
 #include"player\playerSprite.h"
-
+#include"core\logger.h"
 #include"gui\core\uiRender.h"
 #include"game\weapon.h"
 
@@ -277,4 +277,12 @@ void Player::NotifyOverlapEntityChanged(Entity * entity)
 			entity->SetFocused(true);
 		}
 	}
+}
+
+/**
+*	\brief 与敌人发生碰撞事件,在这里处理伤害行为？
+*/
+void Player::NotifyCollisionWithEnemy(Enemy & enemy)
+{
+	Logger::Info("Notify Collison.");
 }

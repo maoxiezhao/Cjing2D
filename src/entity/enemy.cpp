@@ -94,6 +94,7 @@ void Enemy::NotifyAfterCreated()
 
 void Enemy::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
 {
+	otherEntity.NotifyCollisionWithEnemy(*this);
 }
 
 void Enemy::NotifyKilled()

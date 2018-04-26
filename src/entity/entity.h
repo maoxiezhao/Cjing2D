@@ -16,6 +16,7 @@ class LuaContext;
 class Movement;
 class Map;
 class EntityState;
+class Enemy;
 
 /**
 *	\brief 游戏实体的抽象类
@@ -64,12 +65,15 @@ public:
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
 	virtual void NotifyPositonChanged();
-	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyBeRemoved();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
 	virtual void NotifyDirectionChange(Direction4 oldDir, Direction4 newDir);
 	
+	// notify colision
+	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
+	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
+
 	// game command notify
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
 
@@ -142,6 +146,7 @@ public:
 
 	/***** **** collision ***** *****/
 	void CheckCollisionWithEntities();
+	void CheckCollisionFromEntities();
 	virtual void CheckCollision(Entity& otherEntity);
 
 	bool TestCollisionWithRect(const Entity& entity);

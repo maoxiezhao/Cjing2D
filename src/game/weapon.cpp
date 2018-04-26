@@ -67,8 +67,8 @@ void Weapon::Equiped(Entity & entity)
 	
 	auto size = entity.GetSize();
 	auto spriteSize = mWeaponSprite->GetSize();
-	mWeaponSprite->SetRotateAnchor(-float(size.width * 0.2), float(spriteSize.height / 2));
-	mWeaponSprite->SetPos({ (int)(size.width * 0.8), size.height /2 });
+	mWeaponSprite->SetRotateAnchor(0, float(spriteSize.height / 2));
+	mWeaponSprite->SetPos({ (int)(size.width * 0.6), size.height /2 });
 
 	SetAttackAnimation();
 

@@ -30,6 +30,7 @@ public:
 	virtual void NotifyPositonChanged();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
+	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 
 	/** status manager */
 	void PlaceOnMap(Map& map);

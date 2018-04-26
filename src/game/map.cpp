@@ -16,6 +16,7 @@ Map::Map():
 	mHeight(0),
 	mMinLayer(0),
 	mMaxLayer(0),
+	mSuspended(false),
 	mIsLoaded(false),
 	mIsStarted(false),
 	mCamera(nullptr),
@@ -33,6 +34,7 @@ Map::Map(const std::string& id):
 	mHeight(0),
 	mMinLayer(0),
 	mMaxLayer(0),
+	mSuspended(false),
 	mIsLoaded(false),
 	mIsStarted(false),
 	mCamera(nullptr),
@@ -312,6 +314,12 @@ bool Map::TestCollisionWithGround(int layer, int x, int y, Entity & entity)
 */
 void Map::CheckCollisionWithEntities(Entity & entity)
 {
+	if (IsSuspended())
+		return;
+
+	if (entity.IsBeRemoved())
+		return;
+
 	Rect checkRect = entity.GetRectBounding();
 	checkRect.Extend(8, 8);
 
@@ -326,6 +334,39 @@ void Map::CheckCollisionWithEntities(Entity & entity)
 			continue;
 		}
 		checkEntity->CheckCollision(entity);
+	}
+}
+
+/**
+*	\brief 检测实体与其他实体的碰撞
+*
+*	当其他实体可碰撞时且发生碰撞时，会触发notifyCollision
+*	与CheckCollisionWithEntities不同的是，这由entity主
+*	动发起与其他entity的碰撞CheckCollision(*otherEntity);
+*/
+void Map::CheckCollisionFromEntities(Entity & entity)
+{
+	if (IsSuspended())
+		return;
+
+	if (entity.IsBeRemoved())
+		return;
+
+	Rect checkRect = entity.GetRectBounding();
+	checkRect.Extend(8, 8);
+	std::vector<EntityPtr> entityNearby;
+	mEntities->GetEntitiesInRect(checkRect, entityNearby);
+	for (auto& checkEntity : entityNearby)
+	{
+		if (entity.IsBeRemoved())
+			return;	// 可能因为碰撞而直接销毁
+
+		if (!checkEntity->IsSuspended() &&
+			!checkEntity->IsBeRemoved() &&
+			checkEntity.get() != &entity ) 
+		{
+			entity.CheckCollision(*checkEntity);
+		}
 	}
 }
 

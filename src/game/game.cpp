@@ -14,7 +14,8 @@ Game::Game(App* app):	// test,no savegame
 	mApp(*app),
 	mGameCommands(nullptr),
 	mCurrentMap(nullptr),
-	mNextMap(nullptr)
+	mNextMap(nullptr),
+	mSuspended(false)
 {
 	Equipment& equipment = mSavegame->GetEquipment();
 	mPlayer = std::make_shared<Player>(equipment);
@@ -27,7 +28,8 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	mApp(*app),
 	mGameCommands(nullptr),
 	mCurrentMap(nullptr),
-	mNextMap(nullptr)
+	mNextMap(nullptr),
+	mSuspended(false)
 {
 	savegame->SetGame(this);
 	

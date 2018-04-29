@@ -112,6 +112,16 @@ bool Enemy::IsKilledAnimationFinished() const
 	return false;
 }
 
+bool Enemy::IsObstacle(Entity & entity) const
+{
+	return entity.IsObstacleEnemy();
+}
+
+bool Enemy::IsObstacleEnemy() const
+{
+	return false;
+}
+
 /**
 *	\brief 重置当前Enemy状态,当enemy创建后或者enable状态改变时调用
 */

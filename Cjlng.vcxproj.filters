@@ -466,6 +466,9 @@
     <ClCompile Include="src\core\pixelCollision.cpp">
       <Filter>graphics\resource</Filter>
     </ClCompile>
+    <ClCompile Include="src\movements\pathMovement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -914,6 +917,15 @@
     </ClInclude>
     <ClInclude Include="src\utils\obb.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\pathMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\pathFindingMovement.h">
+      <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\pathFinding.h">
+      <Filter>movments</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

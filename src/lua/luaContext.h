@@ -16,6 +16,8 @@
 #include<list>
 #include<thirdparty\lua.hpp>
 
+//#define NOT_DEFERRED_METATABLE	// 不使用多重元表
+
 class LuaDebug;
 class App;
 class InputEvent;
@@ -41,12 +43,15 @@ class Entity;
  *  其中的提供的scripts包括main,sprite,map,entity等
  *  其中所有的script运行在同一个luaContext
  *
+ *  2018.4.30: 对于有继承关系的对象，将父方法直接写到子类
+ *	元表中
  *	2017.12.13 调整luaENV，所有的注册使用的新的lua环境
- *
  *	2017.11.22 以luaBinder形式注册模板
- *
  *	2017.8.29  添加font接口
  *
+ *	TODO：对于表进行优化操作，对于经常使用的模块方法，将
+ *	其创建在一个全局表中（'.'用'_'代替）以更多的较少查询
+ *	时间
  */
 class LuaContext
 {
@@ -222,6 +227,8 @@ public:
 		movement_target_api_get_target,
 		movement_target_api_set_speed,
 		movement_target_api_get_speed,
+		// path movement
+		movement_path_pai_create,
 		// text 
 		text_api_create,
 		text_api_load_font,
@@ -276,7 +283,7 @@ public:
 
 	// register api
 	static void RegisterMetaFunction(lua_State*l, const string &moduleName, const std::string& key, FunctionExportToLua function);
-	static void RegisterFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function);
+	static void RegisterGlobalFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function);
 	static void RegisterFunction(lua_State*l, const string& moduleName, const luaL_Reg* functions);
 	static void RegisterType(lua_State*l, const string& moduleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
 	static void RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods);
@@ -429,6 +436,7 @@ public:
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
 	static const string module_target_movement_name;
+	static const string module_path_movement_name;
 	// drawable
 	static const string module_drawable_name;
 	static const string module_sprite_name;

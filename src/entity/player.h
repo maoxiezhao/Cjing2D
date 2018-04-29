@@ -48,6 +48,10 @@ public:
 	Equipment& GetEquipment();
 	const Equipment& GetEquipment()const;
 	virtual float GetFacingDegree()const;
+
+	virtual bool IsObstacle(Entity& entity)const;
+	virtual bool IsObstacleEnemy()const;
+
 private:
 	std::unique_ptr<PlayerSprite> mPlayerSprites;	// 当前的sprite合集
 	Equipment& mEquipment;		// 当前player数值管理者，包括装备管理

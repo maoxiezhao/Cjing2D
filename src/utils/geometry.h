@@ -18,6 +18,9 @@ namespace Geometry
 	constexpr double PI_OVER_2   = 1.57079632679489661923;
 	constexpr double PI_OVER_4   = 0.78539816339744830961;
 
+	// TODO: change to 'float'
+	constexpr float  SQRT_2 = 1.4142135623731f;
+
 	constexpr float  EPSILON = 1e-3f;
 
 	inline double Radians(double angle)

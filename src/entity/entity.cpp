@@ -25,7 +25,8 @@ Entity::Entity():
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
-	mFocused(false)
+	mFocused(false),
+	mCanPushed(false)
 {
 }
 
@@ -47,7 +48,8 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
-	mFocused(false)
+	mFocused(false),
+	mCanPushed(false)
 {
 }
 
@@ -159,7 +161,7 @@ const string Entity::GetLuaObjectName() const
 
 void Entity::DrawDebugBounding()
 {
-	return;
+	//return;
 	if (mDebugSprite == nullptr)
 	{
 		mDebugSprite = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
@@ -559,8 +561,13 @@ bool Entity::IsHaveCollision() const
 */
 bool Entity::TestCollisionWithRect(const Entity & entity)
 {
-	auto otheRect = entity.GetRectBounding();
-	return GetRectBounding().Overlaps(otheRect);
+	auto otherRect = entity.GetRectBounding();
+	return TestCollisionWithRect(otherRect);
+}
+
+bool Entity::TestCollisionWithRect(const Rect & rect)
+{
+	return GetRectBounding().Overlaps(rect);
 }
 
 bool Entity::TestCollisionContaining(const Entity & entity)
@@ -728,6 +735,38 @@ void Entity::SetDirection(Direction4 dir)
 Direction4 Entity::GetDirection() const
 {
 	return mDirection;
+}
+
+/**
+*	\brief 是否可以推动，目前仅player可以对其他entity进行推动
+*/
+bool Entity::CanPushed() const
+{
+	return mCanPushed;
+}
+
+void Entity::SetCanPushed(bool pushed)
+{
+	mCanPushed = pushed;
+}
+
+void Entity::StartMoveByPushed(Entity & entity)
+{
+}
+
+bool Entity::IsObstacle(Entity & entity) const
+{
+	return false;
+}
+
+bool Entity::IsObstacleEnemy() const
+{
+	return false;
+}
+
+bool Entity::IsObstaclePlayer() const
+{
+	return false;
 }
 
 void Entity::SetFacingEntity(Entity * entity)

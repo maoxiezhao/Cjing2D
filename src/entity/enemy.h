@@ -29,6 +29,8 @@ public:
 	/** status */
 	bool IsKilled()const;
 	bool IsKilledAnimationFinished()const;
+	virtual bool IsObstacle(Entity& entity)const;
+	virtual bool IsObstacleEnemy()const;
 
 	/** attack */
 	void Restart();

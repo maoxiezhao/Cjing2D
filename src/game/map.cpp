@@ -287,7 +287,7 @@ bool Map::TestCollisionWithObstacle(const Rect & rect, Entity & entity)
 			return true;
 		}
 	}
-	return false;
+	return TestCollisionWithEntities(rect, entity, layer);
 }
 
 bool Map::TestCollisionWithGround(int layer, int x, int y, Entity & entity)
@@ -305,6 +305,28 @@ bool Map::TestCollisionWithGround(int layer, int x, int y, Entity & entity)
 	}
 
 	return isObstacle;
+}
+
+/**
+*	\brief 测试entity与障碍物entity的碰撞检测
+*	\param rect 测试entity的包围盒rect
+*	\param entity 参与碰撞检测的entity
+*	\return true 发生了碰撞检测
+*/
+bool Map::TestCollisionWithEntities(const Rect & rect, Entity & entity, int layer)
+{
+	std::vector<EntityPtr> entityNearby;
+	mEntities->GetEntitiesInRect(rect, entityNearby);
+	for (auto& checkEntity : entityNearby)
+	{
+		if (!checkEntity->IsSuspended() &&
+			!checkEntity->IsBeRemoved() &&
+			checkEntity->GetLayer() == layer &&
+			checkEntity.get() != &entity &&
+			checkEntity->TestCollisionWithRect(rect))
+			return true;
+	}
+	return false;
 }
 
 /**

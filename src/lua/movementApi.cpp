@@ -1,20 +1,23 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
 #include"movements\movement.h"
 #include"movements\targetMovement.h"
+#include"movements\pathMovement.h"
 #include"entity\entity.h"
 
 const string LuaContext::module_movement_name = "Movement";
 const string LuaContext::module_straight_movement_name = "StraightMovement";
 const string LuaContext::module_target_movement_name = "TargetMovement";
+const string LuaContext::module_path_movement_name = "PathMovement";
 
 void LuaContext::RegisterMovementModule()
 {
 	// base movement
 	static const luaL_Reg methods[] = {
-		{ "start", movement_api_start},
-		{ "stop", movement_api_stop},
-		{ "setPos", movement_api_set_pos},
-		{ "getPos", movement_api_get_pos},
+		{ "Start", movement_api_start},
+		{ "Stop", movement_api_stop},
+		{ "SetPos", movement_api_set_pos},
+		{ "GetPos", movement_api_get_pos},
 		{ nullptr, nullptr }
 	};
 	static const luaL_Reg metamethods[] = {
@@ -54,6 +57,13 @@ void LuaContext::RegisterMovementModule()
 	};
 	RegisterType(l, module_target_movement_name, module_straight_movement_name,
 		targetFunctions, targetMethods, metamethods);
+
+	// path movement
+	LuaBindClass<PathMovement> pathMovementClass(l, module_path_movement_name, module_movement_name);
+	pathMovementClass.AddDefaultMetaFunction();
+	pathMovementClass.AddFunction("Create", movement_path_pai_create);
+	pathMovementClass.AddMethod("SetPath", &PathMovement::SetPathString);
+	pathMovementClass.AddMethod("SetSpeed", &PathMovement::SetSpeed);
 }
 
 /************************************************************
@@ -106,9 +116,14 @@ int LuaContext::movement_api_start(lua_State*l)
 			Drawable& drawable = *CheckDrawable(l, 2);
 			drawable.StartMovement(movement);
 		}
+		else if (IsEntity(l, 2)) 
+		{
+			Entity& entity = *CheckEntity(l, 2);
+			entity.StartMovement(movement);
+		}
 		else
 		{
-			LuaTools::ArgError(l, 2, "movement:start,table,entity,or drawable.");
+			LuaTools::ArgError(l, 2, "movement:start except table,entity,or drawable.");
 		}
 		// ½áÊø»Øµ÷
 		LuaRef callBack = LuaTools::OptFunction(l, 3);
@@ -170,7 +185,6 @@ int LuaContext::movement_api_get_pos(lua_State*l)
 		return 2;
 	});
 }
-
 
 /************************************************************
 *	\brief straight movement
@@ -327,6 +341,25 @@ int LuaContext::movement_target_api_get_speed(lua_State*l)
 		int speed = movement.GetMovingSpeed();
 		lua_pushinteger(l, speed);
 
+		return 1;
+	});
+}
+
+/**-----------------------------------------------------
+*	\brief PathMovement
+*///----------------------------------------------------
+
+int LuaContext::movement_path_pai_create(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		const std::string& path = LuaTools::CheckString(l, 1);
+		int speed = LuaTools::CheckInt(l, 2);
+		bool loop = LuaTools::OptBoolean(l, 3, false);
+		bool ingore = LuaTools::OptBoolean(l, 4, false);
+		std::shared_ptr<PathMovement> movement =
+			std::make_shared<PathMovement>(path, speed, loop, ingore);
+
+		PushMovement(l, *movement);
 		return 1;
 	});
 }

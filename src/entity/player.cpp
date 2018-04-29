@@ -174,6 +174,16 @@ float Player::GetFacingDegree() const
 	return GetState().GetFacingDegree();
 }
 
+bool Player::IsObstacle(Entity & entity) const
+{
+	return entity.IsObstaclePlayer();
+}
+
+bool Player::IsObstacleEnemy() const
+{
+	return true;
+}
+
 /**
 *	\brief 进行攻击行为
 */

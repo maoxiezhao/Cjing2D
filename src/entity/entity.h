@@ -108,6 +108,14 @@ public:
 	virtual float GetFacingDegree()const;
 	virtual void SetDirection(Direction4 dir);
 	Direction4 GetDirection()const;
+	bool CanPushed()const;
+	void SetCanPushed(bool pushed);
+	virtual void StartMoveByPushed(Entity& entity);
+
+	/** obstacle */
+	virtual bool IsObstacle(Entity& entity)const;
+	virtual bool IsObstacleEnemy()const;
+	virtual bool IsObstaclePlayer()const;
 
 	// special status
 	void SetFacingEntity(Entity* entity);
@@ -150,6 +158,7 @@ public:
 	virtual void CheckCollision(Entity& otherEntity);
 
 	bool TestCollisionWithRect(const Entity& entity);
+	bool TestCollisionWithRect(const Rect& rect);
 	bool TestCollisionContaining(const Entity& entity);
 
 	bool IsHaveCollision()const;
@@ -172,6 +181,7 @@ private:
 	int mCollisionMode;
 	bool mFocused;		/** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
 	Direction4 mDirection;
+	bool mCanPushed;
 
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */

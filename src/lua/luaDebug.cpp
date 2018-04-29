@@ -232,7 +232,7 @@ void LuaDebug::Initialize()
 	lua_pushlightuserdata(l, &mInfo);
 	lua_settable(l, LUA_REGISTRYINDEX);
 
-	LuaContext::RegisterFunction(l, "debug_break_point", debug_api_break);
+	LuaContext::RegisterGlobalFunction(l, "debug_break_point", debug_api_break);
 
 	mIsInitialized = true;
 }

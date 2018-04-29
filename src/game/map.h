@@ -81,6 +81,7 @@ public:
 	// test collison
 	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);
 	bool TestCollisionWithGround(int layer, int x, int y, Entity& entity);
+	bool TestCollisionWithEntities(const Rect& rect, Entity& entity, int layer);
 	void CheckCollisionWithEntities(Entity& entity);
 	void CheckCollisionFromEntities(Entity& entity);
 private:

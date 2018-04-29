@@ -17,6 +17,8 @@
 *	luaBinder作为一个bindModule用来代替luaContext中
 *	的bind过程，但luaContext作为上下文环境，依然存在,
 *	用来维护添加的数据
+*
+*	TODO: 调整派生类的绑定方式
 */
 
 /**
@@ -98,12 +100,14 @@ public:
 
 	/** Meta function */
 	void AddMetaFunction(const std::string& key, FunctionExportToLua func);
+	void AddDefaultMetaFunction(bool bGC = true, bool bIndex = true, bool bNewIndex = true);
 
 	/** Adding Global Function */
 	template<typename RetType, typename ...Args>
 	void AddFunction(const std::string& funcName, RetType(*f)(Args...), int resultCount = 1);
 	template<typename... Args>
 	void AddFunction(const std::string& funcName, void(*f)(Args...), int resultCount = 0);
+	void AddFunction(const std::string& key, FunctionExportToLua func);
 
 	/** Adding Method */
 	template<typename RetType, typename... Args>
@@ -114,7 +118,6 @@ public:
 	void AddMethod(const std::string& methodName, RetType(T::*f)(Args...)const);
 	template<typename... Args>
 	void AddMethod(const std::string& methodName, void(T::*f)(Args...)const);
-	
 	void AddMethod(const std::string& funcName, FunctionExportToLua func);
 
 private:
@@ -145,6 +148,21 @@ template<typename T>
 inline void LuaBindClass<T>::AddMetaFunction(const std::string& key, FunctionExportToLua func)
 {
 	LuaContext::RegisterMetaFunction(l, mName, key, func);
+}
+
+template<typename T>
+inline void LuaBindClass<T>::AddDefaultMetaFunction(bool bGC, bool bIndex, bool bNewIndex)
+{
+	if(bGC)      AddMetaFunction("__gc", LuaContext::userdata_meta_gc);
+	if(bIndex)   AddMetaFunction("__index", LuaContext::userdata_meta_index);
+	if(bNewIndex)AddMetaFunction("__newindex", LuaContext::userdata_meta_newindex);
+}
+
+template<typename T>
+inline void LuaBindClass<T>::AddFunction(const std::string & key, FunctionExportToLua func)
+{
+	const luaL_Reg methods[] = { { key.c_str(), func },{nullptr, nullptr} };
+	LuaContext::RegisterFunction(l, mName, methods);
 }
 
 template<typename T>
@@ -319,7 +337,7 @@ void RegisterSystemFunction(lua_State*l,  std::string& funcName, RetType(*f)(Arg
 	lua_pushinteger(l, resultCount);
 	lua_pushcclosure(l, Implemention::UnWraperLuaFunction<RetType, Args...>, 2);
 	// func	
-	LuaContext::RegisterFunction(l, funcName, lua_tocfunction(l, -1));
+	LuaContext::RegisterGlobalFunction(l, funcName, lua_tocfunction(l, -1));
 }
 
 template<typename... Args>
@@ -329,7 +347,7 @@ void RegisterSystemFunction(const std::string& funcName, void(*f)(Args...))
 	lua_pushinteger(l, resultCount);
 	lua_pushcclosure(l, Implemention::UnWraperLuaFunction<void, Args...>, 2);
 	// func	
-	LuaContext::RegisterFunction(l, funcName, lua_tocfunction(l, -1));
+	LuaContext::RegisterGlobalFunction(l, funcName, lua_tocfunction(l, -1));
 }
 	
 

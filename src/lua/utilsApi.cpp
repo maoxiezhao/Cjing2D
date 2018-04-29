@@ -34,9 +34,9 @@ int utils_api_log_err(lua_State* l)
 
 void LuaContext::RegisterUtils(lua_State* l)
 {
-	LuaContext::RegisterFunction(l, "util_log_info", utils_api_log_info);
-	LuaContext::RegisterFunction(l, "util_log_warn", utils_api_log_warn);
-	LuaContext::RegisterFunction(l, "util_log_err",  utils_api_log_err);
+	LuaContext::RegisterGlobalFunction(l, "util_log_info", utils_api_log_info);
+	LuaContext::RegisterGlobalFunction(l, "util_log_warn", utils_api_log_warn);
+	LuaContext::RegisterGlobalFunction(l, "util_log_err",  utils_api_log_err);
 
 	//DefaultLuaBinder bindClass(l, module_utils_name);
 }

@@ -492,7 +492,7 @@ void LuaContext::RegisterMetaFunction(lua_State * l, const string & moduleName, 
 /**
 *	\brief 将函数注册在全局表的CAPI上
 */
-void LuaContext::RegisterFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function)
+void LuaContext::RegisterGlobalFunction(lua_State*l, const std::string& funcName, FunctionExportToLua function)
 {
 	LuaContext::PushRef(l, mSystemCApiRef);
 	if (!lua_isnil(l, -1) && function != nullptr)
@@ -581,6 +581,9 @@ void LuaContext::RegisterType(lua_State * l, const string & moduleName, const lu
 *
 *	在使用该方法前必须保证baseModule存在，并已经注册
 *	bug:目前使用该方法会导致父类metatable的gc方法调用
+*
+*	TODO:不设置父类metatable，改为直接设置键值在子类metatable
+*	如果需要访问父类方法则通过.super
 */
 void LuaContext::RegisterType(lua_State*l, const string& moduleName, const string& baseModuleName, 
 		const luaL_Reg* functions, const luaL_Reg* methods, const luaL_Reg* metamethods)
@@ -594,10 +597,28 @@ void LuaContext::RegisterType(lua_State*l, const string& moduleName, const strin
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
 	luaL_getmetatable(l, baseModuleName.c_str());
-	//			// meta basemeta
-	//lua_setfield(l, -2, "__index");
-	//			// meta table
-	lua_setmetatable(l, -2);
+				// meta table
+
+	// 这里可以两种做法，一种是直接将BaseMeta设置为meta的meta
+	// 或者是遍历BaseMeta将方法设置到meta中
+	if (1)
+	{		
+	//	LuaTools::PrintLuaStack(l);
+		lua_pushnil(l);
+		while (lua_next(l, -2))
+		{		// meta base key value
+			lua_pushvalue(l, -2);
+			lua_insert(l, LuaTools::GetPositiveIndex(l, -2));
+				// meta base key key value
+			lua_rawset(l, -5);
+			//LuaTools::PrintLuaStack(l);
+		}
+		lua_pop(l, 1);
+	}
+	else
+	{
+		lua_setmetatable(l, -2);
+	}
 				// meta
 	lua_pushstring(l, "super");
 				// meta super
@@ -813,7 +834,6 @@ const LuaObjectPtr LuaContext::CheckUserdata(lua_State * l, int index, const str
 		}
 
 		isMatched = lua_rawequal(l, -1, -2);
-		//GetLuaContext(l).PrintLuaStack(l);
 		if (isMatched)
 		{				// dstmeta meta
 			lua_pop(l, 1);
@@ -821,10 +841,29 @@ const LuaObjectPtr LuaContext::CheckUserdata(lua_State * l, int index, const str
 			break;
 		}
 		else
-		{				// dstmeta curmeta
-			lua_getmetatable(l, -1);
+		{				
+			// 1.一种是直接将BaseMeta设置为meta的meta,
+		    //   这是取元表的元表比较
+			// 2.或者是遍历BaseMeta将方法设置到meta中,这时候取super比较
+			if (1)
+			{
+				lua_pushstring(l, "super");
+						// dstmeta curmeta super
+				lua_rawget(l, -2);
+				//LuaTools::PrintLuaStack(l);
+			}
+			else
+			{			// dstmeta curmeta
+				lua_getmetatable(l, -1);
+			}
 			//GetLuaContext(l).PrintLuaStack(l);
-						// dstmeta curmeta meta
+						// dstmeta curmeta meta/nil
+			if (lua_isnil(l, -1))
+			{
+				lua_pop(l, 2);
+				break;
+			}
+
 			int removeIndex = LuaTools::GetPositiveIndex(l, -2);
 			lua_remove(l, removeIndex);
 			//GetLuaContext(l).PrintLuaStack(l);

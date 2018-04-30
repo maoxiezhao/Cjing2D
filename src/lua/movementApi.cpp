@@ -3,12 +3,14 @@
 #include"movements\movement.h"
 #include"movements\targetMovement.h"
 #include"movements\pathMovement.h"
+#include"movements\pathFinding_movement.h"
 #include"entity\entity.h"
 
 const string LuaContext::module_movement_name = "Movement";
 const string LuaContext::module_straight_movement_name = "StraightMovement";
 const string LuaContext::module_target_movement_name = "TargetMovement";
 const string LuaContext::module_path_movement_name = "PathMovement";
+const string LuaContext::module_path_finding_movement_name = "PathFindingMovement";
 
 void LuaContext::RegisterMovementModule()
 {
@@ -64,6 +66,10 @@ void LuaContext::RegisterMovementModule()
 	pathMovementClass.AddFunction("Create", movement_path_pai_create);
 	pathMovementClass.AddMethod("SetPath", &PathMovement::SetPathString);
 	pathMovementClass.AddMethod("SetSpeed", &PathMovement::SetSpeed);
+
+	// path finding movement
+	LuaBindClass<PathFindingMovement> pathFindingClass(l, module_path_finding_movement_name, module_path_movement_name);
+	pathMovementClass.AddDefaultMetaFunction();
 }
 
 /************************************************************

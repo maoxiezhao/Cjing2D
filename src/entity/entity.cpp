@@ -259,6 +259,11 @@ void Entity::NotifyDirectionChange(Direction4 oldDir, Direction4 newDir)
 {
 }
 
+void Entity::NotifyPathFindingFinished()
+{
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnPathFindingFinished");
+}
+
 /**
 *	\brief 响应交互键的按下
 *	\param interactEntity 发起交互的实体

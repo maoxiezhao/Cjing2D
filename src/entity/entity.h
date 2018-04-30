@@ -69,7 +69,8 @@ public:
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
 	virtual void NotifyDirectionChange(Direction4 oldDir, Direction4 newDir);
-	
+	virtual void NotifyPathFindingFinished();
+
 	// notify colision
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);

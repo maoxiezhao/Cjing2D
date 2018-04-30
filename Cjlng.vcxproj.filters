@@ -469,6 +469,12 @@
     <ClCompile Include="src\movements\pathMovement.cpp">
       <Filter>movments</Filter>
     </ClCompile>
+    <ClCompile Include="src\movements\pathFinding_movement.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\pathFinding_private.cpp">
+      <Filter>movments</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -921,10 +927,10 @@
     <ClInclude Include="src\movements\pathMovement.h">
       <Filter>movments</Filter>
     </ClInclude>
-    <ClInclude Include="src\movements\pathFindingMovement.h">
+    <ClInclude Include="src\movements\pathFinding_private.h">
       <Filter>movments</Filter>
     </ClInclude>
-    <ClInclude Include="src\movements\pathFinding.h">
+    <ClInclude Include="src\movements\pathFinding_movement.h">
       <Filter>movments</Filter>
     </ClInclude>
   </ItemGroup>

@@ -437,6 +437,7 @@ public:
 	static const string module_straight_movement_name;
 	static const string module_target_movement_name;
 	static const string module_path_movement_name;
+	static const string module_path_finding_movement_name;
 	// drawable
 	static const string module_drawable_name;
 	static const string module_sprite_name;

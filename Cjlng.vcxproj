@@ -205,6 +205,8 @@
     <ClCompile Include="src\main\test.cpp" />
     <ClCompile Include="src\movements\accelMovement.cpp" />
     <ClCompile Include="src\movements\movement.cpp" />
+    <ClCompile Include="src\movements\pathFinding_movement.cpp" />
+    <ClCompile Include="src\movements\pathFinding_private.cpp" />
     <ClCompile Include="src\movements\pathMovement.cpp" />
     <ClCompile Include="src\movements\playerMovement.cpp" />
     <ClCompile Include="src\movements\rotateMovement.cpp" />
@@ -338,8 +340,8 @@
     <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\movements\accelMovement.h" />
     <ClInclude Include="src\movements\movement.h" />
-    <ClInclude Include="src\movements\pathFinding.h" />
-    <ClInclude Include="src\movements\pathFindingMovement.h" />
+    <ClInclude Include="src\movements\pathFinding_private.h" />
+    <ClInclude Include="src\movements\pathFinding_movement.h" />
     <ClInclude Include="src\movements\pathMovement.h" />
     <ClInclude Include="src\movements\playerMovement.h" />
     <ClInclude Include="src\movements\rotateMovement.h" />

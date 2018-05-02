@@ -7,9 +7,11 @@ namespace PathFindingPrivate {
 
 
 namespace {
-	const int FINDING_STEP_CONST = 10;
+	const int FINDING_STEP_LINE_CONST = 8;
+	const int FINDING_STEP_INCLINE_CONST = 11;
 	const int FINDING_MAX_DISTANCE = 200;
 
+	const int FINDING_STEP_LENGTH = 8;
 	std::map<int, Point2> PosOffsets = {
 		{ DIRECTION8_RIGHT,		{  1,  0 } },
 		{ DIRECTION8_RIGHT_UP,	{  1, -1 } },
@@ -55,7 +57,7 @@ std::string AStartPathFinding::RequestPath(Entity & source, Entity & target, Map
 		size_t minSteps = std::numeric_limits<int>::max();
 		for (const auto& offset : offsets)
 		{
-			std::string curPath = RequestPath(source, targetPos + offset, map);
+			std::string curPath = ComputePath(source, targetPos + offset, map);
 			if (!curPath.empty() && curPath.size() < minSteps)
 			{
 				bestPath = curPath;
@@ -65,12 +67,57 @@ std::string AStartPathFinding::RequestPath(Entity & source, Entity & target, Map
 	}
 	else
 	{	// 不然则直接计算目标entity的当前位置的路径
-		bestPath = RequestPath(source, target.GetPos(), map);
+		bestPath = ComputePath(source, target.GetPos(), map);
 	}
 	return bestPath;
 }
 
-std::string AStartPathFinding::RequestPath(Entity & source, const Point2 & target, Map & map)
+std::string AStartPathFinding::RequestPath(Entity & source, const Point2 & targetPos, Map & map)
+{
+	std::string bestPath;;
+
+	// 获取目标点所有障碍物
+	Rect rect = source.GetRectBounding();
+	Point2 orgin = source.GetOrigin();
+	rect.SetPos(targetPos.x - orgin.x,targetPos.y - orgin.y);
+
+	auto obstacles = map.GetObstacles(rect, source);
+	if (obstacles.empty())
+	{
+		bestPath = ComputePath(source, targetPos, map);
+	}
+	else
+	{
+		// 计算障碍物范围之外的安全目标点
+		Rect obstacleRect = rect;
+		for (const auto& obstacle : obstacles)
+		{
+			Rect r = obstacle->GetRectBounding();
+			obstacleRect |= r;
+		}
+		Size size = obstacleRect.GetSize();
+		const std::vector<Point2> offsets = {
+			{ size.width, 0 },
+			{ -size.width, 0 },
+			{ 0,  size.height },
+			{ 0, -size.height }
+		};
+
+		size_t minSteps = std::numeric_limits<int>::max();
+		for (const auto& offset : offsets)
+		{
+			std::string curPath = ComputePath(source, targetPos + offset, map);
+			if (!curPath.empty() && curPath.size() < minSteps)
+			{
+				bestPath = curPath;
+				minSteps = curPath.size();
+			}
+		}
+	}
+	return bestPath;
+}
+
+std::string AStartPathFinding::ComputePath(Entity & source, const Point2 & target, Map & map)
 {
 	std::string curPath("");
 
@@ -95,14 +142,14 @@ std::string AStartPathFinding::RequestPath(Entity & source, const Point2 & targe
 	mOpenIndexList.push_back(index);
 
 	bool finished = false;
-	while (finished && mOpenIndexList.empty())
+	while (!finished && !mOpenIndexList.empty())
 	{
 		const auto curIndex = mOpenIndexList.front();
 		Node node = mOpenList[curIndex];
-		
+
 		mOpenIndexList.pop_front();
 		mOpenList.erase(curIndex);
-		mClosedList[index] = node;
+		mClosedList[curIndex] = node;
 
 		// 如果当前在目标范围内（8pixel内），则构建路径
 		if (targetIndex == curIndex)
@@ -119,15 +166,16 @@ std::string AStartPathFinding::RequestPath(Entity & source, const Point2 & targe
 			// 根据8方向创建节点
 			for (int i = 0; i < 8; i++)
 			{
-				Point2 newPos = node.pos + PosOffsets[i];
+				Point2 newPos = node.pos + PosOffsets[i] * FINDING_STEP_LENGTH;
 				int heuristic = GetManhattanDistance(newPos, target);
+				int stepCost = (i & 1) ? FINDING_STEP_INCLINE_CONST : FINDING_STEP_LINE_CONST;
 				Node newNode = CreateNode(newPos, heuristic);
-				newNode.Gcost = node.Gcost + FINDING_STEP_CONST;
-				newNode.Fcost = node.Gcost + heuristic;
+				newNode.Gcost = node.Gcost + stepCost;
+				newNode.Fcost = newNode.Gcost + heuristic;
 
 				int newIndex = newNode.index;
 				const bool inClosedList = mClosedList.find(newIndex) != mClosedList.end();
-				if (!inClosedList && IsCurNodeEnable(node, i))
+				if (!inClosedList && IsCurNodeEnable(newNode, i))
 				{
 					if (mOpenList.find(newIndex) != mOpenList.end())
 					{
@@ -151,6 +199,18 @@ std::string AStartPathFinding::RequestPath(Entity & source, const Point2 & targe
 						AddNodeIndex(newNode);;
 					}
 				}
+				//else
+				//{
+				//	// 处理目标临时出现障碍物的情况,仅仅创建到达当前路径
+				//	// 并立即返回，待下次请求时重新计算路径,这种判断必须
+				//  // 保证entity对齐了网格
+				//	if (newIndex == targetIndex)
+				//	{
+				//		finished = true;
+				//		curPath = BuildPathByNode(node);
+				//		break;
+				//	}
+				//}
 			}
 		}
 	}
@@ -184,9 +244,22 @@ std::string AStartPathFinding::BuildPathByNode(Node & node)
 */
 bool AStartPathFinding::IsNodeCanTransition(Node & node, int dir, Map & map, Entity& source)
 {
+	// 第一次测试
 	Rect rect = source.GetRectBounding();
-	rect.SetPos(node.pos.x, node.pos.y);
-	return !map.TestCollisionWithObstacle(rect, source);
+	Point2 orgin = source.GetOrigin();
+	rect.SetPos(node.pos.x - orgin.x,
+		node.pos.y - orgin.y);
+
+	if (map.TestCollisionWithObstacle(rect, source))
+		return false;
+
+	auto offset = PosOffsets[dir];
+	// 第二次测试
+	rect.AddPos(-offset.x * 7, -offset.y * 7);
+	if (map.TestCollisionWithObstacle(rect, source))
+		return false;
+
+	return true;
 }
 
 AStartPathFinding::Node AStartPathFinding::CreateNode(const Point2 & pos, int heuristic)

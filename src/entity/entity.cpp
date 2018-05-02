@@ -18,6 +18,7 @@ Entity::Entity():
 	mMovement(nullptr),
 	mFacingEntity(nullptr),
 	mOverlapEntity(nullptr),
+	mMap(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
@@ -25,8 +26,10 @@ Entity::Entity():
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
+	mInsertQuadTree(false),
 	mFocused(false),
-	mCanPushed(false)
+	mCanPushed(false),
+	mNotifyScriptMovement(true)
 {
 }
 
@@ -41,6 +44,7 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mMovement(nullptr),
 	mFacingEntity(nullptr),
 	mOverlapEntity(nullptr),
+	mMap(nullptr),
 	mIsInitialized(false),
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
@@ -48,8 +52,10 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
+	mInsertQuadTree(false),
 	mFocused(false),
-	mCanPushed(false)
+	mCanPushed(false),
+	mNotifyScriptMovement(true)
 {
 }
 
@@ -203,6 +209,10 @@ void Entity::NotifyMovementChanged()
 	{
 		mState->NotifyMovementChanged();
 	}
+	if (mNotifyScriptMovement)
+	{
+		GetLuaContext()->NotifyEntityWithMovement(*this, "OnMovementChanged");
+	}
 }
 
 /**
@@ -210,6 +220,8 @@ void Entity::NotifyMovementChanged()
 */
 void Entity::NotifyPositonChanged()
 {
+	NotifyBoundingRectChange();
+
 	// 当本身存在碰撞时，需要告知其他entity对该entity
 	if (IsHaveCollision())
 		CheckCollisionFromEntities();
@@ -262,6 +274,15 @@ void Entity::NotifyDirectionChange(Direction4 oldDir, Direction4 newDir)
 void Entity::NotifyPathFindingFinished()
 {
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnPathFindingFinished");
+}
+
+/**
+*	\brief 当entity的包围矩阵改变时，需要entities改变四叉树的分布
+*/
+void Entity::NotifyBoundingRectChange()
+{
+	if (IsOnMap())
+		GetMap().GetEntities().NotifyEntityRectChanged(*this);
 }
 
 /**
@@ -352,6 +373,8 @@ SpritePtr Entity::CreateSprite(const string & spriteName)
 	namedSprite.removed = false;
 
 	mSprites.push_back(namedSprite);
+	NotifyBoundingRectChange();
+
 	return sprite;
 }
 
@@ -372,6 +395,8 @@ AnimationSpritePtr Entity::CreateAnimationSprite(const string & animationSetId, 
 	namedSprite.removed = false;
 
 	mSprites.push_back(namedSprite);
+	NotifyBoundingRectChange();
+
 	return animationSprite;
 }
 
@@ -646,6 +671,16 @@ bool Entity::IsBeRemoved() const
 	return mBeRemoved;
 }
 
+bool Entity::IsInserQuadTree() const
+{
+	return mInsertQuadTree;
+}
+
+void Entity::SetInsertQuadTree(bool inserted) 
+{
+	mInsertQuadTree = inserted;
+}
+
 void Entity::SetSuspended(bool suspended)
 {
 }
@@ -675,6 +710,7 @@ Point2 Entity::GetLeftTopPos() const
 void Entity::SetPos(const Point2& pos)
 {
 	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
+	NotifyBoundingRectChange();
 }
 
 void Entity::SetLayer(int layer)
@@ -700,6 +736,7 @@ void Entity::SetTemplName(const string & name)
 void Entity::SetSize(const Size & size)
 {
 	mBounding.SetSize(size.width, size.height);
+	NotifyBoundingRectChange();
 }
 
 Size Entity::GetSize() const

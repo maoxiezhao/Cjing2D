@@ -181,7 +181,9 @@ void Entities::ClearRemovedEntites()
 {
 	for (auto& entity : mEntityToRemove)
 	{
-		mEntityTree.Remove(entity);
+		if (mEntityTree.Remove(entity))
+			entity->SetInsertQuadTree(false);
+
 		mZCache.RemoveEntity(entity);
 		mAllEntities.remove(entity);
 	}
@@ -327,7 +329,9 @@ void Entities::AddEntity(const EntityPtr& entity)
 	EntityType entityType = entity->GetEntityType();
 	if (entityType != EntityType::CAMERA )
 	{
-		mEntityTree.Add(entity, entity->GetRectBounding());
+		if (mEntityTree.Add(entity, entity->GetRectBounding()))
+			entity->SetInsertQuadTree(true);
+
 		mZCache.AddEntity(entity);
 	}
 
@@ -371,8 +375,10 @@ Map & Entities::GetMap()
 */
 void Entities::NotifyEntityRectChanged(Entity & entity)
 {
-	auto& entityPtr = std::dynamic_pointer_cast<Entity>(entity.shared_from_this());	// get shared_ptr entity
-	mEntityTree.Move(entityPtr, entityPtr->GetRectBounding());
+	if (entity.IsInserQuadTree()) {
+		auto& entityPtr = std::dynamic_pointer_cast<Entity>(entity.shared_from_this());	// get shared_ptr entity
+		mEntityTree.Move(entityPtr, entityPtr->GetRectBounding());
+	}
 }
 
 /**

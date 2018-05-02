@@ -31,6 +31,7 @@ public:
 	bool IsKilledAnimationFinished()const;
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
+	virtual bool IsObstaclePlayer()const;
 
 	/** attack */
 	void Restart();

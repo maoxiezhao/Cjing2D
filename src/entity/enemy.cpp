@@ -122,6 +122,11 @@ bool Enemy::IsObstacleEnemy() const
 	return false;
 }
 
+bool Enemy::IsObstaclePlayer() const
+{
+	return true;
+}
+
 /**
 *	\brief 重置当前Enemy状态,当enemy创建后或者enable状态改变时调用
 */

@@ -23,7 +23,8 @@ PathMovement::PathMovement(const std::string & path, int speed, bool loop, bool 
 	mCurSubStep(0),
 	mSubStepFinished(false),
 	mSubStepDelay(0),
-	mStopedByObstacle(false)
+	mStopedByObstacle(false),
+	mFinished(true)
 {
 	SetPathString(path);
 }
@@ -33,7 +34,7 @@ void PathMovement::Update()
 	while (	GetEntity() != nullptr &&
 		!IsSuspended() && 
 		IsCurPathStepFinished() &&
-		!IsFinished())
+		!PathMovement::IsFinished())
 	{
 		StartNextPathStep();
 		UpdateCurPathStep();
@@ -63,7 +64,7 @@ void PathMovement::SetSuspended(bool suspended)
 
 bool PathMovement::IsFinished() const
 {
-	return (Movement::IsFinished() && IsCurPathStepFinished() &&
+	return (mFinished && IsCurPathStepFinished() &&
 		mCurPaths.empty() && !mLoop) || mStopedByObstacle;
 }
 
@@ -71,6 +72,20 @@ void PathMovement::Start()
 {
 	Movement::Start();
 	Restart();
+}
+
+void PathMovement::Stop()
+{
+	mFinished = true;
+	mSubStepFinished = true;
+}
+
+/**
+*	\brief 获取当前四方向（8方向要做转换）
+*/
+int PathMovement::GetDirection() const
+{
+	return mCurPathDir / 2;
 }
 
 void PathMovement::SetSpeed(int speed)
@@ -99,6 +114,9 @@ bool PathMovement::IsLoop() const
 
 void PathMovement::SetPath(const std::list<int>& paths)
 {
+	mSetPaths.clear();
+	mCurPaths.clear();
+
 	for (const auto& path : paths)
 	{
 		mSetPaths.push_back(path);
@@ -145,10 +163,14 @@ void PathMovement::StartNextPathStep()
 				for (const auto& path : mSetPaths)
 					mCurPaths.push_back(path);
 			}
-			else if (!IsStop())
+			else if (!mFinished)
 			{
-				Stop();
+				mFinished = true;
 			}
+		}
+		else
+		{
+			Stop();
 		}
 	}
 	// 如果路径不为空，则设置当前路径和速度
@@ -159,6 +181,12 @@ void PathMovement::StartNextPathStep()
 		mCurSubStep = 0;
 		mSubStepDelay = GetDelayBySpeed(mSpeed, mCurPathDir);
 		mSubStepFinished = false;
+
+		if (mLastPathDir != mCurPathDir)
+		{
+			NotifyMovementChanged();
+			mLastPathDir = mCurPathDir;
+		}
 
 		SetNextStepDelay(mSubStepDelay);
 	}
@@ -226,6 +254,8 @@ void PathMovement::Restart()
 	for (const auto& path : mSetPaths)
 		mCurPaths.push_back(path);
 
+	mFinished = false;
 	mStopedByObstacle = false;
+	mLastPathDir = Direction8::DIRECTION8_NONE;
 	StartNextPathStep();
 }

@@ -33,9 +33,11 @@ public:
 	virtual~AStartPathFinding();
 
 	virtual std::string RequestPath(Entity& source, Entity& target, Map& map);
-	virtual std::string RequestPath(Entity& source, const Point2& target, Map& map);
+	virtual std::string RequestPath(Entity& source, const Point2& targetPos, Map& map);
 
 private:
+	std::string ComputePath(Entity& source, const Point2& target, Map& map);
+
 	/**	构建寻路树节点,该节点记录位置和期望值F = G + H */
 	struct Node
 	{
@@ -55,7 +57,6 @@ private:
 	void Reset();
 	std::string BuildPathByNode(Node& node);
 	bool IsNodeCanTransition(Node& node, int dir, Map& map, Entity& source);
-
 private:
 	std::map<int, Node> mOpenList;
 	std::map<int, Node> mClosedList;

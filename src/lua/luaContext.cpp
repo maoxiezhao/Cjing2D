@@ -457,7 +457,8 @@ void LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::strin
 	{
 		int paramNum = 1;
 		if (paramFunc != nullptr)
-			paramNum = paramFunc(l);
+			paramNum += paramFunc(l);
+
 		LuaTools::CallFunction(l, paramNum, 0, funcName);
 	}
 	lua_pop(l, 1);

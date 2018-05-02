@@ -70,6 +70,7 @@ public:
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
 	virtual void NotifyDirectionChange(Direction4 oldDir, Direction4 newDir);
 	virtual void NotifyPathFindingFinished();
+	virtual void NotifyBoundingRectChange();
 
 	// notify colision
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
@@ -103,6 +104,8 @@ public:
 	bool IsVisible()const;
 	void SetVisible(bool visibled);
 	bool IsBeRemoved()const;
+	bool IsInserQuadTree()const;
+	void SetInsertQuadTree(bool inserted);
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
 	virtual EntityType GetEntityType()const;
@@ -178,11 +181,13 @@ private:
 	bool mIsDrawOnYOrder;
 	bool mVisibled;
 	bool mEnabled;
-	bool mBeRemoved;	/** 将要被移除 */
+	bool mBeRemoved;	 /** 将要被移除 */
+	bool mInsertQuadTree;/** 是否插入到四叉树中 */
 	int mCollisionMode;
-	bool mFocused;		/** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
+	bool mFocused;		 /** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
 	Direction4 mDirection;
 	bool mCanPushed;
+	bool mNotifyScriptMovement;
 
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */

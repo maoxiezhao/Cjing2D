@@ -40,6 +40,9 @@ public:
 	virtual void SetDrawable(Drawable* drawable);
 	virtual void SetEntity(Entity* entity);
 
+	// display
+	virtual int GetDirection()const;
+
 	// move
 	virtual bool IsFinished()const;
 	virtual void Start();

@@ -65,6 +65,7 @@ public:
 	Entities& GetEntities();
 	std::shared_ptr<Camera>& GetCamera();
 	const std::shared_ptr<Camera>& GetCamera()const;
+	std::vector<std::shared_ptr<Entity> > GetObstacles(const Rect& rect, Entity& src)const;
 
 	// map property
 	const string& GetMapID()const;

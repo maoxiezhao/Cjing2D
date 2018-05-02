@@ -323,6 +323,7 @@ void AnimationSprite::SetCurrDirection(int direction)
 		"Invaild direction in AnimationSprite::SetCurrDirection().");
 
 	mCurrDirection = direction;
+	SetFrameChanged(true);	// µ±³õÎªÉ¶ÒªÉ¾³ý£¿
 }
 
 /**

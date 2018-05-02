@@ -15,50 +15,33 @@ const string LuaContext::module_path_finding_movement_name = "PathFindingMovemen
 void LuaContext::RegisterMovementModule()
 {
 	// base movement
-	static const luaL_Reg methods[] = {
-		{ "Start", movement_api_start},
-		{ "Stop", movement_api_stop},
-		{ "SetPos", movement_api_set_pos},
-		{ "GetPos", movement_api_get_pos},
-		{ nullptr, nullptr }
-	};
-	static const luaL_Reg metamethods[] = {
-		{ "__gc", movement_api_api_gc },
-		{ nullptr, nullptr }
-	};
-	RegisterType(l, module_movement_name, nullptr, methods, nullptr);
+	LuaBindClass<Movement> movementBaseCalss(l, module_movement_name);
+	movementBaseCalss.AddDefaultMetaFunction();
+	movementBaseCalss.AddMethod("Start", movement_api_start);
+	movementBaseCalss.AddMethod("Stop", movement_api_stop);
+	movementBaseCalss.AddMethod("SetPos", &Movement::SetPos);
+	movementBaseCalss.AddMethod("GetPos", &Movement::GetPos);
+	movementBaseCalss.AddMethod("GetDirection", &Movement::GetDirection);
 
 	// straight movement
-	static const luaL_Reg straightFunctions[] = {
-		{ "create", movement_straight_api_create},
-		{nullptr, nullptr}
-	};
-	static const luaL_Reg straightMethods[] = {
-		{ "setSpeed", movement_straight_api_set_speed},
-		{ "getSpeed", movement_straight_api_get_speed},
-		{ "setAngle", movement_straight_api_set_angle},
-		{ "getAngle", movement_straight_api_get_angle},
-		{ "setMaxDistance",movement_straight_api_set_max_distance},
-		{ "getMaxDistance",movement_straight_api_get_max_distance},
-		{nullptr, nullptr}
-	};
-	RegisterType(l, module_straight_movement_name, module_movement_name,
-		straightFunctions, straightMethods, metamethods);
+	LuaBindClass<StraightMovement> straightMovementClass(l, module_straight_movement_name, module_movement_name);
+	straightMovementClass.AddDefaultMetaFunction();
+	straightMovementClass.AddFunction("Create", movement_straight_api_create);
+	straightMovementClass.AddMethod("SetSpeed", &StraightMovement::SetSpeed);
+	straightMovementClass.AddMethod("GetSpeed", &StraightMovement::GetSpeed);
+	straightMovementClass.AddMethod("SetAngle", &StraightMovement::SetAngle);
+	straightMovementClass.AddMethod("GetAngle", &StraightMovement::GetAngle);
+	straightMovementClass.AddMethod("SetMaxDistance", &StraightMovement::SetMaxDistance);
+	straightMovementClass.AddMethod("GetMaxDistance", &StraightMovement::GetMaxDistance);
 
 	// target movement
-	static const luaL_Reg targetFunctions[] = {
-		{ "create", movement_target_api_create },
-		{ nullptr, nullptr }
-	};
-	static const luaL_Reg targetMethods[] = {
-		{ "setSpeed", movement_target_api_set_speed },
-		{ "getSpeed", movement_target_api_get_speed },
-		{ "setTarget", movement_target_api_set_target},
-		{ "getTarget", movement_target_api_get_target},
-		{ nullptr, nullptr }
-	};
-	RegisterType(l, module_target_movement_name, module_straight_movement_name,
-		targetFunctions, targetMethods, metamethods);
+	LuaBindClass<TargetMovement> targetMovementClass(l, module_target_movement_name, module_straight_movement_name);
+	targetMovementClass.AddDefaultMetaFunction();
+	targetMovementClass.AddFunction("Create", movement_target_api_create);
+	targetMovementClass.AddMethod("SetSpeed", movement_target_api_set_speed);
+	targetMovementClass.AddMethod("GetSpeed", movement_target_api_get_speed);
+	targetMovementClass.AddMethod("SetTarget", movement_target_api_set_target);
+	targetMovementClass.AddMethod("GetTarget", movement_target_api_get_target);
 
 	// path movement
 	LuaBindClass<PathMovement> pathMovementClass(l, module_path_movement_name, module_movement_name);
@@ -69,12 +52,28 @@ void LuaContext::RegisterMovementModule()
 
 	// path finding movement
 	LuaBindClass<PathFindingMovement> pathFindingClass(l, module_path_finding_movement_name, module_path_movement_name);
-	pathMovementClass.AddDefaultMetaFunction();
+	pathFindingClass.AddDefaultMetaFunction();
+	pathFindingClass.AddFunction("Create", movement_path_finding_api_create);
+	pathFindingClass.AddMethod("SetTarget", movement_path_finding_api_set_target);
 }
 
 /************************************************************
 *	\brief movement
 ************************************************************/
+
+void LuaContext::NotifyEntityWithMovement(Entity& entity, const std::string& funcName)
+{
+	CallFunctionWithUserdata(entity, funcName,
+		[&](lua_State* l)->int {
+		auto& movement = entity.GetMovement();
+		if (movement && !movement->IsFinished())
+		{
+			LuaContext::PushMovement(l, *movement);
+			return 1;
+		}
+		return 0;
+	});
+}
 
 std::shared_ptr<Movement> LuaContext::CheckMovement(lua_State*l, int index)
 {
@@ -369,3 +368,42 @@ int LuaContext::movement_path_pai_create(lua_State*l)
 		return 1;
 	});
 }
+
+int LuaContext::movement_path_finding_api_create(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		int speed = LuaTools::CheckInt(l, 1);
+		bool ingore = LuaTools::OptBoolean(l, 2, false);
+		std::shared_ptr<PathFindingMovement> movement =
+			std::make_shared<PathFindingMovement>(speed, ingore);
+
+		PushMovement(l, *movement);
+		return 1;
+	});
+}
+
+int LuaContext::movement_path_finding_api_set_target(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& pathFindingMovement = *std::static_pointer_cast<PathFindingMovement>
+			(CheckUserdata(l, 1, module_path_movement_name));
+
+		if (lua_isuserdata(l, 2))
+		{
+			auto& entity = CheckEntity(l, 2);
+			pathFindingMovement.SetTarget(entity);
+		}
+		else if (LuaTools::IsPoint2(l, 2))
+		{
+			const auto& pos = LuaTools::CheckPoint2(l, 2);
+			pathFindingMovement.SetTarget(pos);
+		}
+		else
+		{
+			LuaTools::ArgError(l, 2,
+				"PathFindingMovement set the target which excepted point or entity.");
+		}		
+		return 0;
+	});
+}
+

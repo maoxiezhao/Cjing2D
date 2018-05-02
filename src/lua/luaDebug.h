@@ -6,6 +6,8 @@
 
 /**
 *	\brief 基于控制台的本地Lua调试器
+*
+*	TODO:修改常用的调试命令，完善断点功能
 */
 class LuaDebug
 {

@@ -1,4 +1,5 @@
 #include"luaContext.h"
+#include"lua\luaBinder.h"
 #include"game\animationSprite.h"
 
 /**
@@ -8,28 +9,15 @@ const string LuaContext::module_animation_name = "Animation";
 
 void LuaContext::RegisterAnimationModule()
 {
-	static const luaL_Reg function[] = {
-		{"create", animation_api_create},
-		{nullptr,nullptr}
-	};
-
-	static const luaL_Reg methods[] = {
-		{"setAnimation", animation_api_set_animation},
-		{"setDirection", animation_api_set_direction},
-		{"setSize", animation_api_set_size},
-		{"start", animation_api_play_animation},
-		{"stop", animation_api_stop_animation},
-		{"draw", animation_api_draw },
-		{nullptr,nullptr}
-	};
-
-	static const luaL_Reg metamethods[] = {
-		{ "__gc", drawable_meta_api_gc },
-		{ nullptr, nullptr }
-	};
-
-	RegisterType(l, module_animation_name,module_sprite_name,
-		function,methods, metamethods);
+	LuaBindClass<AnimationSprite> animateClass(l, module_animation_name, module_sprite_name);
+	animateClass.AddDefaultMetaFunction();
+	animateClass.AddFunction("Create", animation_api_create);
+	animateClass.AddMethod("SetAnimation", animation_api_set_animation);
+	animateClass.AddMethod("SetDirection", animation_api_set_direction);
+	animateClass.AddMethod("SetSize", animation_api_set_size);
+	animateClass.AddMethod("Start", animation_api_play_animation);
+	animateClass.AddMethod("Stop", animation_api_stop_animation);
+	animateClass.AddMethod("Draw", animation_api_draw);
 }
 
 void LuaContext::PushAnimation(lua_State*l, AnimationSprite& animation)
@@ -81,7 +69,7 @@ int LuaContext::animation_api_set_animation(lua_State*l)
 int LuaContext::animation_api_set_direction(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		int direction = LuaTools::CheckInt(l, 1);
+		int direction = LuaTools::CheckInt(l, 2);
 
 		AnimationSprite& animation = *CheckAnimation(l, 1);
 		animation.SetCurrDirection(direction);

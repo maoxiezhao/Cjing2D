@@ -302,3 +302,8 @@ void Movement::SetEntity(Entity * entity)
 		NotifyMovementChanged();
 	}
 }
+
+int Movement::GetDirection() const
+{
+	return Direction4::DIRECTION4_DOWN;
+}

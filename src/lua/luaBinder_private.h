@@ -104,7 +104,15 @@ namespace Implemention
 			lua_pushinteger(l, value.height);
 			lua_rawseti(l, -1, 2);
 		}
-
+		/** Point2 */
+		inline void Wraper(lua_State*l, const Point2& value)
+		{
+			lua_newtable(l);
+			lua_pushinteger(l, value.x);
+			lua_rawseti(l, -1, 1);
+			lua_pushinteger(l, value.y);
+			lua_rawseti(l, -1, 2);
+		}
 		/** userdata 需要该类提供LuaWraper接口*/																
 		template<typename T>
 		inline std::enable_if_t<std::is_class<T>::value &&

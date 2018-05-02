@@ -141,12 +141,16 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 		
 		if (map.IsStarted())
 		{
-			PushUserdata(l, *enemy);
-						// enemy
+			LuaTools::PrintLuaStack(l);
 			if (lua_isfunction(l, 3))
-			{			// func enemy
+			{			
+				PushUserdata(l, *enemy);
+					// func enemy
 				LuaTools::CallFunction(l, 1, 0, "enemy init");
+
+				lua_pushnil(l);	// align stack??
 			}
+			LuaTools::PrintLuaStack(l);
 			map.GetEntities().AddEntity(enemy);
 						// --
 			PushUserdata(l, *enemy);

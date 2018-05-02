@@ -20,6 +20,8 @@ public:
 	virtual void SetSuspended(bool suspended);
 	virtual bool IsFinished()const;
 	virtual void Start();
+	virtual void Stop();
+	virtual int GetDirection()const;
 
 	/** base status */
 	void SetSpeed(int speed);
@@ -46,6 +48,7 @@ private:
 	std::list<int> mSetPaths;
 	std::list<int> mCurPaths;
 	int mCurPathDir;
+	int mLastPathDir;
 	static std::map<int, Point2> pathDirectionShift;
 
 	uint32_t mNextStepDate;
@@ -56,4 +59,5 @@ private:
 	bool mStopedByObstacle;
 	int mSpeed;
 	bool mLoop;
+	bool mFinished;
 };

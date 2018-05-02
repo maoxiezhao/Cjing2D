@@ -97,6 +97,9 @@ public:
 	void CallFileWithUserdata(const std::string& name, LuaObject& userdata);
 	void CallFunctionWithUserdata(LuaObject& userdata, const std::string& funcName, std::function<int(lua_State*l)>paramFunc = nullptr);
 	
+	// notify userdata
+	void NotifyEntityWithMovement(Entity& entity, const std::string& funcName);
+
 	// process
 	void OnStart();
 	void OnUpdate();
@@ -229,6 +232,8 @@ public:
 		movement_target_api_get_speed,
 		// path movement
 		movement_path_pai_create,
+		movement_path_finding_api_create,
+		movement_path_finding_api_set_target,
 		// text 
 		text_api_create,
 		text_api_load_font,

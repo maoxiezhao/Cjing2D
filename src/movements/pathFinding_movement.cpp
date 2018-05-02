@@ -4,7 +4,7 @@
 #include "utils\geometry.h"
 #include "lua\luaContext.h"
 
-const int SHIFT_EPSILON = 3;
+const int SHIFT_EPSILON = 8;
 
 PathFindingMovement::PathFindingMovement(int speed, bool ingoreObstacle):
 	PathMovement("", speed, false, ingoreObstacle),
@@ -44,7 +44,7 @@ void PathFindingMovement::Update()
 				Point2 curPos = GetPos();
 				if (Geometry::GetDistance(curPos, mTargetPoint) <= SHIFT_EPSILON)
 				{
-					mTargetPoint = { -1, -1 };
+  					mTargetPoint = { -1, -1 };
 					NotifyPathFindingFinished();
 				}
 				else

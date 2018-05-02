@@ -115,6 +115,7 @@
     <ClCompile Include="src\core\vertexArray.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\entity\animatedTilePattern.cpp" />
+    <ClCompile Include="src\entity\bullet.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
     <ClCompile Include="src\entity\enemy.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="src\core\vertexArray.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\entity\animatedTilePattern.h" />
+    <ClInclude Include="src\entity\bullet.h" />
     <ClInclude Include="src\entity\camera.h" />
     <ClInclude Include="src\entity\enemy.h" />
     <ClInclude Include="src\entity\entities.h" />

@@ -196,6 +196,27 @@ const std::shared_ptr<Camera>& Map::GetCamera() const
 	return mCamera;
 }
 
+/**
+*	\brief 获取范围Rect内的所有障碍物
+*/
+std::vector<EntityPtr> Map::GetObstacles(const Rect & rect, Entity & src) const
+{
+	std::vector<EntityPtr> obstacles;	
+	int srcLayer = src.GetLayer();
+
+	// 没必要用两个vector
+	std::vector<EntityPtr> temps;
+	mEntities->GetEntitiesInRect(rect, temps);
+	for (auto entity : temps)
+	{
+		if ( entity->GetLayer() == srcLayer && entity->IsObstacle(src))
+			obstacles.push_back(entity);
+	}
+	temps.clear();
+
+	return obstacles;
+}
+
 const string & Map::GetMapID() const
 {
 	return mMapID;

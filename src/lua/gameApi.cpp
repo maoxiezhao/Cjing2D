@@ -1,4 +1,5 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
 #include"game\savegame.h"
 #include"game\game.h"
 #include"core\fileData.h"
@@ -8,31 +9,22 @@ const string LuaContext::module_game_name = "Game";
 
 void LuaContext::RegisterGameModule()
 {
-	static const luaL_Reg functions[] = {
-		{"exists", game_api_exists},
-		{"load", game_api_load },
-		{nullptr,nullptr}
-	};
+	LuaBindClass<Game> gameClass(l, module_game_name);
+	gameClass.AddDefaultMetaFunction();
 
-	static const luaL_Reg methods[] = {
-		{ "start", game_api_start},
-		{ "save", game_api_save },
-		{ "setValue", game_api_set_value},
-		{ "getLife", game_api_get_life },
-		{ "getMaxLife", game_api_get_max_life },
-		{ "setLife", game_api_set_life },
-		{ "setMaxLife", game_api_set_max_life },
-		{ "setStartLocation", game_api_set_start_location },
-		{ nullptr,nullptr }
-	};
+	gameClass.AddFunction("Exists", game_api_exists);
+	gameClass.AddFunction("Load", game_api_load);
 
-	static const luaL_Reg metamethos[] = {
-		{ "__newindex", userdata_meta_newindex },
-		{ "__index", userdata_meta_index},
-		{ "__gc", userdata_meta_gc },
-		{nullptr, nullptr}
-	};
-	RegisterType(l, module_game_name, functions, methods, metamethos);
+	gameClass.AddMethod("Start", game_api_start);
+	gameClass.AddMethod("Save", game_api_save);
+	gameClass.AddMethod("SetValue", game_api_set_value);
+	gameClass.AddMethod("GetValue", game_api_get_value);
+	gameClass.AddMethod("SetLife", game_api_set_life);
+	gameClass.AddMethod("GetLife", game_api_get_life);
+	gameClass.AddMethod("GetMaxLife", game_api_get_max_life);
+	gameClass.AddMethod("SetMaxLife", game_api_set_max_life);
+	gameClass.AddMethod("SetStartLocation", game_api_set_start_location);
+	gameClass.AddMethod("GetPlayer", game_api_get_player);
 }
 
 void LuaContext::PushGame(lua_State*l, Savegame& saveGame)
@@ -186,6 +178,38 @@ int LuaContext::game_api_set_value(lua_State*l)
 }
 
 /**
+*	\brief 实现game:GetValue(key)
+*/
+int LuaContext::game_api_get_value(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		const std::string& key = LuaTools::CheckString(l, 2);
+
+		auto valueType = savegame.GetValueType(key);
+		if (valueType == Savegame::VALUE_NONE)
+			return 0;
+
+		if (valueType == Savegame::VALUE_STRING) 
+		{
+			const std::string& svalue = savegame.GetString(key);
+			lua_pushstring(l, svalue.c_str());
+		}
+		else if (valueType == Savegame::VALUE_INTEGER)
+		{
+			int ivalue = savegame.GetInteger(key);
+			lua_pushinteger(l, ivalue);
+		}
+		else if(valueType == Savegame::VALUE_BOOLEAN)
+		{
+			bool bvalue = savegame.GetBoolean(key);
+			lua_pushboolean(l, bvalue);
+		}
+		return 1;
+	});
+}
+
+/**
 *	\brief 实现game:setStartLocation(mapID)
 *
 *	设置game的开始地图和位置
@@ -255,5 +279,25 @@ int LuaContext::game_api_set_max_life(lua_State* l)
 	});
 }
 
+/**
+*	\brief 实现game:GetPlayer()
+*/
+int LuaContext::game_api_get_player(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		Game* game = savegame.GetGame();
+		if (game != nullptr)
+		{
+			auto player = game->GetPlayer();
+			if (player != nullptr)
+			{
+				PushUserdata(l, *player);
+				return 1;
+			}
+		}
+		return 0;
+	});
+}
 
 

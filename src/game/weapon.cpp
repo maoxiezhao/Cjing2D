@@ -26,6 +26,7 @@ void Weapon::Initialize()
 	{
 		const std::string path = std::string("items/weapons/") + GetItemName();
 		GetLuaContext().CallFileWithUserdata(path, *this);
+		GetLuaContext().CallFunctionWithUserdata(*this, "OnCreated");
 	}
 }
 
@@ -43,7 +44,7 @@ void Weapon::Update()
 	if (mControl)
 		mControl->Update();
 
-	//GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUpdate");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUpdate");
 }
 
 void Weapon::Uninitialize()
@@ -51,13 +52,13 @@ void Weapon::Uninitialize()
 	Item::Uninitialize();
 }
 
-void Weapon::Equiped(Entity & entity)
+bool Weapon::Equiped(Entity & entity)
 {
 	if (IsEquiped())
 	{
 		Debug::Warning("The Equip:" + GetWeaponName()
 			+ " has already equiped.");
-		return;
+		return false;
 	}
 
 	// 创建装备Sprite
@@ -75,27 +76,29 @@ void Weapon::Equiped(Entity & entity)
 	mEntity = &entity;
 	mIsEquiped = true;
 
-//	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponEquiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponEquiped");
+	return true;
 }
 
-void Weapon::UnEquiped()
+bool Weapon::UnEquiped()
 {
 	if (!IsEquiped())
 	{
 		Debug::Warning("The Equip:" + GetWeaponName() 
 			+ " has already unequiped.");
-		return;
+		return false;
 	}
 	mEntity->RemoveSprite(normalAnimationName);
 	mEntity = nullptr;
 	mIsEquiped = false;
 
-	//GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	return true;
 }
 
 void Weapon::BeforeAttack()
 {
-	//GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
 }
 
 void Weapon::Attack()
@@ -103,15 +106,13 @@ void Weapon::Attack()
 	if (IsEquiped() && !IsAttack())
 	{
 		SetAttackAnimation();
-
-
-		//GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+		GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");
 	}
 }
 
 void Weapon::AfterAttack()
 {
-	//GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
 }
 
 bool Weapon::IsAttack()
@@ -140,5 +141,10 @@ void Weapon::SetNormalAnimation()
 const std::string & Weapon::GetWeaponName() const
 {
 	return Item::GetItemName();
+}
+
+const string Weapon::GetLuaObjectName() const
+{
+	return LuaContext::module_weapon_name;
 }
 

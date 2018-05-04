@@ -1,27 +1,30 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
+#include"entity\player.h"
 #include"game\item.h"
+#include"game\weapon.h"
 #include"game\itemAcquired.h"
+#include"game\equipment.h"
 
 const string LuaContext::module_item_name = "Item";
+const string LuaContext::module_weapon_name = "Weapon";
 
 void LuaContext::RegisterItem()
 {
-	static const luaL_Reg methods[] = {
-		{ "getGame", item_api_get_game },
-		{ "setShadow", item_api_set_shadow },
-		{ "setFlow", item_api_set_flow },
-		{ "setAutoPicked", item_api_set_auto_picked },
-		{ nullptr,nullptr }
-	};
+	// item class
+	LuaBindClass<Item> itemClass(l, module_item_name);
+	itemClass.AddDefaultMetaFunction();
+	itemClass.AddMethod("GetGame", item_api_get_game);
+	itemClass.AddMethod("SetShadow", item_api_set_shadow);
+	itemClass.AddMethod("SetFlow", item_api_set_flow);
+	itemClass.AddMethod("SetAutoPicked", item_api_set_auto_picked);
 
-	static const luaL_Reg metamethos[] = {
-		{ "__newindex", userdata_meta_newindex },
-		{ "__index", userdata_meta_index },
-		{ "__gc", userdata_meta_gc },
-		{ nullptr, nullptr }
-	};
-
-	RegisterType(l, module_item_name, nullptr, methods, metamethos);
+	// weapon class
+	LuaBindClass<Weapon> weaponClass(l, module_weapon_name, module_item_name);
+	weaponClass.AddDefaultMetaFunction();
+	weaponClass.AddFunction("AddEquip", weapon_api_add);
+	weaponClass.AddFunction("Equip", weapon_api_equip);
+	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
 }
 
 /**
@@ -156,6 +159,54 @@ int LuaContext::item_api_set_flow(lua_State*l)
 *	的交互
 */
 int LuaContext::item_api_set_auto_picked(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Item& item = *CheckItem(l, 1);
+		bool autoPicked = LuaTools::CheckBoolean(l, 2);
+		item.SetAutoPicked(autoPicked);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现Weapon.AddEquip(player, equipID)
+*	\return bool 是否添加成功
+*/
+int LuaContext::weapon_api_add(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		const std::string& weaponId = LuaTools::CheckString(l, 2);
+		bool equiped = LuaTools::OptBoolean(l, 3, false);
+		int slot = LuaTools::CheckIntByDefault(l, 4, -1);
+
+		auto& equipment = player.GetEquipment();
+		equipment.AddWeaponToSlot(weaponId, equiped, slot);
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现Weapon.Equip(player, equipID)
+*	\return bool 是否添加成功
+*/
+int LuaContext::weapon_api_equip(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Item& item = *CheckItem(l, 1);
+		bool autoPicked = LuaTools::CheckBoolean(l, 2);
+		item.SetAutoPicked(autoPicked);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief 实现Weapon.UnEquip(player, equipID)
+*	\return bool 是否添加成功
+*/
+int LuaContext::weapon_api_unequip(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Item& item = *CheckItem(l, 1);

@@ -67,15 +67,15 @@ void Savegame::SaveGameToLocal()
 		const string& key = kvp.first;
 		oss << key << " = ";
 		const auto& savedValue = kvp.second;
-		if (savedValue.type == SavedValue::VALUE_INTEGER)
+		if (savedValue.type == Savegame::VALUE_INTEGER)
 		{
 			oss << savedValue.mValueData;
 		}
-		else if (savedValue.type == SavedValue::VALUE_STRING)
+		else if (savedValue.type == Savegame::VALUE_STRING)
 		{
 			oss << "\"" << savedValue.mStringData << "\"";
 		}
-		else if (savedValue.type == SavedValue::VALUE_BOOLEAN)
+		else if (savedValue.type == Savegame::VALUE_BOOLEAN)
 		{
 			oss << (static_cast<bool>(savedValue.mValueData)) ? "true" : "false" ;
 		}
@@ -97,7 +97,7 @@ Equipment & Savegame::GetEquipment()
 void Savegame::SetInteger(const string & key, int value)
 {
 	SavedValue savedValue;
-	savedValue.type = SavedValue::VALUE_INTEGER;
+	savedValue.type = Savegame::VALUE_INTEGER;
 	savedValue.mValueData = value;
 
 	mSavedValues[key] = savedValue;
@@ -108,7 +108,7 @@ int Savegame::GetInteger(const string & key) const
 	auto it = mSavedValues.find(key);
 	if (it != mSavedValues.end())
 	{
-		if (it->second.type != SavedValue::VALUE_INTEGER)
+		if (it->second.type != Savegame::VALUE_INTEGER)
 		{
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return 0;
@@ -121,7 +121,7 @@ int Savegame::GetInteger(const string & key) const
 void Savegame::SetString(const string & key, const string & value)
 {
 	SavedValue savedValue;
-	savedValue.type = SavedValue::VALUE_STRING;
+	savedValue.type = Savegame::VALUE_STRING;
 	savedValue.mStringData = value;
 
 	mSavedValues[key] = savedValue;
@@ -132,7 +132,7 @@ string Savegame::GetString(const string & key) const
 	auto it = mSavedValues.find(key);
 	if (it != mSavedValues.end())
 	{
-		if (it->second.type != SavedValue::VALUE_STRING)
+		if (it->second.type != Savegame::VALUE_STRING)
 		{
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return "";
@@ -145,7 +145,7 @@ string Savegame::GetString(const string & key) const
 void Savegame::SetBoolean(const string & key, bool value)
 {
 	SavedValue savedValue;
-	savedValue.type = SavedValue::VALUE_BOOLEAN;
+	savedValue.type = Savegame::VALUE_BOOLEAN;
 	savedValue.mValueData = static_cast<int>(value);
 
 	mSavedValues[key] = savedValue;
@@ -156,7 +156,7 @@ bool Savegame::GetBoolean(const string & key)
 	auto it = mSavedValues.find(key);
 	if (it != mSavedValues.end())
 	{
-		if (it->second.type != SavedValue::VALUE_BOOLEAN)
+		if (it->second.type != Savegame::VALUE_BOOLEAN)
 		{
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return false;
@@ -173,6 +173,16 @@ void Savegame::UnSet(const string & key)
 	{
 		mSavedValues.erase(it);
 	}
+}
+
+Savegame::SAVED_VALUE_TYPE Savegame::GetValueType(const std::string & key)
+{
+	auto it = mSavedValues.find(key);
+	if (it != mSavedValues.end())
+	{
+		return it->second.type;
+	}
+	return Savegame::VALUE_NONE;
 }
 
 LuaContext& Savegame::GetLuaContext()

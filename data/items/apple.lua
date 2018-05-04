@@ -8,8 +8,8 @@ local item = ...
 
 -- 创建时动作
 function item:onCreated()
-	self:setAutoPicked(false)
-	self:setShadow(false)
+	self:SetAutoPicked(false)
+	self:SetShadow(false)
 	--self:setFlow(false)
 end
 

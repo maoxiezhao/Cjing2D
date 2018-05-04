@@ -1,5 +1,5 @@
 local item = ...
-local game = item:getGame()
+local game = item:GetGame()
 
 -- item 脚本 
 -- item脚本解释了item创建时的一些属性以及获取道具时的操作
@@ -9,8 +9,8 @@ local game = item:getGame()
 
 -- 创建时动作
 function item:onCreated()
-	self:setAutoPicked(false)
-	self:setShadow(false)
+	self:SetAutoPicked(false)
+	self:SetShadow(false)
 	--self:setFlow(false)
 	
 	-- item define
@@ -19,8 +19,8 @@ end
 
 -- 获取物品时调用
 function item:onObtained(itemName, itemCount)
-	local curLife = game:getLife()
-	local maxLife = game:getMaxLife()
+	local curLife = game:GetLife()
+	local maxLife = game:GetMaxLife()
 
 	if curLife == maxLife then 
 		return false
@@ -31,5 +31,5 @@ function item:onObtained(itemName, itemCount)
 		curLife = maxLife
 	end
 
-	game:setLife(curLife)
+	game:SetLife(curLife)
 end

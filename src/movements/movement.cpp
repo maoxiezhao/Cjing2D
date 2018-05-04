@@ -127,7 +127,8 @@ void Movement::NotifyMovementFinished()
 
 void Movement::NotifyObstacleReached()
 {
-
+	if (mEntity != nullptr)
+		mEntity->NotifyObstacleReached();
 }
 
 const string Movement::GetLuaObjectName() const

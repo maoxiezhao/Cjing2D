@@ -262,6 +262,7 @@
     <ClInclude Include="src\entity\enemy.h" />
     <ClInclude Include="src\entity\entities.h" />
     <ClInclude Include="src\entity\entity.h" />
+    <ClInclude Include="src\entity\entityAttack.h" />
     <ClInclude Include="src\entity\entityData.h" />
     <ClInclude Include="src\entity\entityInfo.h" />
     <ClInclude Include="src\entity\entityState.h" />

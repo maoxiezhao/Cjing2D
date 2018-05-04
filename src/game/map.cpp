@@ -371,7 +371,8 @@ void Map::CheckCollisionWithEntities(Entity & entity)
 	mEntities->GetEntitiesInRect(checkRect, entityNearby);
 	for (auto& checkEntity : entityNearby)
 	{
-		if (!checkEntity->IsHaveCollision() || 
+		if (!checkEntity->IsHaveCollision() ||
+			checkEntity->IsBeRemoved() ||
 			checkEntity.get() == &entity)
 		{
 			continue;
@@ -411,6 +412,44 @@ void Map::CheckCollisionFromEntities(Entity & entity)
 			entity.CheckCollision(*checkEntity);
 		}
 	}
+}
+
+/**
+*	\brief 检测实体与其他实体的像素级碰撞
+*
+*	当其他实体可碰撞时且发生碰撞时，会触发notifyCollision
+*	与CheckCollisionWithEntities不同的是，这由entity主
+*	动发起与其他entity的碰撞CheckCollision(*otherEntity);
+*/
+void Map::CheckCollisionWithEntities(Entity & entity, Sprite & sprite)
+{
+	if(IsSuspended())
+		return;
+
+	if (entity.IsBeRemoved())
+		return;
+
+	Rect checkRect = entity.GetRectBounding();
+	// 获取临近范围内的entity
+	std::vector<EntityPtr> entityNearby;
+	mEntities->GetEntitiesInRect(checkRect, entityNearby);
+	for (auto& checkEntity : entityNearby)
+	{
+		if (entity.IsBeRemoved())
+			return;
+
+		if(checkEntity->IsHaveCollision() &&
+			!checkEntity->IsBeRemoved() && 
+			!checkEntity->IsSuspended() &&
+			checkEntity.get() != & entity)
+		checkEntity->CheckSpriteCollision(entity, sprite);
+	}
+}
+
+void Map::CheckCollisionFromEntities(Entity & entity, Sprite & sprite)
+{
+	// TODO
+	return;
 }
 
 /**

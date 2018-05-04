@@ -6,5 +6,6 @@
 enum class GameResourceType
 {
 	MAP,
-	ITEM
+	ITEM,
+	WEAPON,
 };

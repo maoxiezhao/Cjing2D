@@ -7,7 +7,7 @@
 
 MouseState::MouseState(Entity & entity):
 	MovementState(entity),
-	mDegree(0.0f)
+	mFacingDegree(0.0f)
 {
 }
 
@@ -69,7 +69,7 @@ void MouseState::Update()
 
 	// ½Ç¶ÈÆ«ÒÆ 4·½ÏòÆ«ÒÆ
 	double angle = Geometry::GetAngle(playerPos, mousePos);
-	mDegree = (float)angle;
+	mFacingDegree = (float)angle;
 	//if (Geometry::PI_2 - angle <= Geometry::PI_OVER_4)
 	//{
 	//	angle = Geometry::PI_2 - angle;
@@ -89,7 +89,7 @@ void MouseState::Update()
 
 float MouseState::GetFacingDegree() const
 {
-	return mDegree;
+	return mFacingDegree;
 }
 
 bool MouseState::CanAttack() const

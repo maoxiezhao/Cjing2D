@@ -21,5 +21,5 @@ public:
 	virtual float GetFacingDegree()const;
 	virtual bool CanAttack()const;
 private:
-	float mDegree;
+	float mFacingDegree;
 };

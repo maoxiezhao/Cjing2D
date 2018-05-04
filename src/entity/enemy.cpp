@@ -2,6 +2,7 @@
 #include"game\combat.h"
 #include"game\animationSprite.h"
 #include"lua\luaContext.h"
+#include"core\system.h"
 
 Enemy::Enemy(Game & game, const std::string & name, const std::string& templName, int layer, const Point2 & pos):
 	Entity(name, templName, pos, Size(0,0), layer),
@@ -10,8 +11,9 @@ Enemy::Enemy(Game & game, const std::string & name, const std::string& templName
 	mDemage(1),
 	mIsHurting(false),
 	mIsImmobilized(false),
-	mIsPushed(false),
-	mIsOnlyUpdateInLua(false)
+	mIsOnlyUpdateInLua(false),
+	mCanAttack(true),
+	mHurtProtectedTime(0)
 {
 	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
 	SetDrawOnYOrder(true);
@@ -32,6 +34,26 @@ void Enemy::Update()
 
 	if (IsSuspended())
 		return;
+
+	uint32_t now = System::Now();
+	/** 如果受伤则进行相关判断 */
+	if (mIsHurting)
+	{
+		if (mLife > 0)
+		{
+			ClearMovements();
+			Restart();
+		}
+		else
+		{
+			Kill();
+		}
+		mIsHurting = false;
+	}
+
+	/** 攻击保护 */
+	if (mLife > 0 && !mCanAttack && now >= mCanAttackDate)
+		mCanAttack = true;
 
 	/** 如果仅进行脚本更新，则直接终止 */
 	if (!mIsOnlyUpdateInLua)
@@ -127,6 +149,10 @@ bool Enemy::IsObstaclePlayer() const
 	return true;
 }
 
+void Enemy::SetCurAnimation(const std::string & name)
+{
+}
+
 /**
 *	\brief 重置当前Enemy状态,当enemy创建后或者enable状态改变时调用
 */
@@ -137,18 +163,89 @@ void Enemy::Restart()
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnRestart");
 }
 
-void Enemy::TryHurt()
+/**
+*	\brief 设置对攻击的响应行为
+*/
+void Enemy::SetAttackReaction(EntityAttack attack, EntityReactionType type)
 {
+	mAttackReactions[attack] = type;
 }
 
-void Enemy::Hurt()
+/**
+*	\brief 设置默认的攻击响应行为
+*/
+void Enemy::SetDefaultAttackReactions()
 {
+	SetAttackReaction(EntityAttack::COMBAT, EntityReactionType::REACTION_HURT);
+	SetAttackReaction(EntityAttack::BULLET, EntityReactionType::REACTION_HURT);
+	SetAttackReaction(EntityAttack::BOOMERANG, EntityReactionType::REACTION_HURT);
 }
 
+/**
+*	\brief 对敌人进行伤害判定
+*/
+void Enemy::TryHurt(EntityAttack attack, Entity & source)
+{
+	auto reaction = mAttackReactions[attack];
+	if (reaction == EntityReactionType::REACTION_IGNORE)
+		return;
+
+	// 响应对应的攻击反应行为
+	switch (reaction)
+	{
+	case EntityReactionType::REACTION_HURT:
+		Hurt(source);
+		NotifyHurt(source);
+		break;
+	case EntityReactionType::REACTION_CUSTOM:
+		CustomAttack(source, attack);
+		break;
+	}
+
+	source.NotifyAttackEnemy(*this, attack, reaction);
+}
+
+/**
+*	\brief 在脚本中计算Enemy的受到攻击时的行为
+*/
+void Enemy::CustomAttack(Entity & source, EntityAttack attack)
+{
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnBeAttacked",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, source);
+		return 1;
+	});
+}
+
+/**
+*	\brief 受伤时的系统处理的行为
+*/
+void Enemy::Hurt(Entity & source)
+{
+	auto now = System::Now();
+	mCanAttack = false;
+	mCanAttackDate = now + mHurtProtectedTime;
+	mIsHurting = true;
+
+	ClearMovements();
+	SetCurAnimation("Hurt");
+}
+
+/**
+*	\brief 死亡时行为
+*/
 void Enemy::Kill()
 {
 }
 
-void Enemy::NotifyHurt()
+/**
+*	\brief 受伤时脚本处理的行为
+*/
+void Enemy::NotifyHurt(Entity& source)
 {
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnHurt",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, source);
+		return 1;
+	});
 }

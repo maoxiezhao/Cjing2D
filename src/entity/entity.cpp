@@ -242,6 +242,22 @@ void Entity::NotifyCollisionWithEnemy(Enemy & enemy)
 {
 }
 
+void Entity::NotifyCollisionWithPlayer(Player & player)
+{
+}
+
+void Entity::NotifySpriteCollision(Entity & otherEntity, Sprite & srcSprite, Sprite & otherSprite)
+{
+}
+
+void Entity::NotifySpriteCollisionWithEnemy(Enemy & enemy, Sprite & srcSprite, Sprite & otherSprite)
+{
+}
+
+void Entity::NotifySpriteCollisionWithPlayer(Player & player, Sprite & srcSprite, Sprite & otherSprite)
+{
+}
+
 /**
 *	\brief 响应被销毁
 */
@@ -283,6 +299,21 @@ void Entity::NotifyBoundingRectChange()
 {
 	if (IsOnMap())
 		GetMap().GetEntities().NotifyEntityRectChanged(*this);
+}
+
+/**
+*	\brief 当entity碰到障碍物时响应
+*/
+void Entity::NotifyObstacleReached()
+{
+}
+
+void Entity::NotifyAttackEnemy(Enemy & enemy, EntityAttack attack, EntityReactionType reaction)
+{
+}
+
+void Entity::NotifyAttackPlayer(Player & player, EntityAttack attack, EntityReactionType reaction)
+{
 }
 
 /**
@@ -526,6 +557,11 @@ const std::shared_ptr<Movement>& Entity::GetMovement()
 	return mMovement;
 }
 
+const std::shared_ptr<Movement>& Entity::GetMovement() const
+{
+	return mMovement;
+}
+
 /**
 *	\brief 检测该实例与其他实例之间是否发生碰撞
 */
@@ -533,7 +569,21 @@ void Entity::CheckCollisionWithEntities()
 {
 	if (!IsOnMap())
 		return;
+
+	// 碰撞检测
 	GetMap().CheckCollisionWithEntities(*this);
+
+	// 像素级碰撞检测
+	auto& nameSprites = GetSprites();
+	for (const auto& nameSprite : nameSprites)
+	{
+		if(nameSprite.removed)
+			continue;
+
+		auto& sprite = *nameSprite.sprite;
+		if (sprite.IsPixelCollisionEnable())
+			GetMap().CheckCollisionWithEntities(*this, sprite);
+	}
 }
 
 void Entity::CheckCollisionFromEntities()
@@ -541,6 +591,18 @@ void Entity::CheckCollisionFromEntities()
 	if (!IsOnMap())
 		return;
 	GetMap().CheckCollisionFromEntities(*this);
+
+	// 像素级碰撞检测
+	auto& nameSprites = GetSprites();
+	for (const auto& nameSprite : nameSprites)
+	{
+		if (nameSprite.removed)
+			continue;
+
+		auto& sprite = *nameSprite.sprite;
+		if (sprite.IsPixelCollisionEnable())
+			GetMap().CheckCollisionFromEntities(*this, sprite);
+	}
 }
 
 /**
@@ -575,6 +637,30 @@ void Entity::CheckCollision(Entity & otherEntity)
 		TestCollisionContaining(otherEntity))
 	{
 		NotifyCollision(otherEntity, CollisionMode::COLLISION_CONTAINING);
+	}
+}
+
+/**
+*	\brief 检测精灵间像素级碰撞检测
+*/
+void Entity::CheckSpriteCollision(Entity & otherEntity, Sprite & otherSprite)
+{
+	if (HasCollisionMode(COLLLSION_SPRITE))
+	{
+		if (&otherEntity == this ||
+			otherEntity.GetLayer() != GetLayer())
+			return;
+
+		auto& nameSprites = GetSprites();
+		for (const auto& nameSprite : nameSprites)
+		{
+			auto&sprite = nameSprite.sprite;
+			if (sprite->IsPixelCollisionEnable())
+			{
+				if (sprite->TestCollision(otherSprite, GetPos(), otherEntity.GetPos()))
+					NotifySpriteCollision(otherEntity, *sprite, otherSprite);
+			}
+		}
 	}
 }
 
@@ -622,6 +708,11 @@ bool Entity::HasCollisionMode(CollisionMode collisionMode)
 }
 
 Rect Entity::GetRectBounding() const
+{
+	return mBounding;
+}
+
+Rect Entity::GetMaxRectBounding() const
 {
 	return mBounding;
 }
@@ -759,6 +850,17 @@ EntityType Entity::GetEntityType()const
 	return mType;
 }
 
+/**
+*	\brief 设置entity的注意方向
+*/
+void Entity::SetFacingDegree(float degree)
+{
+
+}
+
+/**
+*	\brief 返回entity注意的方向
+*/
 float Entity::GetFacingDegree() const
 {
 	return 0.0f;

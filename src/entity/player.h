@@ -3,6 +3,7 @@
 
 #include"common\common.h"
 #include"entity\entity.h"
+#include"entity\entityAttack.h"
 #include"game\animationSprite.h"
 #include"game\gameCommands.h"
 
@@ -30,6 +31,7 @@ public:
 	virtual void NotifyPositonChanged();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
+	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 
 	/** status manager */
@@ -51,6 +53,9 @@ public:
 
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
+
+	/** Lua Context */
+	virtual const string GetLuaObjectName()const;
 
 private:
 	std::unique_ptr<PlayerSprite> mPlayerSprites;	// 当前的sprite合集

@@ -14,6 +14,7 @@ enum EntityType
 	PLAYRE,			/** 玩家对象 */
 	PICKABLE,		/** 可拾取对象 */
 	ENEMEY,			/** 敌人 */
+	BULLET,			/** 子弹 */
 	UNKNOW,			/** 未知的类型 */
 };
 

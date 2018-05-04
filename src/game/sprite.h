@@ -13,9 +13,10 @@
 /**
 *	\brief 精灵,可以显示纹理的移动单元，不能展示帧动画
 *
-*	17.10.29添加effect，包括blink和outLine，目前绘制以接口保存在
-*	sprite中，不存在更好的拓展性，未来系统将effect以一种更好的方式
-*	提供
+*	17.10.29 添加effect，包括blink和outLine，目前绘制以接口保存在sprite中，
+*	不存在更好的拓展性，且暂时不会考虑修改拓展
+*
+*	18.5.3  添加像素级碰撞检测
 */
 class Sprite : public Drawable
 {
@@ -72,6 +73,10 @@ public:
 	bool IsVisible()const;
 	virtual bool IsAnimationed()const;
 
+	bool IsPixelCollisionEnable()const;
+	virtual void SetPixelCollisionEnable(bool enable);
+	virtual bool TestCollision(Sprite& otherSprite, const Point2& srcPos, const Point2& otherPos);
+
 	// child
 	void AddChildSprite(std::shared_ptr<Sprite> childSprite);
 
@@ -117,6 +122,7 @@ protected:
 	bool mDirty;			/** 是否需要重新填充quad */
 	bool mDeferred;			/** 是否延迟渲染 */
 	bool mPreDeferred;		/** 上一个programState是否是deferred的，仅仅为了配合mPreProgramState */
+	bool mPixelCollisionEnable; /** 是否开启了像素级碰撞检测 */
 
 	uint32_t mBlinkDelay;
 	uint32_t mBlinkNextDate;

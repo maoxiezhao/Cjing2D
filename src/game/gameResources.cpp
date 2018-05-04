@@ -3,7 +3,8 @@
 const string EnumInfoTraits<GameResourceType>::prettyName = "resourceType";
 const EnumInfo<GameResourceType>::nameType EnumInfoTraits<GameResourceType>::names = {
 	{ GameResourceType::MAP, "map" },
-	{ GameResourceType::ITEM, "item"}
+	{ GameResourceType::ITEM, "item"},
+	{ GameResourceType::WEAPON, "weapon"}, 
 };
 
 GameResource::GameResource()

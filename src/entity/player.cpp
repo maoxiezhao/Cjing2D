@@ -2,12 +2,13 @@
 #include"entity\entities.h"
 #include"game\map.h"
 #include"game\equipment.h"
+#include"game\weapon.h"
 #include"player\freeState.h"
 #include"player\mouseState.h"
 #include"player\playerSprite.h"
 #include"core\logger.h"
 #include"gui\core\uiRender.h"
-#include"game\weapon.h"
+#include"lua\luaContext.h"
 
 Player::Player(Equipment & equipment) :
 	Entity("", "", { 50, 50 }, {26, 20}, 0),	// testing data
@@ -32,9 +33,6 @@ Player::Player(Equipment & equipment) :
 	// 设置当前状态
 	//auto movementState = std::make_shared<MouseState>(*this);
 	SetState(new MouseState(*this));
-
-	mWeapon = std::make_shared<Weapon>("head", equipment);
-	mWeapon->Equiped(*this);
 }
 
 void Player::Update()
@@ -50,10 +48,6 @@ void Player::Update()
 
 	// state update
 	GetState().Update();
-
-	// weapon update
-	mWeapon->Update();
-
 }
 
 /**
@@ -152,8 +146,6 @@ Direction8 Player::GetDirection8() const
 */
 bool Player::CanAttack() const
 {
-	return true;
-
 	bool result = GetState().CanAttack() &&
 		GetEquipment().HasCurWeapon();
 	return result;
@@ -184,25 +176,25 @@ bool Player::IsObstacleEnemy() const
 	return true;
 }
 
+const string Player::GetLuaObjectName() const
+{
+	return LuaContext::module_player_name;
+}
+
 /**
 *	\brief 进行攻击行为
 */
 void Player::Attack()
 {
-	mWeapon->Attack();
-
-	//if (!CanAttack())
-	//{
-	//	Debug::Warning("Can not attack now.");
-	//	return;
-	//}
-
+	if (!CanAttack())
+	{
+		Debug::Warning("Can not attack now.");
+		return;
+	}
 	//// 这里有个问题，是在这里直接做一个攻击判断还是
 	//// 在状态里做判断，目前直接在这里做判断
-	//auto& curWeapon = GetEquipment().GetCurWeapon();
-	//curWeapon.Attack();
-
-	
+	auto& curWeapon = GetEquipment().GetCurWeapon();
+	curWeapon->Attack();
 }
 
 /**
@@ -239,9 +231,8 @@ void Player::NotifyMovementChanged()
 void Player::NotifyPositonChanged()
 {
 	if (IsOnMap())
-	{
 		GetMap().GetEntities().NotifyEntityRectChanged(*this);
-	}
+	
 	CheckPosition();
 }
 
@@ -287,6 +278,14 @@ void Player::NotifyOverlapEntityChanged(Entity * entity)
 			entity->SetFocused(true);
 		}
 	}
+}
+
+/**
+*	\brief 碰撞entity响应CollisionWithPlayer，为了避免重复Notify，目前仅Bullet响应player
+*/
+void Player::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
+{
+	otherEntity.NotifyCollisionWithPlayer(*this);
 }
 
 /**

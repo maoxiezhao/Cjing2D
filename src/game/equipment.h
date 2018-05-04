@@ -7,6 +7,7 @@
 #include"game\weapon.h"
 
 class Savegame;
+class Player;
 
 /**
 *	\brief equipment 类包含有当前的游戏数值属性
@@ -25,7 +26,7 @@ public:
 
 	void Update();
 
-	/** item manager */
+	/****** item manager *******/
 	void LoadAllItems();
 	Item& GetItem(const std::string& itemName);
 	const Item& GetItem(const std::string& itemName)const;
@@ -38,20 +39,33 @@ public:
 	void SetMaxLife(int maxLife);
 	Savegame& GetSavegame();
 
-	/** Weapon Manager */
+	/******* Weapon Manager ******/
 	struct WeaponConfig	// 这里装备不和物品同步，保存的是数据，实时创建
 	{					// 装备实体(物品使用的是早期的想法）
 		WeaponData data;
 		int count;
 	};
 	void LoadAllWeapon();
-	void EquipWeapon(const std::string& name);
-	void EquipWeapon(Weapon& weapon);
+	bool HasWeapon(const std::string& weaponID)const;
+	Weapon& GetWeapon(const std::string& weaponID);
+
+	/** equip operation */
+	bool AddWeaponToSlot(const std::string& weaponID, bool equiped = false, int slot = -1);
+	bool EquipWeaponFromSlots(const std::string& name);
+	bool EquipWeaponFromSlots(Weapon& weapon);
+	bool EquipWeaponFromSlots(int slot);
+
 	int GetCurEquipSlot()const;
 	bool HasCurWeapon()const;
 	bool HasWeaponBySlot(int curSlot)const;
-	Weapon& GetWeaponBySlot(int curSlot);
-	Weapon& GetCurWeapon();
+
+	WeaponPtr GetCurWeapon();
+	WeaponPtr GetWeaponFromSlot(int curSlot);
+	WeaponPtr GetWeaponFromSlot(const std::string& name);
+private:
+	int FindEmptyWeaponSlot()const;
+	void SetCurWeaponSlot(Weapon& weapon, int slot);
+	Player& GetCurPlayer();
 
 private:
 	Savegame& mSavegame;

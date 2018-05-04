@@ -939,6 +939,9 @@
     <ClInclude Include="src\entity\bullet.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\entityAttack.h">
+      <Filter>entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

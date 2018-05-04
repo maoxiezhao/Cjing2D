@@ -22,6 +22,25 @@ class App;
 class Savegame : public LuaObject
 {
 public:
+	/** 保存的Value类型 */
+	enum SAVED_VALUE_TYPE {
+		VALUE_NONE = -1,
+		VALUE_STRING = 0,
+		VALUE_INTEGER,
+		VALUE_BOOLEAN
+	};
+
+	/** 保存值的对象结构，包含了对象的值和对象的数据类型 */
+	struct SavedValue
+	{
+		SAVED_VALUE_TYPE type;
+		std::string mStringData;
+		int mValueData;		    //	(Integer and boolean)
+
+		SavedValue() :type(VALUE_STRING), mStringData(""), mValueData(0) {}
+	};
+
+public:
 	Savegame(App& app, const string& fileName);
 
 	void Init();
@@ -38,6 +57,7 @@ public:
 	void SetBoolean(const string& key, bool value);
 	bool GetBoolean(const string& key);
 	void UnSet(const string& key);
+	SAVED_VALUE_TYPE GetValueType(const std::string& key);
 
 	LuaContext& GetLuaContext();
 	virtual const string GetLuaObjectName()const;
@@ -68,23 +88,6 @@ private:
 	void SetDefaultEquipmentState();
 
 private:
-	/**
-	*	保存值的对象结构，包含了对象的值和对象的数据类型
-	*/
-	struct SavedValue
-	{
-		enum TYPE{
-			VALUE_STRING,
-			VALUE_INTEGER,
-			VALUE_BOOLEAN
-		};
-		TYPE type;
-		std::string mStringData;
-		int mValueData;		    //	(Integer and boolean)
-
-		SavedValue() :type(VALUE_STRING), mStringData(""), mValueData(0){}
-	};
-
 	std::map<std::string, SavedValue> mSavedValues;
 	App& mApp;
 	Game* mGame;

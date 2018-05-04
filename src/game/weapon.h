@@ -22,8 +22,9 @@ public:
 	virtual void Update();
 	virtual void Uninitialize();
 
-	virtual void Equiped(Entity& entity);
-	virtual void UnEquiped();
+	virtual bool Equiped(Entity& entity);
+	virtual bool UnEquiped();
+
 	virtual void BeforeAttack();
 	virtual void Attack();
 	virtual void AfterAttack();
@@ -49,6 +50,8 @@ public:
 	virtual bool IsWeapon()const {
 		return true;
 	}
+
+	virtual const string GetLuaObjectName()const;
 private:
 	bool mIsEquiped;
 	Entity* mEntity;

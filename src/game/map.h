@@ -83,8 +83,11 @@ public:
 	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);
 	bool TestCollisionWithGround(int layer, int x, int y, Entity& entity);
 	bool TestCollisionWithEntities(const Rect& rect, Entity& entity, int layer);
+	
 	void CheckCollisionWithEntities(Entity& entity);
 	void CheckCollisionFromEntities(Entity& entity);
+	void CheckCollisionWithEntities(Entity& entity, Sprite& sprite);
+	void CheckCollisionFromEntities(Entity& entity, Sprite& sprite);
 private:
 	/** status */
 	string mMapID;

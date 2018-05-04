@@ -18,6 +18,7 @@ Sprite::Sprite():
 	mDirty(true),
 	mDeferred(false),
 	mPreDeferred(false),
+	mPixelCollisionEnable(false),
 	mAnchor(0, 0),
 	mAnchorX(0.0f),
 	mAnchorY(0.0f),
@@ -46,6 +47,7 @@ Sprite::Sprite(const std::string & name):
 	mDirty(true),
 	mDeferred(false),
 	mPreDeferred(false),
+	mPixelCollisionEnable(false),
 	mAnchor(0,0),
 	mAnchorX(0.0f),
 	mAnchorY(0.0f),
@@ -75,6 +77,7 @@ Sprite::Sprite(TexturePtr tex, TexturePtr normalTex):
 	mDirty(true),
 	mDeferred(false),
 	mPreDeferred(false),
+	mPixelCollisionEnable(false),
 	mAnchor(0, 0),
 	mAnchorX(0.0f),
 	mAnchorY(0.0f),
@@ -106,6 +109,7 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mDirty(true),
 	mDeferred(false),
 	mPreDeferred(false),
+	mPixelCollisionEnable(false),
 	mAnchor(0, 0),
 	mAnchorX(0.0f),
 	mAnchorY(0.0f),
@@ -623,6 +627,21 @@ bool Sprite::IsVisible() const
 *	\brief 是否是动画精灵，Sprite必然返回false;
 */
 bool Sprite::IsAnimationed() const
+{
+	return false;
+}
+
+bool Sprite::IsPixelCollisionEnable() const
+{
+	return mPixelCollisionEnable;
+}
+
+void Sprite::SetPixelCollisionEnable(bool enable)
+{
+	mPixelCollisionEnable = enable;
+}
+
+bool Sprite::TestCollision(Sprite & otherSprite, const Point2 & srcPos, const Point2 & otherPos)
 {
 	return false;
 }

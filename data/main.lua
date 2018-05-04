@@ -18,7 +18,6 @@ function Main.OnStarted()
 	game_content_init()
 
 	entity_system_init()
-
 	-- test
 	game_manager_start_debug()	
 end

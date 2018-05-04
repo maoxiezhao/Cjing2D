@@ -2,6 +2,7 @@
 #include "game\savegame.h"
 #include "game\gameResources.h"
 #include "game\item.h"
+#include "entity\player.h"
 
 Equipment::Equipment(Savegame & savegame):
 	mSavegame(savegame),
@@ -17,8 +18,8 @@ void Equipment::Update()
 	if (HasCurWeapon())
 	{
 		auto& weapon = GetCurWeapon();
-		if (weapon.IsEquiped())
-			weapon.Update();
+		if (weapon->IsEquiped())
+			weapon->Update();
 	}
 }
 
@@ -34,6 +35,14 @@ void Equipment::LoadAllItems()
 		std::shared_ptr<Item> item = std::make_shared<Item>(itemId, *this);
 		mAllItems[itemId] = item;
 	}
+	// 创建所有weapon对象,暂时如同物品一般对待
+	const auto& weaponInfos = GameResource::GetGameResource().GetGameResourcesInfos(GameResourceType::WEAPON);
+	for (const auto& weaponID : weaponInfos)
+	{
+		std::shared_ptr<Weapon> item = std::make_shared<Weapon>(weaponID, *this);
+		mAllItems[weaponID] = item;
+	}
+
 	// 初始化所有脚本
 	for (auto& kvp : mAllItems)
 	{
@@ -44,23 +53,18 @@ void Equipment::LoadAllItems()
 
 /**
 *	\brief 获取制定名字的item
-*
-*	该item必须已经注册
 */
 Item & Equipment::GetItem(const std::string & itemName)
 {
-	auto itor = mAllItems.find(itemName);
-	if (itor == mAllItems.end())
-	{
+	auto it = mAllItems.find(itemName);
+	if (it == mAllItems.end() || it->second->IsWeapon())
 		Debug::Error("Get the non-exists item:" + itemName);
-	}
-	return *itor->second;
+
+	return *it->second;
 }
 
 /**
 *	\brief 获取制定名字的item
-*
-*	该item必须已经注册
 */
 const Item & Equipment::GetItem(const std::string & itemName) const
 {
@@ -131,16 +135,79 @@ void Equipment::LoadAllWeapon()
 	}
 }
 
-void Equipment::EquipWeapon(const std::string & name)
+/**
+*	\brief 判断是否存在该武器ID
+*/
+bool Equipment::HasWeapon(const std::string & weaponID) const
+{
+	auto it = mAllItems.find(weaponID);
+	return (it != mAllItems.end() && it->second->IsWeapon());
+}
+
+/**
+*	\brief 获取对应WeaponID对应的weapon实例
+*/
+Weapon & Equipment::GetWeapon(const std::string & weaponID)
+{
+	auto it = mAllItems.find(weaponID);
+	if (it == mAllItems.end() || !it->second->IsWeapon())
+		Debug::Error("Get the non-exists weapon:" + weaponID);
+	
+	return dynamic_cast<Weapon&>(*it->second);
+}
+
+/**
+*	\brief 向武器槽中添加装备
+*	\param weaponID 装备的ID
+*	\param equiped 是否直接装备
+*	\param slot 装备的槽(0-2),如果是-1则从前往后找到第一个有效槽
+*/
+bool Equipment::AddWeaponToSlot(const std::string & weaponID, bool equiped, int slot)
+{
+	// 如果slot为-1，则尝试查找一次有效槽位
+	if (slot == -1)
+		slot = FindEmptyWeaponSlot();
+
+	if (slot == -1 || !HasWeapon(weaponID))
+		return false;
+
+	Weapon& weapon = GetWeapon(weaponID);
+	SetCurWeaponSlot(weapon, slot);
+	bool result = true;
+	if (equiped)
+		result = EquipWeaponFromSlots(slot);
+
+	return result;
+}
+
+bool Equipment::EquipWeaponFromSlots(const std::string & name)
 {
 	// 穿装备的逻辑是，装备首先在slot中，先从slot中取出
 	// 装备，再装备该装备。
-	
-
+	auto& weapon = GetWeaponFromSlot(name);
+	if (weapon)
+		return EquipWeaponFromSlots(*weapon);
+	return false;
 }
 
-void Equipment::EquipWeapon(Weapon & weapon)
+bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 {
+	if (weapon.IsEquiped())
+		return true;
+
+	auto& player = GetCurPlayer();
+	return weapon.Equiped(player);
+}
+
+/**
+*	\brief 装备指定槽位的装备
+*/
+bool Equipment::EquipWeaponFromSlots(int slot)
+{
+	auto& weapon = GetWeaponFromSlot(slot);
+	if(weapon)
+		return EquipWeaponFromSlots(*weapon);
+	return false;
 }
 
 int Equipment::GetCurEquipSlot() const
@@ -162,14 +229,49 @@ bool Equipment::HasWeaponBySlot(int curSlot)const
 		mEquipdWeapons[curSlot] != nullptr;
 }
 
-Weapon & Equipment::GetWeaponBySlot(int curSlot)
+WeaponPtr Equipment::GetWeaponFromSlot(int curSlot)
 {
 	Debug::CheckAssertion(curSlot >= 0 && curSlot < mMaxEquipSlot, 
 		"Invalid equipment slot:" + std::to_string(curSlot));
-	return *mEquipdWeapons[curSlot].get();
+
+	return mEquipdWeapons[curSlot];
 }
 
-Weapon & Equipment::GetCurWeapon()
+WeaponPtr Equipment::GetWeaponFromSlot(const std::string & name)
 {
-	return GetWeaponBySlot(mCurEquipSlot);
+	for (auto& weapon : mEquipdWeapons)
+	{
+		if (weapon->GetItemName() == name)
+			return weapon;
+	}
+	return nullptr;
+}
+
+WeaponPtr Equipment::GetCurWeapon()
+{
+	return GetWeaponFromSlot(mCurEquipSlot);
+}
+
+/**
+*	\brief 返回当前身上可装备的有效槽位，默认从1开始找
+*/
+int Equipment::FindEmptyWeaponSlot() const
+{
+	for (int i = 0; i < mMaxEquipSlot; i++)
+	{
+		if (!HasWeaponBySlot(i))
+			return i;
+	}
+	return -1;
+}
+
+void Equipment::SetCurWeaponSlot(Weapon & weapon, int slot)
+{
+	mEquipdWeapons[slot] = std::dynamic_pointer_cast<Weapon>(
+		weapon.shared_from_this());	// is work ok??
+}
+
+Player & Equipment::GetCurPlayer()
+{
+	return *mSavegame.GetGame()->GetPlayer();
 }

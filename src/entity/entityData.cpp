@@ -37,6 +37,11 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 			{ "direction",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0)}
 		}
 	},
+	{
+		EntityType::BULLET,{
+			{ "templ",      EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+		}
+	},
 };
 }
 
@@ -90,9 +95,9 @@ EntityData EntityData::CheckEntityData(lua_State * l, int index, EntityType type
 {
 	LuaTools::CheckType(l, index, LUA_TTABLE);
 	// default value
-	int x = LuaTools::CheckFieldInt(l, index, "x");
-	int y = LuaTools::CheckFieldInt(l, index, "y");
-	int layer = LuaTools::CheckFieldInt(l, index, "layer");
+	int x = LuaTools::CheckFieldIntByDefault(l, index, "x", 0);
+	int y = LuaTools::CheckFieldIntByDefault(l, index, "y", 0);
+	int layer = LuaTools::CheckFieldIntByDefault(l, index, "layer", 0);
 	const std::string name = LuaTools::CheckFieldStringByDefault(l, index, "name", "");
 
 	EntityData entityData;

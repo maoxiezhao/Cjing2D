@@ -6,6 +6,8 @@
 #include"utils\size.h"
 #include"utils\ray.h"
 
+#include"utils\obb.h"
+
 /**
 *	\brief ¾ØÐÎ½á¹¹
 */
@@ -55,7 +57,7 @@ public:
 public:
 	int x, y;
 	int width, height;
-
+	float angle;
 };
 
 #include"rectangle.inl"

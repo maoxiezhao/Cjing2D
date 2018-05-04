@@ -1,32 +1,37 @@
 #include "rectangle.h"
 constexpr Rect::Rect():
 	x(0),y(0),
-	width(0),height(0)
+	width(0),height(0),
+	angle(0.0f)
 {
 }
 
 constexpr Rect::Rect(int x, int y):
 	x(x), y(y),
-	width(0), height(0)
+	width(0), height(0),
+	angle(0.0f)
 {
 }
 
 constexpr Rect::Rect(const Point2& xy) :
 	x(xy.x), y(xy.y),
-	width(0), height(0)
+	width(0), height(0),
+	angle(0.0f)
 {
 }
 
 constexpr Rect::Rect(const Size& size):
 	x(0),y(0),
 	width(size.width),
-	height(size.height)
+	height(size.height),
+	angle(0.0f)
 {
 }
 
 constexpr Rect::Rect(int x, int y, int width, int height):
 	x(x),y(y),
-	width(width),height(height)
+	width(width),height(height),
+	angle(0.0f)
 {
 }
 
@@ -34,7 +39,8 @@ constexpr Rect::Rect(const Point2&xy, const Size& size):
 	x(xy.x),
 	y(xy.y),
 	width(size.width),
-	height(size.height)
+	height(size.height),
+	angle(0.0f)
 {
 }
 
@@ -42,7 +48,8 @@ constexpr Rect::Rect(const Point2&lt, const Point2&rb):
 	x(lt.x),
 	y(lt.y),
 	width(rb.x - lt.x),
-	height(rb.y - lt.y)
+	height(rb.y - lt.y),
+	angle(0.0f)
 {
 }
 

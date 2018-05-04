@@ -7,6 +7,7 @@
 #include"utils\size.h"
 #include"utils\rectangle.h"
 #include"entity\entityInfo.h"
+#include"entity\entityAttack.h"
 #include"game\sprite.h"
 #include"game\gameCommands.h"
 #include"game\animationSprite.h"
@@ -17,6 +18,7 @@ class Movement;
 class Map;
 class EntityState;
 class Enemy;
+class Player;
 
 /**
 *	\brief 游戏实体的抽象类
@@ -39,9 +41,10 @@ public:
 	*/
 	enum CollisionMode
 	{
-		COLLISION_NONE      = 0x00,     // 无碰撞模式，不参与碰撞
+		COLLISION_NONE = 0x00,          // 无碰撞模式，不参与碰撞
 		COLLISION_OVERLAPING = 0x01,	// 覆盖模式
 		COLLISION_CONTAINING = 0x02,	// 包含模式
+		COLLLSION_SPRITE = 0x04,        // 精灵间像素碰撞检测
 	};
 
 	Entity();
@@ -71,10 +74,9 @@ public:
 	virtual void NotifyDirectionChange(Direction4 oldDir, Direction4 newDir);
 	virtual void NotifyPathFindingFinished();
 	virtual void NotifyBoundingRectChange();
-
-	// notify colision
-	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
-	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
+	virtual void NotifyObstacleReached();
+	virtual void NotifyAttackEnemy(Enemy& enemy,EntityAttack attack, EntityReactionType reaction);
+	virtual void NotifyAttackPlayer(Player& player, EntityAttack attack, EntityReactionType reaction);
 
 	// game command notify
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
@@ -83,6 +85,9 @@ public:
 	
 public:
 	/**** **** **** status **** **** ****/
+	virtual EntityType GetEntityType()const;
+
+	/** base prop */
 	Point2 GetPos()const;
 	Point2 GetCenterPos()const;
 	Point2 GetLeftTopPos()const;
@@ -96,6 +101,7 @@ public:
 	string GetName()const;
 	string GetTemplName()const;
 	Rect GetRectBounding()const;
+	Rect GetMaxRectBounding()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
 	void SetOrigin(const Point2& origin);
@@ -108,14 +114,16 @@ public:
 	void SetInsertQuadTree(bool inserted);
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
-	virtual EntityType GetEntityType()const;
+
+	/** direction */
+	virtual void SetFacingDegree(float degree);
 	virtual float GetFacingDegree()const;
 	virtual void SetDirection(Direction4 dir);
 	Direction4 GetDirection()const;
+	
 	bool CanPushed()const;
 	void SetCanPushed(bool pushed);
-	virtual void StartMoveByPushed(Entity& entity);
-
+	
 	/** obstacle */
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
@@ -136,7 +144,7 @@ public:
 	void RemoveFromMap();
 	Game& GetGame();
 
-	/**** ***** sprite ***** ****/
+	/**** ***** *** sprite *** ***** ****/
 	SpritePtr CreateSprite(const string & spriteName);
 	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID = "");
 	SpritePtr GetSprite(const string& spriteName);
@@ -146,20 +154,21 @@ public:
 	void ClearRemovedSprite();
 	std::vector<NamedSpritePtr>& GetSprites();
 
-	/**** ***** state manager ***** ****/
+	/**** ***** *** state manager *** ***** ****/
 	EntityState& GetState()const;
 	void SetState(EntityState* state);
 	void UpdateState();
 
-	/***** **** movement manager ***** *****/
+	/***** **** *** movement manager *** ***** *****/
 	void StopMovement();
 	void StartMovement(const std::shared_ptr<Movement>& movement);
 	const std::shared_ptr<Movement>& GetMovement();
+	const std::shared_ptr<Movement>& GetMovement()const;
+	virtual void StartMoveByPushed(Entity& entity);
 
-	/***** **** collision ***** *****/
+	/***** **** *** collision *** ***** *****/
 	void CheckCollisionWithEntities();
 	void CheckCollisionFromEntities();
-	virtual void CheckCollision(Entity& otherEntity);
 
 	bool TestCollisionWithRect(const Entity& entity);
 	bool TestCollisionWithRect(const Rect& rect);
@@ -168,6 +177,19 @@ public:
 	bool IsHaveCollision()const;
 	void SetCollisionMode(CollisionMode collisionMode);
 	bool HasCollisionMode(CollisionMode collisionMode);
+
+	virtual void CheckCollision(Entity& otherEntity);
+	virtual void CheckSpriteCollision(Entity& otherEntity, Sprite& otherSprite);
+
+	// notify collision
+	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
+	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
+	virtual void NotifyCollisionWithPlayer(Player& player);
+
+	// notify pixel collision
+	virtual void NotifySpriteCollision(Entity& otherEntity, Sprite& srcSprite, Sprite& otherSprite);
+	virtual void NotifySpriteCollisionWithEnemy(Enemy& enemy, Sprite& srcSprite, Sprite& otherSprite);
+	virtual void NotifySpriteCollisionWithPlayer(Player& player, Sprite& srcSprite, Sprite& otherSprite);
 
 private:
 	// status

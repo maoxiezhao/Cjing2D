@@ -9,9 +9,13 @@
 #include"entity\tileset.h"
 #include"entity\pickable.h"
 #include"entity\enemy.h"
+#include"entity\player.h"
+#include"entity\bullet.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
+const std::string LuaContext::module_player_name = "Player";
 const std::string LuaContext::module_enemy_name = "Enemy";
+const std::string LuaContext::module_entity_bullet_name = "Bullet";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
@@ -28,11 +32,19 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("SetSize", &Entity::SetSize);
 	entityClass.AddMethod("SetOrigin", &Entity::SetOrigin);
 
+	// player 
+	LuaBindClass<Player> playerClass(l, module_player_name, module_entity_name);
+	playerClass.AddDefaultMetaFunction();
+
 	// Enemy
 	LuaBindClass<Enemy> bindClass(l, "Enemy", "Entity");
 	bindClass.AddMetaFunction("__gc", LuaContext::userdata_meta_gc);
 	bindClass.AddMetaFunction("__index", LuaContext::userdata_meta_index);
 	bindClass.AddMetaFunction("__newindex", LuaContext::userdata_meta_newindex);
+
+	// Bullet
+	LuaBindClass<Bullet> bulletClass(l, "Bullet", "Entity");
+	bulletClass.AddDefaultMetaFunction();
 }
 
 /**
@@ -44,7 +56,8 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 	{ EntityType::DESTIMATION, entity_api_create_destimation },
 	{ EntityType::DYNAMIC_TITLE, entity_api_create_dynamic_title },
 	{ EntityType::PICKABLE, entity_api_create_pickable },
-	{ EntityType::ENEMEY, entity_api_create_enemy }
+	{ EntityType::ENEMEY, entity_api_create_enemy },
+	{ EntityType::BULLET, entity_api_create_bullet }
 };
 
 /**
@@ -162,6 +175,26 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 }
 
 /**
+*	\brief entity_bullet的创建函数
+*/
+int LuaContext::entity_api_create_bullet(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Map& map = *CheckMap(l, 1);
+		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
+
+		auto bullet = Bullet::Create(
+			entityData.GetValueString("templ"), 
+			entityData.GetLayer());
+
+		map.GetEntities().AddEntity(bullet);
+		PushUserdata(l, *bullet);
+		// enemy
+		return 1;
+	});
+}
+
+/**
 *	\brief 创建对应的entity
 *
 *	其中map和该userdata会作为参数传入, initCallback会在实体创建完后
@@ -238,4 +271,18 @@ int LuaContext::entity_api_create_sprite(lua_State*l)
 		PushAnimation(l, *animate);
 		return 1;
 	});
+}
+
+/**-------------------------------------------------------
+*	\brief Player Lua API
+*///------------------------------------------------------
+
+std::shared_ptr<Player> LuaContext::CheckPlayer(lua_State*l, int index)
+{
+	return std::static_pointer_cast<Player>(CheckUserdata(l, index, module_player_name));
+}
+
+bool LuaContext::IsPlyaer(lua_State*l, int index)
+{
+	return IsUserdata(l, index, module_player_name);
 }

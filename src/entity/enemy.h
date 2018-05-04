@@ -1,6 +1,7 @@
 #pragma once
 
 #include"entity\entity.h"
+#include"entity\entityAttack.h"
 
 class Game;
 
@@ -23,7 +24,7 @@ public:
 	virtual void NotifyBeforeCreated();
 	virtual void NotifyAfterCreated();
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
-	virtual void NotifyHurt();
+	virtual void NotifyHurt(Entity& source);
 	virtual void NotifyKilled();
 
 	/** status */
@@ -32,11 +33,16 @@ public:
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
 	virtual bool IsObstaclePlayer()const;
+	void SetCurAnimation(const std::string& name);
 
 	/** attack */
+	void SetAttackReaction(EntityAttack attack, EntityReactionType type);
+	void SetDefaultAttackReactions();
+
 	void Restart();
-	void TryHurt();
-	void Hurt();
+	void TryHurt(EntityAttack attack, Entity& source);
+	void CustomAttack(Entity& source, EntityAttack attack);
+	void Hurt(Entity& source);
 	void Kill();
 
 private:
@@ -45,10 +51,15 @@ private:
 	bool mIsHurting;
 	bool mIsOnlyUpdateInLua;	/** 仅进行lua更新 */
 	bool mIsImmobilized;
-	bool mIsPushed;
+
+	bool mCanAttack;
+	uint32_t mHurtProtectedTime;/** 受伤时无敌时间 */
+	uint32_t mCanAttackDate;	/** 再次可以攻击的时间 */
 
 	/** Enemy Defualt Property */
 	/** 这些属性属于默认设置的，可以在Lua中另外设置并计算 */
 	int mLife;
 	int mDemage;
+
+	std::map<EntityAttack, EntityReactionType> mAttackReactions;
 };

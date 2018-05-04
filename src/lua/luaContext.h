@@ -36,6 +36,7 @@ class ParticleSystem;
 class Item;
 class ItemAcquired;
 class Entity;
+class Player;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -161,6 +162,7 @@ public:
 		game_api_get_max_life,
 		game_api_set_life,
 		game_api_set_max_life,
+		game_api_get_player,
 		// map
 		map_api_set_background,
 		map_api_create_entity,
@@ -271,6 +273,10 @@ public:
 		item_api_set_shadow,
 		item_api_set_flow,
 		item_api_set_auto_picked,
+		// weapon
+		weapon_api_add,
+		weapon_api_equip,
+		weapon_api_unequip,
 		// entity
 		entity_api_create_sprite,
 		// entity create
@@ -279,6 +285,7 @@ public:
 		entity_api_create_dynamic_title,
 		entity_api_create_pickable,
 		entity_api_create_enemy,
+		entity_api_create_bullet,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -415,6 +422,8 @@ public:
 	static bool IsWindow(lua_State*l, int index);
 	static std::shared_ptr<Entity> CheckEntity(lua_State*l, int index);
 	static bool IsEntity(lua_State*l, int index);
+	static std::shared_ptr<Player> CheckPlayer(lua_State*l, int index);
+	static bool IsPlyaer(lua_State*l, int index);
 
 	// system ref
 	static LuaRef mSystemCApiRef;
@@ -434,9 +443,9 @@ public:
 	static const string module_sound_name;
 	static const string module_particle_name;
 	static const string module_item_name;
+	static const string module_weapon_name;
 	static const string module_file_data_name;
 	static const string module_utils_name;
-	static const string module_enemy_name;
 	// movement modules name
 	static const string module_movement_name;
 	static const string module_straight_movement_name;
@@ -449,6 +458,9 @@ public:
 	static const string module_animation_name;
 	// entity
 	static const string module_entity_name;
+	static const string module_player_name;
+	static const string module_enemy_name;
+	static const string module_entity_bullet_name;
 	// widget
 	static const string module_window_name;
 

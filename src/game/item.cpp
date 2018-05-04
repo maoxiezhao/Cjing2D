@@ -22,9 +22,7 @@ Item::Item(const std::string& itemName, Equipment& equipment):
 void Item::Initialize()
 {
 	if (IsHasLua())
-	{	
 		GetLuaContext().RunItem(*this);
-	}
 }
 
 void Item::Update()

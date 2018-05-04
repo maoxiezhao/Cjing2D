@@ -7,6 +7,7 @@
 class OBB
 {
 public:
+	OBB() :mAxis{} {};
 	OBB(const Point2& lt, const Point2& rt):
 		mAxis{} {};
 

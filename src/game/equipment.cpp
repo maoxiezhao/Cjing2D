@@ -70,6 +70,14 @@ bool Equipment::LoadGame()
 }
 
 /**
+*	\brief 当玩家进入地图时，需要刷新下当前数据
+*/
+void Equipment::NotifyPlayerEnter(Player& player)
+{
+	RefreshWeaponsFromSaveData();
+}
+
+/**
 *	\brief 加载所有item
 */
 void Equipment::LoadAllItems()
@@ -103,27 +111,6 @@ void Equipment::LoadAllItems()
 		{
 			int count = mSavegame.GetInteger(itemName);
 			kvp->second->SetItemCount(count, false);
-		}
-	}
-	// 设置装备
-	auto weaponTable = mSavegame.GetTable(Savegame::EQUIPMENT_EQUIP_WEAPON);
-	for (auto key : weaponTable)
-	{
-		std::string weaponID = mSavegame.GetString(key);
-		if (!AddWeaponToSlot(weaponID))
-		{
-			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
-			return;
-		}
-	}
-	// 设置当前装备
-	std::string weaponID = mSavegame.GetString(Savegame::PLAYER_EQUIP_WEAPON);
-	if (weaponID != "")
-	{
-		if (!EquipWeaponFromSlots(weaponID))
-		{
-			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
-			return;
 		}
 	}
 }
@@ -352,7 +339,7 @@ WeaponPtr Equipment::GetWeaponFromSlot(const std::string & name)
 {
 	for (auto& weapon : mEquipdWeapons)
 	{
-		if (weapon->GetItemName() == name)
+		if (weapon && weapon->GetItemName() == name)
 			return weapon;
 	}
 	return nullptr;
@@ -385,4 +372,33 @@ void Equipment::SetCurWeaponSlot(Weapon & weapon, int slot)
 Player & Equipment::GetCurPlayer()
 {
 	return *mSavegame.GetGame()->GetPlayer();
+}
+
+
+/**
+*	\brief 根据存档数据刷新当前weapon,当player创建时调用
+*/
+void Equipment::RefreshWeaponsFromSaveData()
+{
+	// 设置装备
+	auto weaponTable = mSavegame.GetTable(Savegame::EQUIPMENT_EQUIP_WEAPON);
+	for (auto key : weaponTable)
+	{
+		std::string weaponID = mSavegame.GetString(key);
+		if (!AddWeaponToSlot(weaponID))
+		{
+			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
+			return;
+		}
+	}
+	// 设置当前装备
+	std::string weaponID = mSavegame.GetString(Savegame::PLAYER_EQUIP_WEAPON);
+	if (weaponID != "")
+	{
+		if (!EquipWeaponFromSlots(weaponID))
+		{
+			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
+			return;
+		}
+	}
 }

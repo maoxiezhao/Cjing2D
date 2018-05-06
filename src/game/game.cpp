@@ -56,10 +56,8 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 void Game::Start()
 {
 	if (mStarted)
-	{
 		return;
-	}
-
+	
 	mStarted = true;
 	GetLuaContext().OnGameStart(*this);
 }

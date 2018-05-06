@@ -17,6 +17,7 @@ void LuaContext::RegisterItem()
 	LuaBindClass<Item> itemClass(l, module_item_name);
 	itemClass.AddDefaultMetaFunction();
 	itemClass.AddFunction("GetItem", item_api_get_item);
+	itemClass.AddFunction("AddItem", item_api_add_count);
 	itemClass.AddMethod("GetGame", item_api_get_game);
 	itemClass.AddMethod("SetShadow", item_api_set_shadow);
 	itemClass.AddMethod("SetFlow", item_api_set_flow);
@@ -65,7 +66,7 @@ bool LuaContext::IsItem(lua_State*l, int index)
 */
 void LuaContext::RunItem(Item& item)
 {
-	const std::string itemFile = std::string("items/") + item.GetItemName();
+	const std::string itemFile = std::string("items/items/") + item.GetItemName();
 	if (LoadFile(l, itemFile))
 	{
 		PushItem(l, item);
@@ -144,6 +145,30 @@ int LuaContext::item_api_get_item(lua_State*l)
 		return 0;
 	});
 }
+
+/**
+*	\brief Item.AddItem(cur_game, id, count)
+*/
+int LuaContext::item_api_add_count(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		auto game = savegame.GetGame();
+		if (game != nullptr)
+		{
+			Equipment& equip = game->GetEquipment();
+			const std::string& key = LuaTools::CheckString(l, 2);
+			int count = LuaTools::CheckInt(l, 3);
+			auto& item = equip.GetItem(key);
+			bool result = item.AddItem(count);
+
+			lua_pushboolean(l, result);
+			return 1;
+		}
+		return 0;
+	});
+}
+
 
 /**
 *	\brief  µœ÷cjing.Item:setShadow(true/false)

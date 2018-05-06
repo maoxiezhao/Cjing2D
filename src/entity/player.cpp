@@ -83,6 +83,10 @@ void Player::Initalized()
 
 void Player::PlaceOnMap(Map & map)
 {
+	// 刷新下当前状态
+	mEquipment.NotifyPlayerEnter(*this);
+
+	// 添加到地图中
 	auto sharedPlayer = std::dynamic_pointer_cast<Entity>(this->shared_from_this());
 	map.GetEntities().AddEntity(sharedPlayer);
 }

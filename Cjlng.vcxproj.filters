@@ -942,6 +942,9 @@
     <ClInclude Include="src\entity\entityAttack.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\version.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

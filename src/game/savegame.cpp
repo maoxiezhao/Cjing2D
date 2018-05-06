@@ -2,6 +2,7 @@
 #include"game\enumInfo.h"
 #include"game\app.h"
 #include"core\fileData.h"
+#include"core\logger.h"
 #include"lua\luaContext.h"
 
 #include<sstream>
@@ -88,6 +89,7 @@ void Savegame::SaveGameToLocal()
 
 	const string& content = oss.str();
 	FileData::SaveFile(mFileName, content);
+	Logger::Info("Save game succeed.");
 }
 
 Equipment & Savegame::GetEquipment()
@@ -363,7 +365,7 @@ void Savegame::ExportSaveValue(const std::string & key, const SavedValue & value
 	}
 	else if (value.type == Savegame::VALUE_BOOLEAN)
 	{
-		oss << (static_cast<bool>(value.valueData)) ? "true" : "false";
+		oss << ((value.valueData != 0) ? "true" : "false");
 	}
 	else if (value.type == Savegame::VALUE_TABLE)
 	{

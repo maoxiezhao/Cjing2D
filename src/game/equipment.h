@@ -28,6 +28,7 @@ public:
 	void Update();
 	bool SaveGame();
 	bool LoadGame();
+	void NotifyPlayerEnter(Player& player);
 
 	/****** item manager *******/
 	void LoadAllItems();
@@ -73,6 +74,7 @@ private:
 	int FindEmptyWeaponSlot()const;
 	void SetCurWeaponSlot(Weapon& weapon, int slot);
 	Player& GetCurPlayer();
+	void RefreshWeaponsFromSaveData();
 
 private:
 	Savegame& mSavegame;

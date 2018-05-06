@@ -278,6 +278,7 @@ public:
 		item_api_set_shadow,
 		item_api_set_flow,
 		item_api_set_auto_picked,
+		item_api_add_count,
 		// weapon
 		weapon_api_add,
 		weapon_api_equip,

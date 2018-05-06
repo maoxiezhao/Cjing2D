@@ -18,6 +18,8 @@ class App;
 *	目前按键绑定保存到文档中，未来考虑保存成单独的Input dat文件
 *
 *	saveGame 作为全局对象，可以任意存储lua table格式 2018.3.15
+*	TableValue仅仅在String保存key值，key指向一些列其他key，这些
+*	key的对应value也保存在savedValue中
 */
 class Savegame : public LuaObject
 {
@@ -27,17 +29,23 @@ public:
 		VALUE_NONE = -1,
 		VALUE_STRING = 0,
 		VALUE_INTEGER,
-		VALUE_BOOLEAN
+		VALUE_BOOLEAN,
+		VALUE_TABLE,
 	};
 
 	/** 保存值的对象结构，包含了对象的值和对象的数据类型 */
 	struct SavedValue
 	{
 		SAVED_VALUE_TYPE type;
-		std::string mStringData;
-		int mValueData;		    //	(Integer and boolean)
+		std::string stringData;
+		int valueData;		    //	(Integer and boolean)
+		bool belongToTable;		// 是否是表中value
 
-		SavedValue() :type(VALUE_STRING), mStringData(""), mValueData(0) {}
+		SavedValue() :
+			type(VALUE_STRING), 
+			stringData(""),
+			valueData(0),
+			belongToTable(false){}
 	};
 
 public:
@@ -50,15 +58,18 @@ public:
 	Equipment& GetEquipment();
 
 	/** saved value operation */
-	void SetInteger(const string& key, int value);
+	void SetInteger(const string& key, int value, const std::string& tableKey = "");
 	int GetInteger(const string& key)const;
-	void SetString(const string& key, const string& value);
+	void SetString(const string& key, const string& value, const std::string& tableKey = "");
 	string GetString(const string& key)const;
-	void SetBoolean(const string& key, bool value);
+	void SetBoolean(const string& key, bool value, const std::string& tableKey = "");
 	bool GetBoolean(const string& key);
 	void UnSet(const string& key);
-	SAVED_VALUE_TYPE GetValueType(const std::string& key);
+	void SetTable(const string& key, const std::string& tableKey, const std::string& baseTableKey = "");
+	void InsertToTable(const std::string& tableKey, const std::string& key, SavedValue& value);
+	std::vector<std::string> GetTable(const std::string& key);
 
+	SAVED_VALUE_TYPE GetValueType(const std::string& key);
 	LuaContext& GetLuaContext();
 	virtual const string GetLuaObjectName()const;
 
@@ -75,10 +86,16 @@ public:
 	static const std::string KEYWORD_CURRENT_LIFE;
 	static const std::string KEYWORD_CURRENT_MAX_LIFE;
 
+	static const std::string PLAYER_EQUIP_WEAPON;
+
+	static const std::string EQUIPMENT_ALL_ITEM;
+	static const std::string EQUIPMENT_EQUIP_WEAPON;
+
 private:
 	/** lua newindex function */
 	static int LuaLoadConfig(lua_State* l);
 	static int LuaLoadFunction(lua_State* l);
+	static int LuaLoadValueFunction(lua_State* l, Savegame& savegame, int index, const std::string& tableKey = "");
 
 	void ImportFromFile(const string& filename);
 	void SetDefaultData();
@@ -87,6 +104,8 @@ private:
 	void SetDefualtCommandMappingMouse();
 	void SetDefaultEquipmentState();
 
+	void ExportSaveValue(const std::string& key, const SavedValue& value, std::ostringstream& oss);
+
 private:
 	std::map<std::string, SavedValue> mSavedValues;
 	App& mApp;
@@ -94,6 +113,8 @@ private:
 	Equipment mEquipment;		/** 当前的玩家状态管理者 */
 	string mFileName;			/** 当前存档文件名 */
 
+	using ValueTable = std::vector<std::string>;
+	std::map<std::string, ValueTable> mValueTables;
 };
 
 #endif

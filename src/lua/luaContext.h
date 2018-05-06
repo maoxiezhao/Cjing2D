@@ -62,6 +62,9 @@ public:
 		CLIENT_LUA_MAIN_UPDATE,
 		CLIENT_LUA_MAIN_STOP,
 		CLIENT_LUA_MAIN_RENDER,
+
+		CLIENT_LUA_INPUT_KEY_DOWN,
+		CLIENT_LUA_INPUT_KEY_UP,
 	};
 
 	LuaContext(App& app);
@@ -86,6 +89,7 @@ public:
 	bool FindMethod(const string& name, int index);
 	bool DoLuaExportFunction(const std::string& funcName, ...);
 	bool DoLuaSystemFunctionWithIndex(int systemIndex);
+	bool DoLuaSystemFunctionWithIndex(int systemIndex, std::function<int(lua_State*l)>paramFunc);
 	void PrintLuaStack(lua_State*l);
 	bool HasFileLoaded(const std::string& fileName)const;
 
@@ -269,6 +273,7 @@ public:
 		particle_api_set_preprocess,
 		particle_api_draw,
 		// item
+		item_api_get_item,
 		item_api_get_game,
 		item_api_set_shadow,
 		item_api_set_flow,

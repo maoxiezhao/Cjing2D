@@ -40,6 +40,9 @@ void Player::Update()
 	// sprite update
 	mPlayerSprites->Update();
 
+	// removed sprite clear
+	ClearRemovedSprite();
+
 	// movement update
 	GetMovement()->Update();
 

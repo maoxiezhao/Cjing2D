@@ -77,9 +77,8 @@ void Entity::Update()
 	for (auto namedSprite : mSprites)
 	{
 		if (namedSprite.removed)
-		{
 			continue;
-		}
+	
 		namedSprite.sprite->Update();
 	}
 	ClearRemovedSprite();
@@ -88,11 +87,10 @@ void Entity::Update()
 	if (mMovement != nullptr)
 	{
 		mMovement->Update();
+
 		// 如果移动完毕，则移除movement
 		if (mMovement != nullptr && mMovement->IsFinished())
-		{
 			StopMovement();
-		}
 	}
 
 	// state
@@ -446,7 +444,7 @@ SpritePtr Entity::GetSprite(const string & spriteName)
 
 bool Entity::RemoveSprite(SpritePtr sprite)
 {
-	for (auto namedSprite : mSprites)
+	for (auto& namedSprite : mSprites)
 	{
 		if (namedSprite.sprite == sprite &&
 			namedSprite.removed == false)

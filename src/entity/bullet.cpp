@@ -62,7 +62,7 @@ const string Bullet::GetLuaObjectName() const
 
 void Bullet::NotifyBeforeCreated()
 {
-	std::string path = "items/weapons/" + GetTemplName() + ".lua";
+	std::string path = "entities/bullets/" + GetTemplName() + ".lua";
 	GetLuaContext()->CallFileWithUserdata(path, *this);
 }
 

@@ -25,6 +25,9 @@ public:
 	void SetWithLuaTable(bool withLuaTable);
 
 	virtual const string GetLuaObjectName()const = 0;
+	
+	/** lua bind function */
+	int LuaWraper(lua_State*l);
 
 private:
 	LuaContext* mLuaContext;

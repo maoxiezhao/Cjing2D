@@ -72,11 +72,13 @@ void LuaContext::OnGameDraw(Game & game)
 
 bool LuaContext::OnGameInput(Game & game, const InputEvent & event)
 {
-	bool handle = false;
-	PushGame(l, game.GetSavegame());
-	handle = OnInput(event);
-	lua_pop(l, 1);
-	return handle;
+	//bool handle = false;
+	//PushGame(l, game.GetSavegame());
+	//handle = OnInput(event);
+	//lua_pop(l, 1);
+	//return handle;
+
+	return false;
 }
 
 

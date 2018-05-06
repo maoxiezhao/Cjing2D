@@ -24,6 +24,52 @@ void Equipment::Update()
 }
 
 /**
+*	\brief 保存数据，需要遍历保存所有道具的个数，以及装备的情况
+*/
+bool Equipment::SaveGame()
+{
+	// 保存各个道路的个数
+	for (const auto& kvp : mAllItems)
+	{
+		auto& item = kvp.second;
+		if (!item->IsWeapon())
+		{
+			mSavegame.SetInteger(item->GetItemName(), 
+				item->GetItemCount(), Savegame::EQUIPMENT_ALL_ITEM);
+		}
+	}
+	// 保存当前身上的装备槽
+	static const std::string slotKey = "weapon_slot_";
+	for (int i = 0; i < mEquipdWeapons.size(); i++)
+	{
+		auto& weapon = mEquipdWeapons[i];
+		if (weapon != nullptr)
+		{
+			const std::string& key = slotKey + std::to_string(i);
+			mSavegame.SetString(key, weapon->GetItemName(), Savegame::EQUIPMENT_EQUIP_WEAPON);
+		}
+	}	
+	// 保存正在装备的武器
+	std::string curWeaponID = "";
+	auto equipedWeapon = GetCurWeapon();
+	if (equipedWeapon != nullptr)
+		curWeaponID = equipedWeapon->GetItemName();
+	
+	mSavegame.SetString(Savegame::PLAYER_EQUIP_WEAPON, curWeaponID);
+
+	return true;
+}
+
+/**
+*	\brief 加载数据，需要遍历读取所有道具的个数，以及装备的情况
+*/
+bool Equipment::LoadGame()
+{
+	LoadAllItems();
+	return true;
+}
+
+/**
 *	\brief 加载所有item
 */
 void Equipment::LoadAllItems()
@@ -42,12 +88,43 @@ void Equipment::LoadAllItems()
 		std::shared_ptr<Weapon> item = std::make_shared<Weapon>(weaponID, *this);
 		mAllItems[weaponID] = item;
 	}
-
 	// 初始化所有脚本
 	for (auto& kvp : mAllItems)
 	{
 		Item& item = *kvp.second;
 		item.Initialize();
+	}
+	// 设置物品数量
+	auto itemTables = mSavegame.GetTable(Savegame::EQUIPMENT_ALL_ITEM);
+	for (auto itemName : itemTables)
+	{
+		auto kvp = mAllItems.find(itemName);
+		if (kvp != mAllItems.end())
+		{
+			int count = mSavegame.GetInteger(itemName);
+			kvp->second->SetItemCount(count, false);
+		}
+	}
+	// 设置装备
+	auto weaponTable = mSavegame.GetTable(Savegame::EQUIPMENT_EQUIP_WEAPON);
+	for (auto key : weaponTable)
+	{
+		std::string weaponID = mSavegame.GetString(key);
+		if (!AddWeaponToSlot(weaponID))
+		{
+			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
+			return;
+		}
+	}
+	// 设置当前装备
+	std::string weaponID = mSavegame.GetString(Savegame::PLAYER_EQUIP_WEAPON);
+	if (weaponID != "")
+	{
+		if (!EquipWeaponFromSlots(weaponID))
+		{
+			Debug::Warning("The weapon id:" + weaponID + " is invalid.");
+			return;
+		}
 	}
 }
 
@@ -76,8 +153,19 @@ const Item & Equipment::GetItem(const std::string & itemName) const
 	return *itor->second;
 }
 
-bool Equipment::PushItemIntoBeg(ItemAcquired & item)
+/**
+*	\brief 添加物品到背包
+*/
+bool Equipment::PushItemIntoBeg(ItemAcquired & itemAccquired)
 {
+	// 将物品添加到背包, 暂时不使用背包
+	// mItemBeg.AddItem(&item, count)
+
+	auto item = itemAccquired.GetItem();
+	int count = itemAccquired.GetVariant();
+	if (!item.AddItem(count))
+		return false;
+
 	return true;
 }
 
@@ -182,14 +270,14 @@ bool Equipment::AddWeaponToSlot(const std::string & weaponID, bool equiped, int 
 
 bool Equipment::EquipWeaponFromSlots(const std::string & name)
 {
-	// 穿装备的逻辑是，装备首先在slot中，先从slot中取出
-	// 装备，再装备该装备。
 	auto& weapon = GetWeaponFromSlot(name);
 	if (weapon)
 		return EquipWeaponFromSlots(*weapon);
 	return false;
 }
 
+// 穿脱装备的逻辑是，装备首先在slot中，先从slot中取出
+// 装备，再装备该装备
 bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 {
 	if (weapon.IsEquiped())
@@ -197,6 +285,29 @@ bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 
 	auto& player = GetCurPlayer();
 	return weapon.Equiped(player);
+}
+
+bool Equipment::UnEquipWeaponFromSlots(const std::string & name)
+{
+	auto& weapon = GetWeaponFromSlot(name);
+	if (weapon)
+		return UnEquipWeaponFromSlots(*weapon);
+	return false;
+}
+
+bool Equipment::UnEquipWeaponFromSlots(int slot)
+{
+	auto& weapon = GetWeaponFromSlot(slot);
+	if (weapon)
+		return EquipWeaponFromSlots(*weapon);
+	return false;
+}
+
+bool Equipment::UnEquipWeaponFromSlots(Weapon & weapon)
+{
+	if (!weapon.IsEquiped())
+		return true;
+	return weapon.UnEquiped();
 }
 
 /**

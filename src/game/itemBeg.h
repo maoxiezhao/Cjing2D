@@ -30,10 +30,10 @@ public:
 	/**
 	*	\brief 背包项，道具的基本拆分项
 	*/
-	class BegItem
+	class SubBegItem
 	{
 	public:
-		BegItem();
+		SubBegItem();
 
 		Item* GetItem();
 		int GetVariant();
@@ -52,13 +52,13 @@ public:
 	void SplitItem(const std::string& item, int variant, int toIndex);
 	void SwapItem();
 
-	BegItem& GetBegItem(int index);
-	std::vector<BegItem&> GetBegItem(const std::string& itemName);
+	SubBegItem& GetBegItem(int index);
+	std::vector<SubBegItem&> GetBegItem(const std::string& itemName);
 
 private:
 	Equipment& mEquipment;
 
-	int mMaxBegItemCount;			/** 当前背包的最大槽数*/
-	std::vector<BegItem> mBegItems;	/** 当前背包道具槽 */
-
+	int mMaxBegItemCount;				/** 当前背包的最大槽数*/
+	std::vector<SubBegItem> mBegItems;	/** 当前背包道具槽 */
+	std::map<Item*, int> mItemsCount;	
 };

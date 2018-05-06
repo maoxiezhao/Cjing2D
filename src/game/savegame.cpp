@@ -17,6 +17,10 @@ const std::string Savegame::KEYWORD_START_MAP = "keyword_start_map";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
 const std::string Savegame::KEYWORD_CURRENT_MAX_LIFE = "keyword_current_max_life";
 
+const std::string Savegame::PLAYER_EQUIP_WEAPON = "player_equip_weapon";
+
+const std::string Savegame::EQUIPMENT_ALL_ITEM = "equipment_all_items";
+const std::string Savegame::EQUIPMENT_EQUIP_WEAPON = "equipment_equip_weapons";
 
 Savegame::Savegame(App & app, const string & fileName):
 	mApp(app),
@@ -33,15 +37,17 @@ Savegame::Savegame(App & app, const string & fileName):
 */
 void Savegame::Init()
 {
+	// 初始化一些相关的环境
+	SetTable(EQUIPMENT_ALL_ITEM, EQUIPMENT_ALL_ITEM);
+	SetTable(EQUIPMENT_EQUIP_WEAPON, EQUIPMENT_EQUIP_WEAPON);
+
+	// 加载或创建自定义数据
 	if (!FileData::IsFileExists(mFileName))
-	{
 		SetDefaultData();
-	}
 	else
-	{
 		ImportFromFile(mFileName);
-	}
-	mEquipment.LoadAllItems();
+
+	mEquipment.LoadGame();
 }
 
 void Savegame::SetGame(Game * game)
@@ -61,30 +67,25 @@ Game * Savegame::GetGame()
 */
 void Savegame::SaveGameToLocal()
 {
+	Game* game = GetGame();
+	Debug::CheckAssertion(game != nullptr, "Save game without game instance.");
+
+	if (!mEquipment.SaveGame())
+	{
+		Debug::Warning("Failed to save game");
+		return;
+	}
+
+	/** export game data */
 	std::ostringstream oss;
 	for (const auto& kvp : mSavedValues)
 	{
 		const string& key = kvp.first;
-		oss << key << " = ";
-		const auto& savedValue = kvp.second;
-		if (savedValue.type == Savegame::VALUE_INTEGER)
-		{
-			oss << savedValue.mValueData;
-		}
-		else if (savedValue.type == Savegame::VALUE_STRING)
-		{
-			oss << "\"" << savedValue.mStringData << "\"";
-		}
-		else if (savedValue.type == Savegame::VALUE_BOOLEAN)
-		{
-			oss << (static_cast<bool>(savedValue.mValueData)) ? "true" : "false" ;
-		}
-		else
-		{
-			Debug::Warning("Invalid saved value type.");
-		}
-		oss << "\n";
+		auto& savedValue = kvp.second;	
+		if(!savedValue.belongToTable)
+			ExportSaveValue(key, savedValue, oss);
 	}
+
 	const string& content = oss.str();
 	FileData::SaveFile(mFileName, content);
 }
@@ -94,11 +95,14 @@ Equipment & Savegame::GetEquipment()
 	return mEquipment;
 }
 
-void Savegame::SetInteger(const string & key, int value)
+void Savegame::SetInteger(const string & key, int value, const std::string& tableKey)
 {
 	SavedValue savedValue;
 	savedValue.type = Savegame::VALUE_INTEGER;
-	savedValue.mValueData = value;
+	savedValue.valueData = value;
+
+	if (tableKey != "")
+		InsertToTable(tableKey, key, savedValue);
 
 	mSavedValues[key] = savedValue;
 }
@@ -113,16 +117,19 @@ int Savegame::GetInteger(const string & key) const
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return 0;
 		}
-		return it->second.mValueData;
+		return it->second.valueData;
 	}
 	return 0;
 }
 
-void Savegame::SetString(const string & key, const string & value)
+void Savegame::SetString(const string & key, const string & value, const std::string& tableKey)
 {
 	SavedValue savedValue;
 	savedValue.type = Savegame::VALUE_STRING;
-	savedValue.mStringData = value;
+	savedValue.stringData = value;
+
+	if (tableKey != "")
+		InsertToTable(tableKey, key, savedValue);
 
 	mSavedValues[key] = savedValue;
 }
@@ -137,16 +144,19 @@ string Savegame::GetString(const string & key) const
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return "";
 		}
-		return it->second.mStringData;
+		return it->second.stringData;
 	}
 	return "";
 }
 
-void Savegame::SetBoolean(const string & key, bool value)
+void Savegame::SetBoolean(const string & key, bool value, const std::string& tableKey)
 {
 	SavedValue savedValue;
 	savedValue.type = Savegame::VALUE_BOOLEAN;
-	savedValue.mValueData = static_cast<int>(value);
+	savedValue.valueData = static_cast<int>(value);
+
+	if (tableKey != "")
+		InsertToTable(tableKey, key, savedValue);
 
 	mSavedValues[key] = savedValue;
 }
@@ -161,7 +171,7 @@ bool Savegame::GetBoolean(const string & key)
 			Debug::Warning("Excepted integer type in SaveGame::GetInteger.");
 			return false;
 		}
-		return static_cast<bool>(it->second.mValueData);
+		return static_cast<bool>(it->second.valueData);
 	}
 	return false;
 }
@@ -173,6 +183,58 @@ void Savegame::UnSet(const string & key)
 	{
 		mSavedValues.erase(it);
 	}
+}
+
+/**
+*	\brief 创建一个TableValue
+*	\param tableKey 表的名字
+*	\param baseTableKey 所属的表的名字，如果为"",则不属于任何表
+*/
+void Savegame::SetTable(const string & key, const std::string& tableKey, const std::string& baseTableKey)
+{
+	SavedValue savedValue;
+	savedValue.type = Savegame::VALUE_TABLE;
+	savedValue.stringData = tableKey;
+	mValueTables[tableKey] = {};
+
+	if (baseTableKey != "")
+		InsertToTable(baseTableKey, key, savedValue);
+
+	mSavedValues[key] = savedValue;
+}
+
+void Savegame::InsertToTable(const std::string & tableKey, const std::string & key, SavedValue & value)
+{
+	auto it = mValueTables.find(tableKey);
+	Debug::CheckAssertion(it != mValueTables.end(), "The value table '"
+		+ tableKey + "' is non-exsist");
+
+	value.belongToTable = true;
+
+	auto& tableKeys = it->second;	// 是否可以每次插入前都新设置表，这样无需这里判断
+	if(std::find(tableKeys.begin(), tableKeys.end(), key) == tableKeys.end())
+		it->second.push_back(key);
+}
+
+std::vector<std::string> Savegame::GetTable(const std::string & key)
+{
+	auto it = mSavedValues.find(key);
+	if (it != mSavedValues.end())
+	{
+		if (it->second.type != Savegame::VALUE_TABLE)
+		{
+			Debug::Warning("Excepted table type in SaveGame::GetTable.");
+			return {};
+		}	
+		auto kvp = mValueTables.find(it->second.stringData);
+		if (kvp == mValueTables.end())
+		{
+			Debug::Warning("The table '" + key + "' is empty");
+			return {};
+		}
+		return kvp->second;
+	}
+	return {};
 }
 
 Savegame::SAVED_VALUE_TYPE Savegame::GetValueType(const std::string & key)
@@ -288,6 +350,46 @@ void Savegame::SetDefaultEquipmentState()
 	mEquipment.SetMaxLife(10);
 }
 
+void Savegame::ExportSaveValue(const std::string & key, const SavedValue & value, std::ostringstream& oss)
+{
+	oss << key << " = ";
+	if (value.type == Savegame::VALUE_INTEGER)
+	{
+		oss << value.valueData;
+	}
+	else if (value.type == Savegame::VALUE_STRING)
+	{
+		oss << "\"" << value.stringData << "\"";
+	}
+	else if (value.type == Savegame::VALUE_BOOLEAN)
+	{
+		oss << (static_cast<bool>(value.valueData)) ? "true" : "false";
+	}
+	else if (value.type == Savegame::VALUE_TABLE)
+	{
+		oss << "{" << "\n";	
+		const std::string& key = value.stringData;
+		auto kvp = mValueTables.find(key);
+		if (kvp != mValueTables.end())
+		{
+			auto& valueTable = kvp->second;
+			for (const auto& k : valueTable)
+			{
+				// 必须保证每个key都对应一个savedValue
+				const auto& v = mSavedValues[k];
+				ExportSaveValue(k, v, oss);
+				oss << ",";
+			}
+		}
+		oss << "}";
+	}
+	else
+	{
+		Debug::Warning("Invalid saved value type.");
+	}
+	oss << "\n";
+}
+
 /**
 *	\brief 加载数据的C lua 函数
 */
@@ -298,23 +400,39 @@ int Savegame::LuaLoadFunction(lua_State * l)
 		Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
 		lua_pop(l, 1);
 
-		const string& key = LuaTools::CheckString(l, 2);
-		switch (lua_type(l, 3))
-		{
-		case LUA_TBOOLEAN:
-			savegame->SetBoolean(key, LuaTools::CheckBoolean(l, 3));
-			break;
-		case LUA_TNUMBER:
-			savegame->SetInteger(key, LuaTools::CheckInt(l, 3));
-			break;
-		case LUA_TSTRING:
-			savegame->SetString(key, LuaTools::CheckString(l, 3));
-			break;
-		default:
-			LuaTools::Error(l, "Invalid value.");
-			break;
-		}
-
+		LuaLoadValueFunction(l, *savegame, 2);
 		return 0;
 	});
+}
+
+int Savegame::LuaLoadValueFunction(lua_State * l, Savegame& savegame, int index, const std::string& tableKey)
+{
+	const string& key = LuaTools::CheckString(l, index);
+	int valueIndex = index + 1;
+	switch (lua_type(l, valueIndex))
+	{
+	case LUA_TBOOLEAN:
+		savegame.SetBoolean(key, LuaTools::CheckBoolean(l, valueIndex), tableKey);
+		break;
+	case LUA_TNUMBER:
+		savegame.SetInteger(key, LuaTools::CheckInt(l, valueIndex), tableKey);
+		break;
+	case LUA_TSTRING:
+		savegame.SetString(key, LuaTools::CheckString(l, valueIndex), tableKey);
+		break;
+	case LUA_TTABLE:
+		savegame.SetTable(key, key, tableKey);
+		lua_pushnil(l);	// key table 
+		while (lua_next(l, -2))
+		{				// key table key value
+			int keyIndex = LuaTools::GetPositiveIndex(l, -2);
+			LuaLoadValueFunction(l, savegame, keyIndex, key);
+			lua_pop(l, 1);
+		}
+		break;
+	default:
+		LuaTools::Error(l, "Invalid value.");
+		break;
+	}
+	return 0;
 }

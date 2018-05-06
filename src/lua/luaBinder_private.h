@@ -120,7 +120,6 @@ namespace Implemention
 			Wraper(lua_State*l, T value)
 		{
 			T::LuaWraper(l);
-		//	lua_pushinteger(l, 0);
 		}
 	}
 

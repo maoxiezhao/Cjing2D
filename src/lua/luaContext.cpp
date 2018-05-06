@@ -598,7 +598,7 @@ void LuaContext::RegisterType(lua_State*l, const string& moduleName, const strin
 	luaL_getmetatable(l, moduleName.c_str());
 				// meta
 	luaL_getmetatable(l, baseModuleName.c_str());
-				// meta table
+				// meta base
 
 	// 这里可以两种做法，一种是直接将BaseMeta设置为meta的meta
 	// 或者是遍历BaseMeta将方法设置到meta中
@@ -698,6 +698,31 @@ bool LuaContext::DoLuaSystemFunctionWithIndex(int systemIndex)
 		return false;
 	}
 	lua_pop(l, 1);
+	return true;
+}
+
+/**
+*	\brief 通過索引执行系统函数
+*	\param paramFunc 设置该函数的参数
+*	该接口意在加快系统lua函数的调用
+*/
+bool LuaContext::DoLuaSystemFunctionWithIndex(int systemIndex, std::function<int(lua_State*l)> paramFunc)
+{
+	Debug::CheckAssertion(!mSystemExports.IsEmpty());
+	mSystemExports.Push();
+	lua_rawgeti(l, -1, systemIndex);
+
+	int paramNum = 0;
+	if (paramFunc != nullptr)
+		paramNum = paramFunc(l);
+
+	if (!LuaTools::CallFunction(l, paramNum, 0, ""))
+	{
+		lua_pop(l, 1);
+		return false;
+	}
+	lua_pop(l, 1);
+
 	return true;
 }
 
@@ -1031,25 +1056,18 @@ bool LuaContext::OnInput(const InputEvent & event)
 	return handle;;
 }
 
-/**
-*	\brief 响应键盘按下事件
-*   \return 返回值handle如果为true，则表示事件已经结束无需传递
-*
-*	onKeyPressed(key,modifier),传入3个参数self为调用者key按下的键值,
-*   modifier是否同时按下ctrl/shift/alt lua的函数返回值表示是否是一个
-*   可传递的有效事件
-*/
-bool LuaContext::OnKeyPressed(const InputEvent & event)
-{
-	bool handle = false;
-	if (FindMethod("onKeyPressed"))	// 注意FindMethod会将Ojb复制一份放于stack中
-	{								// obj method obj
+
+namespace {
+	/** 返回用于将input event压栈的函数 */
+	std::function<int(lua_State*l)> GetKeyInputParamFunc(lua_State*l, const InputEvent& event)
+	{
 		string key = EnumToString(event.GetKeyBoardKey(), "");
-		if (!key.empty())
-		{
+		if (key.empty())
+			return nullptr;
+
+		return [key, event](lua_State* l)->int {
 			lua_pushstring(l, key.c_str());
-			lua_newtable(l);	// 创建modifiers表，用于设置是否同时按下其他修饰按键（主要包括
-								// ctrl、alt、shift)
+			lua_newtable(l);	// 创建modifiers表，用于设置是否同时按下其他修饰按键（主要包括ctrl、alt、shift)
 			if (event.IsWithKeyShift())
 			{
 				lua_pushboolean(l, 1);
@@ -1064,18 +1082,28 @@ bool LuaContext::OnKeyPressed(const InputEvent & event)
 			{
 				lua_pushboolean(l, 1);
 				lua_setfield(l, -2, "ctrl");
-			}
-			bool success = LuaTools::CallFunction(l, 3, 1, "onKeyPressed");
-			if (!success)
-				handle = true;
-			else
-			{
-				handle = lua_toboolean(l, -1);
-				lua_pop(l, 1);
-			}
-		}
-		else// obj mothod obj
-			lua_pop(l, 2);
+			}			
+			return 2;
+		};
+	}
+}
+
+/**
+*	\brief 响应键盘按下事件
+*   \return 返回值handle如果为true，则表示事件已经结束无需传递
+*
+*	onKeyPressed(key,modifier),传入3个参数self为调用者key按下的键值,
+*   modifier是否同时按下ctrl/shift/alt lua的函数返回值表示是否是一个
+*   可传递的有效事件
+*
+*	暂时改为默认调用lua inputSystem的inputKeyDown
+*/
+bool LuaContext::OnKeyPressed(const InputEvent & event)
+{
+	bool handle = false;
+	auto paramFunc = GetKeyInputParamFunc(l, event);
+	if (paramFunc != nullptr) {
+		DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_INPUT_KEY_DOWN, paramFunc);
 	}
 	return handle;
 }

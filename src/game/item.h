@@ -19,7 +19,10 @@ public:
 	virtual void Update();
 	virtual void Uninitialize();
 
-	bool UseItem(size_t count, Entity& usedEntity);
+	bool UseItem(int count, Entity& usedEntity);
+	bool AddItem(int count);
+	int  GetItemCount()const;
+	bool SetItemCount(int newCount, bool notify = false);
 
 	/** status */
 	const std::string& GetPickedSound()const;
@@ -42,6 +45,9 @@ public:
 	virtual const string GetLuaObjectName()const;
 	
 private:
+	bool ItemUsing(Entity& usedEntity);
+
+private:
 	Equipment& mEquipment;
 
 	std::string mItemName;
@@ -54,8 +60,8 @@ private:
 	bool mHasLua;			/** 是否存在lua脚本 */
 	bool mAutoPicked;		/** 是否自动拾取 */
 		
+	int mCurCount;
 	int mMaxAmount;
- 
 };
 
 using ItemPtr = std::shared_ptr<Item>;
@@ -103,4 +109,9 @@ inline bool Item::IsWeapon() const
 inline bool Item::IsAutoPicked() const
 {
 	return mAutoPicked;
+}
+
+inline int Item::GetItemCount()const
+{
+	return mCurCount;
 }

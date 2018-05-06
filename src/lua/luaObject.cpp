@@ -45,3 +45,13 @@ void LuaObject::SetWithLuaTable(bool withLuaTable)
 {
 	mWithLuaTable = withLuaTable;
 }
+
+int LuaObject::LuaWraper(lua_State * l)
+{
+	if (mLuaContext != nullptr)
+	{
+		mLuaContext->PushUserdata(l, *this);
+		return 1;
+	}
+	return 0;
+}

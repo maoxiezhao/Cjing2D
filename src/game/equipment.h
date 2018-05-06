@@ -11,13 +11,14 @@ class Player;
 
 /**
 *	\brief equipment 类包含有当前的游戏数值属性
-*	同时管理当前所拥有的item
+*	同时管理当前所拥有的item，weapon
 *
 *	equipment是player的数值显示管理,所有的数值通
 *	过该类管理在savegame中，同时保存有两份数据
 *	（该类和savegame)
 *
 *	17.10.25 商品的问题的数据同步问题和保存的时机需要考虑
+*   18.5.4   添加装备，完善物品系统
 */
 class Equipment
 {
@@ -25,12 +26,14 @@ public:
 	Equipment(Savegame& savegame);
 
 	void Update();
+	bool SaveGame();
+	bool LoadGame();
 
 	/****** item manager *******/
 	void LoadAllItems();
 	Item& GetItem(const std::string& itemName);
 	const Item& GetItem(const std::string& itemName)const;
-	bool PushItemIntoBeg(ItemAcquired& item);
+	bool PushItemIntoBeg(ItemAcquired& itemAccquired);
 
 	/** Setter/Getter */
 	int GetLife()const;
@@ -50,11 +53,14 @@ public:
 	Weapon& GetWeapon(const std::string& weaponID);
 
 	/** equip operation */
-	bool AddWeaponToSlot(const std::string& weaponID, bool equiped = false, int slot = -1);
 	bool EquipWeaponFromSlots(const std::string& name);
-	bool EquipWeaponFromSlots(Weapon& weapon);
 	bool EquipWeaponFromSlots(int slot);
+	bool EquipWeaponFromSlots(Weapon& weapon);
+	bool UnEquipWeaponFromSlots(const std::string& name);
+	bool UnEquipWeaponFromSlots(int slot);
+	bool UnEquipWeaponFromSlots(Weapon& weapon);
 
+	bool AddWeaponToSlot(const std::string& weaponID, bool equiped = false, int slot = -1);
 	int GetCurEquipSlot()const;
 	bool HasCurWeapon()const;
 	bool HasWeaponBySlot(int curSlot)const;
@@ -62,6 +68,7 @@ public:
 	WeaponPtr GetCurWeapon();
 	WeaponPtr GetWeaponFromSlot(int curSlot);
 	WeaponPtr GetWeaponFromSlot(const std::string& name);
+
 private:
 	int FindEmptyWeaponSlot()const;
 	void SetCurWeaponSlot(Weapon& weapon, int slot);

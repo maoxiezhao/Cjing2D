@@ -5,6 +5,8 @@
 #include"game\weapon.h"
 #include"game\itemAcquired.h"
 #include"game\equipment.h"
+#include"game\savegame.h"
+#include"game\game.h"
 
 const string LuaContext::module_item_name = "Item";
 const string LuaContext::module_weapon_name = "Weapon";
@@ -14,14 +16,17 @@ void LuaContext::RegisterItem()
 	// item class
 	LuaBindClass<Item> itemClass(l, module_item_name);
 	itemClass.AddDefaultMetaFunction();
+	itemClass.AddFunction("GetItem", item_api_get_item);
 	itemClass.AddMethod("GetGame", item_api_get_game);
 	itemClass.AddMethod("SetShadow", item_api_set_shadow);
 	itemClass.AddMethod("SetFlow", item_api_set_flow);
 	itemClass.AddMethod("SetAutoPicked", item_api_set_auto_picked);
+	itemClass.AddMethod("GetCount", &Item::GetItemCount);
 
 	// weapon class
 	LuaBindClass<Weapon> weaponClass(l, module_weapon_name, module_item_name);
 	weaponClass.AddDefaultMetaFunction();
+	weaponClass.AddFunction("GetEquip", item_api_get_item);
 	weaponClass.AddFunction("AddEquip", weapon_api_add);
 	weaponClass.AddFunction("Equip", weapon_api_equip);
 	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
@@ -119,6 +124,26 @@ int LuaContext::item_api_get_game(lua_State*l)
 	});
 }
 
+/**
+*	\brief Item.GetItem(cur_game, id)
+*/
+int LuaContext::item_api_get_item(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Savegame& savegame = *CheckSavegame(l, 1);
+		auto game = savegame.GetGame();
+		if (game != nullptr)
+		{
+			Equipment& equip = game->GetEquipment();
+			const std::string& key = LuaTools::CheckString(l, 2);
+			auto& item = equip.GetItem(key);
+
+			PushItem(l, item);
+			return 1;
+		}
+		return 0;
+	});
+}
 
 /**
 *	\brief  µœ÷cjing.Item:setShadow(true/false)
@@ -182,8 +207,9 @@ int LuaContext::weapon_api_add(lua_State*l)
 		int slot = LuaTools::CheckIntByDefault(l, 4, -1);
 
 		auto& equipment = player.GetEquipment();
-		equipment.AddWeaponToSlot(weaponId, equiped, slot);
-		return 0;
+		bool result = equipment.AddWeaponToSlot(weaponId, equiped, slot);
+		lua_pushboolean(l, result);
+		return 1;
 	});
 }
 
@@ -194,11 +220,22 @@ int LuaContext::weapon_api_add(lua_State*l)
 int LuaContext::weapon_api_equip(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		Item& item = *CheckItem(l, 1);
-		bool autoPicked = LuaTools::CheckBoolean(l, 2);
-		item.SetAutoPicked(autoPicked);
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
 
-		return 0;
+		bool result = false;
+		if (lua_isinteger(l, 2))
+		{
+			int slot = LuaTools::CheckInt(l, 2);
+			result = equipment.EquipWeaponFromSlots(slot);
+		}
+		else if (lua_isstring(l, 2))
+		{
+			const std::string& weaponID = LuaTools::CheckString(l, 2);
+			result = equipment.EquipWeaponFromSlots(weaponID);
+		}
+		lua_pushboolean(l, result);
+		return 1;
 	});
 }
 
@@ -209,11 +246,22 @@ int LuaContext::weapon_api_equip(lua_State*l)
 int LuaContext::weapon_api_unequip(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		Item& item = *CheckItem(l, 1);
-		bool autoPicked = LuaTools::CheckBoolean(l, 2);
-		item.SetAutoPicked(autoPicked);
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
 
-		return 0;
+		bool result = false;
+		if (lua_isinteger(l, 2))
+		{
+			int slot = LuaTools::CheckInt(l, 2);
+			result = equipment.UnEquipWeaponFromSlots(slot);
+		}
+		else if (lua_isstring(l, 2))
+		{
+			const std::string& weaponID = LuaTools::CheckString(l, 2);
+			result = equipment.UnEquipWeaponFromSlots(weaponID);
+		}
+		lua_pushboolean(l, result);
+		return 1;
 	});
 }
 

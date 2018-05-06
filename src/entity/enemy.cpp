@@ -90,7 +90,7 @@ const string Enemy::GetLuaObjectName() const
 */
 void Enemy::NotifyBeforeCreated()
 {
-	std::string path = "enemies/" + GetTemplName() + ".lua";
+	std::string path = "entities/enemies/" + GetTemplName() + ".lua";
 	GetLuaContext()->CallFileWithUserdata(path, *this);
 }
 

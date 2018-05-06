@@ -40,9 +40,9 @@ void Item::Uninitialize()
 *	\param count 使用道具的数量
 *	\param usedEntity 使用的entity
 */
-bool Item::UseItem(int count, Entity & usedEntity)
+bool Item::UseItem(int count, Entity* usedEntity)
 {
-	if (mCurCount - count <= 0)
+	if (mCurCount - count < 0)
 	{
 		std::stringstream oss;
 		oss << "The current item count is " << mCurCount;
@@ -105,13 +105,16 @@ bool Item::SetItemCount(int newCount, bool notify)
 	return true;
 }
 
-bool Item::ItemUsing(Entity & usedEntity)
+bool Item::ItemUsing(Entity* usedEntity)
 {
 	if (IsHasLua()) {	
 		auto& luaContext = GetLuaContext();
 		static auto pushItemFunc = [&](lua_State*l) {
-			LuaContext::PushUserdata(l, usedEntity);
-			return 1;
+			if (usedEntity != nullptr) {
+				LuaContext::PushUserdata(l, *usedEntity);
+				return 1;
+			}
+			return 0;
 		};
 
 		// 物品使用前，可以在这里判断物品是否可以使用

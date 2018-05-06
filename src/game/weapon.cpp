@@ -1,5 +1,6 @@
 #include "weapon.h"
 #include "lua\luaContext.h"
+#include "core\system.h"
 
 /**
 *	\TODO 原先的思路是希望对于Gun和Knife分别作为weapon的派生类
@@ -15,7 +16,10 @@ namespace {
 Weapon::Weapon(const std::string & weaponName, Equipment & equipment) :
 	Item(weaponName, equipment),
 	mEntity(nullptr),
-	mWeaponSprite(nullptr)
+	mWeaponSprite(nullptr),
+	mAttackDelta(500),
+	mNextAttackDate(0),
+	mCanAttack(true)
 {
 	mControl = std::make_unique<RotateWeaponControl>(*this);
 }
@@ -43,6 +47,9 @@ void Weapon::Update()
 	}
 	if (mControl)
 		mControl->Update();
+
+	if (System::Now() >= mNextAttackDate)
+		mCanAttack = true;
 
 	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUpdate");
 }
@@ -98,44 +105,61 @@ bool Weapon::UnEquiped()
 
 void Weapon::BeforeAttack()
 {
-	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponBeforeAttack");
 }
 
+/**
+*	\brief weapon攻击动作，在Player::Attack调用
+*/
 void Weapon::Attack()
 {
-	if (IsEquiped() && !IsAttack())
+	if (IsEquiped() && IsCanAttack())
 	{
-		SetAttackAnimation();
+		BeforeAttack();
 		GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");
+		AfterAttack();
 	}
 }
 
 void Weapon::AfterAttack()
 {
-	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAfterAttack");
+
+	mCanAttack = false;
+	mNextAttackDate = System::Now() + mAttackDelta;
 }
 
-bool Weapon::IsAttack()
+bool Weapon::IsAttack()const
 {
-	return mWeaponSprite != nullptr ? !mWeaponSprite->IsFrameFinished() : false;
+	return  (mWeaponSprite != nullptr ? 
+		!mWeaponSprite->IsFrameFinished() : false);
+}
+
+bool Weapon::IsCanAttack() const
+{
+	return mCanAttack && !IsAttack();
+}
+
+/**
+*	\brief 设置weapon动画
+*/
+void Weapon::SetAnimation(const std::string & name)
+{
+	if (mWeaponSprite)
+	{
+		mWeaponSprite->SetCurrAnimation(name);
+		mWeaponSprite->StartAnimation();
+	}
 }
 
 void Weapon::SetAttackAnimation()
 {
-	if (mWeaponSprite) 
-	{
-		mWeaponSprite->SetCurrAnimation(attackAnimationName);
-		mWeaponSprite->StartAnimation();
-	}
+	SetAnimation(attackAnimationName);
 }
 
 void Weapon::SetNormalAnimation()
 {
-	if (mWeaponSprite) 
-	{
-		mWeaponSprite->SetCurrAnimation(normalAnimationName);
-		mWeaponSprite->StartAnimation();
-	}
+	SetAnimation(normalAnimationName);
 }
 
 const std::string & Weapon::GetWeaponName() const
@@ -148,3 +172,32 @@ const string Weapon::GetLuaObjectName() const
 	return LuaContext::module_weapon_name;
 }
 
+AnimationSpritePtr Weapon::GetWeaponSprite() 
+{
+	return mWeaponSprite;
+}
+
+Entity* Weapon::GetEntity() 
+{
+	return mEntity;
+}
+
+void Weapon::SetAttackDelta(uint32_t delta)
+{
+	mAttackDelta = delta;
+}
+
+uint32_t Weapon::GetAttackDelta() const
+{
+	return uint32_t();
+}
+
+bool Weapon::IsEquiped()const 
+{
+	return mEntity;
+}
+
+bool Weapon::IsWeapon()const 
+{
+	return true;
+}

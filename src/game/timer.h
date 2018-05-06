@@ -2,11 +2,12 @@
 #define _TIMER_H_
 
 #include"common\common.h"
+#include"lua\luaObject.h"
 
 /**
 *	\brief ¶¨Ê±Æ÷
 */
-class Timer
+class Timer : public LuaObject
 {
 public:
 	Timer();
@@ -23,6 +24,7 @@ public:
 	void SetExpirationDate(uint32_t expirationDate);
 	void SetDuration(uint32_t duration);
 
+	virtual const string GetLuaObjectName()const;
 private:
 	uint32_t mExpirationDate;
 	uint32_t mDuration;

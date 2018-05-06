@@ -16,7 +16,6 @@ local WeaponMT = {}
 function WeaponMT:OnWeaponInit(cfg)
 	self._clip_size = 15
 	self._demage = 1
-	self._swapSpeed = 2000
 
 	self:SetAttackDelta(300)
 end
@@ -25,18 +24,14 @@ end
 function WeaponMT:OnWeaponBeforeAttack()
 	canAttack = true
 
-	-- 子彈過少不能攻擊
+	-- 检查当前子弹数量
+	local clip_size = self._clip_size
 	local bullet_count = bullet:GetCount()
+	print(bullet_count)
 	if bullet_count <= 0 then 
 		print("No bullet")
 		canAttack = false
 		return
-	end
-
-	-- 換彈中不能攻擊
-	if swapBullet then 
-		print("Swaping bullet.")
-		canAttack = false
 	end
 end
 
@@ -45,27 +40,12 @@ function WeaponMT:OnWeaponAttack()
 	if canAttack then 
 		use_item(cur_game, "usp_bullet", 1)
 		self:SetAnimation("attack")
-
-		-- create bullet
 	end
 end
 
 -- 攻击后动作
 function WeaponMT:OnWeaponAfterAttack()
 	-- 如果没子弹了需要换弹
-	if swapBullet then 
-		return 
-	end
-
-	local clip_size = self._clip_size
-	local bullet_count = bullet:GetCount()
-	if bullet_count > 0 and (bullet_count % clip_size == 0) then
-		print("Swap Bullet")
-		swapBullet = true
-		SetDelayTimer("SwapBullet", 2000, function() swapBullet = false end)
-	end
-
-	print(bullet_count)
 end
 
 -- 用于计算武器造成伤害

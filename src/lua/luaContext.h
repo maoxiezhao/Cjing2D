@@ -172,6 +172,8 @@ public:
 		map_api_create_entity,
 		// time
 		time_api_start,
+		time_api_remove,
+		time_api_clear,
 		// menu
 		menu_api_start,
 		menu_api_stop,
@@ -279,6 +281,7 @@ public:
 		item_api_set_flow,
 		item_api_set_auto_picked,
 		item_api_add_count,
+		item_api_use_item,
 		// weapon
 		weapon_api_add,
 		weapon_api_equip,
@@ -334,12 +337,15 @@ public:
 	struct TimerData
 	{
 		LuaRef callBackRef;
+		bool repeat;
+		bool removed;
 		const void* l;
 	};
-	void AddTimer(const TimerPtr& timer,int contextIndex,const LuaRef& callback);
+	void AddTimer(const TimerPtr& timer,int contextIndex,const LuaRef& callback, bool repeat);
 	void CallTimerRef(const TimerPtr& timer);
 	void UpdateTimers();
 	void DestoryTimers();
+	void RemoveTimer(TimerPtr& timer);
 
 	// item api
 	void RunItem(Item& item);

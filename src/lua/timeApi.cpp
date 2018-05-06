@@ -1,16 +1,18 @@
-#include"luaContext.h"
-#include"luaRef.h"
+#include"lua\luaContext.h"
+#include"lua\luaRef.h"
+#include"lua\luaBinder.h"
 #include"core\debug.h"
 #include"core\system.h"
+
 const string LuaContext::module_time_name = "Timer";
 
 void LuaContext::RegisterTimeModule()
 {
-	static const luaL_Reg functions[] = {
-		{ "start",time_api_start },
-		{ nullptr,nullptr }
-	};
-	RegisterFunction(l, module_time_name, functions);
+	LuaBindClass<Timer> timerClass(l, module_time_name);
+	timerClass.AddDefaultMetaFunction();
+	timerClass.AddFunction("Start", time_api_start);
+	timerClass.AddFunction("Remove", time_api_remove);
+	timerClass.AddFunction("Clear", time_api_clear);
 }
 
 /**
@@ -22,8 +24,12 @@ void LuaContext::UpdateTimers()
 	for (const auto&kvp : mTimers)
 	{
 		auto timer = kvp.first;
-		auto callBackRef = kvp.second.callBackRef;
-		if(timer != nullptr && !callBackRef.IsEmpty())
+		auto& info = kvp.second;
+		auto callBackRef = info.callBackRef;
+
+		if(timer != nullptr && 
+			!callBackRef.IsEmpty() && 
+			!info.removed)
 		{
 			timer->Update();
 			if (timer->IsFinished())
@@ -45,24 +51,35 @@ void LuaContext::UpdateTimers()
 */
 void LuaContext::DestoryTimers()
 {
-	//for (auto& kvp : mTimers)
-	//	mTimers.erase(kvp.first);
 	mTimers.clear();
+}
+
+/**
+*	\brief 删除指定定时器
+*/
+void LuaContext::RemoveTimer(TimerPtr & timer)
+{
+	mTimers[timer].removed = true;
+	mTimersToRemove.push_back(timer);
 }
 
 /**
 *	\brief 添加定时器
 */
-void LuaContext::AddTimer(const TimerPtr& timer, int contextIndex, const LuaRef& callback)
+void LuaContext::AddTimer(const TimerPtr& timer, int contextIndex, const LuaRef& callback, bool repeat)
 {
 	const void* context = lua_topointer(l, contextIndex);
 	// timer不可重复存入
 	Debug::CheckAssertion(mTimers.find(timer) == mTimers.end(),
 		"duplicate timers.");
 
-	mTimers[timer].callBackRef = callback;
-	mTimers[timer].l = context;
+	TimerData timerData;
+	timerData.callBackRef = callback;
+	timerData.l = context;
+	timerData.repeat = repeat;
+	timerData.removed = false;
 
+	mTimers[timer] = timerData;
 }
 
 /**
@@ -75,16 +92,9 @@ void LuaContext::CallTimerRef(const TimerPtr& timer)
 	{
 		LuaRef& callback = itr->second.callBackRef;
 		callback.Push();
-		// call callback
-		bool success = LuaTools::CallFunction(l, 0, 1, "TimeCallBack");
-		bool repeat = false;
-		if (success)
-		{	// 检查是否重复执行
-			repeat = lua_isboolean(l, -1) && lua_toboolean(l, -1);
-			lua_pop(l, 1);
-		}
-
-		// 如果重复执行则重新设置timer，加入mTimers
+		LuaTools::CallFunction(l, 0, 0, "TimeCallBack");
+	
+		bool repeat = itr->second.repeat;
 		if (repeat)
 		{
 			timer->SetDuration(timer->GetDuration());
@@ -92,11 +102,10 @@ void LuaContext::CallTimerRef(const TimerPtr& timer)
 				CallTimerRef(timer);
 		}
 		else 
-		{	// clear
+		{	
 			callback.Clear();		
 			mTimersToRemove.push_back(timer);
 		}
-
 	}
 }
 
@@ -108,29 +117,52 @@ void LuaContext::CallTimerRef(const TimerPtr& timer)
 int LuaContext::time_api_start(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaContext& luaContext = GetLuaContext(l);
 
-	LuaContext& luaContext = GetLuaContext(l);
-	//luaContext.PrintLuaStack(l);
+		if (lua_type(l, 1) != LUA_TNUMBER)
+		{
+			if (lua_type(l, 1) != LUA_TUSERDATA && lua_type(l, 1) != LUA_TTABLE)
+				LuaTools::Error(l, "wrong type.");
+		}
 
-	if (lua_type(l, 1) != LUA_TNUMBER)
-	{
-		if (lua_type(l, 1) != LUA_TUSERDATA && lua_type(l, 1) != LUA_TTABLE)
-			// type error
-			LuaTools::Error(l, "wrong type.");
+		int delay = LuaTools::CheckInt(l, 2);
+		const LuaRef& callBack = LuaTools::CheckFunction(l, 3);
+		bool repeat = LuaTools::CheckBoolean(l, 4);
 
-	}
+		// 创建timer和timerdata
+		TimerPtr timer = std::make_shared<Timer>(delay);
+		luaContext.AddTimer(timer, 1, callBack, repeat);
 
-	int delay = LuaTools::CheckInt(l, 2);
-	const LuaRef& callBack = LuaTools::CheckFunction(l, 3);
+		// 如果已经完成(可能时间为0)则直接执行callback
+		if (timer->IsFinished())
+			luaContext.CallTimerRef(timer);
 
-	// 创建timer和timerdata
-	TimerPtr timer = std::make_shared<Timer>(delay);
-	luaContext.AddTimer(timer, 1, callBack);
+		luaContext.PushUserdata(l, *timer);
+		return 1;
+	});
+}
 
-	// 如果已经完成(可能时间为0)则直接执行callback
-	if (timer->IsFinished())
-		luaContext.CallTimerRef(timer);
+/**
+*	\brief Timer.Remove(timer)
+*/
+int LuaContext::time_api_remove(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto timer = std::static_pointer_cast<Timer>(
+			CheckUserdata(l, 1, module_time_name));
 
-	return 1;
+		GetLuaContext(l).RemoveTimer(timer);
+		return 0;
+	});
+}
+
+/**
+*	\brief Timer.Clear()
+*/
+int LuaContext::time_api_clear(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		GetLuaContext(l).DestoryTimers();
+		return 0;
 	});
 }

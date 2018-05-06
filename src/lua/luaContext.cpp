@@ -208,6 +208,8 @@ bool LuaContext::LoadFile(lua_State* l, const string& name)
 	int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), fileName.c_str());
 	if (result != 0)
 	{
+		const std::string& errMsg = LuaTools::CheckString(l, -1);
+		Debug::Warning(errMsg);
 		lua_pop(l, 1);
 		// error
 		return false;

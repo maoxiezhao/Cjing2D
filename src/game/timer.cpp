@@ -1,5 +1,6 @@
 #include"timer.h"
 #include"core\system.h"
+#include"lua\luaContext.h"
 
 Timer::Timer():
 	mExpirationDate(System::Now()),
@@ -86,4 +87,9 @@ void Timer::SetDuration(uint32_t duration)
 	mDuration = duration;
 	mExpirationDate = System::Now() + mDuration;
 	mFinished = (System::Now() >= mExpirationDate);
+}
+
+const string Timer::GetLuaObjectName() const
+{
+	return LuaContext::module_time_name;
 }

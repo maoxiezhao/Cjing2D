@@ -1,4 +1,5 @@
 -- this file be load by luaContext
+-- to remove
 
 -- class define function --
 -- 定义一个类，该类通过new方法创建，并自动调用ctor方法

@@ -19,7 +19,7 @@ public:
 	virtual void Update();
 	virtual void Uninitialize();
 
-	bool UseItem(int count, Entity& usedEntity);
+	bool UseItem(int count, Entity* usedEntity);
 	bool AddItem(int count);
 	int  GetItemCount()const;
 	bool SetItemCount(int newCount, bool notify = false);
@@ -45,7 +45,7 @@ public:
 	virtual const string GetLuaObjectName()const;
 	
 private:
-	bool ItemUsing(Entity& usedEntity);
+	bool ItemUsing(Entity* usedEntity);
 
 private:
 	Equipment& mEquipment;

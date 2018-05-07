@@ -7,7 +7,7 @@
 #include "utils\geometry.h"
 
 PlayerMovement::PlayerMovement(int speed):
-	StraightMovement(false),
+	StraightMovement(false, true),
 	mMovingSpeed(speed),
 	mDirection(Direction8::DIRECTION8_NONE),
 	mIsShift(false)

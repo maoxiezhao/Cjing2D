@@ -12,7 +12,7 @@ class StraightMovement : public Movement
 {
 public:
 	StraightMovement();
-	StraightMovement(bool isIngroedObstacles);
+	StraightMovement(bool isIngroedObstacles, bool smooth = false);
 
 	virtual void Update();
 	virtual void SetSuspended(bool suspended);
@@ -54,6 +54,7 @@ private:
 	int mDirectionX;	// x方向的移动方向，0:不移动，1正向移动，-1负向移动
 	int mDirectionY;	// y方向的移动方向，0:不移动，1正向移动，-1负向移动
 	bool mFinished;
+	bool mMoveSmooth;
 
 	uint32_t mNextMoveDateX;
 	uint32_t mNextMoveDateY;

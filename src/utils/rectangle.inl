@@ -89,6 +89,16 @@ inline void Rect::SetCenter(int cx, int cy)
 	y = cy - height / 2;
 }
 
+inline void Rect::SetAngle(float a)
+{
+	angle = a;
+}
+
+inline float Rect::GetAngle() const
+{
+	return angle;
+}
+
 inline Point2 Rect::GetPos() const
 {
 	return Point2(x, y);

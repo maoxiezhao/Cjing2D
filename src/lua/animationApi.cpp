@@ -57,7 +57,7 @@ int LuaContext::animation_api_create(lua_State*l)
 int LuaContext::animation_api_set_animation(lua_State*l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		const string& animationName = LuaTools::CheckString(l, 1);
+		const string& animationName = LuaTools::CheckString(l, 2);
 
 		AnimationSprite& animation = *CheckAnimation(l, 1);
 		animation.SetCurrAnimation(animationName);

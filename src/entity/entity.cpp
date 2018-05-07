@@ -102,7 +102,7 @@ void Entity::Update()
 */
 void Entity::Draw()
 {
-	DrawDebugBounding();
+	//DrawDebugBounding();
 	for (auto& nameSprite : mSprites)
 	{
 		auto sprite = nameSprite.sprite;
@@ -132,6 +132,7 @@ void Entity::Initalized()
 
 void Entity::ClearMovements()
 {
+	mMovement = nullptr;
 }
 
 /**
@@ -173,6 +174,7 @@ void Entity::DrawDebugBounding()
 
 	mDebugSprite->SetPos(mBounding.GetPos());
 	mDebugSprite->SetSize(mBounding.GetSize());
+	mDebugSprite->SetRotated(GetFacingDegree());
 	mDebugSprite->SetDeferredDraw(false);
 	GetMap().DrawOnMap(*mDebugSprite);
 }
@@ -261,7 +263,7 @@ void Entity::NotifySpriteCollisionWithPlayer(Player & player, Sprite & srcSprite
 */
 void Entity::NotifyBeRemoved()
 {
-	// luaContext->onRemovedEneity(*this) 响应lua
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnRemoved");
 	mBeRemoved = true;
 }
 
@@ -304,12 +306,19 @@ void Entity::NotifyBoundingRectChange()
 */
 void Entity::NotifyObstacleReached()
 {
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyObstacleReached");
 }
 
+/**
+*	\brief 当entity攻击Enemy时响应
+*/
 void Entity::NotifyAttackEnemy(Enemy & enemy, EntityAttack attack, EntityReactionType reaction)
 {
 }
 
+/**
+*	\brief 当entityg攻击Player时响应
+*/
 void Entity::NotifyAttackPlayer(Player & player, EntityAttack attack, EntityReactionType reaction)
 {
 }
@@ -539,6 +548,11 @@ void Entity::UpdateState()
 
 void Entity::StopMovement()
 {
+	if (mMovement)
+	{
+		mMovement->SetEntity(nullptr);
+		mMovement->Stop();
+	}
 	mMovement = nullptr;
 }
 
@@ -715,6 +729,16 @@ Rect Entity::GetMaxRectBounding() const
 	return mBounding;
 }
 
+void Entity::SetBoundingAngle(float angle)
+{
+	mBounding.SetAngle(angle);
+}
+
+float Entity::GetBoundingAngle() const
+{
+	return mBounding.GetAngle();
+}
+
 void Entity::SetDrawOnYOrder(bool isDrawOnY)
 {
 	mIsDrawOnYOrder = isDrawOnY;
@@ -796,6 +820,12 @@ Point2 Entity::GetLeftTopPos() const
 	return mBounding.GetPos();
 }
 
+Point2 Entity::GetAttachPos() const
+{
+	Size size = GetSize();
+	return{ (int)(size.width * 0.6), size.height / 2 };
+}
+
 void Entity::SetPos(const Point2& pos)
 {
 	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
@@ -853,7 +883,16 @@ EntityType Entity::GetEntityType()const
 */
 void Entity::SetFacingDegree(float degree)
 {
-
+	auto& sprites = GetSprites();
+	for (auto& namesprite : sprites)
+	{
+		if (!namesprite.removed)
+		{
+			auto& sprite = namesprite.sprite;
+			degree = Geometry::Degree(degree);
+			sprite->SetRotated(degree);
+		}
+	}
 }
 
 /**

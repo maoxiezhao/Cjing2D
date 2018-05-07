@@ -91,6 +91,7 @@ public:
 	Point2 GetPos()const;
 	Point2 GetCenterPos()const;
 	Point2 GetLeftTopPos()const;
+	Point2 GetAttachPos()const;
 	void SetPos(const Point2& pos);
 	void SetLayer(int layer);
 	int GetLayer()const;
@@ -102,6 +103,8 @@ public:
 	string GetTemplName()const;
 	Rect GetRectBounding()const;
 	Rect GetMaxRectBounding()const;
+	void SetBoundingAngle(float angle);
+	float GetBoundingAngle()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
 	void SetOrigin(const Point2& origin);

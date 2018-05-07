@@ -19,7 +19,9 @@ const std::string LuaContext::module_entity_bullet_name = "Bullet";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
-	LuaContext::module_enemy_name
+	LuaContext::module_enemy_name,
+	LuaContext::module_player_name,
+	LuaContext::module_entity_bullet_name
 };
 
 void LuaContext::RegisterEntityModule()
@@ -31,6 +33,12 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("SetName", &Entity::SetName);
 	entityClass.AddMethod("SetSize", &Entity::SetSize);
 	entityClass.AddMethod("SetOrigin", &Entity::SetOrigin);
+	entityClass.AddMethod("GetPos", &Entity::GetPos);
+	entityClass.AddMethod("SetPos", &Entity::SetPos);
+	entityClass.AddMethod("GetLayer", &Entity::GetLayer);
+	entityClass.AddMethod("GetAttachPos", &Entity::GetAttachPos);
+	entityClass.AddMethod("SetFacingDegree", &Entity::SetFacingDegree);
+	entityClass.AddMethod("GetFacingDegree", &Entity::GetFacingDegree);
 
 	// player 
 	LuaBindClass<Player> playerClass(l, module_player_name, module_entity_name);
@@ -38,9 +46,7 @@ void LuaContext::RegisterEntityModule()
 
 	// Enemy
 	LuaBindClass<Enemy> bindClass(l, "Enemy", "Entity");
-	bindClass.AddMetaFunction("__gc", LuaContext::userdata_meta_gc);
-	bindClass.AddMetaFunction("__index", LuaContext::userdata_meta_index);
-	bindClass.AddMetaFunction("__newindex", LuaContext::userdata_meta_newindex);
+	bindClass.AddDefaultMetaFunction();
 
 	// Bullet
 	LuaBindClass<Bullet> bulletClass(l, "Bullet", "Entity");
@@ -154,7 +160,6 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 		
 		if (map.IsStarted())
 		{
-			LuaTools::PrintLuaStack(l);
 			if (lua_isfunction(l, 3))
 			{			
 				PushUserdata(l, *enemy);
@@ -163,7 +168,6 @@ int LuaContext::entity_api_create_enemy(lua_State* l)
 
 				lua_pushnil(l);	// align stack??
 			}
-			LuaTools::PrintLuaStack(l);
 			map.GetEntities().AddEntity(enemy);
 						// --
 			PushUserdata(l, *enemy);
@@ -187,10 +191,19 @@ int LuaContext::entity_api_create_bullet(lua_State* l)
 			entityData.GetValueString("templ"), 
 			entityData.GetLayer());
 
-		map.GetEntities().AddEntity(bullet);
-		PushUserdata(l, *bullet);
-		// enemy
-		return 1;
+		if (map.IsStarted())
+		{
+			if (lua_isfunction(l, 3))
+			{
+				PushUserdata(l, *bullet);
+				LuaTools::CallFunction(l, 1, 0, "entityInit");
+				lua_pushnil(l);	
+			}
+			map.GetEntities().AddEntity(bullet);
+			PushUserdata(l, *bullet);
+			return 1;
+		}
+		return 0;
 	});
 }
 
@@ -255,7 +268,7 @@ bool LuaContext::IsEntity(lua_State*l, int index)
 }
 
 /**
-*	\brief 创建精灵
+*	\brief 创建精灵entity:CreateSprite(name)
 */
 int LuaContext::entity_api_create_sprite(lua_State*l)
 {
@@ -269,6 +282,19 @@ int LuaContext::entity_api_create_sprite(lua_State*l)
 
 		auto animate = entity.CreateAnimationSprite(name, id);
 		PushAnimation(l, *animate);
+		return 1;
+	});
+}
+
+/**
+*	\brief 返回当前entity类型 entity:GetType()
+*/
+int LuaContext::entity_api_get_type(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Entity& entity = *CheckEntity(l, 1);
+		int type = entity.GetEntityType();
+		lua_pushinteger(l, type);
 		return 1;
 	});
 }

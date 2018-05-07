@@ -16,11 +16,12 @@ StraightMovement::StraightMovement():
 	mDelayX(0),
 	mDelayY(0),
 	mMaxDistance(0),
-	mFinished(false)
+	mFinished(false),
+	mMoveSmooth(false)
 {
 }
 
-StraightMovement::StraightMovement(bool isIngroedObstacles):
+StraightMovement::StraightMovement(bool isIngroedObstacles, bool smooth):
 	Movement(isIngroedObstacles),
 	mSpeedX(0.0f),
 	mSpeedY(0.0f),
@@ -33,7 +34,8 @@ StraightMovement::StraightMovement(bool isIngroedObstacles):
 	mDelayX(0),
 	mDelayY(0),
 	mMaxDistance(0),
-	mFinished(false)
+	mFinished(false),
+	mMoveSmooth(smooth)
 {
 }
 
@@ -271,10 +273,12 @@ void StraightMovement::Update()
 
 		while (isMoveX || isMoveY)
 		{
-			//UpdateXY();
-			UpdateSmoothXY();
-			now = System::Now();
+			if(mMoveSmooth)
+				UpdateSmoothXY();
+			else
+				UpdateXY();
 
+			now = System::Now();
 			// 如果超过最大移动距离，则结束移动
 			if (!mFinished &&
 				mMaxDistance != 0 &&

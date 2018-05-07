@@ -15,13 +15,16 @@
 Bullet::Bullet(const std::string & templName, int layer):
 	Entity("", templName, Point2(), Size(), layer),
 	mBulletType(BULLET_TYPE::BULLET_PLAYER),
-	mStopNow(false)
+	mStopNow(false),
+	mDisappearAnimTime(1000),
+	mIsStopping(false)
 {
 	// 设置默认属性
 	SetDemage(1);
 	SetSize({ 16, 16 });
 	SetFacingDegree(0.0f);
 	SetDrawOnYOrder(true);
+	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
 
 	mDisappearDate = System::Now() + 10000;
 }
@@ -39,15 +42,16 @@ void Bullet::Update()
 	if (IsSuspended())
 		return;
 
-	// 判断是否结束
-	if (IsStop())
+	uint32_t now = System::Now();
+	if (IsStop() && !mIsStopping)
 	{
-		mDisappearDate = System::Now();
+		mDisappearDate = now + mDisappearAnimTime;
+		mIsStopping = true;
 	}
 
-	uint32_t now = System::Now();
-	if (now > mDisappearDate)
+	if (now >= mDisappearDate) {
 		RemoveFromMap();
+	}
 }
 
 EntityType Bullet::GetEntityType() const
@@ -68,6 +72,7 @@ void Bullet::NotifyBeforeCreated()
 
 void Bullet::NotifyAfterCreated()
 {
+	
 }
 
 /**
@@ -87,7 +92,6 @@ void Bullet::NotifyCollisionWithEnemy(Enemy & enemy)
 			return 1;
 		});
 	}
-
 }
 
 /**
@@ -107,6 +111,15 @@ void Bullet::NotifyCollisionWithPlayer(Player & player)
 		});
 	}
 
+}
+
+/**
+*	\brief 当碰到障碍物是触发该函数
+*/
+void Bullet::NotifyObstacleReached()
+{
+	Entity::NotifyObstacleReached();
+	Stop();
 }
 
 bool Bullet::IsObstacle(Entity & entity) const
@@ -132,6 +145,11 @@ void Bullet::SetBulletType(BULLET_TYPE type)
 int Bullet::GetBulletType() const
 {
 	return static_cast<int>(mBulletType);
+}
+
+void Bullet::Stop()
+{
+	StopMovement();
 }
 
 /**
@@ -170,6 +188,17 @@ void Bullet::SetAliveTime(uint32_t time)
 uint32_t Bullet::GetAliveTime() const
 {
 	return (mDisappearDate - System::Now());
+}
+
+void Bullet::SetFacingDegree(float degree)
+{
+	Entity::SetFacingDegree(degree);
+	SetBoundingAngle(degree);
+}
+
+float Bullet::GetFacingDegree() const
+{
+	return GetBoundingAngle();
 }
 
 /**

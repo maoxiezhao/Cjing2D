@@ -77,7 +77,6 @@ bool LuaContext::OnGameInput(Game & game, const InputEvent & event)
 	//handle = OnInput(event);
 	//lua_pop(l, 1);
 	//return handle;
-
 	return false;
 }
 

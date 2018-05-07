@@ -22,16 +22,17 @@ Player::Player(Equipment & equipment) :
 	SetOrigin({ -3, -22 });
 	SetDrawOnYOrder(true);
 
+	// player是否需要设置collision_mode
+	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
+
 	// 设置当前player sprites
 	PlayerSprite* playerSprite = new PlayerSprite(*this);
 	if (playerSprite == nullptr)
-	{
 		Debug::Error("Failed to create player sprites.");
-	}
+	
 	mPlayerSprites = std::unique_ptr<PlayerSprite>(playerSprite);
 
 	// 设置当前状态
-	//auto movementState = std::make_shared<MouseState>(*this);
 	SetState(new MouseState(*this));
 }
 
@@ -101,6 +102,10 @@ void Player::CheckPosition()
 {
 	SetFacingEntity(nullptr);
 	SetOverlapEntity(nullptr);
+
+	if (IsHaveCollision())
+		CheckCollisionFromEntities();
+
 	CheckCollisionWithEntities();
 }
 

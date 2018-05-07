@@ -1,4 +1,5 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
 #include"game\map.h"
 #include"core\fileData.h"
 #include"entity\entityInfo.h"
@@ -7,18 +8,10 @@ const string LuaContext::module_map_name = "Map";
 
 void LuaContext::RegisterMapModule()
 {
-	static const luaL_Reg methods[] = {
-		{ "SetBackground", map_api_set_background },
-		{ nullptr,nullptr }
-	};
-
-	static const luaL_Reg metamethos[] = {
-		{ "__newindex", userdata_meta_newindex },
-		{ "__index", userdata_meta_index },
-		{ "__gc", userdata_meta_gc },
-		{ nullptr, nullptr }
-	};
-	RegisterType(l, module_map_name, nullptr, methods, metamethos);
+	// Map base calss
+	LuaBindClass<Map> mapClass(l, module_map_name);
+	mapClass.AddDefaultMetaFunction();
+	mapClass.AddMethod("SetBackground", map_api_set_background);
 
 	/** 创建各个entity的Create函数 */
 	luaL_getmetatable(l, module_map_name.c_str());
@@ -58,7 +51,6 @@ bool LuaContext::IsMap(lua_State * l, int index)
 void LuaContext::RunMap(Map & map)
 {
 	string& mapFilePath = "maps/" + map.GetMapID();
-
 	bool result = LoadFile(l, mapFilePath);
 	if (result == false)
 	{
@@ -69,8 +61,27 @@ void LuaContext::RunMap(Map & map)
 	PushMap(l, map);
 	LuaTools::CallFunction(l, 1, 0, map.GetMapID().c_str());
 
+	// 执行map Enter
+	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_MAP_ENTER, 
+		[&](lua_State*l) {
+		PushMap(l, map);
+		return 1;
+	});
+
 	// 执行onStarted
 	OnMapStart(map);
+}
+
+/**
+*	\brief 退出当前地图
+*/
+void LuaContext::LeaveMap(Map & map)
+{
+	// Do OnFinished
+	OnMapFinish(map);
+
+	// 执行map Leave
+	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_MAP_LEAVE, nullptr);
 }
 
 void LuaContext::OnMapStart(Map & map)

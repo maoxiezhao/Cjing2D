@@ -28,6 +28,8 @@ public:
 	void SetPosY(int y);
 	void SetSize(int w, int h);
 	void SetCenter(int cx, int cy);
+	void SetAngle(float a);
+	float GetAngle()const;
 
 	Point2 GetPos()const;
 	Size GetSize()const;

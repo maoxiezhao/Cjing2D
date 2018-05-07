@@ -7,7 +7,7 @@
 */
 enum EntityType
 {
-	TITLE,			/** 地图块 */
+	TITLE = 1,		/** 地图块 */
 	DYNAMIC_TITLE,  /** 动态地图块 */
 	DESTIMATION,	/** 目标点 */
 	CAMERA,			/** 相机对象 */

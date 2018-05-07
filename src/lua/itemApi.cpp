@@ -19,6 +19,7 @@ void LuaContext::RegisterItem()
 	itemClass.AddFunction("GetItem", item_api_get_item);
 	itemClass.AddFunction("AddItem", item_api_add_count);
 	itemClass.AddFunction("UseItem", item_api_use_item);
+
 	itemClass.AddMethod("GetGame", item_api_get_game);
 	itemClass.AddMethod("SetShadow", item_api_set_shadow);
 	itemClass.AddMethod("SetFlow", item_api_set_flow);
@@ -32,8 +33,10 @@ void LuaContext::RegisterItem()
 	weaponClass.AddFunction("AddEquip", weapon_api_add);
 	weaponClass.AddFunction("Equip", weapon_api_equip);
 	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
+
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
+	weaponClass.AddMethod("GetEntity", weapon_api_get_entity);
 }
 
 /**
@@ -312,4 +315,25 @@ int LuaContext::weapon_api_unequip(lua_State*l)
 		return 1;
 	});
 }
+
+/**
+*	\brief 是按weapon:GetEntity()
+*	\return 返回当前武器的持有Entity,如果为空返回nil
+*/
+int LuaContext::weapon_api_get_entity(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Weapon& weapon = *std::static_pointer_cast<Weapon>(
+			CheckUserdata(l, 1, module_weapon_name));
+		
+		Entity* entity = weapon.GetEntity();
+		if (entity != nullptr)
+		{
+			GetLuaContext(l).PushUserdata(l, *entity);
+			return 1;
+		}
+		return 0;
+	});
+}
+
 

@@ -110,6 +110,7 @@ void Map::Start()
 void Map::Leave()
 {
 	mIsStarted = false;
+	GetLuaContext().LeaveMap(*this);
 }
 
 /**
@@ -344,6 +345,7 @@ bool Map::TestCollisionWithEntities(const Rect & rect, Entity & entity, int laye
 			!checkEntity->IsBeRemoved() &&
 			checkEntity->GetLayer() == layer &&
 			checkEntity.get() != &entity &&
+			checkEntity->IsObstacle(entity) &&
 			checkEntity->TestCollisionWithRect(rect))
 			return true;
 	}

@@ -109,9 +109,9 @@ namespace Implemention
 		{
 			lua_newtable(l);
 			lua_pushinteger(l, value.x);
-			lua_rawseti(l, -1, 1);
+			lua_rawseti(l, -2, 1);
 			lua_pushinteger(l, value.y);
-			lua_rawseti(l, -1, 2);
+			lua_rawseti(l, -2, 2);
 		}
 		/** userdata 需要该类提供LuaWraper接口*/																
 		template<typename T>

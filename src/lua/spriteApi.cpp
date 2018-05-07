@@ -1,5 +1,6 @@
 #include"lua\luaContext.h"
 #include"lua\luaTools.h"
+#include"lua\luaBinder.h"
 #include"game\sprite.h"
 #include"game\enumInfo.h"
 
@@ -7,42 +8,34 @@ const string LuaContext::module_sprite_name = "Sprite";
 
 void LuaContext::RegisterSpriteModule()
 {
-	static const luaL_Reg function[] = {
-		{"create", sprite_api_create},
-		{nullptr,nullptr}
-	};
+	LuaBindClass<Sprite> spriteClass(l, module_sprite_name);
+	spriteClass.AddDefaultMetaFunction();
+	spriteClass.AddFunction("create", sprite_api_create);
+	// method
+	spriteClass.AddMethod("SetSize",	 sprite_api_set_size);
+	spriteClass.AddMethod("GetSize",	 sprite_api_get_size);
+	spriteClass.AddMethod("SetRotation", sprite_api_set_rotation);
+	spriteClass.AddMethod("GetRotation", sprite_api_get_rotation);
+	spriteClass.AddMethod("SetColor",	 sprite_api_set_color);
+	spriteClass.AddMethod("SetBlend",	 sprite_api_set_blend);
+	spriteClass.AddMethod("GetBlend",	 sprite_api_get_blend);
+	spriteClass.AddMethod("SetOpacity",	 sprite_api_set_opacity);
+	spriteClass.AddMethod("GetOpacity",	 sprite_api_get_opacity);
+	spriteClass.AddMethod("SetAnchor",	 sprite_api_set_anchor);
+	spriteClass.AddMethod("SetOutLined", sprite_api_set_outLined);
+	spriteClass.AddMethod("SetBlinking", sprite_api_set_blinking);
+	spriteClass.AddMethod("SetFlipX",	 sprite_api_set_flip_x);
+	spriteClass.AddMethod("SetFlipY",	 sprite_api_set_flip_y);
+	spriteClass.AddMethod("SetDeferredDraw", sprite_api_set_deferred);
+	spriteClass.AddMethod("Draw",	     sprite_api_draw);
+	spriteClass.AddMethod("SetRotateAnchor", &Sprite::SetRotateAnchor);
 
-	static const luaL_Reg methods[] = {
-		{"SetSize", sprite_api_set_size},
-		{"GetSize", sprite_api_get_size},
-		{"SetRotation", sprite_api_set_rotation},
-		{"GetRotation", sprite_api_get_rotation},
-		{"SetColor", sprite_api_set_color},
-		{"SetBlend", sprite_api_set_blend},
-		{"GetBlend", sprite_api_get_blend},
-		{"SetOpacity", sprite_api_set_opacity},
-		{"GetOpacity", sprite_api_get_opacity},
-		{"SetAnchor", sprite_api_set_anchor},
-		{"SetOutLined", sprite_api_set_outLined },
-		{"SetBlinking", sprite_api_set_blinking },
-		{"SetFlipX", sprite_api_set_flip_x },
-		{"SetFlipY", sprite_api_set_flip_y },
-		{"SetDeferredDraw", sprite_api_set_deferred },
-		{"Draw", sprite_api_draw},
-		// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
-		{"GetPos", drawable_api_get_pos},	
-		{"SetPos", drawable_api_set_pos },		
-		{"RunMovement", drawable_api_run_movement },
-		{"GetMovment", drawable_api_get_movement },
-		{"StopMovement", drawable_api_stop_movment },
-		{nullptr, nullptr}
-	};
-
-	static const luaL_Reg metamethods[] = {
-		{"__gc", drawable_meta_api_gc },
-		{nullptr, nullptr}
-	};
-	RegisterType(l, module_sprite_name, function, methods, metamethods);
+	// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
+	spriteClass.AddMethod("GetPos",		 drawable_api_get_pos);
+	spriteClass.AddMethod("SetPos",		 drawable_api_set_pos);
+	spriteClass.AddMethod("RunMovement", drawable_api_run_movement);
+	spriteClass.AddMethod("GetMovment",  drawable_api_get_movement);
+	spriteClass.AddMethod("StopMovement",drawable_api_stop_movment);
 }
 
 /**

@@ -57,14 +57,21 @@ class Player;
 class LuaContext
 {
 public:
+	/** Lua系统级函数索引 */
 	enum SystemFunctionIndex {
 		CLIENT_LUA_MAIN_START = 1,
 		CLIENT_LUA_MAIN_UPDATE,
 		CLIENT_LUA_MAIN_STOP,
 		CLIENT_LUA_MAIN_RENDER,
-
+		CLIENT_LUA_FIRE_EVENT,
 		CLIENT_LUA_INPUT_KEY_DOWN,
 		CLIENT_LUA_INPUT_KEY_UP,
+	};
+
+	/** Lua系统级事件，必须和Lua中的定义一致 */
+	enum SystemLuaEvent {
+		EVENT_GAME_MAP_ENTER = 3,
+		EVENT_GAME_MAP_LEAVE = 4,
 	};
 
 	LuaContext(App& app);
@@ -92,6 +99,7 @@ public:
 	bool DoLuaSystemFunctionWithIndex(int systemIndex, std::function<int(lua_State*l)>paramFunc);
 	void PrintLuaStack(lua_State*l);
 	bool HasFileLoaded(const std::string& fileName)const;
+	void DoFireLuaSystemEvent(int ent, std::function<int(lua_State*l)>paramFunc);
 
 	// userdata
 	static const LuaObjectPtr CheckUserdata(lua_State*l, int index, const string& moduleName);
@@ -101,7 +109,7 @@ public:
 	void NotifyUserdataDestoryed(LuaObject& obj);
 	void CallFileWithUserdata(const std::string& name, LuaObject& userdata);
 	void CallFunctionWithUserdata(LuaObject& userdata, const std::string& funcName, std::function<int(lua_State*l)>paramFunc = nullptr);
-	
+
 	// notify userdata
 	void NotifyEntityWithMovement(Entity& entity, const std::string& funcName);
 
@@ -286,8 +294,10 @@ public:
 		weapon_api_add,
 		weapon_api_equip,
 		weapon_api_unequip,
+		weapon_api_get_entity,
 		// entity
 		entity_api_create_sprite,
+		entity_api_get_type,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,
@@ -327,6 +337,7 @@ public:
 
 	// map api
 	void RunMap(Map& map);
+	void LeaveMap(Map& map);
 	void OnMapStart(Map& map);
 	void OnMapUpdate(Map& map);
 	void OnMapFinish(Map& map);

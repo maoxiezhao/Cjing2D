@@ -28,6 +28,7 @@ public:
 	virtual void NotifyAfterCreated();
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 	virtual void NotifyCollisionWithPlayer(Player& player);
+	virtual void NotifyObstacleReached();
 
 	/** status */
 	virtual bool IsObstacle(Entity& entity)const;
@@ -36,10 +37,14 @@ public:
 
 	void SetBulletType(BULLET_TYPE type);
 	int GetBulletType()const;
+	void Stop();
 	bool IsStop();
 	bool IsFiring()const;
 	void SetAliveTime(uint32_t time);
 	uint32_t GetAliveTime()const;
+
+	virtual void SetFacingDegree(float degree);
+	virtual float GetFacingDegree()const;
 	
 	/** extra status */
 	void SetDemage(int demage);
@@ -50,6 +55,7 @@ private:
 	uint32_t mDisappearDate;
 	uint32_t mDisappearAnimTime;
 
+	bool mIsStopping;
 	bool mStopNow;
 	int mDemage;
 };

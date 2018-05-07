@@ -126,6 +126,8 @@ void LuaContext::Exit()
 {
 	if (l != nullptr)
 	{
+		OnMainFinish();
+
 		DestoryTimers();
 		DestoryMenus();
 		DestoryDrawables();
@@ -761,6 +763,23 @@ void LuaContext::PrintLuaStack(lua_State * l)
 bool LuaContext::HasFileLoaded(const std::string & fileName) const
 {
 	return false;
+}
+
+/**
+*	\brief 触发Lua端的事件
+*	\parm ent 事件枚举，定义在SystemLuaEvent中
+*	\param paramFunc 参数压栈函数
+*/
+void LuaContext::DoFireLuaSystemEvent(int ent, std::function<int(lua_State*l)> paramFunc)
+{
+	auto func = [&](lua_State* l)->int {
+		int paramCount = 1;
+		lua_pushinteger(l, ent);
+		if (paramFunc)
+			paramCount += paramFunc(l);
+		return paramCount;
+	};
+	DoLuaSystemFunctionWithIndex(SystemFunctionIndex::CLIENT_LUA_FIRE_EVENT, func);
 }
 
 /**

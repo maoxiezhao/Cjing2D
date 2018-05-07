@@ -134,3 +134,5 @@ end
 GlobalExports.event_system_register_event = register_event
 GlobalExports.event_system_unregister_event = unregister_event
 GlobalExports.event_system_fire_event = fire_event
+
+SystemExports[CLIENT_LUA_FIRE_EVENT] = event_system_fire_event

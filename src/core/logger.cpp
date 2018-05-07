@@ -42,7 +42,7 @@ namespace Logger {
 	void Logger::Print(const string & msg, std::ostream & out)
 	{
 		auto timeStr = GetCurSystemTimeStr();
-		out << timeStr << "    " << msg << std::endl;
+		out << timeStr << "  " << msg << std::endl;
 	}
 
 	void Debug(const string & msg)

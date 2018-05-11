@@ -20,6 +20,9 @@ public:
 
 	/** system */
 	virtual void Update();
+	void Stop();
+	void ComputeDemage(Entity& entity);
+
 	virtual EntityType GetEntityType()const;
 	virtual const string GetLuaObjectName()const;
 
@@ -34,18 +37,19 @@ public:
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
 	virtual bool IsObstaclePlayer()const;
+	virtual void SetFacingDegree(float degree);
+	virtual float GetFacingDegree()const;
 
-	void SetBulletType(BULLET_TYPE type);
-	int GetBulletType()const;
-	void Stop();
-	bool IsStop();
-	bool IsFiring()const;
+	void SetDisapearAnimTime(uint32_t time);
+	uint32_t GetDisapearAnimTime()const;
 	void SetAliveTime(uint32_t time);
 	uint32_t GetAliveTime()const;
 
-	virtual void SetFacingDegree(float degree);
-	virtual float GetFacingDegree()const;
-	
+	void SetBulletType(BULLET_TYPE type);
+	int GetBulletType()const;
+	bool IsStop();
+	bool IsFiring()const;
+
 	/** extra status */
 	void SetDemage(int demage);
 	int GetDemage()const;
@@ -55,7 +59,7 @@ private:
 	uint32_t mDisappearDate;
 	uint32_t mDisappearAnimTime;
 
-	bool mIsStopping;
-	bool mStopNow;
-	int mDemage;
+	bool mIsStopping;	/** 是否是停止的，即子弹已经停止运作 */
+	bool mStopNow;		/** 是否立即停止 */
+	int mDemage;		/** 子弹伤害 */
 };

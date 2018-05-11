@@ -6,8 +6,6 @@
 #include"utils\size.h"
 #include"utils\ray.h"
 
-#include"utils\obb.h"
-
 /**
 *	\brief ¾ØÐÎ½á¹¹
 */

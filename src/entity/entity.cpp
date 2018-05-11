@@ -10,7 +10,6 @@
 
 Entity::Entity():
 	mName(""),
-	mBounding(),
 	mOrigin(0, 0),
 	mLayer(0),
 	mType(EntityType::UNKNOW),
@@ -23,6 +22,7 @@ Entity::Entity():
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
 	mDebugSprite(nullptr),
+	mDebugSprite1(nullptr),
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
@@ -36,7 +36,7 @@ Entity::Entity():
 Entity::Entity(const string & name, const string& templName, const Point2 & pos, const Size & size, int layer):
 	mName(name),
 	mTemplName(templName),
-	mBounding(pos, size),
+	mBoundBox{},
 	mOrigin(),
 	mLayer(layer),
 	mType(EntityType::UNKNOW),
@@ -49,6 +49,7 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mIsDrawOnYOrder(false),
 	mVisibled(true),
 	mDebugSprite(nullptr),
+	mDebugSprite1(nullptr),
 	mEnabled(true),
 	mCollisionMode(COLLISION_NONE),
 	mBeRemoved(false),
@@ -57,6 +58,9 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mCanPushed(false),
 	mNotifyScriptMovement(true)
 {
+	mBoundBox[0] = BoundingBox(pos, { size.width + 4, size.height + 4});
+	mBoundBox[1] = BoundingBox(pos, { size.width, size.height});
+	SetNotifyOffset({ -2, -2 });
 }
 
 Entity::~Entity()
@@ -166,17 +170,28 @@ const string Entity::GetLuaObjectName() const
 
 void Entity::DrawDebugBounding()
 {
-	//return;
+	// notify
 	if (mDebugSprite == nullptr)
-	{
 		mDebugSprite = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
-	}
 
-	mDebugSprite->SetPos(mBounding.GetPos());
-	mDebugSprite->SetSize(mBounding.GetSize());
-	mDebugSprite->SetRotated(GetFacingDegree());
+	Rect box = mBoundBox[0].GetRect();
+	float angle = Geometry::Degree(GetFacingDegree());
+	mDebugSprite->SetPos(box.GetPos());
+	mDebugSprite->SetSize(box.GetSize());
 	mDebugSprite->SetDeferredDraw(false);
 	GetMap().DrawOnMap(*mDebugSprite);
+
+
+	// obstacle
+	if (mDebugSprite1 == nullptr)
+		mDebugSprite1 = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
+
+	box = mBoundBox[1].GetRect();
+	angle = Geometry::Degree(GetFacingDegree());
+	mDebugSprite1->SetPos(box.GetPos());
+	mDebugSprite1->SetSize(box.GetSize());
+	mDebugSprite1->SetDeferredDraw(false);
+	GetMap().DrawOnMap(*mDebugSprite1);
 }
 
 void Entity::NotifyBeforeCreated()
@@ -314,6 +329,11 @@ void Entity::NotifyObstacleReached()
 */
 void Entity::NotifyAttackEnemy(Enemy & enemy, EntityAttack attack, EntityReactionType reaction)
 {
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyAttackEnemy", [&](lua_State*l) {
+		lua_pushinteger(l, static_cast<int>(attack));
+		lua_pushinteger(l, static_cast<int>(reaction));
+		return 2;
+	});
 }
 
 /**
@@ -482,7 +502,7 @@ bool Entity::RemoveSprite(const std::string & spriteName)
 */
 void Entity::ClearSprites()
 {
-	for (auto sprite : mSprites)
+	for (auto& sprite : mSprites)
 	{
 		sprite.removed = true;
 	}
@@ -637,7 +657,7 @@ void Entity::CheckCollision(Entity & otherEntity)
 	}
 	// 根据当前的碰撞模式测试碰撞
 	if (HasCollisionMode(CollisionMode::COLLISION_OVERLAPING) &&
-		TestCollisionWithRect(otherEntity))
+		TestCollisionOverlaping(otherEntity))
 	{
 		if (otherEntity.GetOverlapEntity() == nullptr)
 		{
@@ -687,18 +707,23 @@ bool Entity::IsHaveCollision() const
 /**
 *	\brief 测试实体与其他实体间矩形碰撞
 */
-bool Entity::TestCollisionWithRect(const Entity & entity)
+bool Entity::TestCollisionOverlaping(const Entity & entity, int type)
 {
-	auto otherRect = entity.GetRectBounding();
-	return TestCollisionWithRect(otherRect);
+	BoundingBox box = entity.GetBoundingBox(type);
+	return TestCollisionWithBox(box);
 }
 
-bool Entity::TestCollisionWithRect(const Rect & rect)
+bool Entity::TestCollisionWithBox(const BoundingBox box, int type)
 {
-	return GetRectBounding().Overlaps(rect);
+	return GetBoundingBox(type).Overlaps(box);
 }
 
-bool Entity::TestCollisionContaining(const Entity & entity)
+bool Entity::TestCollisionWithRect(const Rect & rect, int type)
+{
+	return GetRectBounding(type).Overlaps(rect);
+}
+
+bool Entity::TestCollisionContaining(const Entity & entity, int type)
 {
 	return false;
 }
@@ -719,24 +744,30 @@ bool Entity::HasCollisionMode(CollisionMode collisionMode)
 	return ((collisionMode & mCollisionMode) != 0);
 }
 
-Rect Entity::GetRectBounding() const
+Rect Entity::GetRectBounding(int type) const
 {
-	return mBounding;
+	return mBoundBox[type].GetRect();
 }
 
-Rect Entity::GetMaxRectBounding() const
+void Entity::SetNotifySize(const Size & size)
 {
-	return mBounding;
+	mBoundBox[BOUNDING_BOX_NOTIFY].SetSize(size);
+}
+
+Size Entity::GetNotifySize() const
+{
+	return mBoundBox[BOUNDING_BOX_NOTIFY].GetSize();
 }
 
 void Entity::SetBoundingAngle(float angle)
 {
-	mBounding.SetAngle(angle);
+	for(auto& box : mBoundBox)
+		box.SetRotate(angle);
 }
 
 float Entity::GetBoundingAngle() const
 {
-	return mBounding.GetAngle();
+	return mBoundBox[0].GetRotate();
 }
 
 void Entity::SetDrawOnYOrder(bool isDrawOnY)
@@ -751,7 +782,9 @@ bool Entity::IsDrawOnYOrder() const
 
 void Entity::SetOrigin(const Point2 & origin)
 {
-	mBounding.AddPos(mOrigin.x - origin.x, mOrigin.y - origin.y);
+	for (auto& box : mBoundBox)
+		box.AddPos(mOrigin.x - origin.x, mOrigin.y - origin.y);
+
 	mOrigin = origin;
 }
 
@@ -803,21 +836,31 @@ bool Entity::IsSuspended() const
 	return false;
 }
 
+void Entity::SetEnable(bool enable)
+{
+	mEnabled = enable;
+}
+
+bool Entity::IsEnable() const
+{
+	return mEnabled;
+}
+
 Point2 Entity::GetPos()const
 {
-	return mBounding.GetPos() + mOrigin;
+	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos() + mOrigin;
 }
 Point2 Entity::GetCenterPos() const
 {
 	Size size = GetSize();
-	Point2 pos = mBounding.GetPos();
+	Point2 pos = mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos();
 	return Point2(pos.x + size.width / 2,
 		pos.y + size.height / 2);
 }
 
 Point2 Entity::GetLeftTopPos() const
 {
-	return mBounding.GetPos();
+	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos();
 }
 
 Point2 Entity::GetAttachPos() const
@@ -828,7 +871,9 @@ Point2 Entity::GetAttachPos() const
 
 void Entity::SetPos(const Point2& pos)
 {
-	mBounding.SetPos(pos.x - mOrigin.x, pos.y - mOrigin.y);
+	int x = pos.x - mOrigin.x, y = pos.y - mOrigin.y;
+	mBoundBox[BOUNDING_BOX_OBSTACLE].SetPos(x, y);
+	mBoundBox[BOUNDING_BOX_NOTIFY].SetPos(x + mNotifyOffset.x, y + mNotifyOffset.y);
 	NotifyBoundingRectChange();
 }
 
@@ -854,13 +899,21 @@ void Entity::SetTemplName(const string & name)
 
 void Entity::SetSize(const Size & size)
 {
-	mBounding.SetSize(size.width, size.height);
+	mBoundBox[BOUNDING_BOX_NOTIFY].SetSize(size.width, size.height);
+	mBoundBox[BOUNDING_BOX_OBSTACLE].SetSize(size.width, size.height);
 	NotifyBoundingRectChange();
 }
 
 Size Entity::GetSize() const
 {
-	return mBounding.GetSize();
+	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetSize();
+}
+
+void Entity::SetNotifyOffset(const Point2 & offset)
+{
+	mNotifyOffset = offset;
+	Point2 pos = GetPos();
+	mBoundBox[BOUNDING_BOX_NOTIFY].SetPos(pos.x + mNotifyOffset.x, pos.y + mNotifyOffset.y);
 }
 
 string Entity::GetName()const
@@ -871,6 +924,12 @@ string Entity::GetName()const
 string Entity::GetTemplName() const
 {
 	return mTemplName;
+}
+
+BoundingBox Entity::GetBoundingBox(int type) const
+{
+	Debug::CheckAssertion(type >= 0 && type <= 1, "Invalid bounding box type.");
+	return mBoundBox[type];
 }
 
 EntityType Entity::GetEntityType()const

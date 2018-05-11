@@ -307,7 +307,6 @@
     <ClInclude Include="src\game\timer.h" />
     <ClInclude Include="src\game\weapon.h" />
     <ClInclude Include="src\game\weaponControl.h" />
-    <ClInclude Include="src\game\weaponFactory.h" />
     <ClInclude Include="src\gui\aboutGUI.h" />
     <ClInclude Include="src\gui\core\builderWindow.h" />
     <ClInclude Include="src\gui\core\dispatcher.h" />
@@ -358,6 +357,7 @@
     <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\player\playerState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
+    <ClInclude Include="src\utils\boundingBox.h" />
     <ClInclude Include="src\utils\color.h" />
     <ClInclude Include="src\utils\commonUtils.h" />
     <ClInclude Include="src\utils\geometry.h" />

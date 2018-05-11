@@ -6,6 +6,7 @@
 #include"utils\point.h"
 #include"utils\size.h"
 #include"utils\rectangle.h"
+#include"utils\boundingBox.h"
 #include"entity\entityInfo.h"
 #include"entity\entityAttack.h"
 #include"game\sprite.h"
@@ -22,6 +23,10 @@ class Player;
 
 /**
 *	\brief 游戏实体的抽象类
+*
+*	2018.5.9
+*	做了个碰撞盒相关处理，分为障碍碰撞盒和响应范围盒，响应范围盒用于处理Notify事件
+*	而障碍碰撞和则用于处理位置和障碍物碰撞，和原先Rect一致
 */
 class Entity : public LuaObject
 {
@@ -45,6 +50,15 @@ public:
 		COLLISION_OVERLAPING = 0x01,	// 覆盖模式
 		COLLISION_CONTAINING = 0x02,	// 包含模式
 		COLLLSION_SPRITE = 0x04,        // 精灵间像素碰撞检测
+	};
+
+	/**
+	*	\brief BoundingBoxType
+	*/
+	enum BoundingBoxType
+	{
+		BOUNDING_BOX_NOTIFY = 0,
+		BOUNDING_BOX_OBSTACLE,
 	};
 
 	Entity();
@@ -97,12 +111,8 @@ public:
 	int GetLayer()const;
 	void SetName(const string& name);
 	void SetTemplName(const string& name);
-	void SetSize(const Size& size);
-	Size GetSize()const;
 	string GetName()const;
 	string GetTemplName()const;
-	Rect GetRectBounding()const;
-	Rect GetMaxRectBounding()const;
 	void SetBoundingAngle(float angle);
 	float GetBoundingAngle()const;
 	void SetDrawOnYOrder(bool isDrawOnY);
@@ -117,6 +127,17 @@ public:
 	void SetInsertQuadTree(bool inserted);
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
+	void SetEnable(bool enable);
+	bool IsEnable()const;
+
+	BoundingBox GetBoundingBox(int type)const;
+	Rect GetRectBounding(int type = BOUNDING_BOX_NOTIFY)const;
+	void SetSize(const Size& size);
+	Size GetSize()const;
+
+	void SetNotifySize(const Size& size);
+	Size GetNotifySize()const;
+	void SetNotifyOffset(const Point2& offset);
 
 	/** direction */
 	virtual void SetFacingDegree(float degree);
@@ -173,9 +194,10 @@ public:
 	void CheckCollisionWithEntities();
 	void CheckCollisionFromEntities();
 
-	bool TestCollisionWithRect(const Entity& entity);
-	bool TestCollisionWithRect(const Rect& rect);
-	bool TestCollisionContaining(const Entity& entity);
+	bool TestCollisionContaining(const Entity& entity, int type = BOUNDING_BOX_NOTIFY);
+	bool TestCollisionOverlaping(const Entity& entity, int type = BOUNDING_BOX_NOTIFY);
+	bool TestCollisionWithBox(const BoundingBox box,   int type = BOUNDING_BOX_NOTIFY);
+	bool TestCollisionWithRect(const Rect& rect,       int type = BOUNDING_BOX_NOTIFY);
 
 	bool IsHaveCollision()const;
 	void SetCollisionMode(CollisionMode collisionMode);
@@ -196,20 +218,21 @@ public:
 
 private:
 	// status
-	string mName;		/** 自定义名字，不可相同 */
-	string mTemplName;  /** 模板名字 */
-	Point2 mOrigin;		/** 原点位置 */
-	Rect mBounding;
+	string mName;			  /** 自定义名字，不可相同 */
+	string mTemplName;		  /** 模板名字 */
+	Point2 mOrigin;		 	  /** 原点位置 */
+	Point2 mNotifyOffset;	  /** 响应包围盒的偏移值 */
+	BoundingBox mBoundBox[2]; /** 1响应包围盒 2碰撞包围盒 */	
 	int mLayer;
 	EntityType mType;
 	bool mIsInitialized;
 	bool mIsDrawOnYOrder;
 	bool mVisibled;
 	bool mEnabled;
-	bool mBeRemoved;	 /** 将要被移除 */
-	bool mInsertQuadTree;/** 是否插入到四叉树中 */
+	bool mBeRemoved;		 /** 将要被移除 */
+	bool mInsertQuadTree;	 /** 是否插入到四叉树中 */
 	int mCollisionMode;
-	bool mFocused;		 /** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
+	bool mFocused;			 /** 是否被设为焦点，应保证最多仅存在一个entity被设为focused*/
 	Direction4 mDirection;
 	bool mCanPushed;
 	bool mNotifyScriptMovement;
@@ -228,6 +251,7 @@ private:
 
 	std::vector<NamedSpritePtr> mSprites;	/** entity 所拥有的用于展示的sprites */
 	SpritePtr mDebugSprite;
+	SpritePtr mDebugSprite1;
 };
 
 using EntityPtr = std::shared_ptr<Entity>;

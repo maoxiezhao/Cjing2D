@@ -25,7 +25,7 @@ function WeaponMT:OnWeaponInit(cfg)
 	self._swapSpeed = 2000	-- 换单速度
 	self._offset = 5		-- 发射偏差值
 
-	self:SetAttackDelta(300)
+	self:SetAttackDelta(300)-- 攻击间隔
 end
 
 -- 装备该武器

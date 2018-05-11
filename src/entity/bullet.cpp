@@ -153,6 +153,21 @@ void Bullet::Stop()
 }
 
 /**
+*	\brief 基于当前子弹计算伤害
+*/
+void Bullet::ComputeDemage(Entity & entity)
+{
+	if (IsFiring())
+	{
+		GetLuaContext()->CallFunctionWithUserdata(*this, "OnComputeDemage",
+			[&](lua_State*l)->int {
+			GetLuaContext()->PushUserdata(l, entity);
+			return 1;
+		});
+	}
+}
+
+/**
 *	\brief 判断子弹行为是否结束
 */
 bool Bullet::IsStop()
@@ -199,6 +214,19 @@ void Bullet::SetFacingDegree(float degree)
 float Bullet::GetFacingDegree() const
 {
 	return GetBoundingAngle();
+}
+
+/**
+*	\brief 设置子弹停止后的消失动画时间，需要在停止前设置
+*/
+void Bullet::SetDisapearAnimTime(uint32_t time)
+{
+	mDisappearAnimTime = time;
+}
+
+uint32_t Bullet::GetDisapearAnimTime() const
+{
+	return mDisappearAnimTime;
 }
 
 /**

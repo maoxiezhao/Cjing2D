@@ -156,7 +156,7 @@ bool Movement::TestCollisionWithObstacles(const Point2 & dxy) const
 	// 获取当前entity的碰撞盒，并偏移位移量后
 	// 参与碰撞检测
 	Map& map = mEntity->GetMap();
-	Rect rect = mEntity->GetRectBounding();
+	Rect rect = mEntity->GetRectBounding(Entity::BOUNDING_BOX_OBSTACLE);
 	rect.AddPos(dxy.x, dxy.y);
 
 	bool collision = map.TestCollisionWithObstacle(rect, *mEntity);

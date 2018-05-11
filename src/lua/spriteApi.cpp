@@ -29,6 +29,7 @@ void LuaContext::RegisterSpriteModule()
 	spriteClass.AddMethod("SetDeferredDraw", sprite_api_set_deferred);
 	spriteClass.AddMethod("Draw",	     sprite_api_draw);
 	spriteClass.AddMethod("SetRotateAnchor", &Sprite::SetRotateAnchor);
+	spriteClass.AddMethod("SetWhiteBlink", &Sprite::SetWhite);
 
 	// 下面的方法应该在drawapi实现，派生给sprtie,暂未实现
 	spriteClass.AddMethod("GetPos",		 drawable_api_get_pos);
@@ -207,6 +208,7 @@ int LuaContext::sprite_api_set_rotation(lua_State*l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Sprite& sprite = *CheckSprite(l, 1);
 		float angle = LuaTools::CheckFloat(l, 2);
+		angle = Geometry::Degree(angle);
 		sprite.SetRotated(angle);
 
 		return 0;

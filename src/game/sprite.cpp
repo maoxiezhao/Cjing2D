@@ -30,7 +30,8 @@ Sprite::Sprite():
 	mIsBlinkVisible(true),
 	mOutLineWidth(0.0f),
 	mFlipX(false),
-	mFlipY(false)
+	mFlipY(false),
+	mIsWhite(false)
 {
 	SetDefaultNormalState();
 }
@@ -59,7 +60,8 @@ Sprite::Sprite(const std::string & name):
 	mIsBlinkVisible(true),
 	mOutLineWidth(0.0f),
 	mFlipX(false),
-	mFlipY(false)
+	mFlipY(false),
+	mIsWhite(false)
 {
 	InitWithFile(name);
 	SetDefaultNormalState();
@@ -89,7 +91,8 @@ Sprite::Sprite(TexturePtr tex, TexturePtr normalTex):
 	mIsBlinkVisible(true),
 	mOutLineWidth(0.0f),
 	mFlipX(false),
-	mFlipY(false)
+	mFlipY(false),
+	mIsWhite(false)
 {
 	InitWithTexture(mTexture);
 	SetDefaultNormalState();
@@ -121,7 +124,8 @@ Sprite::Sprite(const Color4B & color, const Size & size):
 	mIsBlinkVisible(true),
 	mOutLineWidth(0.0f),
 	mFlipX(false),
-	mFlipY(false)
+	mFlipY(false),
+	mIsWhite(false)
 {
 	SetSize(size);
 	SetColor(color);
@@ -715,6 +719,37 @@ void Sprite::SetOutLine(float outLineWidth)
 		mOutLineWidth = outLineWidth;
 		mDeferred = mPreDeferred;
 	}
+}
+
+void Sprite::SetWhite(bool isWhite)
+{
+	if (mIsWhite == isWhite)
+		return;
+
+	mIsWhite = isWhite;
+	if (isWhite)
+	{
+		auto& resourceCache = ResourceCache::GetInstance();
+		auto outLinedprogramState = std::make_shared<GLProgramState>();
+		outLinedprogramState->Set(resourceCache.GetGLProgram("white_sprite"));
+		
+		mPreProgramState = GetProgramState();
+		SetProgramState(outLinedprogramState);
+		mPreDeferred = mDeferred;
+		mDeferred = false;
+	}
+	else
+	{
+		Debug::CheckAssertion(mPreProgramState != nullptr,
+			"The previous programState is nullptr.");
+		SetProgramState(mPreProgramState);
+		mDeferred = mPreDeferred;
+	}
+}
+
+bool Sprite::IsWhite() const
+{
+	return mIsWhite;
 }
 
 /**

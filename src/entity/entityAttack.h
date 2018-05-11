@@ -9,9 +9,9 @@
 */
 enum class EntityAttack
 {
-	COMBAT,			/** 近战 */
-	BULLET,			/** 子弹伤害 */
-	BOOMERANG,		/** 爆炸伤害 */
+	COMBAT = 1,			/** 近战 */
+	BULLET,			    /** 子弹伤害 */
+	BOOMERANG,		    /** 爆炸伤害 */
 };
 
 /**
@@ -19,8 +19,8 @@ enum class EntityAttack
 */
 enum class EntityReactionType
 {
-	REACTION_IGNORE, /** 忽略攻击 */			
-	REACTION_HURT,	 /** 受伤 */
-	REACTION_CUSTOM, /** 在脚本中处理 */
+	REACTION_IGNORE = 1, /** 忽略攻击 */			
+	REACTION_HURT,	     /** 受伤 */
+	REACTION_CUSTOM,     /** 在脚本中处理 */
 };
 

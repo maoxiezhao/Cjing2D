@@ -1,4 +1,4 @@
-#include "rectangle.h"
+
 constexpr Rect::Rect():
 	x(0),y(0),
 	width(0),height(0),

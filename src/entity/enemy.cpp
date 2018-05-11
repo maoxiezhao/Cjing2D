@@ -1,4 +1,5 @@
 #include"entity\enemy.h"
+#include"entity\bullet.h"
 #include"game\combat.h"
 #include"game\animationSprite.h"
 #include"lua\luaContext.h"
@@ -13,13 +14,19 @@ Enemy::Enemy(Game & game, const std::string & name, const std::string& templName
 	mIsImmobilized(false),
 	mIsOnlyUpdateInLua(false),
 	mCanAttack(true),
-	mHurtProtectedTime(0)
+	mIsKilled(false),
+	mHurtProtectedTime(0),
+	mDeadAnimTime(2000),
+	mRemoveDate(0),
+	mHurtTiem(200)
 {
 	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
 	SetDrawOnYOrder(true);
 
 	/** 大小等基本属性在lua中设置 */
 	SetSize({ 32, 32 });
+
+	SetDefaultAttackReactions();
 }
 
 EntityPtr Enemy::Create(Game & game, const std::string & name, const std::string& templName, int layer, const Point2 & pos)
@@ -36,19 +43,23 @@ void Enemy::Update()
 		return;
 
 	uint32_t now = System::Now();
+
 	/** 如果受伤则进行相关判断 */
 	if (mIsHurting)
 	{
-		if (mLife > 0)
+		if (now >= mStopHurtDate)
 		{
-			ClearMovements();
-			Restart();
+			mIsHurting = false;
+			if (mLife > 0)
+			{
+				ClearMovements();
+				Restart();
+			}
+			else
+			{
+				NotifyKilled();
+			}
 		}
-		else
-		{
-			Kill();
-		}
-		mIsHurting = false;
 	}
 
 	/** 攻击保护 */
@@ -61,8 +72,10 @@ void Enemy::Update()
 		/** 程序判断是否死亡，如果死亡则自动移除  */
 		if (IsKilled() && IsKilledAnimationFinished())
 		{
-			RemoveFromMap();
-			NotifyKilled();
+			if (System::Now() >= mRemoveDate) {
+				RemoveFromMap();
+				//NotifyKilled();
+			}
 		}
 	}
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnUpdate");
@@ -126,12 +139,12 @@ void Enemy::NotifyKilled()
 
 bool Enemy::IsKilled() const
 {
-	return false;
+	return mIsKilled;
 }
 
 bool Enemy::IsKilledAnimationFinished() const
 {
-	return false;
+	return true;
 }
 
 bool Enemy::IsObstacle(Entity & entity) const
@@ -151,6 +164,34 @@ bool Enemy::IsObstaclePlayer() const
 
 void Enemy::SetCurAnimation(const std::string & name)
 {
+}
+
+void Enemy::SetLife(int life)
+{
+	if (mLife != life)
+	{
+		int oldLife = mLife;
+		mLife = life;	
+		GetLuaContext()->CallFunctionWithUserdata(*this, "OnLifeChange", 
+			[&](lua_State*l)->int {
+			lua_pushinteger(l, oldLife);
+			lua_pushinteger(l, life);
+			return 2;
+		});
+	}
+}
+
+int Enemy::GetLife() const
+{
+	return mLife;
+}
+
+/**
+*	\brief 设置死亡时播放动画的时间，需在死亡前设置
+*/
+void Enemy::SetDeadAnimTime(uint32_t time)
+{
+	mDeadAnimTime = time;
 }
 
 /**
@@ -194,8 +235,14 @@ void Enemy::TryHurt(EntityAttack attack, Entity & source)
 	switch (reaction)
 	{
 	case EntityReactionType::REACTION_HURT:
+		if (attack == EntityAttack::BULLET)
+		{
+			auto& bullet = dynamic_cast<Bullet&>(source);
+			bullet.ComputeDemage(*this);
+		}
+
 		Hurt(source);
-		NotifyHurt(source);
+		NotifyHurt(source, attack);
 		break;
 	case EntityReactionType::REACTION_CUSTOM:
 		CustomAttack(source, attack);
@@ -229,23 +276,29 @@ void Enemy::Hurt(Entity & source)
 
 	ClearMovements();
 	SetCurAnimation("Hurt");
+
+	mStopHurtDate = now + mHurtTiem;
 }
 
 /**
-*	\brief 死亡时行为
+*	\brief Enemey被杀死
 */
-void Enemy::Kill()
+void Enemy::Killed()
 {
+	mLife = 0;
+	mIsKilled = true;
+	mRemoveDate = System::Now() + mDeadAnimTime;
 }
 
 /**
 *	\brief 受伤时脚本处理的行为
 */
-void Enemy::NotifyHurt(Entity& source)
+void Enemy::NotifyHurt(Entity& source, EntityAttack attack)
 {
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnHurt",
 		[&](lua_State*l)->int {
 		GetLuaContext()->PushUserdata(l, source);
-		return 1;
+		lua_pushinteger(l, static_cast<int>(attack));
+		return 2;
 	});
 }

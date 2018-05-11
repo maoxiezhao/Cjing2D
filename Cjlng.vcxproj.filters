@@ -906,9 +906,6 @@
     <ClInclude Include="src\game\weapon.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\weaponFactory.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\weaponControl.h">
       <Filter>game</Filter>
     </ClInclude>
@@ -944,6 +941,9 @@
     </ClInclude>
     <ClInclude Include="src\common\version.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\boundingBox.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

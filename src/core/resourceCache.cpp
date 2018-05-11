@@ -89,6 +89,12 @@ void ResourceCache::LoadDefaultProgram()
 		GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME + ".frag");
 	postProcessProgram->Link();
 	mPrograms[GLProgram::DEFAULT_POST_PROCESS_PROGRAM_NAME] = postProcessProgram;
+
+	// º”‘ÿWhite Sprite
+	auto whiteProgram = std::make_shared<GLProgram>();
+	whiteProgram->InitWithFileNames("white_sprite.vs","white_sprite.frag");
+	whiteProgram->Link();
+	mPrograms["white_sprite"] = whiteProgram;
 }
 
 /**

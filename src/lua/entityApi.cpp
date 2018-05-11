@@ -29,6 +29,7 @@ void LuaContext::RegisterEntityModule()
 	// entity base
 	LuaBindClass<Entity> entityClass(l, "Entity");
 	entityClass.AddMethod("CreateSprite", entity_api_create_sprite);
+	entityClass.AddMethod("ClearSprites", &Entity::ClearSprites);
 	entityClass.AddMethod("GetName", &Entity::GetName);
 	entityClass.AddMethod("SetName", &Entity::SetName);
 	entityClass.AddMethod("SetSize", &Entity::SetSize);
@@ -39,18 +40,23 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("GetAttachPos", &Entity::GetAttachPos);
 	entityClass.AddMethod("SetFacingDegree", &Entity::SetFacingDegree);
 	entityClass.AddMethod("GetFacingDegree", &Entity::GetFacingDegree);
+	entityClass.AddMethod("StopMovement", &Entity::StopMovement);
+	entityClass.AddMethod("SetEnable", &Entity::SetEnable);
 
 	// player 
 	LuaBindClass<Player> playerClass(l, module_player_name, module_entity_name);
 	playerClass.AddDefaultMetaFunction();
 
 	// Enemy
-	LuaBindClass<Enemy> bindClass(l, "Enemy", "Entity");
-	bindClass.AddDefaultMetaFunction();
+	LuaBindClass<Enemy> enemyClass(l, "Enemy", "Entity");
+	enemyClass.AddDefaultMetaFunction();
+	enemyClass.AddMethod("Killed", &Enemy::Killed);
+	enemyClass.AddMethod("SetDeadAnimTime", &Enemy::SetDeadAnimTime);
 
 	// Bullet
 	LuaBindClass<Bullet> bulletClass(l, "Bullet", "Entity");
 	bulletClass.AddDefaultMetaFunction();
+	bulletClass.AddMethod("SetDisappearAnimTime", &Bullet::SetDisapearAnimTime);
 }
 
 /**

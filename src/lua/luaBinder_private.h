@@ -27,7 +27,7 @@ namespace Implemention
 	{
 		/** 整型 */
 		template<typename T>
-		inline typename std::enable_if<std::is_integral<T>::value, T>::type
+		inline typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::value, T>::type
 			UnWraper(lua_State*l, int index) { return static_cast<T>(LuaTools::CheckInt(l, index)); }
 		/** 浮点型 */
 		template<typename T>

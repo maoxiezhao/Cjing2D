@@ -88,6 +88,8 @@ public:
 	void SetBlinking(uint32_t blinkDelay);
 	bool IsOutLine()const;
 	void SetOutLine(float outLineWidth);
+	void SetWhite(bool isWhite);
+	bool IsWhite()const;
 
 protected:
 	Sprite();
@@ -130,6 +132,7 @@ protected:
 
 	float mOutLineWidth;		/** 是否开启描边 */
 	Color4B mOutLineColor;		/** 描边的颜色 */
+	bool mIsWhite;
 
 	// children
 	std::vector<std::shared_ptr<Sprite>> mChildSprites;

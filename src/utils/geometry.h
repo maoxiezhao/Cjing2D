@@ -100,6 +100,11 @@ namespace Geometry
 		}
 		return angle;
 	}
+
+	inline bool Equal(float v, float equalV)
+	{
+		return fabsf(v - equalV) < EPSILON;
+	}
 }
 
 #endif

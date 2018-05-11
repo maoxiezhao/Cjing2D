@@ -346,7 +346,7 @@ bool Map::TestCollisionWithEntities(const Rect & rect, Entity & entity, int laye
 			checkEntity->GetLayer() == layer &&
 			checkEntity.get() != &entity &&
 			checkEntity->IsObstacle(entity) &&
-			checkEntity->TestCollisionWithRect(rect))
+			checkEntity->TestCollisionWithRect(rect, Entity::BOUNDING_BOX_OBSTACLE))
 			return true;
 	}
 	return false;
@@ -362,7 +362,7 @@ void Map::CheckCollisionWithEntities(Entity & entity)
 	if (IsSuspended())
 		return;
 
-	if (entity.IsBeRemoved())
+	if (entity.IsBeRemoved() || !entity.IsEnable())
 		return;
 
 	Rect checkRect = entity.GetRectBounding();
@@ -375,6 +375,7 @@ void Map::CheckCollisionWithEntities(Entity & entity)
 	{
 		if (!checkEntity->IsHaveCollision() ||
 			checkEntity->IsBeRemoved() ||
+			!checkEntity->IsEnable() ||
 			checkEntity.get() == &entity)
 		{
 			continue;
@@ -395,7 +396,7 @@ void Map::CheckCollisionFromEntities(Entity & entity)
 	if (IsSuspended())
 		return;
 
-	if (entity.IsBeRemoved())
+	if (entity.IsBeRemoved() || !entity.IsEnable())
 		return;
 
 	Rect checkRect = entity.GetRectBounding();
@@ -409,6 +410,7 @@ void Map::CheckCollisionFromEntities(Entity & entity)
 
 		if (!checkEntity->IsSuspended() &&
 			!checkEntity->IsBeRemoved() &&
+			checkEntity->IsEnable() && 
 			checkEntity.get() != &entity ) 
 		{
 			entity.CheckCollision(*checkEntity);
@@ -428,7 +430,7 @@ void Map::CheckCollisionWithEntities(Entity & entity, Sprite & sprite)
 	if(IsSuspended())
 		return;
 
-	if (entity.IsBeRemoved())
+	if (entity.IsBeRemoved() || !entity.IsEnable())
 		return;
 
 	Rect checkRect = entity.GetRectBounding();

@@ -20,9 +20,7 @@ Dispatcher::Dispatcher() :
 Dispatcher::~Dispatcher()
 {
 	if (mIsConnected)
-	{
 		DisconnectDispatcher(this);
-	}
 }
 
 void Dispatcher::Connect()

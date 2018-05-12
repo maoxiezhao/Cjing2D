@@ -27,6 +27,7 @@ public:
 	virtual bool CanWrap() const;
 
 	virtual void Place(const Point2& pos, const Size& size);
+	virtual void RefreshPlace();
 
 	/**** ***** ***** children **** ***** *****/
 
@@ -65,6 +66,14 @@ public:
 	void SetRowCols(int row, int col)
 	{
 		mGrid.SetRowCols(row, col);
+	}
+	void SetRowFactory(const std::vector<float>& factory)
+	{
+		mGrid.SetRowsFactory(factory);
+	}
+	void SetColFactory(const std::vector<float>& factory)
+	{
+		mGrid.SetColsFactory(factory);
 	}
 	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag, int borderSize)
 	{

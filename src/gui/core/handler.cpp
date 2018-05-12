@@ -22,7 +22,7 @@ public:
 	~EventHandler();
 
 	void Connect(Dispatcher* dispatcher);
-	void Disconnect(Dispatcher* Dispatcher);
+	void Disconnect(Dispatcher* dispatcher);
 
 	void Active();
 	void HandleEvent(const InputEvent& event);
@@ -40,13 +40,13 @@ public:
 
 	void Draw();
 
-private:
+	Dispatcher* mMouseFocus;
 	std::vector<Dispatcher*> mDispatcher;
-
 };
 
 EventHandler::EventHandler():
-	mDispatcher()
+	mDispatcher(),
+	mMouseFocus(nullptr)
 {
 }
 
@@ -66,12 +66,14 @@ void EventHandler::Connect(Dispatcher * dispatcher)
 	mDispatcher.push_back(dispatcher);
 }
 
-void EventHandler::Disconnect(Dispatcher * Dispatcher)
+void EventHandler::Disconnect(Dispatcher * dispatcher)
 {
-	auto itr = std::find(mDispatcher.begin(), mDispatcher.end(), Dispatcher);
+	auto itr = std::find(mDispatcher.begin(), mDispatcher.end(), dispatcher);
 	Debug::CheckAssertion(itr != mDispatcher.end());
-
 	mDispatcher.erase(itr);
+
+	if (dispatcher == mMouseFocus)
+		mMouseFocus = nullptr;
 
 	/** 当删除一个widget，对所有widget分发active事件 */
 	Active();
@@ -108,9 +110,9 @@ void EventHandler::HandleEvent(const InputEvent& event)
 	case InputEvent::EVENT_MOUSE_MOTION:
 		Mouse(UI_EVENT_MOUSE_MOTION, { keyEvent.motion.x, keyEvent.motion.y });
 		break;
-	case InputEvent::EVENT_DRAW:
-		Draw();
-		break;
+	//case InputEvent::EVENT_DRAW:
+	//	Draw();
+	//	break;
 	default:
 		break;
 	}
@@ -171,10 +173,16 @@ void EventHandler::KeyBoardKeyUp(const InputEvent& event)
 */
 void EventHandler::Mouse(const ui_event event, const Point2& pos)
 {
-	std::vector<Dispatcher*> reverseDispatchers = mDispatcher;
-	std::reverse(reverseDispatchers.begin(), reverseDispatchers.end());
+	// 优先处理focus
+	if (mMouseFocus) 
+	{
+		mMouseFocus->Fire(event, dynamic_cast<Widget&>(*mMouseFocus), pos);
+		return;
+	}
 
-	for (auto& dispatcher : reverseDispatchers)
+	//std::vector<Dispatcher*> reverseDispatchers = mDispatcher;
+	//std::reverse(reverseDispatchers.begin(), reverseDispatchers.end());
+	for (auto& dispatcher : mDispatcher)
 	{
 		if (dispatcher->GetMouseBehavior() == Dispatcher::all)
 		{
@@ -232,6 +240,17 @@ void EventHandler::MouseButtonUp(const Point2& pos, const InputEvent::MouseButto
 		Mouse(UI_EVENT_MOUSE_RIGHT_BUTTON_UP, pos);
 		break;
 	}
+}
+
+void CaptureMouse(Dispatcher * dispatcher)
+{
+	mHandler->mMouseFocus = dispatcher;
+}
+
+void ReleaseMouse(Dispatcher * dispatcher)
+{
+	if (mHandler->mMouseFocus == dispatcher)
+		mHandler->mMouseFocus = nullptr;
 }
 
 /**

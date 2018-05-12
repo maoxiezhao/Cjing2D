@@ -164,7 +164,7 @@
     <ClCompile Include="src\gui\core\distributor.cpp" />
     <ClCompile Include="src\gui\core\handler.cpp" />
     <ClCompile Include="src\gui\core\uiRender.cpp" />
-    <ClCompile Include="src\gui\lua\windowsApi.cpp" />
+    <ClCompile Include="src\gui\lua\uiApi.cpp" />
     <ClCompile Include="src\gui\uiStage.cpp" />
     <ClCompile Include="src\gui\widget\button.cpp" />
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
@@ -316,6 +316,7 @@
     <ClInclude Include="src\gui\core\message.h" />
     <ClInclude Include="src\gui\core\uiRender.h" />
     <ClInclude Include="src\gui\core\widgetDefinition.h" />
+    <ClInclude Include="src\gui\lua\uiApi.h" />
     <ClInclude Include="src\gui\uiStage.h" />
     <ClInclude Include="src\gui\widget\button.h" />
     <ClInclude Include="src\gui\widget\containerBase.h" />
@@ -326,6 +327,7 @@
     <ClInclude Include="src\gui\widget\styledwidget.h" />
     <ClInclude Include="src\gui\widget\toggleButton.h" />
     <ClInclude Include="src\gui\widget\widget.h" />
+    <ClInclude Include="src\gui\widget\widgetInfo.h" />
     <ClInclude Include="src\gui\widget\window.h" />
     <ClInclude Include="src\lua\luaBinder.h" />
     <ClInclude Include="src\lua\luaBinder_private.h" />

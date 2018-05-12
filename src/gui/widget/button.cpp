@@ -83,6 +83,7 @@ void Button::SignalHandlerMouseEnter(const  ui_event event, bool & handle)
 {
 	SetState(FOCUSED);
 	handle = true;
+	std::cout << "Enter" << std::endl;
 }
 
 void Button::SignalHandlerMouseLeave(const  ui_event event, bool & handle)

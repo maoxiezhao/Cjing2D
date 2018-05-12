@@ -25,4 +25,6 @@
 *		添加Stage类，State类维护一个根Window，即一个游戏只存在一个Window，当然在
 *		考虑是允许在WIndow中创建子Window，但在第一版State中，值允许存在一个WIndow
 *	    同时添加了接口允许在LUa中设置回调。
+*
+*	TODO 原GUI考虑了控件大小处理，本身在游戏中不太必要，考虑删除
 */

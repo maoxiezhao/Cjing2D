@@ -129,6 +129,12 @@ namespace gui {
 		mGrid.Place(pos, size);
 	}
 
+	void ContainerBase::RefreshPlace()
+	{
+		StyledWidget::RefreshPlace();
+		mGrid.RefreshPlace();
+	}
+
 	void ContainerBase::LayoutChildren(const Point2 & origin)
 	{
 		mGrid.LayoutChildren(origin);

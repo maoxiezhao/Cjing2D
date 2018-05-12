@@ -24,6 +24,9 @@ Grid::Grid(int row, int col) :
 	mChilds(row * col),
 	mNamedChilds()
 {
+	mRowsFactory.resize(row, 1.0f);
+	mColsFactory.resize(col, 1.0f);
+
 	ConnectSignal<gui::EVENT_REQUEST_PLACEMENT>(
 		std::bind(&Grid::RequesetPlacement, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 		gui::Dispatcher::back_pre_child);
@@ -88,7 +91,31 @@ void Grid::SetRowCols(int row, int col)
 	mCols = col;
 	mRowsHeight.resize(row, 0);
 	mColsWidth.resize(col, 0);
+	mRowsFactory.resize(row, 1.0f);
+	mColsFactory.resize(col, 1.0f);
 	mChilds.resize(row * col);
+}
+
+void Grid::SetRowsFactory(const std::vector<float> factoies)
+{
+	if (factoies.size() > mRows)
+	{
+		Debug::Error("The count '" + std::to_string(factoies.size()) +
+			" of row factory is invalid.");
+		return;
+	}
+	mRowsFactory = factoies;
+}
+
+void Grid::SetColsFactory(const std::vector<float> factoies)
+{
+	if (factoies.size() > mRows)
+	{
+		Debug::Error("The count '" + std::to_string(factoies.size()) +
+			" of col factory is invalid.");
+		return;
+	}
+	mColsFactory = factoies;
 }
 
 /**** **** **** **** *** Child *** **** **** **** ****/
@@ -253,6 +280,7 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 	}
 
 	// 当设置大小大于bestSize时，则需要根据对齐方式调整位子
+	// 先计算出位置，在根据wantedPos做偏移
 	Point2 widgetPos = adjustedPos;
 	Size widgetSize = Size(std::min(size.width, bestSize.width), std::min(size.height, bestSize.height));
 
@@ -278,7 +306,7 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 	}
 
 	int horizontalFlag = mFlag & ALIGN_HORIZONTAL_MASK;
-	if (horizontalFlag & ALIGN_HORIZONTAL_TOP)
+	if (horizontalFlag & ALIGN_HORIZONTAL_LEFT)
 	{
 		// 默认已经顶部对齐,do nothing
 		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal top.");
@@ -288,7 +316,7 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 		widgetPos.x += (size.width - widgetSize.width) / 2;
 		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal center.");
 	}
-	else if (horizontalFlag & ALIGN_HORIZONTAL_BOTTOM)
+	else if (horizontalFlag & ALIGN_HORIZONTAL_RIGHT)
 	{
 		widgetPos.x += (size.width - widgetSize.width) ;
 		Debug::DebugString("The widget id:" + GetID() + " aligned to horizontal bottom.");
@@ -298,6 +326,8 @@ void Grid::Children::Place(const Point2& pos, const Size& size)
 		Debug::Die("Invaild horizontal align parameter.");
 	}
 
+
+	widgetPos += mWidget->GetWantedPositon();
 	mWidget->Place(widgetPos, widgetSize);
 }
 
@@ -414,9 +444,7 @@ void Grid::Place(const Point2& pos, const Size& size)
 	Widget::Place(pos, size);
 
 	if (mRows == 0 || mCols == 0)
-	{
 		return;
-	}
 
 	Size bestSize = CalculateBestSize();
 	Debug::CheckAssertion(mRowsHeight.size() == mRows);
@@ -435,25 +463,35 @@ void Grid::Place(const Point2& pos, const Size& size)
 
 	// 当设置的大小大于所需的大小，则调整grid,这里默认所有的网格
 	// 增长因子相同
-	auto ResizeGridCell = [](int diff, std::vector<int>& gridVecot){
-		const int factor = 1;					// 每个网格的增长因子
-		int count = gridVecot.size() * factor;	// 网格个数
-		int growBycell = diff / count;			// 每个网格增长因子
+	auto ResizeGridCell = [](int diff, std::vector<int>& gridVecot, const std::vector<float>& factory){
+		const float invSumFactory = 1.0f / std::accumulate(
+			factory.begin(), factory.end(), 0.0f);					// 每个网格的增长因子
 
-		for (auto& val : gridVecot)
+		for (int i = 0; i < gridVecot.size(); i++)
 		{
-			val += growBycell;
+			int value = (int)(diff * factory[i] * invSumFactory);	
+			gridVecot[i] += value;
 		}
 	};
 	if (size.width > bestSize.width)
 	{
-		ResizeGridCell(size.width - bestSize.width, mColsWidth);
+		ResizeGridCell(size.width - bestSize.width, mColsWidth, mColsFactory);
 	}
 	if (size.height > bestSize.height)
 	{
-		ResizeGridCell(size.height - bestSize.height, mRowsHeight);
+		ResizeGridCell(size.height - bestSize.height, mRowsHeight, mRowsFactory);
 	}
 	LayoutChildren(pos);
+}
+
+/**
+*	\brief 刷新当前位置，当网格数改变时应该手动调用
+*/
+void Grid::RefreshPlace()
+{
+	const Size size = GetSize();
+	const Point2 pos = GetPositon();
+	Place(pos, size);
 }
 
 void Grid::SetPosition(const Point2& position)

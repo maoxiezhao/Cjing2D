@@ -1,5 +1,6 @@
 #include"luaContext.h"
 #include"lua\luaDebug.h"
+#include"lua\luaBinder.h"
 #include"core\fileData.h"
 #include"core\debug.h"
 #include"core\logger.h"
@@ -83,6 +84,9 @@ void LuaContext::Initialize()
 
 	// 注册模块
 	RegisterModules();
+
+	// 调用LuaBinder自动绑定函数
+	LuaBinder::GetInstance().Initialize(l);
 	
 	// 加载main脚本,并从start出开始执行
 	Debug::CheckAssertion(lua_gettop(l) == 0, "The lua stack is not empty.");

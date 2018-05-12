@@ -89,7 +89,7 @@ Window::Window(int x, int y, int w, int h) :
 	mPosY(y),
 	mWidth(w),
 	mHeight(h),
-	mSuspendDrawing(true),
+	mSuspendDrawing(false),
 	mNeedLayout(true),
 	mDistributor(new Distributor(*this,Dispatcher::front_child))
 {
@@ -122,9 +122,8 @@ void Window::Show(bool showed)
 void Window::Draw()
 {
 	if (mSuspendDrawing)
-	{
 		return;
-	}
+	
 	// 是否需要重新布局
 	if (mNeedLayout)
 	{

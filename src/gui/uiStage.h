@@ -13,6 +13,13 @@
 class UIStage
 {
 public:
+	/** 创建Widget时的信息 */
+	struct WidgetData
+	{
+		Point2 wantedPos;
+		Size wantedSize;
+	};
+
 	UIStage();
 	~UIStage();
 
@@ -22,12 +29,20 @@ public:
 	void Draw();
 	void Update();
 
-	/*** widget base operation */
-	bool CreateElement();
+	/** widget operation */
+	bool CreateElement(gui::WIDGET_TYPE widgetType, WidgetData data, gui::WidgetPtr parent = nullptr);
+
+	/** status */
+	bool IsMouseOnGUI();
+	bool IsKeyboardOnGUI();
+	
+	void SetVisible(bool visible);
+	bool IsVisible()const;
 
 private:
 	std::unique_ptr<gui::GUIManager> mGUI;	// gui管理器
+	std::shared_ptr<gui::Window> mRoot;		// widget根节点,所有widget创建作为mRoot的children
 
-	std::shared_ptr<gui::Widget> mRoot;		// widget根节点,所有widget创建作为mRoot的children
-
+	using WidgetCreateFunc = std::function<gui::WidgetPtr(WidgetData) >;
+	static std::map<gui::WIDGET_TYPE, WidgetCreateFunc> mCreateFuncMapping;
 };

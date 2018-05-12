@@ -122,6 +122,16 @@ void Widget::SetPosition(const Point2 & position)
 	mPosition = position;
 }
 
+const Point2 & Widget::GetWantedPositon() const
+{
+	return mWantedPosition;
+}
+
+void Widget::SetWantedPosition(const Point2 & position)
+{
+	mWantedPosition = position;
+}
+
 const Size & Widget::GetSize() const
 {
 	return mSize;
@@ -154,6 +164,10 @@ void Widget::Place(const Point2 & pos, const Size & size)
 	mPosition = pos;
 	mSize = size;
 	SetIsDirty(true);
+}
+
+void Widget::RefreshPlace()
+{
 }
 
 /**
@@ -271,16 +285,11 @@ void Widget::DemandReduceHeight(const int maxnumHeight)
 	// nothing
 }
 
-void Widget::DrawBackground()
+void Widget::Draw()
 {
-	Debug::CheckAssertion(mVisible == Visiblility::Visible);
-	DrawBackground(Point2(0, 0));
-}
-
-void Widget::DrawForeground()
-{
-	Debug::CheckAssertion(mVisible == Visiblility::Visible);
-	DrawForeground(Point2(0, 0));
+	DrawBackground();
+	DrawChildren();
+	DrawForeground();
 }
 
 /**

@@ -97,9 +97,6 @@
     <ClCompile Include="src\core\system.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\app.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="src\lua\luaException.cpp">
       <Filter>lua</Filter>
     </ClCompile>
@@ -373,9 +370,6 @@
     <ClCompile Include="src\game\itemBeg.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\lua\windowsApi.cpp">
-      <Filter>gui\lua</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\enemy.cpp">
       <Filter>entity</Filter>
     </ClCompile>
@@ -478,6 +472,12 @@
     <ClCompile Include="src\entity\bullet.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\app.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\lua\uiApi.cpp">
+      <Filter>gui\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -506,9 +506,6 @@
     </ClInclude>
     <ClInclude Include="src\core\system.h">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\app.h">
-      <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\lua\luaException.h">
       <Filter>lua</Filter>
@@ -945,6 +942,15 @@
     <ClInclude Include="src\utils\boundingBox.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\app.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\widgetInfo.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\lua\uiApi.h">
+      <Filter>gui\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -978,7 +984,6 @@
     <None Include="src\lua\luaTools.inl">
       <Filter>lua</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="src\utils\reflect.inl">
       <Filter>utils</Filter>
     </None>
@@ -988,5 +993,6 @@
     <None Include="src\utils\bevTree.inl">
       <Filter>utils</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include"utils\point.h"
 #include"gui\core\dispatcher.h"
 #include"gui\core\builderWindow.h"
+#include"gui\widget\widgetInfo.h"
 #include"lua\luaObject.h"
 
 namespace gui
@@ -25,14 +26,14 @@ public:
 	{
 		Visible,
 		Hidden,
-		InVisible
+		InVisible	// remove
 	};
 
 	/** 重绘动作 */
 	enum class ReDrawAction
 	{
 		Full,		// 完整绘制
-		Partly,		// 部分绘制,目前不支持
+		Partly,		// 部分绘制,目前不支持, to remove
 		None	
 	};
 
@@ -47,12 +48,11 @@ public:
 	void SetID(const string& id);
 	const string& GetID()const;
 
-	void DrawBackground();
-	void DrawForeground();
+	void Draw();
 
-	void DrawBackground(const Point2& offset);
-	void DrawForeground(const Point2& offset);
-	void DrawChildren(const Point2& offset);
+	void DrawBackground(const Point2& offset = { 0,0 });
+	void DrawForeground(const Point2& offset = { 0,0 });
+	void DrawChildren(const Point2& offset = { 0,0 });
 	void DrawDebugGround();
 
 	virtual const string GetLuaObjectName()const;
@@ -107,6 +107,8 @@ private:
 public:
 	const Point2& GetPositon()const;
 	virtual void SetPosition(const Point2& position);
+	const Point2& GetWantedPositon()const;
+	virtual void SetWantedPosition(const Point2& position);
 	const Size& GetSize()const;
 	virtual void SetSize(const Size& size);
 
@@ -129,6 +131,7 @@ public:
 	virtual void DemandReduceHeight(const int maxnumHeight);
 
 	virtual void Place(const Point2& pos, const Size& size);
+	virtual void RefreshPlace();
 
 	virtual void Move(const Point2& offset);
 	virtual void Move(const int xoffset, const int yoffset);
@@ -155,7 +158,8 @@ public:
 	}
 
 private:
-	Point2 mPosition;
+	Point2 mPosition;			/** 控件实际全局位置 */
+	Point2 mWantedPosition;		/** 期望位置 */
 	Size mSize;
 	Size mLayoutSize;
 

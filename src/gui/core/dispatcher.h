@@ -72,6 +72,16 @@ public:
 		none,
 	};
 
+	void CaptureMouse()
+	{
+		gui::CaptureMouse(this);
+	}
+
+	void ReleaseMouse()
+	{
+		gui::ReleaseMouse(this);
+	}
+
 	/******  set/get *******/
 
 	bool GetWantKeyboard()const

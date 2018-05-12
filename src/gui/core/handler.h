@@ -104,4 +104,14 @@ void ConnectDispatcher(Dispatcher* Dispatcher);
 */
 void DisconnectDispatcher(Dispatcher* dispatcher);
 
+/**
+*	\brief 捕获当前鼠标
+*/
+void CaptureMouse(Dispatcher* dispatcher);
+
+/**
+*	\brief 释放当前捕获鼠标
+*/
+void ReleaseMouse(Dispatcher* dispatcher);
+
 }

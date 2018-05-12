@@ -12,18 +12,20 @@ namespace gui
 /**** **** 垂直/水平对齐模式 **** ****/
 	
 	// 垂直对齐方式
-	static const unsigned int ALIGN_VERTICAL_SHIFT = 0;
-	static const unsigned int ALIGN_VERTICAL_TOP = 1 << ALIGN_VERTICAL_SHIFT;
+	static const unsigned int ALIGN_VERTICAL_SHIFT  = 0;
+	static const unsigned int ALIGN_VERTICAL_TOP    = 1 << ALIGN_VERTICAL_SHIFT;
 	static const unsigned int ALIGN_VERTICAL_CENTER = 2 << ALIGN_VERTICAL_SHIFT;
 	static const unsigned int ALIGN_VERTICAL_BOTTOM = 4 << ALIGN_VERTICAL_SHIFT;
-	static const unsigned int ALIGN_VERTICAL_MASK = 7 << ALIGN_VERTICAL_SHIFT;
+	static const unsigned int ALIGN_VERTIACL_CUSTOM = 8 << ALIGN_VERTICAL_SHIFT;
+	static const unsigned int ALIGN_VERTICAL_MASK   = 15 << ALIGN_VERTICAL_SHIFT;
 
 	// 水平对齐方式
-	static const unsigned int ALIGN_HORIZONTAL_SHIFT = 3;
-	static const unsigned int ALIGN_HORIZONTAL_TOP = 1 << ALIGN_HORIZONTAL_SHIFT;
+	static const unsigned int ALIGN_HORIZONTAL_SHIFT  = 4;
+	static const unsigned int ALIGN_HORIZONTAL_LEFT   = 1 << ALIGN_HORIZONTAL_SHIFT;
 	static const unsigned int ALIGN_HORIZONTAL_CENTER = 2 << ALIGN_HORIZONTAL_SHIFT;
-	static const unsigned int ALIGN_HORIZONTAL_BOTTOM = 4 << ALIGN_HORIZONTAL_SHIFT;
-	static const unsigned int ALIGN_HORIZONTAL_MASK = 7 << ALIGN_HORIZONTAL_SHIFT;
+	static const unsigned int ALIGN_HORIZONTAL_RIGHT  = 4 << ALIGN_HORIZONTAL_SHIFT;
+	static const unsigned int ALIGN_HORIZONTAL_CUSTOM = 8 << ALIGN_HORIZONTAL_SHIFT;
+	static const unsigned int ALIGN_HORIZONTAL_MASK   = 15 << ALIGN_HORIZONTAL_SHIFT;
 
 	// 边界
 	static const unsigned int BORDER_TOP = 1 << 6;
@@ -65,14 +67,17 @@ public:
 	{
 		return mRows;
 	}
-
 	void SetRowCols(int row, int col);
+
+	void SetRowsFactory(const std::vector<float> factoies);
+	void SetColsFactory(const std::vector<float> factoies);
 
 	/**** **** *** Layout *** **** ****/
 	
 	virtual void InitLayout();
 
 	virtual void Place(const Point2& pos, const Size& size);
+	virtual void RefreshPlace();
 	virtual void SetPosition(const Point2& position);
 
 	void ReduceWidth(const int maxnumWidth);
@@ -229,16 +234,18 @@ public:
 		return iterator(mChilds.end());
 	}
 private:
-	int mRows;							/** 当前行数 */
-	int mCols;							/** 当前列数 */
+	int mRows;		/** 当前行数 */
+	int mCols;		/** 当前列数 */
 
 	mutable std::vector<int> mRowsHeight;		/** 每行网格的高度 */
 	mutable std::vector<int> mColsWidth;		/** 每列网格的宽度 */
+	mutable std::vector<float> mRowsFactory;	/** 每行的网格分布权重 */
+	mutable std::vector<float> mColsFactory;	/** 每列的网格分布权重 */
 
-	std::vector<Children> mChilds;		/** 以数组形式划分存储当前所有widget*/
+	std::vector<Children> mChilds;			    /** 以数组形式划分存储当前所有widget*/
 
 	std::map<string, Children> mNamedChilds;	/** 以map形式存储children,并以ID作为键值,用于查找 */
-												// 目前考虑存在必要性，因为GUI的网格一般比较小
+												/** 目前考虑存在必要性，因为GUI的网格一般比较小 */
 
 };												
 

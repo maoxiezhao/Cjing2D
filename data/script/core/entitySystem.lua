@@ -3,24 +3,37 @@
 local EntitySystem = SystemModule("EntitySystem")
 
 ------------------------------------------------------
-
+-- Entity Metatable
+------------------------------------------------------
 local EntityMT = {}
-
-
-function EntityMT:Init(uid)
-	self._uid = uid
-end
-
 function EntityMT:GetUID()
 	return self._uid
 end
 
-function EntitySystem.GetEntityMT()
-	return entitMT
+function EntityMT:IsPlayer()
+	return self:GetType() == ENTITY_TYPE_PLAYRE
+end
+
+function EntityMT:IsEnemy()
+	return self:GetType() == ENTITY_TYPE_ENEMEY
+end
+
+function EntityMT:OnRemoved()
+	EntitySystem.RemoveEntity(self._uid)
+end
+
+local function SetEntityMetatable(entity, meta)
+	if not meta or not entity then 
+		return 
+	end
+	for k,v in pairs(meta) do 
+		entity[k] = v
+	end
 end
 
 ------------------------------------------------------
-
+-- Entity Manager
+------------------------------------------------------
 local all_entities = {}
 local name_entities = {}
 
@@ -33,27 +46,9 @@ local function InitEntity(entity)
 		for k, v in pairs(EntityMT) do
 			entity[k] = v
 		end
-		entity:Init(entity_uid)
+		entity._uid = entity_uid
 		entity_uid = entity_uid + 1
 	end
-end
-
-
-function EntitySystem.CreateEnemy(map, name, x, y, layer, direction, templ )
-	print("Create Enemey", name, x, y, layer, direction)
-	local enemyData = {
-		name = name,
-		templ = templ,
-		x = x,
-		y = y,
-		layer = layer,
-		direction = direction
-	}
-	local entity = map:Create_enemy(enemyData, InitEntity)
-	if entity then 
-		EntitySystem.AddEntity(entity)
-	end
-	return entity
 end
 
 function EntitySystem.AddEntity(entity)
@@ -75,7 +70,8 @@ function EntitySystem.RemoveEntity(uid)
 			all_entities[uid] = nil
 			name_entities[entity:GetName()] = nil
 
-			entity:RemoveBySelf()
+			--entity:RemoveBySelf()
+			event_system_fire_event(EVENT_GAME_ENTITY_LEAVE, entity)
 			return true
 		end
 	end
@@ -99,20 +95,90 @@ function EntitySystem.GetEntityByName(name)
 	end
 end
 
-local function game_started(game)
+function EntitySystem.GetEntityMT()
+	return entitMT
+end
+
+------------------------------------------------------
+-- Entity Interface
+------------------------------------------------------
+local function OnGameStart(event, scope, custom, game)
 	cur_game = game
+end
+
+local function OnGameEnd( ... )
+	cur_game = nil
+end
+
+local function OnMapEnter(event, scope, custom, map)
+	cur_map = map
+end
+
+local function OnMapLeave( ... )
+	cur_map = nil
 end
 
 function EntitySystem.Initialize()
 	all_entities = {}
 	entity_uid = 1
-	event_system_register_event(EVENT_GAME_START, EntitySystem, game_started)
+
+	event_system_register_event(EVENT_GAME_START,    EntitySystem,  OnGameStart)
+	event_system_register_event(EVENT_GAME_END,      EntitySystem,  OnGameEnd)
+	event_system_register_event(EVENT_GAME_MAP_ENTER, EntitySystem, OnMapEnter)
+	event_system_register_event(EVENT_GAME_MAP_LEAVE, EntitySystem, OnMapLeave)
 end
 
 function EntitySystem.Uninitialize()
 	cur_game = nil
 	event_system_unregister_event(EVENT_GAME_START, EntitySystem)
 	all_entities = {}
+end
+
+----------------------------------------------------------
+--  entity factory
+----------------------------------------------------------
+function EntitySystem.CreateEnemy(name, x, y, layer, direction, templ_name )
+	if not cur_map then return end
+	print("Create Enemey", name, x, y, layer, direction)
+	local enemyData = {
+		name = name,
+		templ = templ_name,
+		x = x,
+		y = y,
+		layer = layer,
+		direction = direction
+	}
+	local entity = cur_map:Create_enemy(enemyData, InitEntity)
+	if entity then 
+		EntitySystem.AddEntity(entity)
+	end
+	return entity
+end
+
+local function init_bullet_entity(entity)
+	-- init entity base
+	InitEntity(entity)
+
+	-- init bullet method
+	local bulletTempl = game_content_get_templ("bullet")
+	if bulletTempl and bulletTempl.metatable then 
+		SetEntityMetatable(entity, bulletTempl.metatable)
+	end
+end
+
+function EntitySystem.CreateBullet(layer, templ_name)
+	if not cur_map then return end
+	print("Create Bullet", templ_name, layer)
+
+	local bulletData = {
+		templ = templ_name,
+		layer = layer,
+	}
+	local entity = cur_map:Create_bullet(bulletData, init_bullet_entity)
+	if entity then 
+		EntitySystem.AddEntity(entity)
+	end
+	return entity
 end
 
 GlobalExports.entity_system_init = EntitySystem.Initialize

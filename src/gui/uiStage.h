@@ -1,7 +1,7 @@
 #pragma once
 
 #include"gui\core\handler.h"
-#include"gui\widget\window.h"
+#include"gui\widget\frame.h"
 
 /**
 *	\brief ui场景管理类
@@ -20,8 +20,8 @@ public:
 		Size wantedSize;
 	};
 
-	UIStage();
 	~UIStage();
+	static UIStage& GetInstance();
 
 	void Initiazlize();
 	void Quit();
@@ -39,9 +39,15 @@ public:
 	void SetVisible(bool visible);
 	bool IsVisible()const;
 
+	gui::Frame& GetRoot();
+
+private:
+	UIStage();
+
 private:
 	std::unique_ptr<gui::GUIManager> mGUI;	// gui管理器
-	std::shared_ptr<gui::Window> mRoot;		// widget根节点,所有widget创建作为mRoot的children
+	std::shared_ptr<gui::Frame> mRoot;		// widget根节点,所有widget创建作为mRoot的children
+	std::shared_ptr<gui::Distributor> mDistributor;
 
 	using WidgetCreateFunc = std::function<gui::WidgetPtr(WidgetData) >;
 	static std::map<gui::WIDGET_TYPE, WidgetCreateFunc> mCreateFuncMapping;

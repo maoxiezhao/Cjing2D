@@ -11,7 +11,7 @@ Grid::Grid():
 	mCols(0),
 	mRowsHeight(),
 	mColsWidth(),
-	mChilds(0),
+	mGridItems(0),
 	mNamedChilds()
 {
 }
@@ -21,7 +21,7 @@ Grid::Grid(int row, int col) :
 	mCols(col),
 	mRowsHeight(),
 	mColsWidth(),
-	mChilds(row * col),
+	mGridItems(row * col),
 	mNamedChilds()
 {
 	mRowsFactory.resize(row, 1.0f);
@@ -39,14 +39,15 @@ Grid::~Grid()
 	*	临时措施：设置每个child的parent为nullptr,因为同时维护智能指针
 	*	和普通指针，不久之后将要修改
 	*/
-	for (auto& child : mChilds)
+	for (auto& childs : mGridItems)
 	{
-		if (child.GetWidget() != nullptr)
+		for (auto& child : childs)
 		{
-			child.GetWidget()->SetParent(nullptr);
+			if (child.GetWidget() != nullptr)
+				child.GetWidget()->SetParent(nullptr);
 		}
 	}
-	mChilds.clear();
+	mGridItems.clear();
 }
 
 void Grid::AddRows(int rowCount )
@@ -80,20 +81,18 @@ void Grid::SetRows(int rows)
 void Grid::SetRowCols(int row, int col)
 {
 	if (mRows == row && mCols == col)
-	{
 		return;
-	}
-	if (!mChilds.empty())
-	{
+	
+	if (!mGridItems.empty())
 		Debug::Warning("Resizing a non-empty grid");
-	}
+	
 	mRows = row;
 	mCols = col;
 	mRowsHeight.resize(row, 0);
 	mColsWidth.resize(col, 0);
 	mRowsFactory.resize(row, 1.0f);
 	mColsFactory.resize(col, 1.0f);
-	mChilds.resize(row * col);
+	mGridItems.resize(row * col);
 }
 
 void Grid::SetRowsFactory(const std::vector<float> factoies)
@@ -120,6 +119,72 @@ void Grid::SetColsFactory(const std::vector<float> factoies)
 
 /**** **** **** **** *** Child *** **** **** **** ****/
 
+void Grid::ForEachChildren(std::function<bool(Children&child)> func)
+{
+	for (auto& gridItems : mGridItems)
+	{
+		for (auto& child : gridItems)
+		{
+			if (!func(child))
+				return;
+		}
+	}
+}
+
+void Grid::ForEachChildren(std::function<bool(const Children&child)> func) const
+{
+	for (const auto& gridItems : mGridItems)
+	{
+		for (const auto& child : gridItems)
+		{
+			if (!func(child))
+				return;
+		}
+	}
+}
+
+/**
+*	\brief 计算当前网格的最佳大小
+*/
+Size Grid::GetGridItemBestSize(int row, int col) const
+{
+	Size bestSize(0, 0);
+	auto& gridItem = GetGridItem(row, col);
+	for (const auto& child : gridItem)
+	{
+		const Size curSize = child.GetBestSize();
+		bestSize.width  = std::max(bestSize.width,  curSize.width);
+		bestSize.height = std::max(bestSize.height, curSize.height);
+	}
+	return bestSize;
+}
+
+/**
+*	\brief 请求减少一个GridItem宽度，这会尝试减小每个属下的Children
+*/
+void Grid::RequestReduceGridItemWidth(GridItem & item, const int maxnumWidth)
+{
+	for (auto& child : item)
+	{
+		const Size size = child.GetBestSize();
+		if(size.width > maxnumWidth)
+			RequestReduceCellWidth(child, maxnumWidth);
+	}
+}
+
+/**
+*	\brief 请求减少一个GridItem高度，这会尝试减小每个属下的Children
+*/
+void Grid::RequestReduceGridItemHeight(GridItem & item, const int maxnumHeight)
+{
+	for (auto& child : item)
+	{
+		const Size size = child.GetBestSize();
+		if (size.height > maxnumHeight)
+			RequestReduceCellHeight(child, maxnumHeight);
+	}
+}
+
 /**
 *	\brief 设置指定网格的子节点
 *	\param widget  添加的wiget
@@ -129,10 +194,12 @@ void Grid::SetColsFactory(const std::vector<float> factoies)
 void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag,int borderSize)
 {
 	Debug::CheckAssertion(row < mRows && col < mCols);
-	Debug::CheckAssertion(flag & ALIGN_VERTICAL_MASK);
-	Debug::CheckAssertion(flag & ALIGN_HORIZONTAL_MASK);
+	Debug::CheckAssertion(flag & ALIGN_VERTICAL_MASK,  "The vertical align is invalid");
+	Debug::CheckAssertion(flag & ALIGN_HORIZONTAL_MASK,"The horizontl align is invalid");
 
-	Children& children = GetChildren(row, col);
+	// 先找到是否存在同名Chdren，如果有则直接替换,否则创建一个
+	Children* findChild = GetChildren(widget->GetID());
+	Children& children = findChild != nullptr? *findChild : CreateChildren(row, col);
 	if (children.GetWidget() != nullptr)
 	{
 		Debug::Warning(string("The childe '" + children.GetID() + "'will be replaced."));
@@ -146,20 +213,27 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 	{
 		children.GetWidget()->SetParent(this);
 	}
+
+	// 如果存在名字则添加到name mapping
+	if (widget->GetID() != "")
+	{
+		mNamedChilds[widget->GetID()] = &children;
+	}
 }
 
 /**
-*	\brief 移除指定网格的子节点
+*	\brief 移除指定网格的所有子节点
 *	\param row,col 指定的网格
 */
 void Grid::RemoveChildren(int row, int col)
 {
 	Debug::CheckAssertion(row < mRows && col < mCols);
 
-	Children& children = GetChildren(row, col);
-	if (children.GetWidget() != nullptr)
+	GridItem& childs = GetGridItem(row, col);
+	for (auto& child : childs)
 	{
-		children.SetWidget(nullptr);
+		if (child.GetWidget() != nullptr)
+			child.SetWidget(nullptr);
 	}
 }
 
@@ -172,28 +246,50 @@ void Grid::RemoveChildren(const string& id)
 	auto& findedChildren = mNamedChilds.find(id);
 	if (findedChildren != mNamedChilds.end())
 	{
-		findedChildren->second.SetWidget(nullptr);
+		findedChildren->second->SetWidget(nullptr);
 	}
 	else
 	{
-		for (auto& child : mChilds)
-		{
+		ForEachChildren([&](Children& child) {
 			if (child.GetID() == id)
-			{
 				child.SetWidget(nullptr);
-			}
-		}
+			return true;
+		});
 	}
 }
 
 Grid::Children* Grid::GetChildren(const WidgetPtr& widget)
 {
-	for (auto& child : mChilds)
-	{
+	Children* ret = nullptr;
+	ForEachChildren([&](Children& child) {
 		if (child.GetWidget() == widget)
-			return &child;
-	}
+		{
+			ret = &child;
+		}
+		return true;
+	});
+	return ret;
+}
+
+Grid::Children * Grid::GetChildren(const std::string & id)
+{
+	auto& childIt = mNamedChilds.find(id);
+	if (childIt != mNamedChilds.end())
+		return childIt->second;
+
 	return nullptr;
+}
+
+Grid::Children& Grid::CreateChildren(int row, int col)
+{
+	GridItem gridItem = GetGridItem(row, col);
+	gridItem.emplace_back();
+
+	// Set a limit
+	if (gridItem.size() > 64)
+		Debug::Error("The size of grid item is too much.");
+
+	return gridItem.back();
 }
 
 /**
@@ -373,7 +469,12 @@ Size Grid::Children::GetBestSize()const
 		return Size(0, 0);
 	}
 
-	return  mWidget->GetBestSize() + GetBorderSpace();
+	// 最佳大小为 Widget的最佳大小 + BorderSpace + wantedPos(位置偏移）
+	const Size posOffset(
+		mWidget->GetWantedPositon().x,
+		mWidget->GetWantedPositon().y
+	);
+	return  mWidget->GetBestSize() + GetBorderSpace() + posOffset;
 }
 
 /**** **** **** **** *** Layout *** **** **** **** ****/
@@ -381,10 +482,11 @@ Size Grid::Children::GetBestSize()const
 void Grid::InitLayout()
 {
 	Widget::InitLayout();
-	for (auto& child : mChilds)
-	{
+
+	ForEachChildren([&](Children& child) {
 		child.InitLayout();
-	}
+		return true;
+	});
 }
 
 /**
@@ -398,10 +500,12 @@ void Grid::LayoutChildren(const Point2& origin)
 		for (int col = 0; col < mCols; col++)
 		{
 			const Size size(mColsWidth[col], mRowsHeight[row]);
-			WidgetPtr widget = GetChildren(row, col).GetWidget();
-			if (widget != nullptr)
+			auto& gridItem = GetGridItem(row, col);
+			for (auto& child : gridItem)
 			{
-				GetChildren(row, col).Place(pos, size);
+				WidgetPtr widget = child.GetWidget();
+				if (widget != nullptr)
+					child.Place(pos, size);
 			}
 			pos.x += mColsWidth[col];
 		}
@@ -421,10 +525,12 @@ void Grid::Layout(const Point2& origin)
 		for (int col = 0; col < mCols; col++)
 		{
 			const Size size(mColsWidth[col], mRowsHeight[row]);
-			WidgetPtr widget = GetChildren(row, col).GetWidget();
-			if (widget != nullptr)
+			auto& gridItem = GetGridItem(row, col);
+			for (auto& child : gridItem)
 			{
-				GetChildren(row, col).Place(pos, size);
+				WidgetPtr widget = child.GetWidget();
+				if (widget != nullptr)
+					child.Place(pos, size);
 			}
 			pos.x += mColsWidth[col];
 		}
@@ -498,13 +604,13 @@ void Grid::SetPosition(const Point2& position)
 {
 	Widget::SetPosition(position);
 
-	for (auto& child : mChilds)
-	{
+	ForEachChildren([&](Children& child) {
 		if (child.GetWidget() != nullptr)
 		{
 			child.GetWidget()->SetPosition(position);
 		}
-	}
+		return true;
+	});
 }
 
 /**
@@ -523,7 +629,8 @@ Size Grid::CalculateBestSize()const
 	{
 		for (int col = 0; col < mCols; col++)
 		{
-			Size bestSize = GetChildren(row, col).GetBestSize();
+			//Size bestSize = GetChildren(row, col).GetBestSize();
+			Size bestSize = GetGridItemBestSize(row, col);
 			if (bestSize.width > mColsWidth[col])
 			{
 				mColsWidth[col] = bestSize.width;
@@ -623,9 +730,13 @@ int Grid::RequestReduceColWidth(int col, const int maxnumWidth)
 	int requiredWidth = 0;
 	for (size_t row = 0; row < mRowsHeight.size(); row++)
 	{
-		Children& cell = GetChildren(row, col);
-		RequestReduceCellWidth(cell, maxnumWidth);
-		const Size size = cell.GetBestSize();
+		//Children& cell = GetChildren(row, col);
+		//RequestReduceCellWidth(cell, maxnumWidth);
+		//const Size size = cell.GetBestSize();
+
+		GridItem& gridItem = GetGridItem(row, col);
+		RequestReduceGridItemWidth(gridItem, maxnumWidth);
+		const Size size = GetGridItemBestSize(row, col);
 
 		if (requiredWidth == 0 || size.width > requiredWidth)
 		{
@@ -720,10 +831,13 @@ int Grid::RequestReduceRowHeight(int row, const int maxnumWidth)
 	int requiredHeight = 0;
 	for (int col = 0; col < mCols; col++)
 	{
-		Children& cell = GetChildren(row, col);
-		RequestReduceCellHeight(cell, maxnumWidth);
-	
-		const Size size = cell.GetBestSize();
+		//Children& cell = GetChildren(row, col);
+		//RequestReduceCellHeight(cell, maxnumWidth);
+		//const Size size = cell.GetBestSize();
+
+		GridItem& gridItem = GetGridItem(row, col);
+		RequestReduceGridItemHeight(gridItem, maxnumWidth);
+		const Size size = GetGridItemBestSize(row, col);
 		if (requiredHeight == 0 || size.height > requiredHeight)
 		{
 			requiredHeight = size.height;
@@ -749,21 +863,21 @@ void Grid::ImplDrawChildren(const Point2 & offset)
 	Debug::CheckAssertion(GetVisibility() == Widget::Visiblility::Visible);
 	SetIsDirty(false);
 
-	for (auto& child : mChilds)
-	{
+	ForEachChildren([&](Children& child) {
 		auto widget = child.GetWidget();
-		if (widget == nullptr || 
+		if (widget == nullptr ||
 			widget->GetVisibility() != Widget::Visiblility::Visible ||
-			widget->GetReDrawAction() == Widget::ReDrawAction::None)
-		{
-			continue;
+			widget->GetReDrawAction() == Widget::ReDrawAction::None){
+			return true;
 		}
 
 		widget->DrawBackground(offset);
 		widget->DrawChildren(offset);
 		widget->DrawForeground(offset);
 		widget->SetIsDirty(false);
-	}
+
+		return true;
+	});
 }
 
 
@@ -799,21 +913,21 @@ const Widget* Grid::Find(string& id, const bool activied)const
 
 bool Grid::HasWidget(const Widget& widget)const
 {
-	for (auto& child : mChilds)
-	{
+	bool ret = false;
+	ForEachChildren([&](Children& child) {
 		auto contanierWidget = child.GetWidget();
-		if (contanierWidget == nullptr)
+		if (contanierWidget != nullptr)
 		{
-			continue;
+			auto result = contanierWidget->HasWidget(widget);
+			if (result)
+			{
+				ret = result;
+				return false;
+			}
 		}
-
-		auto result = contanierWidget->HasWidget(widget);
-		if (result)
-		{
-			return result;
-		}
-	}
-	return false;
+		return true;
+	});
+	return ret;
 }
 
 bool Grid::IsAt(const Point2& pos)const
@@ -828,21 +942,22 @@ bool Grid::IsAt(const Point2& pos)const
 */
 Widget * Grid::FindAt(const Point2 & pos)
 {
-	for (auto& child : mChilds)
-	{
+	Widget* result = nullptr;
+
+	ForEachChildren([&](Children& child) {
 		auto widget = child.GetWidget();
-		if (widget == nullptr)
+		if (widget != nullptr)
 		{
-			continue;
+			auto findIt = widget->FindAt(pos);
+			if (findIt)
+			{
+				result = findIt;
+				return false;
+			}
 		}
-		
-		auto result = widget->FindAt(pos);
-		if (result)
-		{
-			return result;
-		}
-	}
-	return nullptr;
+		return true;
+	});
+	return result;
 }
 
 }

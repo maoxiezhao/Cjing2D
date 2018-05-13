@@ -11,7 +11,7 @@
 namespace gui
 {
 
-class Window;
+class Frame;
 class Grid;
 
 /**
@@ -83,12 +83,16 @@ public:
 	void SetParent(Widget* parent);
 	Widget* GetParent();
 
-	Window* GetWindow();
-	const Window* GetWindow()const;
+	Frame* GetRoot();
+	const Frame* GetRoot()const;
 
 	Grid* GetParentGrid();
 
 	virtual const string GetControlType()const;
+	virtual WIDGET_TYPE GetWidgetType()const
+	{
+		return WIDGET_TYPE::WIDGET_UNKNOW;
+	}
 
 	void SetLinkGrounp(const std::string& linkedGroup);
 private:

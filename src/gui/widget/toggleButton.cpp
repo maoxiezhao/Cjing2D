@@ -1,5 +1,5 @@
 #include "toggleButton.h"
-#include "gui\widget\window.h"
+#include "gui\widget\frame.h"
 
 namespace gui
 {
@@ -107,11 +107,9 @@ void ToggleButton::SignalHandlerMouseLeave(const ui_event event, bool & handle)
 
 void ToggleButton::SignalHandlerMouseLeftButtonDown(const ui_event event, bool & handle)
 {
-	Window* windows = GetWindow();
-	if (windows)
-	{
-		windows->MouseCaptrue(true);
-	}
+	Frame* root = GetRoot();
+	if (root)
+		root->MouseCaptrue(true);
 
 	handle = true;
 }

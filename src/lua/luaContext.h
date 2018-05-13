@@ -9,12 +9,12 @@
 #include"game\sprite.h"
 #include"game\drawable.h"
 #include"entity\entityData.h"
-#include"gui\widget\window.h"
 
 #include<set>
 #include<map>
 #include<list>
 #include<thirdparty\lua.hpp>
+#include<functional>
 
 //#define NOT_DEFERRED_METATABLE	// 不使用多重元表
 
@@ -414,7 +414,6 @@ public:
 	static void PushMap(lua_State*l, Map& map);
 	static void PushParticle(lua_State*l, ParticleSystem& particle);
 	static void PushItem(lua_State*l, Item& item);
-	static void PushWindow(lua_State*l, gui::Window& window);
 
 	// checkXX and isXXX
 	static DrawablePtr CheckDrawable(lua_State*l, int index);
@@ -441,8 +440,6 @@ public:
 	static bool IsParticle(lua_State*l, int index);
 	static std::shared_ptr<Item> CheckItem(lua_State*l, int index);
 	static bool IsItem(lua_State*l, int index);
-	static std::shared_ptr<gui::Window> CheckWindow(lua_State*l, int index);
-	static bool IsWindow(lua_State*l, int index);
 	static std::shared_ptr<Entity> CheckEntity(lua_State*l, int index);
 	static bool IsEntity(lua_State*l, int index);
 	static std::shared_ptr<Player> CheckPlayer(lua_State*l, int index);

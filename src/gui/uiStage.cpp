@@ -1,7 +1,9 @@
 #include"uiStage.h"
 #include"core\logger.h"
 #include"core\video.h"
-#include"gui\core\uiRender.h" 
+#include"gui\core\uiRender.h"
+
+#include"gui\widget\widget.h"
 #include"gui\widget\selections.h"
 #include"gui\widget\selections_private.h"
 #include"gui\widget\toggleButton.h"
@@ -40,7 +42,7 @@ void TestStatement()
 std::map<gui::WIDGET_TYPE, UIStage::WidgetCreateFunc> UIStage::mCreateFuncMapping =
 {
 	{
-		gui::WIDGET_TYPE::WIDGET_WINDOW,		
+		gui::WIDGET_TYPE::WIDGET_FRAME,		
 		[](WidgetData data)->gui::WidgetPtr {
 			return nullptr;
 		}
@@ -49,12 +51,19 @@ std::map<gui::WIDGET_TYPE, UIStage::WidgetCreateFunc> UIStage::mCreateFuncMappin
 
 UIStage::UIStage():
 	mGUI(nullptr),
-	mRoot(nullptr)
+	mRoot(nullptr),
+	mDistributor(nullptr)
 {
 }
 
 UIStage::~UIStage()
 {
+}
+
+UIStage & UIStage::GetInstance()
+{
+	static UIStage stage;
+	return stage;
 }
 
 void UIStage::Initiazlize()
@@ -67,23 +76,31 @@ void UIStage::Initiazlize()
 
 	/** 创建根节点Root */
 	const Size& wantedSize = Video::GetScreenSize();
-	mRoot = std::make_shared<gui::Window>(0, 0, wantedSize.width, wantedSize.height);
-	mRoot->AddCols(1);
-	mRoot->AddRows(1);
+	mRoot = std::make_shared<gui::Frame>(0, 0, wantedSize.width, wantedSize.height);
+	mRoot->SetID("root");
 	mRoot->RefreshPlace();
 
-	/** Test */
-	auto button = std::make_shared<gui::Button>();
-	button->Connect();
-	button->SetWantedPosition({ 0, 50 });
-	button->SetSize({150, 50});
-	mRoot->SetChildren(button, 1, 1, gui::ALIGN_VERTICAL_TOP| gui::ALIGN_HORIZONTAL_LEFT, 0);
+	/** 创建distributor */
+	mDistributor = std::make_shared<gui::Distributor>(*mRoot, gui::Dispatcher::front_child);
+	mRoot->SetDistributor(mDistributor);
+
+	/////** Test */
+	////auto button = std::make_shared<gui::Button>();
+	////button->Connect();
+	////button->SetWantedPosition({ 0, 50 });
+	////button->SetSize({150, 50});
+	////mRoot->SetChildren(button, 1, 1, gui::ALIGN_VERTICAL_TOP| gui::ALIGN_HORIZONTAL_LEFT, 0);
 }
 
 void UIStage::Quit()
 {
 	Logger::Info("[GUI] quit ui Render");
 	gui::UIRender::Quit();
+
+	// 必须要显示删除，因为UIStage为单例，生命周期可能存在冲突
+	mDistributor = nullptr;
+	mRoot = nullptr;
+	mGUI = nullptr;
 }
 
 bool UIStage::NotifyInput(const InputEvent & ent)
@@ -118,6 +135,11 @@ bool UIStage::IsVisible() const
 {
 	return mRoot->GetVisibility() == 
 		gui::Widget::Visiblility::Visible;
+}
+
+gui::Frame& UIStage::GetRoot()
+{
+	return *(mRoot.get());
 }
 
 /**

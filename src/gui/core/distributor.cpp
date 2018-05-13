@@ -47,7 +47,7 @@ void MouseMotion::MouseEnter(Widget * widget)
 {
 	Debug::CheckAssertion(widget);
 
-	std::cout << ("[EVENT] Enter event.") << endl;
+	std::cout << ("[EVENT] Enter event. Widget ") << widget->GetID() << endl;
 
 	mMouseFocus = widget;
 	mOwner.Fire(ui_event::UI_EVENT_MOUSE_ENTER, *widget);
@@ -55,7 +55,7 @@ void MouseMotion::MouseEnter(Widget * widget)
 
 void MouseMotion::MouseLeave()
 {
-	std::cout << ("[EVENT] Leave event.") << endl;
+	std::cout << ("[EVENT] Leave event. Widget ") << mMouseFocus->GetID() << endl;
 
 	mOwner.Fire(ui_event::UI_EVENT_MOUSE_LEAVE, *mMouseFocus);
 	mMouseFocus = nullptr;

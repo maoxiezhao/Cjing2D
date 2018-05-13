@@ -226,9 +226,6 @@
     <ClCompile Include="src\gui\core\builderWindow.cpp">
       <Filter>gui\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\widget\window.cpp">
-      <Filter>gui\widget</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui\widget\grid.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
@@ -478,6 +475,12 @@
     <ClCompile Include="src\gui\lua\uiApi.cpp">
       <Filter>gui\lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\frame.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\lua\frameData.cpp">
+      <Filter>gui\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -632,9 +635,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\typeSet.h">
       <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\widget\window.h">
-      <Filter>gui\widget</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\core\builderWindow.h">
       <Filter>gui\core</Filter>
@@ -949,6 +949,12 @@
       <Filter>gui\widget</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\lua\uiApi.h">
+      <Filter>gui\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\frame.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\lua\frameData.h">
       <Filter>gui\lua</Filter>
     </ClInclude>
   </ItemGroup>

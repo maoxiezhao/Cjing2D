@@ -17,8 +17,10 @@ public:
 	virtual bool GetActivite()const;
 	virtual unsigned int GetState()const;
 
-
-
+	virtual WIDGET_TYPE GetWidgetType()const
+	{
+		return WIDGET_TYPE::WIDGET_BUTTON;
+	}
 private:
 	enum State
 	{
@@ -52,6 +54,4 @@ private:
 	// test
 	void SignalHandlerMouseLeftButtonDoubleClick(const  ui_event event, bool&handle);
 };
-
-
 }

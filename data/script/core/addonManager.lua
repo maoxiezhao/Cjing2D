@@ -16,6 +16,9 @@ if not CLIENT_LUA_DEBUG then
 end
 
 ------------------------------------------------------
+-- 插件列表
+local cur_addon_lists = nil
+
 -- 插件全局接口表
 local addon_exports = {}
 
@@ -26,8 +29,16 @@ local addon_env_list = {
 	["util_log_warn"] = "util_log_warn",
 	["util_log_err"]  = "util_log_err",
 
+	-- timer func
+	["SetTimer"] 	  = "SetTimer",
+	["SetDelayTimer"] = "SetDelayTimer",
+	["KillTimer"] 	  = "KillTimer",
+
 	["GetGame"]       = "game_manager_get_game",
 	["GetPlayer"]     = "game_manager_get_player",
+
+	-- ui modules
+	["Frame"]	      = "Frame",
 }
 
 -- 界面的addon的env需要做一个限制
@@ -98,7 +109,6 @@ local function addon_manager_load_addon(name)
 		util_log_warn("Addon "..  name .. " has already loaded.")
 		return 
 	end
-
 	-- 额外的依赖关系处理
 
 	-- 加载adddon
@@ -114,28 +124,83 @@ local function addon_manager_load_addon(name)
 	end
 
 	cur_addons[name] = addon
+	table.insert(cur_addons, addon) -- 插入表中是为了保证先后顺序
+
 	return addon
 end
 
-local function adddon_manager_load_addons()
+-- 获取addon列表
+local function addon_manager_load_addon_list()
 	local addons = game_content_get_templ("addonLists")
 	if addons then 
 		local addons_list = addons.cfgs
 		if not addons_list then 
-			util_log_err("Failed to load addon list.")
 			return
 		end
-
-		util_log_info("************** Start loading addons **************")
-		for _,name in pairs(addons_list) do
-			addon_manager_load_addon(name)
-		end
-		util_log_info("************** Finish loading addons **************")
+		return addons_list
 	end
 end
 
-local function adddon_manager_unload_addons()
+-- 加载全部插件
+local function adddon_manager_load_addons()
+	if not cur_addon_lists then 
+		local addon_list = addon_manager_load_addon_list()
+		if not addon_list then 
+			util_log_err("Failed to load addon list.")
+			return 
+		end
+		cur_addon_lists = addon_list
+	end
 
+	util_log_info("************** Start loading addons **************")
+	for _,name in pairs(cur_addon_lists) do
+		addon_manager_load_addon(name)
+	end
+	util_log_info("************** Finish loading addons **************")
+end
+
+-- 卸载指定插件
+local function addon_manager_unload_addon(name)
+	local addon = addon_manager.addons[name]
+	if not addon then return end
+
+	util_log_info("Unload addon "..  name)
+
+	if addon.OnUnLoad then 
+		traced_pcall(addon.OnUnLoad)
+	end
+
+	-- clear
+	addon_exports[name] = nil
+	addon_manager.addons[name] = nil
+
+	for i, v in ipairs(addon_manager.addons) do
+		if addon == v then 
+			table.remove(addon_manager.addons, i)
+			break
+		end
+	end
+end
+
+-- 卸载全部插件
+local function adddon_manager_unload_addons()
+	if cur_addon_lists then 
+		util_log_info("************** Start unloading addons **************")
+		for _,name in pairs(cur_addon_lists) do
+			addon_manager_unload_addon(name)
+		end
+		util_log_info("************** Finish unloading addons **************")
+	end
+end
+
+-- 更新所有的插件
+local function adddon_manager_update_addons()
+	local cur_addons = addon_manager.addons
+	for _, addon in ipairs(cur_addons) do
+		if addon.OnUpdate then 
+			traced_pcall(addon.OnUpdate)
+		end
+	end
 end
 
 --------------------------------------------------------
@@ -158,13 +223,19 @@ function AddonManager.OnUnitialize()
 end
 
 function AddonManager.OnUpdate()
-
+	adddon_manager_update_addons()
 end
 
-function AddonManager.LoadAddons(addons)
-
+function AddonManager.OnRootStart()
+	local root = addon_manager.addons["Root"]
+	if not root or not root.OnRootStart then 
+		util_log_err("The addon root or root.OnRootStart is nil.")
+		return 
+	end
+	traced_pcall(root.OnRootStart)
 end
 
 GlobalExports.addon_manager_init  = AddonManager.OnInitialize
 GlobalExports.addon_manager_update = AddonManager.OnUpdate
 GlobalExports.addon_manager_uninit = AddonManager.OnUnitialize
+GlobalExports.addon_manager_root_start = AddonManager.OnRootStart

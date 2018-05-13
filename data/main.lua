@@ -31,6 +31,8 @@ function Main.OnStarted()
 
 	addon_manager_init()
 
+	addon_manager_root_start()
+	
 	-- test
 	game_manager_start_debug()	
 end
@@ -39,7 +41,7 @@ end
 function Main.OnUpdate()
 
 	addon_manager_update()
-	
+
 end
 
 function Main.OnStop()

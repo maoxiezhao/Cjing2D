@@ -301,10 +301,8 @@ namespace gui
 	inline bool FireEvent(const ui_event event, Dispatcher*dispatcher, Widget* w, F&&... params)
 	{
 		if (dispatcher == nullptr || w == nullptr)
-		{
-			return false;;
-		}
-
+			return false;
+		
 		Widget* dispatcherW = dynamic_cast<Widget*>(dispatcher);
 		std::vector<std::pair<Widget*, ui_event> > eventChain =
 			implementation::BuildEventChain<T>(event, dispatcherW, w);

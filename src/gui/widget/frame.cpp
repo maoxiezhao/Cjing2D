@@ -1,5 +1,6 @@
-#include "window.h"
-#include "widget.h"
+#include "gui\widget\frame.h"
+#include "gui\widget\widget.h"
+#include "gui\lua\uiApi.h"
 
 namespace gui
 {
@@ -12,17 +13,17 @@ class Manager
 public:
 	static Manager& GetInstance();
 	
-	void Add(Window& window);
-	void Remove(Window& window);
-	unsigned int GetID(Window& window);
-	Window* GetWindow(const unsigned int id);
+	void Add(Frame& window);
+	void Remove(Frame& window);
+	unsigned int GetID(Frame& window);
+	Frame* GetFrame(const unsigned int id);
 
 private:
-	std::map<unsigned int, Window*> mWindows;
+	std::map<unsigned int, Frame*> mFrames;
 
 };
 
-Manager::Manager() :mWindows()
+Manager::Manager() :mFrames()
 {
 }
 
@@ -32,28 +33,28 @@ Manager & Manager::GetInstance()
 	return windowManager;
 }
 
-void Manager::Add(Window & window)
+void Manager::Add(Frame & window)
 {
 	static unsigned int id;
 	++id;
-	mWindows[id] = &window;
+	mFrames[id] = &window;
 }
 
-void Manager::Remove(Window & window)
+void Manager::Remove(Frame & window)
 {
-	for (auto it = mWindows.begin(); it != mWindows.end(); ++it)
+	for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
 	{
 		if (it->second == &window)
 		{
-			mWindows.erase(it);
+			mFrames.erase(it);
 			return;
 		}
 	}
 }
 
-unsigned int Manager::GetID(Window & window)
+unsigned int Manager::GetID(Frame & window)
 {
-	for (auto it = mWindows.begin(); it != mWindows.end(); ++it)
+	for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
 	{
 		if (it->second == &window)
 		{
@@ -64,10 +65,10 @@ unsigned int Manager::GetID(Window & window)
 	return 0;
 }
 
-Window * Manager::GetWindow(const unsigned int id)
+Frame * Manager::GetFrame(const unsigned int id)
 {
-	auto it = mWindows.find(id);
-	if (it != mWindows.end())
+	auto it = mFrames.find(id);
+	if (it != mFrames.end())
 	{
 		return it->second;
 	}
@@ -79,11 +80,11 @@ Window * Manager::GetWindow(const unsigned int id)
 
 /***** ****** ***** ***** window ***** ***** ****** *****/
 
-Window::Window()
+Frame::Frame()
 {
 }
 
-Window::Window(int x, int y, int w, int h) :
+Frame::Frame(int x, int y, int w, int h) :
 	ContainerBase(),
 	mPosX(x),
 	mPosY(y),
@@ -91,19 +92,14 @@ Window::Window(int x, int y, int w, int h) :
 	mHeight(h),
 	mSuspendDrawing(false),
 	mNeedLayout(true),
-	mDistributor(new Distributor(*this,Dispatcher::front_child))
+	mDistributor(nullptr)
 {
 	Manager::GetInstance().Add(*this);
-
 	Connect();
-
-	/** 链接sign */
-	ConnectSignal<gui::UI_EVENT_DRAW>(std::bind(&Window::Draw, this));
-
 	Place({ x, y }, { w, h });
 }
 
-Window::~Window()
+Frame::~Frame()
 {
 	Manager::GetInstance().Remove(*this);
 }
@@ -111,7 +107,7 @@ Window::~Window()
 /**
 *	\brief 显示窗体
 */
-void Window::Show(bool showed)
+void Frame::Show(bool showed)
 {
 	mSuspendDrawing = !showed;
 }
@@ -119,7 +115,7 @@ void Window::Show(bool showed)
 /**
 *	\brief 绘制窗体
 */
-void Window::Draw()
+void Frame::Draw()
 {
 	if (mSuspendDrawing)
 		return;
@@ -142,35 +138,59 @@ void Window::Draw()
 	DrawForeground(Point2(0, 0));
 }
 
-void Window::UnDraw()
+void Frame::UnDraw()
 {
 }
 
 /**
 *	\brief 布局操作
 */
-void Window::Layout()
+void Frame::Layout()
 {
 }
 
-const string Window::GetControlType() const
+const string Frame::GetControlType() const
 {
-	return "Window";
+	return "Frame";
+}
+
+void Frame::SetDistributor(std::shared_ptr<Distributor> distributor)
+{
+	mDistributor = distributor;
+}
+
+Widget * Frame::FindAt(const Point2 & pos)
+{
+	auto findIt = ContainerBase::FindAt(pos);
+	if (findIt)
+		return findIt;
+
+	return  Widget::IsAt(pos) ? this : nullptr;
 }
 
 /**
 *	\brief 捕获鼠标事件
 */
-void Window::MouseCaptrue(bool mouseCpatured)
+void Frame::MouseCaptrue(bool mouseCpatured)
 {
 	Debug::CheckAssertion(mDistributor != nullptr, "The Distributor is nullptr.");
 	mDistributor->MouseCaptrue(mouseCpatured);
 }
 
-void Window::AddToKeyboardFocusChain(Widget * widget)
+void Frame::AddToKeyboardFocusChain(Widget * widget)
 {
 	Debug::CheckAssertion(mDistributor != nullptr, "The Distributor is nullptr.");
 	mDistributor->AddToKeyBoardFocusChain(widget);
+}
+
+Size Frame::GetBestSize() const
+{
+	return Size(mWidth, mHeight);
+}
+
+const string Frame::GetLuaObjectName() const
+{
+	return ui_lua_frame_name;
 }
 
 

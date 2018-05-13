@@ -106,7 +106,6 @@ private:
 	void RequestReduceCellHeight(Children& child, const int maxnumHeight);
 
 	virtual void ImplDrawChildren(const Point2& offset);
-
 	void RequesetPlacement(Dispatcher&, const gui::ui_event, bool&handle, bool& halt);
 
 	/**** **** **** **** Child **** **** **** ****/
@@ -160,6 +159,16 @@ private:
 		WidgetPtr mWidget;
 	};
 
+
+	// 修改网格的为多Children 
+	// by zy 2018.5.14
+	using GridItem = std::vector<Children>;
+	void ForEachChildren(std::function<bool(Children& child)> func);
+	void ForEachChildren(std::function<bool(const Children& child)> func)const;	
+	Size GetGridItemBestSize(int row, int col)const;
+	void RequestReduceGridItemWidth(GridItem& item, const int maxnumWidth);
+	void RequestReduceGridItemHeight(GridItem& item, const int maxnumHeight);
+
 public:
 	void SetChildren(Widget* widget, int row, int col, const unsigned int flat);		// 是否使用智能指针
 	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag, int borderSize);
@@ -168,22 +177,25 @@ public:
 	void SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, const unsigned int modeMask);
 
 	Children* GetChildren(const WidgetPtr& widget);
-	Children& GetChildren(int row, int col)
+	Children* GetChildren(const std::string& id);
+	Children& CreateChildren(int row, int col);
+
+	GridItem& GetGridItem(int row, int col)
 	{
-		return mChilds[col * mRows + row];
+		return mGridItems[col * mRows + row];
 	}
-	const Children& GetChildren(int row, int col)const
+	const GridItem& GetGridItem(int row, int col)const
 	{
-		return mChilds[col * mRows + row];
+		return mGridItems[col * mRows + row];
 	}
-	WidgetPtr GetWidget(int row, int col)
-	{
-		return GetChildren(row, col).GetWidget();
-	}
-	const WidgetPtr GetWidget(int row, int col)const
-	{
-		return GetChildren(row, col).GetWidget();
-	}
+	//WidgetPtr GetWidget(int row, int col)
+	//{
+	//	return GetChildren(row, col).GetWidget();
+	//}
+	//const WidgetPtr GetWidget(int row, int col)const
+	//{
+	//	return GetChildren(row, col).GetWidget();
+	//}
 
 	/****** Iterator for child item. ******/
 	class iterator
@@ -224,14 +236,14 @@ public:
 		std::vector<Children>::iterator mItor;
 	};
 
-	iterator begin()
+	iterator begin(GridItem& item)
 	{
-		return iterator(mChilds.begin());
+		return iterator(item.begin());
 	}
 
-	iterator end()
+	iterator end(GridItem& item)
 	{
-		return iterator(mChilds.end());
+		return iterator(item.end());
 	}
 private:
 	int mRows;		/** 当前行数 */
@@ -242,9 +254,9 @@ private:
 	mutable std::vector<float> mRowsFactory;	/** 每行的网格分布权重 */
 	mutable std::vector<float> mColsFactory;	/** 每列的网格分布权重 */
 
-	std::vector<Children> mChilds;			    /** 以数组形式划分存储当前所有widget*/
+	std::vector<GridItem> mGridItems;			/** 以数组形式划分存储当前所有widget*/
 
-	std::map<string, Children> mNamedChilds;	/** 以map形式存储children,并以ID作为键值,用于查找 */
+	std::map<string, Children*> mNamedChilds;	/** 以map形式存储children,并以ID作为键值,用于查找 */
 												/** 目前考虑存在必要性，因为GUI的网格一般比较小 */
 
 };												

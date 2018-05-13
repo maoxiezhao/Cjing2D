@@ -1,8 +1,8 @@
 #include "widget.h"
-#include "gui\widget\window.h"
+#include "gui\widget\frame.h"
 #include "gui\widget\styledwidget.h"
 #include "gui\widget\grid.h"
-
+#include "gui\lua\uiApi.h"
 #include "core\random.h"
 
 namespace gui
@@ -75,24 +75,24 @@ Widget * Widget::GetParent()
 /**
 *	\brief 获取层级窗体
 */
-Window * Widget::GetWindow()
+Frame * Widget::GetRoot()
 {
 	Widget* result = this;
 	while (result->GetParent() != nullptr)
 	{
 		result = result->GetParent();
 	}
-	return dynamic_cast<Window*>(result);
+	return dynamic_cast<Frame*>(result);
 }
 
-const Window * Widget::GetWindow() const
+const Frame * Widget::GetRoot() const
 {
 	const Widget* result = this;
 	while (result->mParent != nullptr)
 	{
 		result = result->mParent;
 	}
-	return dynamic_cast<const Window*>(result);
+	return dynamic_cast<const Frame*>(result);
 }
 
 Grid * Widget::GetParentGrid()
@@ -190,7 +190,7 @@ void Widget::Move(const int xoffset, const int yoffset)
 void Widget::InitLayout()
 {
 	Debug::CheckAssertion(mVisible != Visiblility::InVisible);
-	Debug::CheckAssertion(GetWindow() != nullptr);
+	Debug::CheckAssertion(GetRoot() != nullptr);
 
 	mLayoutSize = Size(0, 0);
 }
@@ -360,7 +360,7 @@ void Widget::DrawDebugGround()
 
 const string Widget::GetLuaObjectName() const
 {
-	return string();
+	return ui_lua_widget_name;
 }
 
 void Widget::ImplDrawBackground(const Point2& offset)

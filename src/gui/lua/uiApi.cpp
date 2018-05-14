@@ -24,7 +24,13 @@ int RegisterFunction(lua_State* l)
 	LuaBindClass<gui::Frame> windowClass(l, gui::ui_lua_frame_name, gui::ui_lua_widget_name);
 	windowClass.AddDefaultMetaFunction();
 	windowClass.AddFunction("GetRoot", frame_api_get_root);
-	windowClass.AddMethod("CreateFrame", frame_api_create);
+	windowClass.AddMethod("CreateFrame", frame_api_create_frame);
+	windowClass.AddMethod("SetCallBack", frame_api_set_call_back);
+	windowClass.AddMethod("ClearCallBacks", &Frame::ClearLuaCallBack);
+	windowClass.AddMethod("RemoveChildren", &Frame::RemoveChildren);
+	windowClass.AddMethod("RemoveAllChildrens", &Frame::RemoveAllChildrens);
+	windowClass.AddMethod("RemoveBySelf", frame_api_remove_by_self);
+	windowClass.AddMethod("GetParent", frame_api_get_parent);
 
 	return 0;
 }
@@ -44,9 +50,9 @@ int frame_api_get_root(lua_State* l)
 }
 
 /**
-*	\brief 实现cjing.Window.create("name", frameData )
+*	\brief 实现Window:CreateFrame("name", frameData )
 */
-int frame_api_create(lua_State* l)
+int frame_api_create_frame(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Frame& frame = *std::static_pointer_cast<Frame>(
@@ -64,6 +70,65 @@ int frame_api_create(lua_State* l)
 		frame.SetChildren(newFrame, gridPos.x, gridPos.y, data.GetAlignFlag(), 0);
 
 		GetLuaContext(l).PushUserdata(l, *newFrame);
+		return 1;
+	});
+}
+
+/**
+*	\brief 实现 Window:SetCallBack("name", func )
+*/
+int frame_api_set_call_back(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+
+		const std::string& name = LuaTools::CheckString(l, 2);
+		LuaRef callback = LuaTools::CheckFunction(l, 3);
+
+		auto type = StringToEnum<WIDGET_CALL_BACK_TYPE>(name);
+		frame.SetLuaCallBack(type, callback);
+		return 0;
+	});
+}
+
+/**
+*	\brief Window:RemoveBySelf()
+*/
+int frame_api_remove_by_self(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+		
+		auto parent = frame.GetParentFrame();
+		if (parent == nullptr)
+		{
+			LuaTools::Error(l, "Try to remove root frame.");
+			return 0;
+		}
+		const std::string& id = frame.GetID();
+		parent->RemoveChildren(id);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief Window:GetParent()
+*/
+int frame_api_get_parent(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+
+		Frame* parentFrame = frame.GetParentFrame();
+		if (parentFrame != nullptr)
+			GetLuaContext(l).PushUserdata(l, *parentFrame);
+		else
+			lua_pushnil(l);
+
 		return 1;
 	});
 }

@@ -129,7 +129,7 @@ int Selections::GetSelectedItem()
 	return -1;
 }
 
-Grid & Selections::GetItemGrid(const unsigned int index)
+SingleGrid & Selections::GetItemGrid(const unsigned int index)
 {
 	Debug::CheckAssertion(index < mItems.size(), "Invalid index in selections.");
 	return mItems[index]->mGrid;
@@ -870,7 +870,7 @@ void Selected::InitItem(Widget* widget)
 	}
 }
 
-void Selected::SelectItem(Grid& grid, bool selected )
+void Selected::SelectItem(SingleGrid& grid, bool selected )
 {
 	auto widget = std::dynamic_pointer_cast<SelectableItem>(grid.GetWidget(0, 0));
 	Debug::CheckAssertion(widget != nullptr,

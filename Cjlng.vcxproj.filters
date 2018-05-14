@@ -226,9 +226,6 @@
     <ClCompile Include="src\gui\core\builderWindow.cpp">
       <Filter>gui\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\widget\grid.cpp">
-      <Filter>gui\widget</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui\widget\styledwidget.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
@@ -481,6 +478,15 @@
     <ClCompile Include="src\gui\lua\frameData.cpp">
       <Filter>gui\lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\singleGrid.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\multGrid.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\widget\widgetInfo.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -641,9 +647,6 @@
     </ClInclude>
     <ClInclude Include="src\gui\core\widgetDefinition.h">
       <Filter>gui\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\widget\grid.h">
-      <Filter>gui\widget</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\core\message.h">
       <Filter>gui\core</Filter>
@@ -956,6 +959,18 @@
     </ClInclude>
     <ClInclude Include="src\gui\lua\frameData.h">
       <Filter>gui\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\singleGrid.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\multGrid.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\lua\uiLuaRef.h">
+      <Filter>gui\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\image.h">
+      <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

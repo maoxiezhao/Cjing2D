@@ -1,6 +1,6 @@
 #pragma once
 
-#include"gui\widget\grid.h"
+#include"gui\widget\singleGrid.h"
 #include"gui\widget\selections.h"
 
 namespace gui
@@ -133,14 +133,14 @@ class SelectAction : public SelectionHelper
 {
 public:
 	virtual void InitItem(Widget* widget) = 0;
-	virtual void SelectItem(Grid& grid, bool selected = true) = 0;
+	virtual void SelectItem(SingleGrid& grid, bool selected = true) = 0;
 };
 
 class Selected : public SelectAction
 {
 public:
 	virtual void InitItem(Widget* widget);
-	virtual void SelectItem(Grid& grid, bool selected = true);
+	virtual void SelectItem(SingleGrid& grid, bool selected = true);
 };
 
 

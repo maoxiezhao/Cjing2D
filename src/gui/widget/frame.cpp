@@ -96,6 +96,8 @@ Frame::Frame(int x, int y, int w, int h) :
 {
 	Manager::GetInstance().Add(*this);
 	Connect();
+	RegisterSignalCallBack();
+
 	Place({ x, y }, { w, h });
 }
 
@@ -168,6 +170,53 @@ Widget * Frame::FindAt(const Point2 & pos)
 	return  Widget::IsAt(pos) ? this : nullptr;
 }
 
+void Frame::SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback)
+{
+	mCallbacks.AddCallBack(type, callback);
+}
+
+/**
+*	\brief 注册窗体事件回调
+*/
+void Frame::RegisterSignalCallBack()
+{
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_ENTER>(
+		std::bind(&Frame::SignalHandlerMouseEnter, this, std::placeholders::_2, std::placeholders::_3));
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEAVE>(
+		std::bind(&Frame::SignalHandlerMouseLeave, this, std::placeholders::_2, std::placeholders::_3));
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>(
+		std::bind(&Frame::SignalHandlerMouseLeftButtonDown, this, std::placeholders::_2, std::placeholders::_3));
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_UP>(
+		std::bind(&Frame::SignalHandlerMouseLeftButtonUp, this, std::placeholders::_2, std::placeholders::_3));
+	ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>(
+		std::bind(&Frame::SignalHandlerMouseLeftButtonClick, this, std::placeholders::_2, std::placeholders::_3));
+}
+
+void Frame::SignalHandlerMouseEnter(const ui_event event, bool & handle)
+{
+	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_ENTER);
+}
+
+void Frame::SignalHandlerMouseLeave(const ui_event event, bool & handle)
+{
+	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE);
+}
+
+void Frame::SignalHandlerMouseLeftButtonDown(const ui_event event, bool & handle)
+{
+	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOWN);
+}
+
+void Frame::SignalHandlerMouseLeftButtonUp(const ui_event event, bool & handle)
+{
+	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP);
+}
+
+void Frame::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & handle)
+{
+	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK);
+}
+
 /**
 *	\brief 捕获鼠标事件
 */
@@ -186,6 +235,12 @@ void Frame::AddToKeyboardFocusChain(Widget * widget)
 Size Frame::GetBestSize() const
 {
 	return Size(mWidth, mHeight);
+}
+
+void Frame::ClearLuaCallBack()
+{
+	mCallbacks.Clear();
+	ContainerBase::ClearLuaCallBack();
 }
 
 const string Frame::GetLuaObjectName() const

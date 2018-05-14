@@ -36,8 +36,9 @@ namespace gui
 
 	
 /**
-*	\brief 网格容器，所有容器的基类，网格容器参与
-*	所有widget的布局
+*	\brief 网格容器，所有容器的基类，网格容器参与所有widget的布局,
+*	同时一个Grid内可以存放多个Children，如果需要保证一个Children存在
+*	应使用SingleGrid
 */
 class Grid : public Widget
 {
@@ -99,6 +100,7 @@ public:
 	virtual Size CalculateBestSize()const;
 	virtual Size ReCalculateBestSize();
 
+	virtual void ClearLuaCallBack();
 private:
 	int RequestReduceColWidth(int col, const int maxnumWidth);
 	void RequestReduceCellWidth(Children& child, const int maxnumWidth);
@@ -124,6 +126,7 @@ private:
 		void Place(const Point2& pos, const Size& size);
 		Size GetBestSize()const;
 		Size GetBorderSpace()const;
+		void Clear();
 
 		void SetFlag(const unsigned int flag)
 		{
@@ -174,11 +177,12 @@ public:
 	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag, int borderSize);
 	void RemoveChildren(int row, int col);
 	void RemoveChildren(const string& id);
+	void RemoveAllChildren();
 	void SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, const unsigned int modeMask);
 
 	Children* GetChildren(const WidgetPtr& widget);
 	Children* GetChildren(const std::string& id);
-	Children& CreateChildren(int row, int col);
+	Children* CreateChildren(int row, int col);
 
 	GridItem& GetGridItem(int row, int col)
 	{
@@ -188,29 +192,35 @@ public:
 	{
 		return mGridItems[col * mRows + row];
 	}
-	//WidgetPtr GetWidget(int row, int col)
-	//{
-	//	return GetChildren(row, col).GetWidget();
-	//}
-	//const WidgetPtr GetWidget(int row, int col)const
-	//{
-	//	return GetChildren(row, col).GetWidget();
-	//}
 
 	/****** Iterator for child item. ******/
 	class iterator
 	{
 	public:
-		iterator(std::vector<Children>::iterator itor) :mItor(itor) {};
+		iterator(std::vector<Children>::iterator itor,
+			     std::vector<GridItem>::iterator gridItor) :
+			mItor(itor),
+			mGridItor(gridItor){};
 
 		iterator operator ++()
 		{
-			return iterator(++mItor);
+			++mItor;
+			if (mItor == mGridItor->end())
+			{
+				mGridItor++;
+				mItor = mGridItor->begin();
+			}
+			return iterator(mItor, mGridItor);
 		}
 
 		iterator operator --()
 		{
-			return iterator(--mItor);
+			if (mItor == mGridItor->begin())
+			{
+				mGridItor--;
+				mItor = mGridItor->end();
+			}
+			return iterator(--mItor, mGridItor);
 		}
 
 		WidgetPtr operator *()
@@ -234,16 +244,19 @@ public:
 		}
 	private:
 		std::vector<Children>::iterator mItor;
+		std::vector<GridItem>::iterator mGridItor;
 	};
 
-	iterator begin(GridItem& item)
+	iterator begin()
 	{
-		return iterator(item.begin());
+		auto& gridItor = mGridItems.begin();
+		return iterator((*gridItor).begin(), gridItor);
 	}
 
-	iterator end(GridItem& item)
+	iterator end()
 	{
-		return iterator(item.end());
+		auto& gridItor = mGridItems.end();
+		return iterator((*(gridItor - 1)).end(), gridItor);
 	}
 private:
 	int mRows;		/** 当前行数 */

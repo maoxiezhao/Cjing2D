@@ -1,7 +1,7 @@
 #pragma once
 
 #include"gui\widget\widget.h"
-#include"gui\widget\grid.h"
+#include"gui\widget\singleGrid.h"
 
 namespace gui
 {
@@ -53,7 +53,7 @@ public:
 	int GetItemCount()const;
 	int GetSelectedItemCount()const;
 	int GetSelectedItem();
-	Grid& GetItemGrid(const unsigned int index);
+	SingleGrid& GetItemGrid(const unsigned int index);
 	bool GetItemShow(const unsigned int index)const;
 	
 	/** widget */
@@ -83,7 +83,7 @@ private:
 
 		bool mSelected;
 		bool mShow;
-		Grid mGrid;
+		SingleGrid mGrid;
 		int  mOrderedIndex;
 	};
 

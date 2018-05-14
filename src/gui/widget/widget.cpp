@@ -1,7 +1,7 @@
 #include "widget.h"
 #include "gui\widget\frame.h"
 #include "gui\widget\styledwidget.h"
-#include "gui\widget\grid.h"
+#include "gui\widget\multGrid.h"
 #include "gui\lua\uiApi.h"
 #include "core\random.h"
 
@@ -70,6 +70,24 @@ const string & Widget::GetID() const
 Widget * Widget::GetParent()
 {
 	return mParent;
+}
+
+/**
+*	\brief 获取父节点Frame
+*/
+Frame * Widget::GetParentFrame()
+{
+	Widget* result = this->GetParent();
+
+	while (result != nullptr && 
+		result->GetWidgetType() != WIDGET_TYPE::WIDGET_FRAME )	{
+		result = result->GetParent();
+	}
+
+	if(result != nullptr)
+		return dynamic_cast<Frame*>(result);
+
+	return nullptr;
 }
 
 /**
@@ -356,6 +374,10 @@ void Widget::DrawDebugGround()
 		mDebugSprite->SetSize(mSize);
 		mDebugSprite->Draw();
 	}
+}
+
+void Widget::ClearLuaCallBack()
+{
 }
 
 const string Widget::GetLuaObjectName() const

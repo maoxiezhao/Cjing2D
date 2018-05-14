@@ -73,6 +73,7 @@ private:
 	Widget* mFocus;		// 捕获事件的widget
 	Widget* mLastClickWidget;
 	uint32_t mLastClickTime;
+	uint32_t mLastDownTime;
 };
 
 using MouseButtonLeft = MouseButton<

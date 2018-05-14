@@ -1,7 +1,7 @@
 #pragma once
 
 #include"common\common.h"
-#include"gui\widget\grid.h"
+#include"gui\widget\multGrid.h"
 #include"gui\widget\styledwidget.h"
 
 namespace gui
@@ -80,6 +80,16 @@ public:
 		mGrid.SetChildren(widget, row, col, flag, borderSize);
 	}
 
+	void RemoveChildren(const string& id)
+	{
+		mGrid.RemoveChildren(id);
+	}
+
+	void RemoveAllChildrens()
+	{
+		mGrid.RemoveAllChildren();
+	}
+
 	// iterator
 	Grid::iterator begin()
 	{
@@ -95,6 +105,11 @@ public:
 		return mGrid.FindAt(pos);
 	}
 
+	virtual void ClearLuaCallBack()
+	{
+		mGrid.ClearLuaCallBack();
+	}
+	
 private:
 	Grid mGrid;
 

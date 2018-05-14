@@ -39,9 +39,6 @@ public:
 	void AddToKeyboardFocusChain(Widget* widget);
 	virtual Size GetBestSize()const;
 
-	virtual const string GetLuaObjectName()const;
-	virtual const string GetControlType()const;
-
 	void SetDistributor(std::shared_ptr<Distributor> distributor);
 	virtual Widget* FindAt(const Point2& pos);
 
@@ -59,6 +56,11 @@ public:
 		return this;
 	}
 
+	virtual void  ClearLuaCallBack();
+	virtual const string GetLuaObjectName()const;
+	virtual const string GetControlType()const;
+
+	void SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback);
 private:
 	status mStatus;
 
@@ -75,6 +77,16 @@ private:
 private:
 	/******** ******* signal handlers ******* ********/
 
+	void RegisterSignalCallBack();
+
+	/** Singal callback */
+	void SignalHandlerMouseEnter(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeave(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonDown(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonUp(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonClick(const  ui_event event, bool&handle);
+
+	UILuaRef mCallbacks;
 };
 
 

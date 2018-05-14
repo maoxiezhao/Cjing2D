@@ -7,6 +7,8 @@
 #include"gui\core\builderWindow.h"
 #include"gui\widget\widgetInfo.h"
 #include"lua\luaObject.h"
+#include"lua\luaRef.h"
+#include"gui\lua\uiLuaRef.h"
 
 namespace gui
 {
@@ -55,6 +57,7 @@ public:
 	void DrawChildren(const Point2& offset = { 0,0 });
 	void DrawDebugGround();
 
+	virtual void ClearLuaCallBack();
 	virtual const string GetLuaObjectName()const;
 private:
 	virtual void ImplDrawBackground(const Point2& offset);
@@ -83,6 +86,7 @@ public:
 	void SetParent(Widget* parent);
 	Widget* GetParent();
 
+	Frame* GetParentFrame();
 	Frame* GetRoot();
 	const Frame* GetRoot()const;
 

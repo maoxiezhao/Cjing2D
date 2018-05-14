@@ -15,6 +15,7 @@ public:
 	static void Quit();
 
 	static const uint32_t timeStep = 17;
+	static const uint32_t clickDeltaTime = 200;
 	static const uint32_t doubleClickDeltaTime = 500;
 private:
 	static uint32_t mInitDate;

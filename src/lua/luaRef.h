@@ -25,7 +25,7 @@ public:
 	lua_State* GetLuaState()const;
 	void Clear();
 	void Push()const;
-	void Call(const std::string& functionName )const;
+	void Call(const std::string& functionName)const;
 
 	static LuaRef Nil;
 private:

@@ -127,7 +127,8 @@ MouseButton<T>::MouseButton(Widget & widget, Dispatcher::queue_position position
 	mIsDown(false),
 	mFocus(nullptr),
 	mLastClickWidget(nullptr),
-	mLastClickTime(0)
+	mLastClickTime(0),
+	mLastDownTime(0)
 {
 	widget.ConnectSignal<T::buttonDownEvent>(
 		std::bind(&MouseButton::mSignalHandlerButtonDown, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_5), position);
@@ -229,18 +230,24 @@ template<typename T>
 void MouseButton<T>::MouseButtonClick(Widget * widget)
 {
 	uint32_t curTime = System::Now();
-	if (mLastClickTime + System::doubleClickDeltaTime >= curTime &&
+	if (mLastClickTime + System::clickDeltaTime >= curTime &&
 		 widget == mLastClickWidget)
 	{
 		mLastClickWidget = nullptr;
 		mLastClickTime = 0;
 		mOwner.Fire(T::buttonDoubleClickEvent, *mMouseFocus);
 	}
+	else if (mLastDownTime + System::clickDeltaTime >= curTime &&
+		widget == mLastClickWidget)
+	{
+		mLastClickTime = curTime;
+		mLastDownTime = 0;
+		mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+	}
 	else
 	{
 		mLastClickWidget = widget;
-		mLastClickTime = curTime;
-		mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+		mLastDownTime = curTime;
 	}
 }
 

@@ -1,5 +1,5 @@
 #include "frameData.h"
-#include "gui\widget\grid.h"
+#include "gui\widget\multGrid.h"
 
 static std::map<std::string, int> WidgetAlignMapping = {
 	{ "top",     gui::ALIGN_VERTICAL_TOP },

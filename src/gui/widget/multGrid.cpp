@@ -1,5 +1,6 @@
-#include"grid.h"
-#include"widget.h"
+#include"gui\widget\multGrid.h"
+#include"gui\widget\widget.h"
+#include"gui\widget\frame.h"
 
 #include<algorithm>
 #include<numeric>
@@ -119,7 +120,7 @@ void Grid::SetColsFactory(const std::vector<float> factoies)
 
 /**** **** **** **** *** Child *** **** **** **** ****/
 
-void Grid::ForEachChildren(std::function<bool(Children&child)> func)
+void Grid::ForEachChildren(std::function<bool(Grid::Children&child)> func)
 {
 	for (auto& gridItems : mGridItems)
 	{
@@ -131,7 +132,7 @@ void Grid::ForEachChildren(std::function<bool(Children&child)> func)
 	}
 }
 
-void Grid::ForEachChildren(std::function<bool(const Children&child)> func) const
+void Grid::ForEachChildren(std::function<bool(const Grid::Children&child)> func) const
 {
 	for (const auto& gridItems : mGridItems)
 	{
@@ -199,7 +200,7 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 
 	// 先找到是否存在同名Chdren，如果有则直接替换,否则创建一个
 	Children* findChild = GetChildren(widget->GetID());
-	Children& children = findChild != nullptr? *findChild : CreateChildren(row, col);
+	Children& children = findChild != nullptr? *findChild : *CreateChildren(row, col);
 	if (children.GetWidget() != nullptr)
 	{
 		Debug::Warning(string("The childe '" + children.GetID() + "'will be replaced."));
@@ -246,16 +247,26 @@ void Grid::RemoveChildren(const string& id)
 	auto& findedChildren = mNamedChilds.find(id);
 	if (findedChildren != mNamedChilds.end())
 	{
-		findedChildren->second->SetWidget(nullptr);
+		findedChildren->second->Clear();
 	}
 	else
 	{
 		ForEachChildren([&](Children& child) {
 			if (child.GetID() == id)
-				child.SetWidget(nullptr);
+				child.Clear();
 			return true;
 		});
 	}
+}
+
+void Grid::RemoveAllChildren()
+{
+	ForEachChildren([&](Children& child) {
+		if (child.GetWidget() != nullptr)
+			child.Clear();
+
+		return true;
+	});
 }
 
 Grid::Children* Grid::GetChildren(const WidgetPtr& widget)
@@ -280,16 +291,16 @@ Grid::Children * Grid::GetChildren(const std::string & id)
 	return nullptr;
 }
 
-Grid::Children& Grid::CreateChildren(int row, int col)
+Grid::Children* Grid::CreateChildren(int row, int col)
 {
-	GridItem gridItem = GetGridItem(row, col);
+	GridItem& gridItem = GetGridItem(row, col);
 	gridItem.emplace_back();
 
 	// Set a limit
 	if (gridItem.size() > 64)
 		Debug::Error("The size of grid item is too much.");
 
-	return gridItem.back();
+	return &gridItem.back();
 }
 
 /**
@@ -450,6 +461,17 @@ Size Grid::Children::GetBorderSpace()const
 		}
 	}
 	return size;
+}
+
+void Grid::Children::Clear()
+{
+	if (mWidget != nullptr &&
+		mWidget->GetWidgetType() == WIDGET_TYPE::WIDGET_FRAME)
+	{
+		auto& frame = dynamic_cast<Frame&>(*mWidget);
+		frame.RemoveAllChildrens();
+	}
+	mWidget = nullptr;
 }
 
 /**
@@ -653,6 +675,17 @@ Size Grid::ReCalculateBestSize()
 	Size size = CalculateBestSize();
 	SetLayoutSize(size);
 	return size;
+}
+
+void Grid::ClearLuaCallBack()
+{
+	ForEachChildren([&](Children& child) {
+		auto widget = child.GetWidget();
+		if (widget != nullptr)
+			widget->ClearLuaCallBack();
+
+		return true;
+	});
 }
 
 /**
@@ -914,7 +947,7 @@ const Widget* Grid::Find(string& id, const bool activied)const
 bool Grid::HasWidget(const Widget& widget)const
 {
 	bool ret = false;
-	ForEachChildren([&](Children& child) {
+	ForEachChildren([&](const Children& child) {
 		auto contanierWidget = child.GetWidget();
 		if (contanierWidget != nullptr)
 		{
@@ -942,22 +975,21 @@ bool Grid::IsAt(const Point2& pos)const
 */
 Widget * Grid::FindAt(const Point2 & pos)
 {
-	Widget* result = nullptr;
-
-	ForEachChildren([&](Children& child) {
-		auto widget = child.GetWidget();
-		if (widget != nullptr)
+	for (auto& gridItems : mGridItems)
+	{
+		auto rit = gridItems.rbegin();
+		for (; rit != gridItems.rend(); rit++)
 		{
-			auto findIt = widget->FindAt(pos);
-			if (findIt)
+			auto widget = rit->GetWidget();
+			if (widget != nullptr)
 			{
-				result = findIt;
-				return false;
+				auto findIt = widget->FindAt(pos);
+				if (findIt)
+					return findIt;
 			}
 		}
-		return true;
-	});
-	return result;
+	}
+	return nullptr;
 }
 
 }

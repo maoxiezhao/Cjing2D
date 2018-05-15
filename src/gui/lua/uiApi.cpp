@@ -30,6 +30,7 @@ int RegisterFunction(lua_State* l)
 	widgetClass.AddMethod("GetPos", &Widget::GetPositon);
 	widgetClass.AddMethod("SetCallBack", frame_api_set_call_back);
 	widgetClass.AddMethod("ClearCallBacks", &Widget::ClearLuaCallBack);
+	widgetClass.AddMethod("StopMovement", &Widget::StopMovement);
 
 	/** frame base */
 	LuaBindClass<gui::Frame> windowClass(l, gui::ui_lua_frame_name, gui::ui_lua_widget_name);
@@ -49,6 +50,10 @@ int RegisterFunction(lua_State* l)
 	imageClass.AddDefaultMetaFunction();
 	imageClass.AddMethod("SetImage", &Image::SetImagePath);
 	imageClass.AddMethod("GetImage", &Image::GetImagePath);
+
+	/** button */
+	LuaBindClass<gui::Image> buttonClass(l, gui::ui_Lua_button_name, gui::ui_lua_widget_name);
+	buttonClass.AddDefaultMetaFunction();
 
 	return 0;
 }
@@ -103,7 +108,7 @@ int frame_api_set_call_back(lua_State * l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
 		Widget& widget = *std::static_pointer_cast<Widget>(
-			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_widget_name));
 
 		const std::string& name = LuaTools::CheckString(l, 2);
 		LuaRef callback = LuaTools::CheckFunction(l, 3);
@@ -203,11 +208,13 @@ int frame_api_create_image(lua_State * l)
 
 		const std::string& name = LuaTools::CheckString(l, 2);
 		FrameData data = FrameData::CheckFrameData(l, 3, WIDGET_TYPE::WIDGET_IMAGE);
+		const std::string path = data.GetValueString("path");
 
 		auto image = std::make_shared<gui::Image>();
 		image->SetWantedPosition(data.GetPos());
 		image->SetSize(data.GetSize());
 		image->SetID(name);
+		image->SetImagePath(path);
 
 		Point2 gridPos = data.GetGridPos();
 		frame.SetChildren(image, gridPos.x, gridPos.y, data.GetAlignFlag(), 0);
@@ -217,5 +224,4 @@ int frame_api_create_image(lua_State * l)
 	});
 
 }
-
 }

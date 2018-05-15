@@ -4,6 +4,7 @@
 #include "core\system.h"
 #include "lua\luaContext.h"
 #include "entity\entity.h"
+#include "gui\widget\widget.h"
 
 Movement::Movement():
 	mPos(Point2(0,0)),
@@ -11,6 +12,7 @@ Movement::Movement():
 	mSuspended(false),
 	mDrawable(nullptr),
 	mEntity(nullptr),
+	mWidget(nullptr),
 	mWhenSuspendedTime(0),
 	mIngoreObstacle(false)
 {
@@ -22,6 +24,7 @@ Movement::Movement(bool ingoreObstacles):
 	mSuspended(false),
 	mDrawable(nullptr),
 	mEntity(nullptr),
+	mWidget(nullptr),
 	mWhenSuspendedTime(0),
 	mIngoreObstacle(ingoreObstacles)
 {
@@ -74,6 +77,18 @@ Entity * Movement::GetEntity()
 Drawable * Movement::GetDrawable()
 {
 	return mDrawable;
+}
+
+gui::Widget * Movement::GetWidget()
+{
+	return mWidget;
+}
+
+bool Movement::HasOwner() const
+{
+	return mWidget != nullptr || 
+		   mDrawable != nullptr || 
+		   mWidget != nullptr;
 }
 
 /**
@@ -202,6 +217,10 @@ void Movement::RefreshPos()
 	{
 		curPos = mDrawable->GetPos();
 	}
+	if (mWidget != nullptr)
+	{
+		curPos = mWidget->GetPositon();
+	}
 	if (curPos != GetPos())
 	{
 		SetPos(curPos);
@@ -242,6 +261,10 @@ void Movement::SetPos(const Point2 & pos)
 	if (mDrawable != nullptr)
 	{
 		mDrawable->SetPos(pos);
+	}
+	if (mWidget != nullptr)
+	{
+		mWidget->SetWantedPosition(pos);
 	}
 	mPos = pos;
 	NotifyPositonChanged();
@@ -300,6 +323,20 @@ void Movement::SetEntity(Entity * entity)
 	else
 	{
 		mPos = mEntity->GetPos();
+		NotifyMovementChanged();
+	}
+}
+
+void Movement::SetWidget(gui::Widget * widget)
+{
+	mWidget = widget;
+	if (mWidget == nullptr)
+	{
+		mPos = { 0, 0 };
+	}
+	else
+	{
+		mPos = mWidget->GetPositon();
 		NotifyMovementChanged();
 	}
 }

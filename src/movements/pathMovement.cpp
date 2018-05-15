@@ -31,7 +31,7 @@ PathMovement::PathMovement(const std::string & path, int speed, bool loop, bool 
 
 void PathMovement::Update()
 {
-	while (	GetEntity() != nullptr &&
+	while (	HasOwner() &&
 		!IsSuspended() && 
 		IsCurPathStepFinished() &&
 		!PathMovement::IsFinished())
@@ -150,8 +150,10 @@ const string PathMovement::GetLuaObjectName() const
 
 void PathMovement::StartNextPathStep()
 {
-	Entity* entity = GetEntity();
-	if (!entity)
+	//Entity* entity = GetEntity();
+	//if (!entity)
+	//	return;
+	if (!HasOwner())
 		return;
 
 	// 当前路径为空，可能是做完了，或者设置的步骤为空
@@ -201,7 +203,7 @@ void PathMovement::UpdateCurPathStep()
 	while (now >= mNextStepDate &&
 		!mSubStepFinished &&
 		!IsSuspended() &&
-		(GetEntity() != nullptr && GetEntity()->GetMovement().get() == this))
+		((GetEntity() != nullptr && GetEntity()->GetMovement().get() == this) || HasOwner()))
 	{
 		auto oldPos = GetPos();
 		// try move

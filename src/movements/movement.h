@@ -10,6 +10,12 @@
 class Drawable;
 class Entity;
 
+namespace gui {
+	// 强行让Widget可以使用Movement
+	class Widget;
+}
+
+
 /**
 *	\brief 移动插件的抽象基类,可以作为插件移动drawable和entity
 */
@@ -25,6 +31,8 @@ public:
 	// status
 	Entity* GetEntity();
 	Drawable* GetDrawable();
+	gui::Widget* GetWidget();
+	bool HasOwner()const;
 
 	void RefreshPos();
 	int GetPosX()const;
@@ -39,6 +47,7 @@ public:
 	uint32_t GetWhenSuspeneded()const;
 	virtual void SetDrawable(Drawable* drawable);
 	virtual void SetEntity(Entity* entity);
+	virtual void SetWidget(gui::Widget* widget);
 
 	// display
 	virtual int GetDirection()const;
@@ -78,7 +87,7 @@ private:
 
 	Drawable* mDrawable;
 	Entity* mEntity;
-
+	gui::Widget* mWidget;
 	LuaRef mFinishedCallBack;
 };
 

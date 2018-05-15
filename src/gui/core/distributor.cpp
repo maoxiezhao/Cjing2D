@@ -77,6 +77,7 @@ void MouseMotion::SignalHandleMouseMotion(const ui_event event, bool & handle, c
 	}
 	// 对该函数上锁
 	ResourceLocker locker(mSignalHandelMouseMotionEntered);
+	mCoords = coords;
 
 	if (mMouseCaptured)
 	{
@@ -161,6 +162,10 @@ void MouseButton<T>::mSignalHandlerButtonDown(const ui_event event, bool & handl
 	else
 	{
 		Widget* widget = mOwner.FindAt(coords);
+		while (widget && !widget->CanMouseFocus() && widget->GetParent())
+		{
+			widget = widget->GetParent();
+		}
 		if (!widget)
 		{
 			return;
@@ -201,6 +206,11 @@ void MouseButton<T>::mSignalHandlerButtonUp(const ui_event event, bool & handle,
 	}
 
 	Widget* widget = mOwner.FindAt(coords);
+	while (widget && !widget->CanMouseFocus() && widget->GetParent())
+	{
+		widget = widget->GetParent();
+	}
+
 	if (mMouseCaptured)
 	{
 		mMouseCaptured = false;
@@ -238,14 +248,14 @@ void MouseButton<T>::MouseButtonClick(Widget * widget)
 	{
 		mLastClickWidget = nullptr;
 		mLastClickTime = 0;
-		mOwner.Fire(T::buttonDoubleClickEvent, *mMouseFocus);
+		mOwner.Fire(T::buttonDoubleClickEvent, *mMouseFocus, mCoords);
 	}
 	else if (mLastDownTime + System::clickDeltaTime >= curTime &&
 		widget == mLastClickWidget)
 	{
 		mLastClickTime = curTime;
 		mLastDownTime = 0;
-		mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
+		mOwner.Fire(T::buttonClickEvent, *mMouseFocus, mCoords);
 	}
 }
 

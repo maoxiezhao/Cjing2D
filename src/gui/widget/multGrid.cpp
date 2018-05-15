@@ -51,6 +51,18 @@ Grid::~Grid()
 	mGridItems.clear();
 }
 
+void Grid::Update()
+{
+	ForEachChildren([&](Children& child) {
+		auto widget = child.GetWidget();
+		if (widget != nullptr)
+		{
+			widget->Update();
+		}
+		return true;
+	});
+}
+
 void Grid::AddRows(int rowCount )
 {
 	SetRowCols(mRows + rowCount, mCols);

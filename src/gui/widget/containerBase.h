@@ -15,6 +15,7 @@ public:
 	ContainerBase();
 
 	virtual void InitLayout();
+	virtual void Update();
 
 	void ReduceWidth(const int maxnumWidth);
 	virtual void RequestReduceWidth(const int maxnumWidth);

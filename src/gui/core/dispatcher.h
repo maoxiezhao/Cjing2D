@@ -133,6 +133,16 @@ public:
 		back_post_child
 	};
 
+	/**
+	*	\brief 信号队列类型
+	*/
+	enum event_queue_type
+	{
+		pre = 1,
+		child = 2,
+		post = 4
+	};
+
 	/** 对应信号的链接函数 */
 
 	/**
@@ -168,6 +178,13 @@ public:
 		mQueueSignalMouse.DisconnectSignal(E, position, signal);
 	}
 
+	template<typename T>
+	std::enable_if_t<std::is_same<setEventMouse, T>::value, bool>
+		HasSignal( event_queue_type type = event_queue_type::child)
+	{
+		return mQueueSignalMouse.HasSignal(type);
+	}
+
 	/**
 	*	\brief keyborad event 信号处理
 	*/
@@ -183,6 +200,13 @@ public:
 		DisconnectSignal(const SignalFunctionKeyboard& signal, const queue_position position = back_child)
 	{
 		mQueueSignalKeyboard.DisconnectSignal(E, position, signal);
+	}
+
+	template<typename T>
+	std::enable_if_t<std::is_same<setEventKeyboard, T>::value, bool>
+		HasSignal( event_queue_type type = event_queue_type::child)
+	{
+		return mQueueSignalKeyboard.HasSignal(type);
 	}
 
 	/**
@@ -216,7 +240,6 @@ public:
 	{
 		mQueueSignalNotification.DisconnectSignal(E, position, signal);
 	}
-
 
 	/**
 	*	\brief 信号类型
@@ -295,16 +318,52 @@ public:
 				break;
 			}
 		}
+
+		/** 判断是否存在信号 */
+		bool HasSignal(event_queue_type type)
+		{
+			bool result = false;
+			switch (type)
+			{
+			case gui::Dispatcher::pre:
+				for (auto& kvp : mQueue)
+				{
+					auto& eventList = kvp.second;
+					if (!eventList.mPreChild.empty())
+					{
+						result = true;
+						break;
+					}
+				}
+				break;
+			case gui::Dispatcher::child:
+				for (auto& kvp : mQueue)
+				{
+					auto& eventList = kvp.second;
+					if (!eventList.mChild.empty())
+					{
+						result = true;
+						break;
+					}
+				}
+				break;
+			case gui::Dispatcher::post:
+				for (auto& kvp : mQueue)
+				{
+					auto& eventList = kvp.second;
+					if (!eventList.mPostChild.empty())
+					{
+						result = true;
+						break;
+					}
+				}
+				break;
+			}
+			return result;
+		}
 	};
 
-	enum event_queue_type
-	{
-		pre = 1,
-		child = 2,
-		post = 4
-	};
 	bool HasEvent(const ui_event event, const event_queue_type type);
-
 private:
 	bool mIsConnected;
 

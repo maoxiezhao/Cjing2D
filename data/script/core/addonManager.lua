@@ -34,10 +34,13 @@ local addon_env_list = {
 	["SetDelayTimer"] = "SetDelayTimer",
 	["KillTimer"] 	  = "KillTimer",
 
+	-- some game func
+	["StartGame"]	  = "game_manager_start_debug",
 	["GetGame"]       = "game_manager_get_game",
 	["GetPlayer"]     = "game_manager_get_player",
 
 	-- ui modules
+	["PathMovement"]  = "PathMovement",
 	["Frame"]	      = "Frame",
 }
 

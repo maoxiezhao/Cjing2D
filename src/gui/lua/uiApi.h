@@ -5,7 +5,6 @@
 #include"lua\luaTools.h"
 
 class UIStage;
-
 namespace gui
 {
 	/** module define */

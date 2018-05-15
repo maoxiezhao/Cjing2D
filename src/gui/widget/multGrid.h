@@ -52,6 +52,8 @@ public:
 	static const unsigned int HORIZONTAL_SHIFT = 3;
 	static const unsigned int BORDER_SHIFT = 6;
 
+	virtual void Update();
+
 	/**** **** memeber data **** ****/
 
 	void AddRows(int rowCount = 1);

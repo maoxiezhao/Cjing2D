@@ -119,6 +119,7 @@ void UIStage::Draw()
 
 void UIStage::Update()
 {
+	mRoot->Update();
 }
 
 void UIStage::SetVisible(bool visible)

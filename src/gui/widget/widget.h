@@ -10,6 +10,8 @@
 #include"lua\luaRef.h"
 #include"gui\lua\uiLuaRef.h"
 
+class Movement;
+
 namespace gui
 {
 
@@ -50,6 +52,7 @@ public:
 	void SetID(const string& id);
 	const string& GetID()const;
 
+	virtual void Update();
 	void Draw();
 
 	void DrawBackground(const Point2& offset = { 0,0 });
@@ -160,10 +163,7 @@ public:
 	/**
 	*	能否鼠标处理
 	*/
-	virtual bool CanMouseFocus()const 
-	{
-		return true;
-	}
+	virtual bool CanMouseFocus();
 
 	static void SetDebugDraw(bool draw);
 private:
@@ -183,12 +183,30 @@ public:
 	virtual bool IsAt(const Point2& pos)const;
 	virtual Widget* FindAt(const Point2& pos);
 
+	// lua callback
 	virtual void SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback);
+	virtual void AddLuaCallbackSignal(WIDGET_CALL_BACK_TYPE type);
 	virtual void ClearLuaCallBack();
 	virtual bool DoLuaCallBack(WIDGET_CALL_BACK_TYPE type);
+
+	// movement
+	void StopMovement();
+	void StartMovement(const std::shared_ptr<Movement>& movement);
+	const std::shared_ptr<Movement>& GetMovement();
+
 private:
 	UILuaRef mCallbacks;
 
+	/** Signal callback */
+	void SignalHandlerMouseEnter(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeave(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonDown(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonUp(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonClick(const  ui_event event, bool&handle);
+	void SignalHandlerMouseLeftButtonDoubleClick(const  ui_event event, bool&handle);
+
+	// add by zy 2018.5.15 
+	std::shared_ptr<Movement> mMovement;
 };
 
 using WidgetPtr = std::shared_ptr<Widget>;

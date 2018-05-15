@@ -71,16 +71,20 @@ using int_ = std::integral_constant<int, V>;
 using setEvent = util::typeset< int_<UI_EVENT_ACTIVATE>,
 								int_<UI_EVENT_DRAW>,
 								int_<UI_EVENT_CLOSEWINDOW>,
-								int_<UI_EVENT_MOUSE_LEAVE>,
-								int_<UI_EVENT_MOUSE_ENTER>,
-								int_<UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>,
-								int_<UI_EVENT_MOUSE_RIGHT_BUTTON_CLICK>,
-								int_<UI_EVENT_MOUSE_MIDDLE_BUTTON_CLICK>,
 								int_<UI_EVENT_MOUSE_LEFT_BUTTON_DOUBLE_CLICK>,
 								int_<UI_EVENT_MOUSE_RIGHT_BUTTON_DOUBLE_CLICK>,
 								int_<UI_EVENT_MOUSE_MIDDLE_BUTTON_DOUBLE_CLICK >> ;
 	
+/**
+*	\brief 将鼠标事件全部移到setEventMouse，这是为了用来
+*	判断是否某个Widget存在鼠标事件，用来决定Mouse响应的Widget（下一层的）
+*/
 using setEventMouse = util::typeset<int_<UI_EVENT_MOUSE_MOTION>,
+									int_<UI_EVENT_MOUSE_LEAVE>,
+									int_<UI_EVENT_MOUSE_ENTER>,
+									int_<UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>,
+									int_<UI_EVENT_MOUSE_RIGHT_BUTTON_CLICK>,
+									int_<UI_EVENT_MOUSE_MIDDLE_BUTTON_CLICK>,
 									int_<UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>,
 									int_<UI_EVENT_MOUSE_RIGHT_BUTTON_DOWN>,
 									int_<UI_EVENT_MOUSE_MIDDLE_BUTTON_DOWN >,

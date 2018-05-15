@@ -31,6 +31,7 @@ protected:
 
 	Widget& mOwner;
 	Widget* mMouseFocus;
+	Point2  mCoords;
 
 	void SignalHandleMouseMotion(const ui_event event, bool&handle, const Point2& coords);
 

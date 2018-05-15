@@ -14,6 +14,12 @@ namespace gui {
 		mGrid.InitLayout();
 	}
 
+	void ContainerBase::Update()
+	{
+		mGrid.Update();
+		Widget::Update();
+	}
+
 	/**
 	*	\brief ¼õÉÙ¿í¶È
 	*/

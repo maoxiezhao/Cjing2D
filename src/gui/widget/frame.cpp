@@ -96,7 +96,7 @@ Frame::Frame(int x, int y, int w, int h) :
 {
 	Manager::GetInstance().Add(*this);
 	Connect();
-	RegisterSignalCallBack();
+	//RegisterSignalCallBack();
 
 	Place({ x, y }, { w, h });
 }

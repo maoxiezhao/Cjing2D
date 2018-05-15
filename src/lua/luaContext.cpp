@@ -835,8 +835,6 @@ void LuaContext::PushUserdata(lua_State * l, LuaObject & userData)
 	}
 }
 
-
-
 /**
 *	\brief 检查指定位置的lua用户对象，返回该对象
 */

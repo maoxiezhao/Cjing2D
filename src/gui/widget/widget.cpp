@@ -4,6 +4,7 @@
 #include "gui\widget\multGrid.h"
 #include "gui\lua\uiApi.h"
 #include "core\random.h"
+#include "movements\movement.h"
 
 namespace gui
 {
@@ -284,6 +285,11 @@ bool Widget::CanWrap() const
 	return false;
 }
 
+bool Widget::CanMouseFocus()
+{
+	return Dispatcher::HasSignal<gui::setEventMouse>(event_queue_type::child);
+}
+
 void Widget::SetDebugDraw(bool draw)
 {
 	mDebugDraw = draw;
@@ -307,6 +313,16 @@ void Widget::RequestReduceHeight(const int maxnumHeight)
 void Widget::DemandReduceHeight(const int maxnumHeight)
 {
 	// nothing
+}
+
+void Widget::Update()
+{
+	if (mMovement != nullptr)
+	{
+		mMovement->Update();
+		if (mMovement != nullptr && mMovement->IsFinished())
+			StopMovement();
+	}
 }
 
 void Widget::Draw()
@@ -389,7 +405,42 @@ void Widget::DrawDebugGround()
 */
 void Widget::SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef & callback)
 {
+	if (!mCallbacks.HasCallBack(type))
+		AddLuaCallbackSignal(type);
+
 	mCallbacks.AddCallBack(type, callback);
+}
+
+void Widget::AddLuaCallbackSignal(WIDGET_CALL_BACK_TYPE type)
+{
+	switch (type)
+	{
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_ENTER:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_ENTER>(
+			std::bind(&Widget::SignalHandlerMouseEnter, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEAVE>(
+			std::bind(&Widget::SignalHandlerMouseLeave, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOWN:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_DOWN>(
+			std::bind(&Widget::SignalHandlerMouseLeftButtonDown, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_UP>(
+			std::bind(&Widget::SignalHandlerMouseLeftButtonUp, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_CLICK>(
+			std::bind(&Widget::SignalHandlerMouseLeftButtonClick, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOUBLE_CLICK:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_DOUBLE_CLICK>(
+			std::bind(&Widget::SignalHandlerMouseLeftButtonDoubleClick, this, std::placeholders::_2, std::placeholders::_3));
+		break;
+
+	}
 }
 
 void Widget::ClearLuaCallBack()
@@ -400,6 +451,55 @@ void Widget::ClearLuaCallBack()
 bool Widget::DoLuaCallBack(WIDGET_CALL_BACK_TYPE type)
 {
 	return mCallbacks.DoCallBack(type, *this);
+}
+
+void Widget::StopMovement()
+{
+	mMovement = nullptr;
+}
+
+void Widget::StartMovement(const std::shared_ptr<Movement>& movement)
+{
+	StopMovement();
+	mMovement = movement;
+	mMovement->SetWidget(this);
+	mMovement->SetSuspended(false);
+	mMovement->Start();
+}
+
+const std::shared_ptr<Movement>& Widget::GetMovement()
+{
+	return mMovement;
+}
+
+void Widget::SignalHandlerMouseEnter(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_ENTER);
+}
+
+void Widget::SignalHandlerMouseLeave(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE);
+}
+
+void Widget::SignalHandlerMouseLeftButtonDown(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOWN);
+}
+
+void Widget::SignalHandlerMouseLeftButtonUp(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP);
+}
+
+void Widget::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK);
+}
+
+void Widget::SignalHandlerMouseLeftButtonDoubleClick(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOUBLE_CLICK);
 }
 
 const string Widget::GetLuaObjectName() const

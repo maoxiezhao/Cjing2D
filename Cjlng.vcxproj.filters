@@ -65,6 +65,9 @@
     <Filter Include="lua\luaDebug">
       <UniqueIdentifier>{370ee564-0d2a-4f9f-89fd-08dbd17d7fef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gui\transition">
+      <UniqueIdentifier>{c469bca4-7da0-43eb-b460-e5bf653ffcf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main\main.cpp">

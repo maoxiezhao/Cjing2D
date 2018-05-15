@@ -5,6 +5,8 @@
 #include"movements\pathMovement.h"
 #include"movements\pathFinding_movement.h"
 #include"entity\entity.h"
+#include"gui\widget\widget.h"
+#include"gui\lua\uiApi.h"
 
 const string LuaContext::module_movement_name = "Movement";
 const string LuaContext::module_straight_movement_name = "StraightMovement";
@@ -105,6 +107,21 @@ int LuaContext::movement_api_api_gc(lua_State*l)
 	});
 }
 
+namespace {
+
+int frame_api_is_widget(lua_State * l, int index)
+{
+	auto IsUserData = [&](lua_State*l, int index, const std::string& name) {
+		return LuaContext::IsUserdata(l, index, name);
+	};
+
+	return IsUserData(l, index, gui::ui_lua_widget_name) ||
+		IsUserData(l, index, gui::ui_Lua_button_name) ||
+		IsUserData(l, index, gui::ui_lua_frame_name) ||
+		IsUserData(l, index, gui::ui_lua_image_name) ||
+		IsUserData(l, index, gui::ui_lua_lable_name);
+}
+}
 /**
 *	\brief  µœ÷movement:start()
 *
@@ -125,6 +142,12 @@ int LuaContext::movement_api_start(lua_State*l)
 		{
 			Entity& entity = *CheckEntity(l, 2);
 			entity.StartMovement(movement);
+		}
+		else if (frame_api_is_widget(l, 2))
+		{
+			gui::Widget& widget = *std::static_pointer_cast<gui::Widget>(
+				CheckUserdata(l, 2, gui::ui_lua_widget_name));
+			widget.StartMovement(movement);
 		}
 		else
 		{

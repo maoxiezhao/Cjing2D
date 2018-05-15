@@ -227,7 +227,7 @@ void Selections::ImplDrawChildren(const Point2 & offset)
 	for (const auto& item : mItems)
 	{
 		Child* it = item.get();
-		if (it->mShow && it->mGrid.GetVisibility() == Visiblility::Visible)
+		if (it->mShow && it->mGrid.GetVisibility())
 		{
 			it->mGrid.DrawChildren(offset);
 		}

@@ -8,11 +8,13 @@
 namespace gui
 {
 
+bool Widget::mDebugDraw = false;
+
 Widget::Widget() :
 	mID(""),
 	mParent(nullptr),
 	mIsDirty(true),
-	mVisible(Visiblility::Visible),
+	mVisible(true),
 	mReDrawAction(ReDrawAction::Full),
 	mLinkedGroup(""),
 	mPosition(),
@@ -26,7 +28,7 @@ Widget::Widget(const BuilderWidget & builder):
 	mID(builder.mID),
 	mParent(nullptr),
 	mIsDirty(true),
-	mVisible(Visiblility::Visible),
+	mVisible(true),
 	mReDrawAction(ReDrawAction::Full),
 	mLinkedGroup(""),
 	mPosition(),
@@ -207,9 +209,7 @@ void Widget::Move(const int xoffset, const int yoffset)
 */
 void Widget::InitLayout()
 {
-	Debug::CheckAssertion(mVisible != Visiblility::InVisible);
 	Debug::CheckAssertion(GetRoot() != nullptr);
-
 	mLayoutSize = Size(0, 0);
 }
 
@@ -218,7 +218,8 @@ void Widget::InitLayout()
 */
 Size Widget::GetBestSize() const
 {
-	Debug::CheckAssertion(mVisible != Visiblility::InVisible);
+	Debug::CheckAssertion(mVisible, 
+		"Try to get best size for invisable wiget.");
 
 	Size result = mLayoutSize;
 	if (result == Size(0,0))
@@ -283,6 +284,11 @@ bool Widget::CanWrap() const
 	return false;
 }
 
+void Widget::SetDebugDraw(bool draw)
+{
+	mDebugDraw = draw;
+}
+
 void Widget::RequestReduceWidth(const int maxnumWidth)
 {
 	// nothing
@@ -315,11 +321,13 @@ void Widget::Draw()
 */
 void Widget::DrawBackground(const Point2& offset)
 {
-	Debug::CheckAssertion(mVisible == Visiblility::Visible);
+	Debug::CheckAssertion(mVisible, "Try to draw in-vaisible widget");
 
 	if (mReDrawAction == ReDrawAction::Full)
 	{
-		DrawDebugGround();
+		if(mDebugDraw)
+			DrawDebugGround();
+
 		ImplDrawBackground(offset);
 	}
 	else if (mReDrawAction == ReDrawAction::Partly)
@@ -334,7 +342,7 @@ void Widget::DrawBackground(const Point2& offset)
 */
 void Widget::DrawForeground(const Point2& offset)
 {
-	Debug::CheckAssertion(mVisible == Visiblility::Visible);
+	Debug::CheckAssertion(mVisible, "Try to draw in-vaisible widget");
 
 	if (mReDrawAction == ReDrawAction::Full)
 	{
@@ -351,7 +359,7 @@ void Widget::DrawForeground(const Point2& offset)
 */
 void Widget::DrawChildren(const Point2& offset)
 {
-	Debug::CheckAssertion(mVisible == Visiblility::Visible);
+	Debug::CheckAssertion(mVisible, "Try to draw in-vaisible widget");
 
 	if (mReDrawAction == ReDrawAction::Full)
 	{
@@ -376,8 +384,22 @@ void Widget::DrawDebugGround()
 	}
 }
 
+/**
+*	\brief 设置事件的Lua回调
+*/
+void Widget::SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef & callback)
+{
+	mCallbacks.AddCallBack(type, callback);
+}
+
 void Widget::ClearLuaCallBack()
 {
+	mCallbacks.Clear();
+}
+
+bool Widget::DoLuaCallBack(WIDGET_CALL_BACK_TYPE type)
+{
+	return mCallbacks.DoCallBack(type, *this);
 }
 
 const string Widget::GetLuaObjectName() const
@@ -412,7 +434,7 @@ const Rect Widget::GetDirtyRect() const
 	return Rect();
 }
 
-Widget::Visiblility Widget::GetVisibility() const
+bool Widget::GetVisibility() const
 {
 	return mVisible;
 }
@@ -423,27 +445,23 @@ Widget::Visiblility Widget::GetVisibility() const
 *	当设置widget从可见变为不可见或从不可见变为可见时
 *	需要重新调整大小
 */
-void Widget::SetVisibility(const Visiblility & visibility)
+void Widget::SetVisibility(const bool & visibility)
 {
 	if (mVisible == visibility)
 	{
 		return;
 	}
-	bool needResize = (mVisible == Visiblility::InVisible) ||
-				(visibility == Visiblility::InVisible && GetSize() == Size(0,0));
+	bool needResize = !(GetSize() == Size(0,0));
 	mVisible = visibility;
 
 	if (needResize)
 	{
-		if (mVisible == Visiblility::Visible)
-		{
-			gui::Message message;
-			Fire(gui::EVENT_REQUEST_PLACEMENT, *this, message);
-		}
+		gui::Message message;
+		Fire(gui::EVENT_REQUEST_PLACEMENT, *this, message);
 	}
 	else
 	{
-		SetIsDirty(true);
+		SetIsDirty(true); // to remove
 	}
 }
 

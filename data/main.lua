@@ -34,7 +34,7 @@ function Main.OnStarted()
 	addon_manager_root_start()
 	
 	-- test
-	game_manager_start_debug()	
+	--game_manager_start_debug()	
 end
 
 -- 模块更新

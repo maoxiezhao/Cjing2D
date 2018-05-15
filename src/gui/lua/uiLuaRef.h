@@ -1,5 +1,6 @@
 #pragma once
 
+#include"lua\luaObject.h"
 #include"lua\luaRef.h"
 #include"gui\widget\widgetInfo.h"
 
@@ -15,40 +16,11 @@ class UILuaRef
 public:
 	UILuaRef() = default;
 
-	void AddCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& luaRef)
-	{
-		mLuaRefs[type] = luaRef;
-	}
+	void AddCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& luaRef);
+	bool DoCallBack(WIDGET_CALL_BACK_TYPE type, LuaObject& object);
+	bool HasCallBack(WIDGET_CALL_BACK_TYPE type);
+	void Clear();
 
-	/**
-	*	\brief 执行回调函数
-	*	\return true 则中断事件传递
-	*/
-	bool DoCallBack(WIDGET_CALL_BACK_TYPE type)
-	{
-		auto findIt = mLuaRefs.find(type);
-		if (findIt != mLuaRefs.end() && !findIt->second.IsEmpty())
-		{
-			lua_State* l = findIt->second.GetLuaState();
-			findIt->second.Push();
-			LuaTools::CallFunction(l, 0, 1, "");
-
-			bool ret = LuaTools::OptBoolean(l, -1, false);
-			lua_pop(l, 1);
-			return ret;
-		}
-	}
-
-	bool HasCallBack(WIDGET_CALL_BACK_TYPE type)
-	{
-		auto findIt = mLuaRefs.find(type);
-		return findIt != mLuaRefs.end();
-	}
-
-	void Clear()
-	{
-		mLuaRefs.clear();
-	}
 private:
 	std::map<WIDGET_CALL_BACK_TYPE, LuaRef> mLuaRefs;
 };

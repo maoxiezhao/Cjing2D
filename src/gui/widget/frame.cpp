@@ -170,11 +170,6 @@ Widget * Frame::FindAt(const Point2 & pos)
 	return  Widget::IsAt(pos) ? this : nullptr;
 }
 
-void Frame::SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback)
-{
-	mCallbacks.AddCallBack(type, callback);
-}
-
 /**
 *	\brief 注册窗体事件回调
 */
@@ -194,27 +189,27 @@ void Frame::RegisterSignalCallBack()
 
 void Frame::SignalHandlerMouseEnter(const ui_event event, bool & handle)
 {
-	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_ENTER);
+	handle = DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_ENTER);
 }
 
 void Frame::SignalHandlerMouseLeave(const ui_event event, bool & handle)
 {
-	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE);
+	handle = DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE);
 }
 
 void Frame::SignalHandlerMouseLeftButtonDown(const ui_event event, bool & handle)
 {
-	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOWN);
+	handle = DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOWN);
 }
 
 void Frame::SignalHandlerMouseLeftButtonUp(const ui_event event, bool & handle)
 {
-	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP);
+	handle = DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP);
 }
 
 void Frame::SignalHandlerMouseLeftButtonClick(const ui_event event, bool & handle)
 {
-	handle = mCallbacks.DoCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK);
+	handle = DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK);
 }
 
 /**
@@ -239,7 +234,7 @@ Size Frame::GetBestSize() const
 
 void Frame::ClearLuaCallBack()
 {
-	mCallbacks.Clear();
+	Widget::ClearLuaCallBack();
 	ContainerBase::ClearLuaCallBack();
 }
 

@@ -6,8 +6,12 @@ namespace gui
 {
 /**
 *	\brief widget button
+*
+*	基本的Button类，可以设置3个图片或者3个颜色来定义按钮样式，如果设置为
+*	使用系统样式则直接绘制，否则绘制三个sprite
+*
+*	TODO 考虑移除，毕竟可以在Lua中用Frame实现，但是还是先暂时留下该对象
 */
-
 class Button : public StyledWidget
 {
 public:
@@ -21,6 +25,12 @@ public:
 	{
 		return WIDGET_TYPE::WIDGET_BUTTON;
 	}
+
+	/** style test */
+	bool IsUseSystemStyle()const;
+	Color4B GetCurColor()const;
+
+	virtual const string GetLuaObjectName()const;
 private:
 	enum State
 	{
@@ -28,6 +38,7 @@ private:
 		DISABLED,
 		FOCUSED,
 		PRESSED,
+		NUMSTATE,
 	};
 
 	void SetState(const State state)
@@ -53,5 +64,10 @@ private:
 
 	// test
 	void SignalHandlerMouseLeftButtonDoubleClick(const  ui_event event, bool&handle);
+
+	bool mUseSystemStyle;
+
+	Color4B mStateColor[NUMSTATE];
+	std::map<int, SpritePtr> mStateSprite;
 };
 }

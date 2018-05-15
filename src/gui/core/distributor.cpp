@@ -172,6 +172,9 @@ void MouseButton<T>::mSignalHandlerButtonDown(const ui_event event, bool & handl
 		mFocus = widget;
 		mOwner.Fire(event, *mMouseFocus, coords);
 	}
+
+	mLastClickWidget = mFocus;
+	mLastDownTime = System::Now();
 	handle = true;
 }
 
@@ -243,11 +246,6 @@ void MouseButton<T>::MouseButtonClick(Widget * widget)
 		mLastClickTime = curTime;
 		mLastDownTime = 0;
 		mOwner.Fire(T::buttonClickEvent, *mMouseFocus);
-	}
-	else
-	{
-		mLastClickWidget = widget;
-		mLastDownTime = curTime;
 	}
 }
 

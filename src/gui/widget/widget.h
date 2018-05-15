@@ -57,7 +57,6 @@ public:
 	void DrawChildren(const Point2& offset = { 0,0 });
 	void DrawDebugGround();
 
-	virtual void ClearLuaCallBack();
 	virtual const string GetLuaObjectName()const;
 private:
 	virtual void ImplDrawBackground(const Point2& offset);
@@ -71,8 +70,8 @@ public:
 	bool IsDirty()const;
 	const Rect GetDirtyRect()const;
 
-	Visiblility GetVisibility()const;
-	void SetVisibility(const Visiblility& visibility);
+	bool GetVisibility()const;
+	void SetVisibility(const bool& visibility);
 
 	ReDrawAction GetReDrawAction()const
 	{
@@ -106,7 +105,8 @@ private:
 	Widget* mParent;
 
 	bool mIsDirty;			// 目前每帧重绘的情况下，dirty的存在暂定
-	Visiblility mVisible;
+	//Visiblility mVisible;
+	bool mVisible;
 	ReDrawAction mReDrawAction;
 
 	std::string mLinkedGroup;
@@ -165,6 +165,7 @@ public:
 		return true;
 	}
 
+	static void SetDebugDraw(bool draw);
 private:
 	Point2 mPosition;			/** 控件实际全局位置 */
 	Point2 mWantedPosition;		/** 期望位置 */
@@ -173,6 +174,7 @@ private:
 
 	// debug sprite
 	SpritePtr mDebugSprite;
+	static bool mDebugDraw;
 
 public:
 	virtual Widget* Find(string& id, const bool activited);
@@ -181,6 +183,11 @@ public:
 	virtual bool IsAt(const Point2& pos)const;
 	virtual Widget* FindAt(const Point2& pos);
 
+	virtual void SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback);
+	virtual void ClearLuaCallBack();
+	virtual bool DoLuaCallBack(WIDGET_CALL_BACK_TYPE type);
+private:
+	UILuaRef mCallbacks;
 
 };
 

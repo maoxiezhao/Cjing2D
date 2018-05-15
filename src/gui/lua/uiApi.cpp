@@ -1,9 +1,11 @@
 #include"lua\luaContext.h"
 #include"lua\luaBinder.h"
-#include"gui\uiStage.h"
-#include"gui\widget\frame.h"
 #include"gui\lua\uiApi.h"
 #include"gui\lua\frameData.h"
+#include"gui\widget\frame.h"
+#include"gui\widget\button.h"
+#include"gui\widget\image.h"
+#include"gui\uiStage.h"
 
 namespace gui {
 
@@ -20,17 +22,33 @@ int RegisterFunction(lua_State* l)
 	/** widget base */
 	LuaBindClass<gui::Widget> widgetClass(l, gui::ui_lua_widget_name);
 	widgetClass.AddDefaultMetaFunction();
+	widgetClass.AddMethod("SetVisible", &Widget::SetVisibility);
+	widgetClass.AddMethod("GetVisible", &Widget::GetVisibility);
+	widgetClass.AddMethod("SetSize", &Widget::SetSize);
+	widgetClass.AddMethod("GetSize", &Widget::GetSize);
+	widgetClass.AddMethod("SetPos", &Widget::SetWantedPosition);
+	widgetClass.AddMethod("GetPos", &Widget::GetPositon);
+	widgetClass.AddMethod("SetCallBack", frame_api_set_call_back);
+	widgetClass.AddMethod("ClearCallBacks", &Widget::ClearLuaCallBack);
 
+	/** frame base */
 	LuaBindClass<gui::Frame> windowClass(l, gui::ui_lua_frame_name, gui::ui_lua_widget_name);
 	windowClass.AddDefaultMetaFunction();
 	windowClass.AddFunction("GetRoot", frame_api_get_root);
+	windowClass.AddFunction("SetDebug", frame_api_set_debug);
 	windowClass.AddMethod("CreateFrame", frame_api_create_frame);
-	windowClass.AddMethod("SetCallBack", frame_api_set_call_back);
-	windowClass.AddMethod("ClearCallBacks", &Frame::ClearLuaCallBack);
+	windowClass.AddMethod("CreateButton", frame_api_create_button);
+	windowClass.AddMethod("CreateImage", frame_api_create_image);
 	windowClass.AddMethod("RemoveChildren", &Frame::RemoveChildren);
 	windowClass.AddMethod("RemoveAllChildrens", &Frame::RemoveAllChildrens);
 	windowClass.AddMethod("RemoveBySelf", frame_api_remove_by_self);
 	windowClass.AddMethod("GetParent", frame_api_get_parent);
+
+	/** image */
+	LuaBindClass<gui::Image> imageClass(l, gui::ui_lua_image_name, gui::ui_lua_widget_name);
+	imageClass.AddDefaultMetaFunction();
+	imageClass.AddMethod("SetImage", &Image::SetImagePath);
+	imageClass.AddMethod("GetImage", &Image::GetImagePath);
 
 	return 0;
 }
@@ -61,8 +79,12 @@ int frame_api_create_frame(lua_State* l)
 		const std::string& name = LuaTools::CheckString(l, 2);
 		FrameData data = FrameData::CheckFrameData(l, 3, WIDGET_TYPE::WIDGET_FRAME);
 		auto newFrame = std::make_shared<gui::Frame>(
-			data.GetPos().x, data.GetPos().y, 
+			data.GetPos().x, data.GetPos().y,
 			data.GetSize().width, data.GetSize().height);
+
+		if (newFrame == nullptr)
+			Debug::Error("Failed to create frame " + name);
+
 		newFrame->SetWantedPosition(data.GetPos());
 		newFrame->SetID(name);
 		
@@ -80,14 +102,14 @@ int frame_api_create_frame(lua_State* l)
 int frame_api_set_call_back(lua_State * l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		Frame& frame = *std::static_pointer_cast<Frame>(
+		Widget& widget = *std::static_pointer_cast<Widget>(
 			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
 
 		const std::string& name = LuaTools::CheckString(l, 2);
 		LuaRef callback = LuaTools::CheckFunction(l, 3);
 
 		auto type = StringToEnum<WIDGET_CALL_BACK_TYPE>(name);
-		frame.SetLuaCallBack(type, callback);
+		widget.SetLuaCallBack(type, callback);
 		return 0;
 	});
 }
@@ -131,6 +153,69 @@ int frame_api_get_parent(lua_State * l)
 
 		return 1;
 	});
+}
+
+int frame_api_set_debug(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		bool debuged = LuaTools::CheckBoolean(l, 1);
+		Widget::SetDebugDraw(debuged);
+
+		return 0;
+	});
+}
+
+/**
+*	\brief Window:CreateButton(name, data)
+*/
+int frame_api_create_button(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+
+		const std::string& name = LuaTools::CheckString(l, 2);
+		FrameData data = FrameData::CheckFrameData(l, 3, WIDGET_TYPE::WIDGET_BUTTON);
+
+		auto button = std::make_shared<gui::Button>();
+		button->Connect();
+		button->SetWantedPosition(data.GetPos());
+		button->SetSize(data.GetSize());
+		button->SetID(name);
+		button->SetLabel(data.GetValueString("label"));
+
+		Point2 gridPos = data.GetGridPos();
+		frame.SetChildren(button, gridPos.x, gridPos.y, data.GetAlignFlag(), 0);
+
+		GetLuaContext(l).PushUserdata(l, *button);
+		return 1;
+	});
+}
+
+/**
+*	\brief Window:CreateImage(name, data)
+*/
+int frame_api_create_image(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+
+		const std::string& name = LuaTools::CheckString(l, 2);
+		FrameData data = FrameData::CheckFrameData(l, 3, WIDGET_TYPE::WIDGET_IMAGE);
+
+		auto image = std::make_shared<gui::Image>();
+		image->SetWantedPosition(data.GetPos());
+		image->SetSize(data.GetSize());
+		image->SetID(name);
+
+		Point2 gridPos = data.GetGridPos();
+		frame.SetChildren(image, gridPos.x, gridPos.y, data.GetAlignFlag(), 0);
+
+		GetLuaContext(l).PushUserdata(l, *image);
+		return 1;
+	});
+
 }
 
 }

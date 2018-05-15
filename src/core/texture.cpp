@@ -61,7 +61,9 @@ bool Texture2D::InitWithFile(const string & texname)
 	mWidth = (GLuint)w;
 	mHeight = (GLuint)h;
 	
-	return InitWithChars(imageData);
+	bool ret = InitWithChars(imageData);
+	stbi_image_free(imageData);
+	return ret;
 }
 
 /**

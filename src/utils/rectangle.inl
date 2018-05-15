@@ -1,3 +1,4 @@
+#include "rectangle.h"
 
 constexpr Rect::Rect():
 	x(0),y(0),
@@ -67,6 +68,12 @@ inline void Rect::SetPos(int x, int y)
 	this->y = y;
 }
 
+inline void Rect::SetPos(const Point2 & pos)
+{
+	this->x = pos.x;
+	this->y = pos.y;
+}
+
 inline void Rect::SetPosX(int x)
 {
 	this->x = x;
@@ -81,6 +88,12 @@ inline void Rect::SetSize(int w, int h)
 {
 	width = w;
 	height = h;
+}
+
+inline void Rect::SetSize(const Size & size)
+{
+	this->width  = size.width;
+	this->height = size.height;
 }
 
 inline void Rect::SetCenter(int cx, int cy)

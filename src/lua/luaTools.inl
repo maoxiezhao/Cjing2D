@@ -10,7 +10,7 @@ int  ExceptionBoundary(lua_State*l, Callable&& func)
 	}
 	catch (const LuaException& ex)
 	{
-
+		Debug::Error(ex.what());
 		luaL_error(l, ex.what());
 	}
 	catch (const std::exception&ex)

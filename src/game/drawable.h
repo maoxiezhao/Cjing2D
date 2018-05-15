@@ -17,8 +17,8 @@ public:
 	~Drawable();
 
 	virtual void Update();
-	virtual void Draw() = 0;
-	virtual void Draw(const Point2& pos) = 0;
+	virtual void Draw();
+	virtual void Draw(const Point2& pos);
 
 	// status
 	Point2 GetPos()const;

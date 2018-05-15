@@ -83,13 +83,6 @@ void UIStage::Initiazlize()
 	/** 创建distributor */
 	mDistributor = std::make_shared<gui::Distributor>(*mRoot, gui::Dispatcher::front_child);
 	mRoot->SetDistributor(mDistributor);
-
-	/////** Test */
-	////auto button = std::make_shared<gui::Button>();
-	////button->Connect();
-	////button->SetWantedPosition({ 0, 50 });
-	////button->SetSize({150, 50});
-	////mRoot->SetChildren(button, 1, 1, gui::ALIGN_VERTICAL_TOP| gui::ALIGN_HORIZONTAL_LEFT, 0);
 }
 
 void UIStage::Quit()
@@ -99,6 +92,7 @@ void UIStage::Quit()
 
 	// 必须要显示删除，因为UIStage为单例，生命周期可能存在冲突
 	mDistributor = nullptr;
+	mRoot->SetLuaContext(nullptr);
 	mRoot = nullptr;
 	mGUI = nullptr;
 }
@@ -114,6 +108,9 @@ bool UIStage::NotifyInput(const InputEvent & ent)
 
 void UIStage::Draw()
 {
+	Size fbSize = Video::GetScreenSize();
+	gui::UIRender::BeginRender(fbSize.width, fbSize.height, 1.0f);
+
 	if (mRoot != nullptr)
 		mRoot->Draw();
 
@@ -126,15 +123,12 @@ void UIStage::Update()
 
 void UIStage::SetVisible(bool visible)
 {
-	auto visiblity = visible ? gui::Widget::Visiblility::Visible :
-		gui::Widget::Visiblility::Hidden;
-	mRoot->SetVisibility(visiblity);
+	mRoot->SetVisibility(visible);
 }
 
 bool UIStage::IsVisible() const
 {
-	return mRoot->GetVisibility() == 
-		gui::Widget::Visiblility::Visible;
+	return mRoot->GetVisibility();
 }
 
 gui::Frame& UIStage::GetRoot()

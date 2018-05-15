@@ -166,9 +166,11 @@
     <ClCompile Include="src\gui\core\uiRender.cpp" />
     <ClCompile Include="src\gui\lua\frameData.cpp" />
     <ClCompile Include="src\gui\lua\uiApi.cpp" />
+    <ClCompile Include="src\gui\lua\uiLuaRef.cpp" />
     <ClCompile Include="src\gui\uiStage.cpp" />
     <ClCompile Include="src\gui\widget\button.cpp" />
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
+    <ClCompile Include="src\gui\widget\image.cpp" />
     <ClCompile Include="src\gui\widget\multGrid.cpp" />
     <ClCompile Include="src\gui\widget\selections.cpp" />
     <ClCompile Include="src\gui\widget\singleGrid.cpp" />
@@ -326,6 +328,7 @@
     <ClInclude Include="src\gui\widget\button.h" />
     <ClInclude Include="src\gui\widget\containerBase.h" />
     <ClInclude Include="src\gui\widget\image.h" />
+    <ClInclude Include="src\gui\widget\label.h" />
     <ClInclude Include="src\gui\widget\multGrid.h" />
     <ClInclude Include="src\gui\widget\selectableItem.h" />
     <ClInclude Include="src\gui\widget\selections.h" />

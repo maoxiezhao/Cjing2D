@@ -57,7 +57,8 @@ local function addon_create_env(genv)
 end
 
 local function addon_load_addon(name, env)
-	local addon_env = {AddonExports = {}}
+	-- 创建addon环境
+	local addon_env = {AddonExports = {}, [name] = {}}
 	setmetatable(addon_env, {__index = env})
 
 	local addon_path = "script/addons/" .. name .. ".lua"
@@ -67,16 +68,24 @@ local function addon_load_addon(name, env)
 		return 
 	end
 
+	local addon_inst = addon_env[name] or {}
 	local addon_export = addon_env.AddonExports
+
 	-- 创建addon实例
 	local addon = {
 		name = name, 
 		env = addon_env,
+		inst = addon_inst,
 		export = addon_export,
 	}
+	-- 可以通过addon实例访问到addon内部的env、inst、export接口
 	setmetatable(addon, {__index = function(t, k)
 		local env = rawget(t, "env");
 		local v = rawget(env, k);
+		if v then return v end
+
+		local inst = rawget(t, "inst");
+		local v = rawget(inst, k);
 		if v then return v end
 
 		local exports = rawget(t, "export");

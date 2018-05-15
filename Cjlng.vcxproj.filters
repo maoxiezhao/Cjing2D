@@ -487,6 +487,12 @@
     <ClCompile Include="src\gui\widget\widgetInfo.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\widget\image.cpp">
+      <Filter>gui\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\lua\uiLuaRef.cpp">
+      <Filter>gui\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -970,6 +976,9 @@
       <Filter>gui\lua</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\widget\image.h">
+      <Filter>gui\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\widget\label.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
   </ItemGroup>

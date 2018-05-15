@@ -49,6 +49,14 @@ void Drawable::Update()
 	}
 }
 
+void Drawable::Draw()
+{
+}
+
+void Drawable::Draw(const Point2 & pos)
+{
+}
+
 Point2 Drawable::GetPos() const
 {
 	return mPos;

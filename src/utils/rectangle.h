@@ -22,9 +22,11 @@ public:
 
 	void Set(int x1, int y1, int x2, int y2);
 	void SetPos(int x, int y);
+	void SetPos(const Point2& pos);
 	void SetPosX(int x);
 	void SetPosY(int y);
 	void SetSize(int w, int h);
+	void SetSize(const Size& size);
 	void SetCenter(int cx, int cy);
 	void SetAngle(float a);
 	float GetAngle()const;

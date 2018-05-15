@@ -2,33 +2,15 @@
 
 #include"gui\core\handler.h"
 #include"gui\widget\widget.h"
+#include"gui\widget\image.h"
 
 namespace gui
 {
-	struct ImageGrid
-	{
-		float left;
-		float top;
-		float right;
-		float bottom;
 
-		ImageGrid() :left(0.0f), top(0.0f), right(0.0f), bottom(0.0f) {}
-	};
+class Button;
 
-/**
-*	\brief 渲染相关信息
-*/
-struct ImageRenderInfo
-{
-	Size imageSize;
-	Rect imageRect;
-	ImageGrid imageGrid;
-};
 
-struct TextRenderInfo
-{
-
-};
+struct TextRenderInfo{};
 
 /**
 *	\brief CPU perf工具函数
@@ -74,6 +56,11 @@ public:
 	static void RenderImage(const ImageRenderInfo& imageInfo);
 	static void RenderText(const std::string& str, int x, int y);
 	static void RenderShape(const Rect& rect, const Color4B& color);
+	static void RenderButton(const Button& button);
+
+	// resource
+	static int LoadUIImage(const std::string& path, int imageFlag = 0);
+	static Size GetImageSize(const std::string& path);
 
 	// debug
 	static void InitDebugData();

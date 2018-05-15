@@ -51,7 +51,7 @@ public:
 	void SetValueString(const string& key, const string& value);
 	void SetValueInteger(const string& key, int value);
 
-	const FieldDescriptions& GetValue(const string& key)const;
+	const FieldDescription& GetValue(const string& key)const;
 	bool GetValueBoolean(const string& key)const;
 	int GetValueInteger(const string& key)const;
 	const string& GetValueString(const string& key)const;
@@ -68,6 +68,7 @@ public:
 	SetterGetterMethod(Point2, GridPos)
 	SetterGetterMethod(Size, Size)
 	SetterGetterMethod(int, AlignFlag)
+
 private:
 	gui::WIDGET_TYPE mType;
 	string mName;
@@ -77,5 +78,5 @@ private:
 	int mAlignFlag;
 
 	static int mIndex;
-	std::map<std::string, FieldDescriptions> mValueField;	// 变量域
+	std::map<std::string, FieldDescription> mValueField;	// 变量域
 };

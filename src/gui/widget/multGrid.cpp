@@ -342,7 +342,7 @@ void Grid::Children::InitLayout()
 {
 	Debug::CheckAssertion(mWidget != nullptr);
 
-	if (mWidget->GetVisibility() != Widget::Visiblility::InVisible)
+	if (mWidget->GetVisibility())
 	{
 		mWidget->InitLayout();
 	}
@@ -350,7 +350,7 @@ void Grid::Children::InitLayout()
 
 void Grid::Children::Place(const Point2& pos, const Size& size)
 {
-	if (mWidget == nullptr || mWidget->GetVisibility() == Widget::Visiblility::InVisible)
+	if (mWidget == nullptr || !mWidget->GetVisibility())
 	{
 		return;
 	}
@@ -486,7 +486,7 @@ Size Grid::Children::GetBestSize()const
 		return GetBorderSpace();
 	}
 
-	if (mWidget->GetVisibility() == Widget::Visiblility::InVisible)
+	if (!mWidget->GetVisibility())
 	{
 		return Size(0, 0);
 	}
@@ -784,7 +784,7 @@ void Grid::RequestReduceCellWidth(Children & child, const int maxnumWidth)
 {
 	if (child.GetWidget() != nullptr)
 	{
-		if (child.GetWidget()->GetVisibility() == Widget::Visiblility::InVisible)
+		if (!child.GetWidget()->GetVisibility())
 		{
 			return;
 		}
@@ -883,7 +883,7 @@ void Grid::RequestReduceCellHeight(Children & child, const int maxnumHeight)
 {
 	if (child.GetWidget() != nullptr)
 	{
-		if (child.GetWidget()->GetVisibility() == Visiblility::InVisible )
+		if (!child.GetWidget()->GetVisibility())
 		{
 			return;
 		}
@@ -893,13 +893,13 @@ void Grid::RequestReduceCellHeight(Children & child, const int maxnumHeight)
 
 void Grid::ImplDrawChildren(const Point2 & offset)
 {
-	Debug::CheckAssertion(GetVisibility() == Widget::Visiblility::Visible);
+	Debug::CheckAssertion(GetVisibility());
 	SetIsDirty(false);
 
 	ForEachChildren([&](Children& child) {
 		auto widget = child.GetWidget();
 		if (widget == nullptr ||
-			widget->GetVisibility() != Widget::Visiblility::Visible ||
+			!widget->GetVisibility()  ||
 			widget->GetReDrawAction() == Widget::ReDrawAction::None){
 			return true;
 		}

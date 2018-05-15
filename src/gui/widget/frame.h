@@ -59,8 +59,6 @@ public:
 	virtual void  ClearLuaCallBack();
 	virtual const string GetLuaObjectName()const;
 	virtual const string GetControlType()const;
-
-	void SetLuaCallBack(WIDGET_CALL_BACK_TYPE type, const LuaRef& callback);
 private:
 	status mStatus;
 
@@ -85,8 +83,6 @@ private:
 	void SignalHandlerMouseLeftButtonDown(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeftButtonUp(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeftButtonClick(const  ui_event event, bool&handle);
-
-	UILuaRef mCallbacks;
 };
 
 

@@ -10,9 +10,11 @@ SystemDoFile("script/core/addonManager.lua")
 
 SystemDoFile("script/core/gameContent.lua")
 SystemDoFile("script/core/gameManager.lua")
-SystemDoFile("script/core/mapSystem.lua")
 SystemDoFile("script/core/entitySystem.lua")
 SystemDoFile("script/core/addonManager.lua")
+
+SystemDoFile("script/core/mapSystem.lua")
+SystemDoFile("script/core/dialogSystem.lua")
 
 -- 模块初始化
 function Main.OnStarted()
@@ -23,16 +25,19 @@ function Main.OnStarted()
 
 	math.randomseed(tostring(os.time()):reverse():sub(1, 6)) 
 
+	-- core system init
 	game_content_init()
-
-	map_system_init()
 
 	entity_system_init()
 
 	addon_manager_init()
+	
+	-- game module init
+	map_system_init()
+
+	dialog_system_init()
 
 	addon_manager_root_start()
-	
 	-- test
 	--game_manager_start_debug()	
 end
@@ -47,11 +52,15 @@ end
 function Main.OnStop()
 	util_log_info("[lua] Main:OnStop normal.")
 
+	-- game module uninit
 	addon_manager_uninit()
 
-	entity_system_uninit()
+	dialog_system_uninit()
 
 	map_system_uninit()
+
+	-- core system uninit
+	entity_system_uninit()
 
 	game_content_uninit()
 end

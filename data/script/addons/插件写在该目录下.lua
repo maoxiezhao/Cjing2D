@@ -145,3 +145,10 @@ AddonExports.OpenTitle = Title.OpenTitle
 		-- label:SetMultline(true)
 		-- label:SetFontSize(40)
 	end
+
+-- open MessageBox
+MsgBox.OpenMsgBox({
+  text = "Hello World!",
+  style = "ok",
+  ok = function() print("Click OK") end,
+})

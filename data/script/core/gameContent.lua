@@ -22,6 +22,7 @@ end
 function GameContent.Initialize()
 	util_log_info("[lua] GameContent:Init.")
 
+	util_log_info("***** Start loading game shared **************")
 	-- load templ
 	load_shared_templ("defaultGame.lua")
 	load_shared_templ("enemyTempl.lua")
@@ -29,7 +30,10 @@ function GameContent.Initialize()
 	load_shared_templ("bulletTempl.lua")
 
 	-- load cfgs
-	load_shared_templ("AddonLists.lua")
+	load_shared_templ("addonLists.lua")
+	load_shared_templ("dialogsList.lua")
+
+	util_log_info("***** Finish unloading game shared **************")
 end
 
 function GameContent.Uninitialize()

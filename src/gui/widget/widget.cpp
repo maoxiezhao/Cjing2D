@@ -629,7 +629,8 @@ bool Widget::HasWidget(const Widget& widget)const
 
 bool Widget::IsAt(const Point2& pos)const
 {
-	return  pos.x >= mPosition.x &&
+	return  GetVisibility() && 
+			pos.x >= mPosition.x &&
 			pos.y >= mPosition.y &&
 			pos.x <= (mPosition.x + mSize.width) &&
 			pos.y <= (mPosition.y + mSize.height);

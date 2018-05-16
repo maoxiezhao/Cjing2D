@@ -34,7 +34,7 @@ std::string Label::GetText() const
 
 void Label::SetAlign(int alignFlag)
 {
-	alignFlag = alignFlag;
+	mAlignFlag = alignFlag;
 }
 
 int Label::GetAlign() const

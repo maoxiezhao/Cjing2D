@@ -56,6 +56,9 @@ local function addon_create_env(genv)
 		env[name] = genv[k]
 	end
 
+	-- 再次加载Common来使Common进入环境
+	traced_pcall(SystemDoFile, "script/common.lua", env)
+
 	-- addon env
 	env.CreateTemplate = AddonManager.CreateTemplate
 

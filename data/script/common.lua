@@ -85,3 +85,13 @@ ORGIN_ENV_LIST = {
 	"string", 
 	"table", 
 }
+
+-- text align
+FONT_ALIGN_LEFT		= 1 << 0	--// 默认文本左对齐
+FONT_ALIGN_CENTER   = 1 << 1	--// 文本居中对齐
+FONT_ALIGN_RIGHT    = 1 << 2	--// 文本右对齐
+-- Vertical align
+FONT_ALIGN_TOP      = 1 << 3	--// 文本水平顶部对齐
+FONT_ALIGN_MIDDLE   = 1 << 4	--// 文本水平居中对齐
+FONT_ALIGN_BOTTOM   = 1 << 5	--// 文本水平底部对齐
+FONT_ALIGN_BASELINE = 1 << 6    --//默认，对齐文本于baseline

@@ -5,6 +5,7 @@ AddonLists.cfgs = {
 	"Root",
 	"Title",
 	"DialogBox",
+	"MsgBox",
 }
 
 AddonLists.temps  ={

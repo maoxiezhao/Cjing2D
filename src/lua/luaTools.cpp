@@ -371,7 +371,11 @@ namespace LuaTools
 	*/
 	void Error(lua_State * l, const string & message)
 	{
-		throw LuaException(l, message);
+		std::string msg(message);
+		luaL_traceback(l, l, NULL, 1);
+		msg += lua_tostring(l, -1);
+
+		throw LuaException(l, msg);
 	}
 
 	/**

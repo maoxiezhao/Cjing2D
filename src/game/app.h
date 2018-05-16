@@ -39,17 +39,18 @@ private:
 	void NotifyInput(const InputEvent& ent);
 
 private:
-	bool mExiting;				/** 是否退出 */
+	bool mExiting;						     /** 是否退出 */
 
 	std::unique_ptr<LuaContext> mLuaContext; /** 脚本管理者 */
-	std::unique_ptr<Game> mCurrGame;		/** 当前游戏 */
-	Game* mNextGame;			/** 下一个游戏，用于切换游戏 */		
-	std::shared_ptr<gui::Window> mWindow;
-	std::unique_ptr<UIStage> mMainStge;	/** ui主场景 */
+	std::unique_ptr<Game> mCurrGame;		 /** 当前游戏 */
+	Game* mNextGame;						 /** 下一个游戏，用于切换游戏 */		
+	std::shared_ptr<gui::Frame> mWindow;
+	//std::unique_ptr<UIStage> mMainStge;	 /** ui主场景 */
 
 	/**** **** test **** ****/
 	SpritePtr sprite;
-	LightPtr mLight;
+	SpritePtr sprite_2;
+	std::shared_ptr<PointLight> mLight;
 };
 
 #endif

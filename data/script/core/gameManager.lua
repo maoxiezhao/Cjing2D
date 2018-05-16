@@ -138,7 +138,12 @@ function GameManager.GetPlayer()
 	end
 end
 
+function GameManager.ExitGame()
+	print("Exit Game!!!!")
+	Game.Exit()
+end
+
 GlobalExports.game_manager_start_debug = GameManager.StartGameDebug
 GlobalExports.game_manager_get_game = GameManager.GetGame
 GlobalExports.game_manager_get_player = GameManager.GetPlayer
-
+GlobalExports.game_manager_exit_game =GameManager.ExitGame

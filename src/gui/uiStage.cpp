@@ -91,8 +91,9 @@ void UIStage::Quit()
 	gui::UIRender::Quit();
 
 	// 必须要显示删除，因为UIStage为单例，生命周期可能存在冲突
-	mDistributor = nullptr;
 	mRoot->SetLuaContext(nullptr);
+	mDistributor = nullptr;
+
 	mRoot = nullptr;
 	mGUI = nullptr;
 }

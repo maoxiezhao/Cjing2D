@@ -38,6 +38,7 @@ local addon_env_list = {
 	["StartGame"]	  = "game_manager_start_debug",
 	["GetGame"]       = "game_manager_get_game",
 	["GetPlayer"]     = "game_manager_get_player",
+	["ExitGame"]	  = "game_manager_exit_game",
 
 	-- ui modules
 	["PathMovement"]  = "PathMovement",
@@ -54,6 +55,9 @@ local function addon_create_env(genv)
 	for name,k in pairs(addon_env_list) do
 		env[name] = genv[k]
 	end
+
+	-- addon env
+	env.CreateTemplate = AddonManager.CreateTemplate
 
 	setmetatable(env, {__index = addon_exports})
 	return env
@@ -96,9 +100,41 @@ local function addon_load_addon(name, env)
 		if v then return v end
 	end})
 
+	-- 其他插件可以通过XXX.fff() 访问
 	addon_exports[name] = addon_export
 
 	return addon
+end
+
+local function addon_load_template(name, env)
+	-- 创建addon环境
+	local addon_env = {[name] = {}}
+	setmetatable(addon_env, {__index = env})
+
+	local addon_path = "script/templates/" .. name .. ".lua"
+	local ret, err = traced_pcall(SystemDoFile, addon_path, addon_env)
+	if not ret then 
+		util_log_warn("Load template " .. name .. " failed " .. err)
+		return 
+	end
+
+	local addon_inst = addon_env[name] or {}
+	-- 创建addon实例
+	local template = {
+		name = name, 
+		env = addon_env,
+		inst = addon_inst,
+	}
+	setmetatable(template, {__index = function(t, k)
+		local env = rawget(t, "env");
+		local v = rawget(env, k);
+		if v then return v end
+
+		local inst = rawget(t, "inst");
+		local v = rawget(inst, k);
+		if v then return v end
+	end})
+	return template
 end
 
 -------------------------------------------------------
@@ -110,6 +146,7 @@ local function create_addon_manager()
 	local addon_mgr = {
 		env = nil,
 		addons = {},
+		templates = {},
 	}
 	return addon_mgr
 end
@@ -151,6 +188,46 @@ local function addon_manager_load_addon_list()
 		end
 		return addons_list
 	end
+end
+
+-- 加载模板
+local function addon_manager_load_template(name)
+	local cur_templates = addon_manager.templates
+	if cur_templates[name] then
+		util_log_warn("Template "..  name .. " has already loaded.")
+		return 
+	end
+
+	-- 加载adddon
+	local env = addon_manager.env
+	local tempalte = addon_load_template(name, env)
+	if not tempalte then 
+		util_log_warn("Template "..  name .. " load failed.")
+		return 
+	end
+
+	cur_templates[name] = tempalte
+	return tempalte
+end
+
+-- 加载所有的templates
+local function addon_manager_load_tempaltes()
+	local addons = game_content_get_templ("addonLists")
+	if not addons then 
+		util_log_err("Failed to load addon list.")
+		return
+	end
+
+	local templates = addons.temps
+	if not templates then 
+		util_log_err("Failed to load addon templates list.")
+		return
+	end
+
+	for _,name in pairs(templates) do 
+		addon_manager_load_template(name)
+	end
+
 end
 
 -- 加载全部插件
@@ -225,6 +302,7 @@ function AddonManager.OnInitialize()
 	addon_manager = create_addon_manager()
 	addon_manager.env = addon_create_env(_ENV)
 
+	addon_manager_load_tempaltes()
 	adddon_manager_load_addons()
 end
 
@@ -245,6 +323,30 @@ function AddonManager.OnRootStart()
 		return 
 	end
 	traced_pcall(root.OnRootStart)
+end
+
+function AddonManager.CreateTemplate(parent, name, templ, ...)
+	if parent and name and templ then 
+		print("Create template " .. templ)
+		local template = addon_manager.templates[templ]
+		if not template then 
+			util_log_err("Try creating template" .. templ .. " is not invalid.")
+			return
+		end
+
+		local create_func = template.OnCreate
+		if  not create_func then 
+			util_log_err("The template have not OnCreate()")
+			return
+		end
+
+		local ok, ret = traced_pcall(create_func, parent, name, ...)
+		if not ok then 
+			util_log_err("The tempalte " .. name .. "created failed")
+			return
+		end
+		return ret
+	end
 end
 
 GlobalExports.addon_manager_init  = AddonManager.OnInitialize

@@ -10,6 +10,21 @@
 #include"core\fontAtlas.h"
 #include"core\perf.h"
 
+void CustomTest()
+{
+	// test
+	//sprite = std::make_shared<Sprite>("test.png");
+	//sprite->SetSize({ 200, 600 });
+	//sprite->SetPos({ 500, 0 });
+
+	//sprite_2 = std::make_shared<Sprite>("test.png");
+	//sprite_2->SetSize({ 200, 600 });
+	//sprite_2->SetPos({ 500, 0 });
+	//	sprite->SetProgramState(ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME));
+	//	mLight = std::make_shared<PointLight>(Vec3i(500,330,50), 100, Color4B(55,55,255,255), 0.001, 0.0);
+	//	Renderer::GetInstance().GetAreaLight()->SetColor({250, 250, 250, 255});
+}
+
 App::App() :
 	mLuaContext(nullptr),
 	mExiting(false),
@@ -17,6 +32,7 @@ App::App() :
 	mNextGame(nullptr),
 	mLight(nullptr)
 {
+	Logger::PrintConsoleHeader();
 	Logger::Info("Cjing start initializing.");
 
 	Logger::Info("Open data file");
@@ -38,19 +54,13 @@ App::App() :
 
 	// initialize gui main stage
 	Logger::Info("Initialize GUI main stage");
-	mMainStge = std::unique_ptr<UIStage>(new UIStage());
-	mMainStge->Initiazlize();
+	auto& mainStage = UIStage::GetInstance();
+	mainStage.Initiazlize();
 
 	// initialize lua
 	Logger::Info("Initialize Lua context");
 	mLuaContext = std::unique_ptr<LuaContext>(new LuaContext(*this));
 	mLuaContext->Initialize();
-
-	// test
-	sprite = std::make_shared<Sprite>("test.png");
-	sprite->SetSize({ 1000, 600 });
-	sprite->SetProgramState(ResourceCache::GetInstance().GetGLProgramState(GLProgramState::DEFAULT_G_BUFFER_PROGRAMSTATE_NAME));
-	mLight = std::make_shared<PointLight>(Vec3i(500,300,70), 200, Color4B(255,255,0,255));
 }
 
 App::~App()
@@ -65,7 +75,7 @@ App::~App()
 		mLuaContext->Exit();
 	}
 
-	mMainStge->Quit();
+	UIStage::GetInstance().Quit();
 	System::Quit();
 	FileData::CloseData();
 }
@@ -162,6 +172,9 @@ void App::Update()
 			mLuaContext->Exit();
 		}
 	}
+
+	// ui update
+	UIStage::GetInstance().Update();
 }
 
 void App::SetExiting(bool isexit)
@@ -194,9 +207,11 @@ void App::Render()
 {
 	Video::CleanCanvas();
 
-	//sprite->Draw();
-	Renderer::GetInstance().PushLight(mLight);
-
+	//sprite->MultiplyDraw(Point2(0, 0), 0.0f);
+	//sprite_2->Draw();
+	//Renderer::GetInstance().PushLight(mLight);
+	//mLight->PushObstacles({ Rect(200,200, 200, 100) });
+	//mLight->Update();
 	if (mCurrGame != nullptr)
 	{
 		mCurrGame->Draw();
@@ -204,7 +219,7 @@ void App::Render()
 
 	mLuaContext->OnMainDraw();
 
-	Video::Rendercanvas(*mMainStge);
+	Video::Rendercanvas(UIStage::GetInstance());
 }
 
 /**
@@ -215,10 +230,11 @@ void App::NotifyInput(const InputEvent & ent)
 	if (ent.IsWindowClosing())
 		SetExiting(true);
 
-	mMainStge->NotifyInput(ent);
+	if (!UIStage::GetInstance().NotifyInput(ent))
+		return;
 
 	bool handle = mLuaContext->NotifyInput(ent);
-	if (handle && mCurrGame != nullptr)
+	if (!handle && mCurrGame != nullptr)
 	{
 		mCurrGame->NotifyInput(ent);
 	}

@@ -224,6 +224,7 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 	children.SetBorderSize(borderSize);
 	if (children.GetWidget() != nullptr)
 	{
+		children.GetWidget()->SetGridPos({ row, col });
 		children.GetWidget()->SetParent(this);
 	}
 
@@ -245,8 +246,10 @@ void Grid::RemoveChildren(int row, int col)
 	GridItem& childs = GetGridItem(row, col);
 	for (auto& child : childs)
 	{
-		if (child.GetWidget() != nullptr)
+		if (child.GetWidget() != nullptr) {
+			child.GetWidget()->SetGridPos({ -1, -1 });
 			child.SetWidget(nullptr);
+		}
 	}
 }
 
@@ -331,6 +334,25 @@ void Grid::SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, co
 	flag &= ~modeMask;
 	flag |= setflag;
 	children->SetFlag(flag);
+}
+
+/**
+*	\brief 将指定网格的Widget移到最上方
+*/
+void Grid::TopChildren(Widget & widget, int row, int col)
+{
+	GridItem& gridItem = GetGridItem(row, col);
+	for (auto it = gridItem.begin(); it != gridItem.end(); ++it)
+	{
+		auto& child = *it;
+		if (child.GetWidget() && child.GetWidget().get() == &widget)
+		{
+			Children newChild = child;
+			gridItem.push_back(newChild);
+			gridItem.erase(it);
+			break;
+		}
+	}
 }
 
 Grid::Children::Children():
@@ -483,6 +505,7 @@ void Grid::Children::Clear()
 		auto& frame = dynamic_cast<Frame&>(*mWidget);
 		frame.RemoveAllChildrens();
 	}
+	mWidget->SetGridPos({ -1, -1 });
 	mWidget = nullptr;
 }
 

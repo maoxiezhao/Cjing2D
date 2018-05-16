@@ -171,6 +171,11 @@ bool LuaContext::NotifyInput(const InputEvent & event)
 	return handle;
 }
 
+lua_State * LuaContext::GetLuaState()
+{
+	return l;
+}
+
 bool LuaContext::DoLuaString(lua_State*l, const string& luaString)
 {
 	if (luaL_loadstring(l, luaString.c_str()) == 0)

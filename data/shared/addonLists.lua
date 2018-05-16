@@ -2,8 +2,13 @@ local AddonLists = {}
 AddonLists.name = "addonLists"
 
 AddonLists.cfgs = {
-	"Title",
 	"Root",
+	"Title",
+	"DialogBox",
+}
+
+AddonLists.temps  ={
+	"Button",
 }
 
 return AddonLists

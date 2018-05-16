@@ -155,6 +155,10 @@ public:
 	virtual void SetHorizontalAlignment(const unsigned int align);
 	virtual void SetVerticalAlignment(const unsigned int align);
 
+	void SetGridPos(const Point2& pos);
+	Point2 GetGridPos()const;
+	void ToTopByParent();
+
 	/** 
 	*	能否换行，该属性影响requestReduceWidth操作是否可以进行
 	*/
@@ -200,6 +204,7 @@ private:
 	/** Signal callback */
 	void SignalHandlerMouseEnter(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeave(const  ui_event event, bool&handle);
+	void SignalHandlerMouseHover(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeftButtonDown(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeftButtonUp(const  ui_event event, bool&handle);
 	void SignalHandlerMouseLeftButtonClick(const  ui_event event, bool&handle);
@@ -207,6 +212,7 @@ private:
 
 	// add by zy 2018.5.15 
 	std::shared_ptr<Movement> mMovement;
+	Point2 mGridPos;		/** 在网格中的位置，如果未添加则返回(-1, -1) */
 };
 
 using WidgetPtr = std::shared_ptr<Widget>;

@@ -12,6 +12,7 @@ void LuaContext::RegisterGameModule()
 	LuaBindClass<Game> gameClass(l, module_game_name);
 	gameClass.AddDefaultMetaFunction();
 
+	gameClass.AddFunction("Exit", main_api_exit);
 	gameClass.AddFunction("Exists", game_api_exists);
 	gameClass.AddFunction("Load", game_api_load);
 

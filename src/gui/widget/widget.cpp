@@ -20,7 +20,8 @@ Widget::Widget() :
 	mLinkedGroup(""),
 	mPosition(),
 	mSize(),
-	mLayoutSize()
+	mLayoutSize(),
+	mGridPos(-1, -1)
 {
 	mDebugSprite = std::make_shared<Sprite>(Color4B(rand()%(255), rand() % (255), rand() % (255),255), Size(0, 0));
 }
@@ -34,7 +35,8 @@ Widget::Widget(const BuilderWidget & builder):
 	mLinkedGroup(""),
 	mPosition(),
 	mSize(),
-	mLayoutSize()
+	mLayoutSize(),
+	mGridPos(-1, -1)
 {
 	mDebugSprite = std::make_shared<Sprite>(Color4B::YELLOW, Size(0, 0));
 }
@@ -280,6 +282,33 @@ void Widget::SetVerticalAlignment(const unsigned int align)
 		align, gui::ALIGN_VERTICAL_MASK);
 }
 
+/**
+*	\brief 设置该网格位置，仅用来记录作用
+*/
+void Widget::SetGridPos(const Point2 & pos)
+{
+	mGridPos = pos;
+}
+
+Point2 Widget::GetGridPos() const
+{
+	return mGridPos;
+}
+
+/**
+*	\brief 将该Widget从父Frame移到最顶上
+*/
+void Widget::ToTopByParent()
+{
+	Frame* parent = GetParentFrame();
+	if (parent != nullptr)
+	{
+		Point2 gridPos = GetGridPos();
+		if(gridPos.x >= 0 && gridPos.y >= 0)
+			parent->TopChildren(*this, gridPos.x, gridPos.y);
+	}
+}
+
 bool Widget::CanWrap() const
 {
 	return false;
@@ -439,7 +468,10 @@ void Widget::AddLuaCallbackSignal(WIDGET_CALL_BACK_TYPE type)
 		ConnectSignal<ui_event::UI_EVENT_MOUSE_LEFT_BUTTON_DOUBLE_CLICK>(
 			std::bind(&Widget::SignalHandlerMouseLeftButtonDoubleClick, this, std::placeholders::_2, std::placeholders::_3));
 		break;
-
+	case WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_HOVER:
+		ConnectSignal<ui_event::UI_EVENT_MOUSE_MOTION>(
+			std::bind(&Widget::SignalHandlerMouseHover, this, std::placeholders::_2, std::placeholders::_3));
+		break;
 	}
 }
 
@@ -480,6 +512,11 @@ void Widget::SignalHandlerMouseEnter(const ui_event event, bool & handle)
 void Widget::SignalHandlerMouseLeave(const ui_event event, bool & handle)
 {
 	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_LEAVE);
+}
+
+void Widget::SignalHandlerMouseHover(const ui_event event, bool & handle)
+{
+	DoLuaCallBack(WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_HOVER);
 }
 
 void Widget::SignalHandlerMouseLeftButtonDown(const ui_event event, bool & handle)

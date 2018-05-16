@@ -10,4 +10,5 @@ const EnumInfo<gui::WIDGET_CALL_BACK_TYPE>::nameType EnumInfoTraits<gui::WIDGET_
 	{ gui::WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_UP,	"OnMouseUp" },
 	{ gui::WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_CLICK,"OnMouseClick" },
 	{ gui::WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_DOUBLE_CLICK , "OnMouseDoubleClick" },
+	{ gui::WIDGET_CALL_BACK_TYPE::WIDGET_ON_MOUSE_HOVER , "OnMouseHover" },
 };

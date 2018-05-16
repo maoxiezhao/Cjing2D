@@ -83,6 +83,7 @@ public:
 	void Exit();
 	App& GetApp()const;
 	bool NotifyInput(const InputEvent& event);
+	lua_State* GetLuaState();
 
 	// script
 	static LuaContext& GetLuaContext(lua_State* l);

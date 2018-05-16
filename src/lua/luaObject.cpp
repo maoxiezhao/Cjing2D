@@ -10,7 +10,7 @@ LuaObject::LuaObject():
 
 LuaObject::~LuaObject()
 {
-	if (mLuaContext != nullptr)
+	if (mLuaContext != nullptr && mLuaContext->GetLuaState() != nullptr)
 	{
 		mLuaContext->NotifyUserdataDestoryed(*this);
 	}

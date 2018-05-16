@@ -181,6 +181,7 @@ public:
 	void RemoveChildren(const string& id);
 	void RemoveAllChildren();
 	void SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, const unsigned int modeMask);
+	void TopChildren(Widget& widget, int row, int col);
 
 	Children* GetChildren(const WidgetPtr& widget);
 	Children* GetChildren(const std::string& id);

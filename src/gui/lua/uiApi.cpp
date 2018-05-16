@@ -31,8 +31,10 @@ int RegisterFunction(lua_State* l)
 	widgetClass.AddMethod("SetPos", &Widget::SetWantedPosition);
 	widgetClass.AddMethod("GetPos", &Widget::GetPositon);
 	widgetClass.AddMethod("SetCallBack", frame_api_set_call_back);
+	widgetClass.AddMethod("CaptureMouse", frame_api_capture_mouse);
 	widgetClass.AddMethod("ClearCallBacks", &Widget::ClearLuaCallBack);
 	widgetClass.AddMethod("StopMovement", &Widget::StopMovement);
+	widgetClass.AddMethod("ToTop", &Widget::ToTopByParent);
 
 	/** frame base */
 	LuaBindClass<gui::Frame> windowClass(l, gui::ui_lua_frame_name, gui::ui_lua_widget_name);
@@ -40,6 +42,7 @@ int RegisterFunction(lua_State* l)
 	windowClass.AddFunction("GetRoot", frame_api_get_root);
 	windowClass.AddFunction("SetDebug", frame_api_set_debug);
 	windowClass.AddFunction("LoadFont", &UIRender::LoadFontTTF);
+	windowClass.AddFunction("AddCustom", frame_api_add_custom_method);
 
 	windowClass.AddMethod("CreateFrame", frame_api_create_frame);
 	windowClass.AddMethod("CreateButton", frame_api_create_button);
@@ -93,6 +96,34 @@ int frame_api_get_root(lua_State* l)
 		GetLuaContext(l).PushUserdata(l, root);
 
 		return 1;
+	});
+}
+
+/**
+*	\brief frame.AddCustom(name, func)
+*/
+int frame_api_add_custom_method(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaTools::CheckString(l, 1);
+		LuaTools::CheckFunction(l, 2);
+						// name func 
+		luaL_getmetatable(l, ui_lua_frame_name.c_str());
+		if (lua_isnil(l, -1))
+		{
+			LuaTools::Error(l, "The module of frame is not created." );
+			return 0;
+		}
+						// name func meta
+		lua_pushvalue(l, 1);
+						// name func meta name
+		lua_pushvalue(l, 2);
+						// name func meta name func						
+		lua_rawset(l, -3);
+						// name func meta
+		lua_pop(l, 1);
+
+		return 0;
 	});
 }
 
@@ -189,6 +220,21 @@ int frame_api_set_debug(lua_State * l)
 	return LuaTools::ExceptionBoundary(l, [&] {
 		bool debuged = LuaTools::CheckBoolean(l, 1);
 		Widget::SetDebugDraw(debuged);
+
+		return 0;
+	});
+}
+
+int frame_api_capture_mouse(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Widget& widget = *std::static_pointer_cast<Widget>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_widget_name));
+
+		bool captured = LuaTools::CheckBoolean(l, 2);
+		Frame* root = widget.GetRoot();
+		if (root)
+			root->MouseCaptrue(captured);
 
 		return 0;
 	});

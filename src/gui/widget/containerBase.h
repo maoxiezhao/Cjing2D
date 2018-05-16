@@ -80,6 +80,10 @@ public:
 	{
 		mGrid.SetChildren(widget, row, col, flag, borderSize);
 	}
+	void TopChildren(Widget& widget, int row, int col)
+	{
+		mGrid.TopChildren(widget, row, col);
+	}
 
 	void RemoveChildren(const string& id)
 	{

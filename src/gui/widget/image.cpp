@@ -7,6 +7,8 @@ namespace gui {
 Image::Image():
 	StyledWidget()
 {
+	Connect();
+	SetImagePath("");
 }
 
 Image::Image(const std::string & path):

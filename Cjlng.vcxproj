@@ -171,6 +171,7 @@
     <ClCompile Include="src\gui\widget\button.cpp" />
     <ClCompile Include="src\gui\widget\containerBase.cpp" />
     <ClCompile Include="src\gui\widget\image.cpp" />
+    <ClCompile Include="src\gui\widget\label.cpp" />
     <ClCompile Include="src\gui\widget\multGrid.cpp" />
     <ClCompile Include="src\gui\widget\selections.cpp" />
     <ClCompile Include="src\gui\widget\singleGrid.cpp" />

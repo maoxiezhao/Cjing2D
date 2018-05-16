@@ -103,7 +103,12 @@ namespace FileData
 		return PHYSFS_exists(name.c_str());
 	}
 
-	char * ReadFileBytes(const string & name)
+	/**
+	*	\brief 读取数据以const char*返回，该数据交由用户维护
+	*	\param data 数据buffer
+	*	\return 返回文件的长度
+	*/
+	char* ReadFileBytes(const string & name, int& length)
 	{
 		// 确保文件存在
 		Debug::CheckAssertion(PHYSFS_exists(name.c_str()),
@@ -114,12 +119,13 @@ namespace FileData
 			string("the file:") + name + " loaded failed.");
 
 		size_t size = static_cast<size_t>(PHYSFS_fileLength(file));
-		vector<char> buffer(size);
-		
-		PHYSFS_read(file, buffer.data(), 1, (PHYSFS_uint32)size);
+		char* buffer = new char[size];
+		length = size;
+
+		PHYSFS_read(file, buffer, 1, (PHYSFS_uint32)size);
 		PHYSFS_close(file);
 
-		return buffer.data();
+		return buffer;
 	}
 	
 

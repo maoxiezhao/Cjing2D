@@ -19,6 +19,9 @@ const std::map<gui::WIDGET_TYPE, const FrameData::FieldDescriptions> frameTypeDe
 	{ gui::WIDGET_TYPE::WIDGET_IMAGE,{
 		{ "path",   FrameData::ValueFlag::VALUE_FALG_DEFAULT, FrameData::DefaultValue(std::string("")) }
 	} },
+	{ gui::WIDGET_TYPE::WIDGET_LABEL,{
+		{ "text",   FrameData::ValueFlag::VALUE_FALG_DEFAULT, FrameData::DefaultValue(std::string("")) }
+	} },
 };
 
 FrameData::DefaultValue::DefaultValue() :

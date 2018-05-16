@@ -5,7 +5,9 @@
 #include"gui\widget\frame.h"
 #include"gui\widget\button.h"
 #include"gui\widget\image.h"
+#include"gui\widget\label.h"
 #include"gui\uiStage.h"
+#include"gui\core\uiRender.h"
 
 namespace gui {
 
@@ -37,9 +39,13 @@ int RegisterFunction(lua_State* l)
 	windowClass.AddDefaultMetaFunction();
 	windowClass.AddFunction("GetRoot", frame_api_get_root);
 	windowClass.AddFunction("SetDebug", frame_api_set_debug);
+	windowClass.AddFunction("LoadFont", &UIRender::LoadFontTTF);
+
 	windowClass.AddMethod("CreateFrame", frame_api_create_frame);
 	windowClass.AddMethod("CreateButton", frame_api_create_button);
 	windowClass.AddMethod("CreateImage", frame_api_create_image);
+	windowClass.AddMethod("CreateLabel", frame_api_create_label);
+
 	windowClass.AddMethod("RemoveChildren", &Frame::RemoveChildren);
 	windowClass.AddMethod("RemoveAllChildrens", &Frame::RemoveAllChildrens);
 	windowClass.AddMethod("RemoveBySelf", frame_api_remove_by_self);
@@ -54,6 +60,24 @@ int RegisterFunction(lua_State* l)
 	/** button */
 	LuaBindClass<gui::Image> buttonClass(l, gui::ui_Lua_button_name, gui::ui_lua_widget_name);
 	buttonClass.AddDefaultMetaFunction();
+
+	/** label */
+	LuaBindClass<gui::Label> labelClass(l, gui::ui_lua_lable_name, gui::ui_lua_widget_name);
+	labelClass.AddDefaultMetaFunction();
+	labelClass.AddMethod("SetMultline",   &Label::SetMultline);
+	labelClass.AddMethod("GetMultline",   &Label::GetMultline);
+	labelClass.AddMethod("SetFontSize",   &Label::SetFontSize);
+	labelClass.AddMethod("GetFontSize",   &Label::GetFontSize);
+	labelClass.AddMethod("SetLineHeight", &Label::SetLineHeight);
+	labelClass.AddMethod("GetLineHeight", &Label::GetLineHeight);
+	labelClass.AddMethod("SetFontColor",  &Label::SetFontColor);
+	labelClass.AddMethod("GetFontColor",  &Label::GetFontColor);
+	labelClass.AddMethod("SetFontFace",   &Label::SetFontFace);
+	labelClass.AddMethod("GetFontFace",   &Label::GetFontFace);
+	labelClass.AddMethod("SetText",       &Label::SetText);
+	labelClass.AddMethod("GetText",       &Label::GetText);
+	labelClass.AddMethod("SetTextAlign",  &Label::SetAlign);
+	labelClass.AddMethod("GetTextAlign",  &Label::GetAlign);
 
 	return 0;
 }
@@ -223,5 +247,28 @@ int frame_api_create_image(lua_State * l)
 		return 1;
 	});
 
+}
+int frame_api_create_label(lua_State * l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Frame& frame = *std::static_pointer_cast<Frame>(
+			GetLuaContext(l).CheckUserdata(l, 1, ui_lua_frame_name));
+
+		const std::string& name = LuaTools::CheckString(l, 2);
+		FrameData data = FrameData::CheckFrameData(l, 3, WIDGET_TYPE::WIDGET_LABEL);
+		const std::string text = data.GetValueString("text");
+
+		auto label = std::make_shared<gui::Label>();
+		label->SetWantedPosition(data.GetPos());
+		label->SetSize(data.GetSize());
+		label->SetID(name);
+		label->SetText(text);
+
+		Point2 gridPos = data.GetGridPos();
+		frame.SetChildren(label, gridPos.x, gridPos.y, data.GetAlignFlag(), 0);
+
+		GetLuaContext(l).PushUserdata(l, *label);
+		return 1;
+	});
 }
 }

@@ -25,4 +25,5 @@ namespace gui
 	/** create func */
 	static int frame_api_create_button(lua_State* l);
 	static int frame_api_create_image(lua_State*l);
+	static int frame_api_create_label(lua_State*l);
 }

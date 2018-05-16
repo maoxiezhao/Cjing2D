@@ -3,15 +3,13 @@
 #include"gui\core\handler.h"
 #include"gui\widget\widget.h"
 #include"gui\widget\image.h"
+#include"gui\widget\label.h"
 
 namespace gui
 {
 
 class Button;
-
-
-struct TextRenderInfo{};
-
+	
 /**
 *	\brief CPU perf¹¤¾ßº¯Êý
 */
@@ -57,10 +55,14 @@ public:
 	static void RenderText(const std::string& str, int x, int y);
 	static void RenderShape(const Rect& rect, const Color4B& color);
 	static void RenderButton(const Button& button);
+	static void RenderLabel(const TextRenderInfo& labelInfo);
 
 	// resource
 	static int LoadUIImage(const std::string& path, int imageFlag = 0);
 	static Size GetImageSize(const std::string& path);
+	static int LoadFontTTF(const std::string& id, const std::string& path, bool fallback = true);
+	static bool HasFontLoaded(const std::string&id);
+	static std::string GetSystemFontFace();
 
 	// debug
 	static void InitDebugData();

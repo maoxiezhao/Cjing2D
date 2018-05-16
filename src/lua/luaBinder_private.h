@@ -5,6 +5,7 @@
 #include"lua\luaContext.h"
 #include"utils\typeSet.h"
 #include"utils\size.h"
+#include"utils\color.h"
 
 #include<string>
 
@@ -17,7 +18,8 @@ namespace Implemention
 	using WrapperSet = util::typeset<
 		std::string,
 		Size,
-		Point2
+		Point2,
+		Color4B
 	>;
 
 	/**
@@ -59,6 +61,13 @@ namespace Implemention
 			UnWraper(lua_State*l, int index) {
 			Point2 point = LuaTools::CheckPoint2(l, index);
 			return static_cast<T>(point);
+		}
+		/** Color4B */
+		template<typename T>
+		inline typename std::enable_if<std::is_same<T, Color4B>::value, T>::type
+			UnWraper(lua_State*l, int index) {
+			Color4B color = LuaTools::CheckColor(l, index);
+			return static_cast<T>(color);
 		}
 		/** userdata */
 		template<typename T>
@@ -112,6 +121,19 @@ namespace Implemention
 			lua_rawseti(l, -2, 1);
 			lua_pushinteger(l, value.y);
 			lua_rawseti(l, -2, 2);
+		}
+		/** Color */
+		inline void Wraper(lua_State*l, const Color4B& value)
+		{
+			lua_newtable(l);
+			lua_pushinteger(l, value.r);
+			lua_rawseti(l, -2, 1);
+			lua_pushinteger(l, value.g);
+			lua_rawseti(l, -2, 2);
+			lua_pushinteger(l, value.b);
+			lua_rawseti(l, -2, 3);
+			lua_pushinteger(l, value.a);
+			lua_rawseti(l, -2, 4);
 		}
 		/** userdata 需要该类提供LuaWraper接口*/																
 		template<typename T>

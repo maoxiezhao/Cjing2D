@@ -29,7 +29,7 @@ local addon_env_list = {
 	["util_log_warn"] = "util_log_warn",
 	["util_log_err"]  = "util_log_err",
 	["event_system_register_event"] = "event_system_register_event",
-
+	["StringUTF8Sub"] = "StringUTF8Sub",
 	-- timer func
 	["SetTimer"] 	  = "SetTimer",
 	["SetDelayTimer"] = "SetDelayTimer",
@@ -40,11 +40,13 @@ local addon_env_list = {
 	["GetGame"]       = "game_manager_get_game",
 	["GetPlayer"]     = "game_manager_get_player",
 	["ExitGame"]	  = "game_manager_exit_game",
-
+	["HasGame"]       = "game_manager_has_save_game",
+	
 	-- ui modules
 	["PathMovement"]  = "PathMovement",
 	["Frame"]	      = "Frame",
 	["SystemImport"]  = "SystemImport",
+	["Sound"]         = "Sound",
 }
 
 -- 界面的addon的env需要做一个限制
@@ -59,9 +61,11 @@ local function addon_create_env(genv)
 	end
 
 	-- 再次加载Common来使Common进入环境
-	traced_pcall(SystemDoFile, "script/common.lua", env)
-	traced_pcall(SystemDoFile, "script/core/systemUtils.lua", env)
-
+	local t	= traced_pcall(SystemDoFile, "script/common.lua", env)
+	print(t)
+	local res = traced_pcall(SystemDoFile, "script/core/systemUtils.lua", env)
+	print("DDDDDDDDDDDD")
+	print(res)
 	-- addon env
 	env.CreateTemplate = AddonManager.CreateTemplate
 

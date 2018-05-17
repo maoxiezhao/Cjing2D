@@ -53,11 +53,20 @@ function Title.OnLoad()
 	-- title button
 	local buttons = titleFrame:CreateFrame("buttons", { size = {550, 110}, horizontal = "center",vertical = "bottom",})
 	do
+		local is_has_game = HasGame()
 		local startGame = buttons:CreateTemplateFrame("startGame", "Button", { pos = {0,0},  size = {150, 80}, })
 		startGame:SetStateImage("Normal", "sprites/menus/title/button_start_1.png")
 		startGame:SetStateImage("Hover",  "sprites/menus/title/button_start_2.png")
 		startGame:SetStateImage("Down",   "sprites/menus/title/button_start_3.png")
 		startGame:SetClickCallback(Title.OnStartGameClick)
+		startGame:SetVisible(is_has_game)
+
+		local continueGame = buttons:CreateTemplateFrame("continueGame", "Button", { pos = {0,0},  size = {150, 80}, })
+		continueGame:SetStateImage("Normal", "sprites/menus/title/button_continue_1.png")
+		continueGame:SetStateImage("Hover",  "sprites/menus/title/button_continue_2.png")
+		continueGame:SetStateImage("Down",   "sprites/menus/title/button_continue_3.png")
+		continueGame:SetClickCallback(Title.OnContinueGameClick)
+		continueGame:SetVisible(not is_has_game)
 
 		local aboutGame = buttons:CreateTemplateFrame("aboutGame", "Button", { pos = {200,0},  size = {150, 80}, })
 		aboutGame:SetStateImage("Normal", "sprites/menus/title/button_about_1.png")
@@ -91,11 +100,15 @@ function Title.OpenTitle()
 	local selfFrame = Title._selfFrame
 	if selfFrame then 
 		selfFrame:SetVisible(true)
+
+		-- 
+		Sound.PlayMusic("title_bgm.ogg", true)
 	end
 end
 
 function Title.CloseTitle()
 	self._selfFrame:SetVisible(false)
+	Sound.StopMusic()
 end
 
 function Title.OnPressedAny(button)
@@ -114,14 +127,29 @@ function Title.OnStartGameClick(button)
 		selfFrame:SetVisible(false)
 	end
 	--StartGame()	
+	Sound.StopMusic()
 
 	-- msgbox test
 	MsgBox.OpenMsgBox({
 	  text = "欢迎，是否观看游戏背景介绍",
 	  style = "ok_cancel",
-	  ok = function() print("Click OK") end,
+	  ok = function() Story.OpenStory() end,
 	  cancel = function() StartGame() end,
 	})
+end
+
+-- 继续游戏
+function Title.OnContinueGameClick(button)
+	print("Game Start.")
+	local selfFrame = Title._selfFrame
+	if selfFrame then 
+		selfFrame:SetVisible(false)
+	end
+	--StartGame()	
+	Sound.StopMusic()
+
+	-- msgbox test
+	StartGame()
 end
 
 -- 打开游戏介绍

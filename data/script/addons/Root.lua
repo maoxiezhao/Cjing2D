@@ -2,6 +2,8 @@
 -- 在Root中会创建一个Logo界面，同时去异步加载各个资源
 -- 之后则创建标题界面
 local cur_root = nil
+local cur_logo = nil
+
 local FrameMT = {
 	CreateTemplateFrame = function(parent, name, templ_name, ...)
 		return CreateTemplate(parent, name, templ_name, ...)
@@ -32,15 +34,30 @@ end
 function OnRootStart()
 	print("Addon main start.")
 
-	-- 异步加载的位置不对
+	cur_logo = cur_root:CreateImage("TeamLogo", { 
+		path = "sprites/menus/logo.png",
+		size = {400, 200},
+		vertical = "center",
+		horizontal = "center"})
+
+	-- 首先处理异步加载
 	--Frame.LoadFont("ui_normal", "fonts/pingfang.ttf")
 
-	SetDelayTimer("OnFinishAsync", 10, OnFinishAsyncLoading)
+
+	-- 暂时未实现延迟加载，模拟一个加载时间
+	SetDelayTimer("OnFinishAsync", 1000, function()
+		OnFinishAsyncLoading()
+	end)
 end
 
 -- 异步加载结束回调
 function OnFinishAsyncLoading()
-	-- 打开标题界面
-	Title:OpenTitle()
+	cur_logo:SetVisible(false)
+
+	SetDelayTimer("OnFinishAsync", 500, function()
+		Title:OpenTitle()
+	end)
+
+	
 end
 

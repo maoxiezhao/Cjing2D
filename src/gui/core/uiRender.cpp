@@ -25,6 +25,7 @@ namespace
 	PerfGraph fps;
 
 	// debug data
+	bool mDrawDebug = false;
 	struct DebugRect { Rect rect; Color4B color; };
 	std::vector<DebugRect> mRenderDebugRect;	/** 绘制的rect,当前临时这么做 */
 	struct DebugText { Point2 pos; std::string text; };
@@ -602,6 +603,11 @@ void UIRender::renderDebugString(const string & str)
 	debugBoardString += str + string("\n");
 }
 
+void UIRender::SetDebugDraw(bool drawed)
+{
+	mDrawDebug = drawed;
+}
+
 void UIRender::InitDebugData()
 {
 	// debug
@@ -631,8 +637,10 @@ void UIRender::RenderDebugDemo()
 	//float t = (float)glfwGetTime();
 	nvgBeginFrame(vg, (int)fbWidth, (int)fbHeight, 1.0f);
 	//renderDemo(vg, mx, my, fbWidth, fbHeight, t, false, &data);
-	renderGraph(5, 5, &fps);
-	renderDebugBoard(5, 50, 200, 100);
+	if (mDrawDebug) {
+		renderGraph(5, 5, &fps);
+		renderDebugBoard(5, 50, 200, 100);
+	}
 	nvgEndFrame(vg);
 
 	float dt = (float)Video::GetFrameDelta() / 1000.0f;

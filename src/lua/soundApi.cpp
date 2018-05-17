@@ -6,8 +6,8 @@ const string LuaContext::module_sound_name = "Sound";
 void LuaContext::RegisterSoundModule()
 {
 	static const luaL_Reg functions[] = {
-		{ "playMusic",sound_api_play_music },
-		{ "stopMusic",sound_api_stop_music },
+		{ "PlayMusic",sound_api_play_music },
+		{ "StopMusic",sound_api_stop_music },
 		{ nullptr,nullptr }
 	};
 	RegisterFunction(l, module_sound_name, functions);

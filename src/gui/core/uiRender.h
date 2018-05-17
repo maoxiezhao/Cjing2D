@@ -65,6 +65,7 @@ public:
 	static std::string GetSystemFontFace();
 
 	// debug
+	static void SetDebugDraw(bool drawed);
 	static void InitDebugData();
 	static void RenderDebugDemo();
 	static void initGraph(PerfGraph* fps, int style, const char* name);

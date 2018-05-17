@@ -15,6 +15,10 @@ GameBaseClass.OnCreate = function()
 	return instance
 end
 
+GameBaseClass.IsHasSaveGame = function(gameName)
+	return Game.Exists(gameName)
+end
+
 -- 加载游戏存档，如果存档不存在则创建一个新存档
 GameBaseClass.LoadSaveGame = function(self, gameName)
 	local exists = Game.Exists(gameName)
@@ -143,7 +147,13 @@ function GameManager.ExitGame()
 	Game.Exit()
 end
 
+function GameManager.IsHasSaveGame()
+	local gameName = "save1.data"
+	return GameBaseClass.IsHasSaveGame(gameName)
+end
+
 GlobalExports.game_manager_start_debug = GameManager.StartGameDebug
 GlobalExports.game_manager_get_game = GameManager.GetGame
 GlobalExports.game_manager_get_player = GameManager.GetPlayer
 GlobalExports.game_manager_exit_game =GameManager.ExitGame
+GlobalExports.game_manager_has_save_game = GameManager.IsHasSaveGame

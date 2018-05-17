@@ -50,8 +50,28 @@ local function RegisterTimerFunction(env)
 	end
 end
 
+local function RegisterStringFunction(env)
+	env.StringUTF8Sub = function(str, len)
+		if str ==nil then
+	        return ""
+	    end
+	    local lengthUTF8 = #(string.gsub(str, "[\128-\191]", ""))
+	    if lengthUTF8 <= len then
+	        return str
+	    else
+	        local matchStr = "^"
+	        for var=1, len do
+	            matchStr = matchStr..".[\128-\191]*"
+	        end
+	        local ret = string.match(str, matchStr)
+	        return string.format("%s",ret);
+	    end
+	end
+end
+
 local function RegisterUtilsFunction(env)
 	RegisterTimerFunction(env)
+	RegisterStringFunction(env)
 end
 
 RegisterUtilsFunction(env)

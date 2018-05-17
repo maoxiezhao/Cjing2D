@@ -87,6 +87,7 @@ ORGIN_ENV_LIST = {
 	"math", 
 	"string", 
 	"table", 
+	"utf8",
 }
 
 -- text align

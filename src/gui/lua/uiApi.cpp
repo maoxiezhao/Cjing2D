@@ -43,6 +43,7 @@ int RegisterFunction(lua_State* l)
 	windowClass.AddFunction("SetDebug", frame_api_set_debug);
 	windowClass.AddFunction("LoadFont", &UIRender::LoadFontTTF);
 	windowClass.AddFunction("AddCustom", frame_api_add_custom_method);
+	windowClass.AddFunction("DrawDebugBoard", &UIRender::SetDebugDraw);
 
 	windowClass.AddMethod("CreateFrame", frame_api_create_frame);
 	windowClass.AddMethod("CreateButton", frame_api_create_button);

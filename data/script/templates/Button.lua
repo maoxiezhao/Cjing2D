@@ -23,6 +23,7 @@ local function OnMouseCLick(button)
 	if button.OnMouseClick then 
 		button.OnMouseClick()
 	end
+	button:SetState("Normal")
 end
 
 local ButtonMT = {

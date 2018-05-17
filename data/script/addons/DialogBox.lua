@@ -10,6 +10,43 @@ local cur_box_type = DIALOG_BOX_TYPE_NORMAL
 -- Dialog box metatbale
 --------------------------------------------
 
+local is_load_content = false
+local content_load_speed = 50
+local contetn_update_data = {}
+local function dialog_box_update_content(data)
+	local label = data._label
+	local content = data._content
+	local index = data._index 
+	local len = data._len
+
+	label:SetText(StringUTF8Sub(content, index + 1))
+	if index >= len then 
+		KillTimer("ConentUpdate")
+		is_load_content = false
+	end
+	data._index = index + 1
+end
+
+local function dialog_box_quick_finish()
+	if is_load_content then 
+		contetn_update_data._index = contetn_update_data._len
+	end
+end
+
+local function dialog_box_set_context(label, content)
+	KillTimer("ConentUpdate")
+	local len = utf8.len(content)
+	if len > 0 then 
+		contetn_update_data._label = label
+		contetn_update_data._content = content
+		contetn_update_data._index = 1
+		contetn_update_data._len = len
+
+		is_load_content = true
+		SetTimer("ConentUpdate", content_load_speed, dialog_box_update_content, contetn_update_data)
+	end
+end
+
 local DialogBoxMT = {
 	SetName = function(root, name)
 		local name_frame = DialogBox._name 
@@ -25,7 +62,8 @@ local DialogBoxMT = {
 	SetContent = function(root, content)
 		local content_label = DialogBox._content 
 		if content_label and content then 
-			content_label:SetText(content)
+			dialog_box_set_context(content_label, content)
+			--content_label:SetText(string.sub(content, 6))
 		end
 	end,
 
@@ -133,7 +171,11 @@ end
 
 function DialogBox.OnClick()
 	if cur_box_type == DIALOG_BOX_TYPE_NORMAL then 
-		DialogBox.OnContinueDialog()
+		if is_load_content == true then 
+			dialog_box_quick_finish()
+		else
+			DialogBox.OnContinueDialog()
+		end
 	end
 end
 
@@ -248,6 +290,7 @@ end
 
 function DialogBox.OnUnLoad()
 	print("Dialog UnLoad")
+	KillTimer("ConentUpdate")
 end
 
 function OnEventDialogBoxStart(event, scope, custom, ids, callback)

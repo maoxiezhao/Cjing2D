@@ -100,9 +100,12 @@ void UIStage::Quit()
 
 bool UIStage::NotifyInput(const InputEvent & ent)
 {
-	bool handle = false;
+	bool handle = true;
 	if (mGUI != nullptr)
 		mGUI->HandleEvent(ent);
+
+	if (mDistributor->GetMouseFocus() != mRoot.get())
+		handle = false;
 
 	return handle;
 }

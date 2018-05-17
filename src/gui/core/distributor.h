@@ -23,6 +23,7 @@ public:
 	~MouseMotion();
 
 	void MouseCaptrue(bool captrued = true);
+	Widget* GetMouseFocus();
 
 protected:
 	void MouseEnter(Widget* widget);

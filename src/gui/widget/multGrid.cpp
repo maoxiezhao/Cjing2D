@@ -1016,7 +1016,7 @@ Widget * Grid::FindAt(const Point2 & pos)
 		for (; rit != gridItems.rend(); rit++)
 		{
 			auto widget = rit->GetWidget();
-			if (widget != nullptr)
+			if (widget != nullptr && widget->GetVisibility())
 			{
 				auto findIt = widget->FindAt(pos);
 				if (findIt)

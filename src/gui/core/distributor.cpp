@@ -43,6 +43,11 @@ void MouseMotion::MouseCaptrue(bool captrued)
 	mMouseCaptured = captrued;
 }
 
+Widget * MouseMotion::GetMouseFocus()
+{
+	return mMouseFocus;
+}
+
 void MouseMotion::MouseEnter(Widget * widget)
 {
 	Debug::CheckAssertion(widget);

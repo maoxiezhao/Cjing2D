@@ -38,6 +38,7 @@ local ButtonMT = {
 		-- clear data pos
 		data.pos = nil
 
+		-- button images
 		local down_img   = root:CreateImage("down_img",   data)
 		local hover_img  = root:CreateImage("hover_img",  data)
 		local normal_img = root:CreateImage("normal_img", data)
@@ -51,6 +52,20 @@ local ButtonMT = {
 			img:SetVisible(false)
 		end
 		root._state_images = state_images
+
+		-- button label
+		local size = data.size
+		local labelData = {
+			pos = {0, 8},
+			horizontal = "center",
+			size = {0, size[2] - 8}
+		}
+		local label = root:CreateLabel("msgBoxLabel", labelData)
+		label:SetFontColor({0,0,0,255})
+		label:SetFontSize(32)
+		label:SetTextAlign(FONT_ALIGN_CENTER | FONT_ALIGN_TOP)
+		label:SetText("")
+		root._label = label
 
 		root:SetState("Normal")
 		return true
@@ -80,6 +95,25 @@ local ButtonMT = {
 
 	SetClickCallback = function(root, callback)
 		root.OnMouseClick = callback
+	end,
+
+	SetLabelText = function(root, text)
+		local label = root._label
+		if label then 
+			label:SetText(text)
+		end
+	end,
+
+	SetMessageTextProperty = function(root, property)
+		local label = root._label
+		if label then 
+			local name = property.name
+			local param = property.param
+			local func = label[name]
+			if func then 
+				func(label, param)
+			end
+		end
 	end,
 }
 

@@ -86,7 +86,7 @@ gui::Widget * Movement::GetWidget()
 
 bool Movement::HasOwner() const
 {
-	return mWidget != nullptr || 
+	return mEntity != nullptr || 
 		   mDrawable != nullptr || 
 		   mWidget != nullptr;
 }

@@ -13,7 +13,7 @@ local MsgBoxMT = {
 			label:SetText(text)
 		end
 	end,
-
+	
 	SetCallBackOK = function(root, callback)
 		local button_ok = root._button_ok
 		if button_ok then 
@@ -42,15 +42,21 @@ local function set_msg_box_mt(root)
 	end
 end
 
-local function create_msg_box_button(root, name, button_pos)
+local function create_msg_box_button(root, name, button_pos, text)
 		-- button
 	local buttonData = {
 		vertical = "bottom",
 		horizontal = "center",
 		pos = button_pos, 
-		size = {100, 60}, 
+		size = {100, 50}, 
 	}
-	return root:CreateTemplateFrame(name, "Button", buttonData)
+	local button = root:CreateTemplateFrame(name, "Button", buttonData)
+	button:SetStateImage("Normal", "sprites/menus/common/msg_button_1.png")
+	button:SetStateImage("Hover",  "sprites/menus/common/msg_button_2.png")
+	button:SetStateImage("Down",   "sprites/menus/common/msg_button_3.png")
+	button:SetLabelText(text)
+
+	return button
 end
 
 local function create_msg_box_label(root)
@@ -70,7 +76,7 @@ local function create_msg_box_ok(root)
 	local box_ok = root:CreateFrame("boxOK", {size = {400, 200}})
 
 	box_ok._label =  create_msg_box_label(box_ok)
-	box_ok._button_ok =  create_msg_box_button(box_ok, "ok", {0, -10})
+	box_ok._button_ok =  create_msg_box_button(box_ok, "ok", {0, -30}, "确认")
 
 	box_ok:SetVisible(false)
 	set_msg_box_mt(box_ok)
@@ -81,8 +87,8 @@ local function create_msg_box_ok_not(root)
 	local box_ok_canel = root:CreateFrame("boxOK_CANEL" ,{size = {400, 200}})
 
 	box_ok_canel._label 	   = create_msg_box_label(box_ok_canel)
-	box_ok_canel._button_ok    = create_msg_box_button(box_ok_canel, "ok",    {-80, -10})
-	box_ok_canel._button_cancel= create_msg_box_button(box_ok_canel, "cancel",{ 80, -10})
+	box_ok_canel._button_ok    = create_msg_box_button(box_ok_canel, "ok",    {-80, -30}, "确认")
+	box_ok_canel._button_cancel= create_msg_box_button(box_ok_canel, "cancel",{ 80, -30}, "取消")
 
 	box_ok_canel:SetVisible(false)
 	set_msg_box_mt(box_ok_canel)
@@ -132,6 +138,9 @@ function MsgBox.OnLoad()
 		pos = {0, -80},
 		size = {400, 200},
 	})
+	box_back:CreateImage("boxBg", { 
+			path = "sprites/menus/common/msg_box.png",
+			size = {400, 200}})
 	local msg_box_ok = create_msg_box_ok(box_back)
 	local msg_box_ok_canel = create_msg_box_ok_not(box_back)
 

@@ -28,6 +28,7 @@ local addon_env_list = {
 	["util_log_info"] = "util_log_info",
 	["util_log_warn"] = "util_log_warn",
 	["util_log_err"]  = "util_log_err",
+	["event_system_register_event"] = "event_system_register_event",
 
 	-- timer func
 	["SetTimer"] 	  = "SetTimer",
@@ -43,6 +44,7 @@ local addon_env_list = {
 	-- ui modules
 	["PathMovement"]  = "PathMovement",
 	["Frame"]	      = "Frame",
+	["SystemImport"]  = "SystemImport",
 }
 
 -- 界面的addon的env需要做一个限制
@@ -58,6 +60,7 @@ local function addon_create_env(genv)
 
 	-- 再次加载Common来使Common进入环境
 	traced_pcall(SystemDoFile, "script/common.lua", env)
+	traced_pcall(SystemDoFile, "script/core/systemUtils.lua", env)
 
 	-- addon env
 	env.CreateTemplate = AddonManager.CreateTemplate

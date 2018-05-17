@@ -23,7 +23,7 @@ Bullet::Bullet(const std::string & templName, int layer):
 	SetDemage(1);
 	SetSize({ 16, 16 });
 	SetFacingDegree(0.0f);
-	SetDrawOnYOrder(true);
+	//SetDrawOnYOrder(true);
 	SetCollisionMode(CollisionMode::COLLISION_OVERLAPING);
 
 	mDisappearDate = System::Now() + 10000;

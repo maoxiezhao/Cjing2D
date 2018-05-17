@@ -1,4 +1,6 @@
-#include "logger.h"
+#include"core\logger.h"
+#include"common\version.h"
+
 #include<fstream>
 #include<chrono>
 
@@ -88,7 +90,10 @@ namespace Logger {
 
 	void PrintConsoleHeader()
 	{
-		std::cout << "Cjing-2d Version 0.0.5" << std::endl;
+		std::cout << "Cjing-2d Version " << 
+			CJING_VERSION_MAJOR << "." <<
+			CJING_VERSION_MINOR << "." << 
+			CJING_VERSION_PATCH << std::endl;
 		std::cout << "Copyright (c) 2016-2018 ZZZY." << std::endl;
 		std::cout << std::endl;
 	}

@@ -20,7 +20,8 @@ function OnLoad()
 
 	-- debug
 	Frame.AddCustom("CreateTemplateFrame", FrameMT.CreateTemplateFrame)
-	Frame.SetDebug(false)
+	Frame.SetDebug(false)		-- 显示Widget Debug 
+	Frame.DrawDebugBoard(false)	-- 显示调试面板
 end
 
 function OnUnLoad()
@@ -39,9 +40,10 @@ function OnRootStart()
 		size = {400, 200},
 		vertical = "center",
 		horizontal = "center"})
+	cur_logo:SetVisible(false)
 
 	-- 首先处理异步加载
-	--Frame.LoadFont("ui_normal", "fonts/pingfang.ttf")
+	Frame.LoadFont("ui_pixel", "fonts/Mouse.ttf", true)
 
 
 	-- 暂时未实现延迟加载，模拟一个加载时间
@@ -55,7 +57,7 @@ function OnFinishAsyncLoading()
 	cur_logo:SetVisible(false)
 
 	SetDelayTimer("OnFinishAsync", 500, function()
-		Title:OpenTitle()
+		--Title:OpenTitle()
 	end)
 
 	

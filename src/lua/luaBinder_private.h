@@ -109,9 +109,9 @@ namespace Implemention
 		{
 			lua_newtable(l);
 			lua_pushinteger(l, value.width);
-			lua_rawseti(l, -1, 1);
+			lua_rawseti(l, -2, 1);
 			lua_pushinteger(l, value.height);
-			lua_rawseti(l, -1, 2);
+			lua_rawseti(l, -2, 2);
 		}
 		/** Point2 */
 		inline void Wraper(lua_State*l, const Point2& value)

@@ -135,7 +135,7 @@ const string Widget::GetControlType() const
 
 /***** ****** ****** Layout and size  ****** ****** *******/
 
-const Point2 & Widget::GetPositon() const
+Point2 Widget::GetPositon() const
 {
 	return mPosition;
 }
@@ -145,7 +145,7 @@ void Widget::SetPosition(const Point2 & position)
 	mPosition = position;
 }
 
-const Point2 & Widget::GetWantedPositon() const
+Point2 Widget::GetWantedPositon() const
 {
 	return mWantedPosition;
 }
@@ -155,7 +155,7 @@ void Widget::SetWantedPosition(const Point2 & position)
 	mWantedPosition = position;
 }
 
-const Size & Widget::GetSize() const
+Size Widget::GetSize() const
 {
 	return mSize;
 }

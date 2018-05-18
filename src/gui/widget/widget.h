@@ -116,11 +116,11 @@ private:
 
 	/*** *** *** *** *** layout and size. *** *** *** *** ***/
 public:
-	const Point2& GetPositon()const;
+	Point2 GetPositon()const;
 	virtual void SetPosition(const Point2& position);
-	const Point2& GetWantedPositon()const;
+	Point2 GetWantedPositon()const;
 	virtual void SetWantedPosition(const Point2& position);
-	const Size& GetSize()const;
+	Size GetSize()const;
 	virtual void SetSize(const Size& size);
 
 	int GetWidth()const;

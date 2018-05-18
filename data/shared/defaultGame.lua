@@ -7,8 +7,8 @@ GameTempl.metatable = {
 InitDefaultGame = function ( cur_game )
 	if not cur_game then return end
 	-- default status
-	cur_game:SetLife(20)
-	cur_game:SetMaxLife(20)
+	cur_game:SetLife(10)
+	cur_game:SetMaxLife(10)
 	cur_game:SetStartLocation("minMap")
 
 	return true

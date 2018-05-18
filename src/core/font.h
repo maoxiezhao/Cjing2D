@@ -32,6 +32,8 @@ static const unsigned int TEXT_ALIGN_MASK = 7 << TEXT_ALIGN_SHIFT;
 *	以便为新增加的字形提供空间.Font的渲染采用状态模式
 *
 *	近期将添加动态版本
+*
+*	TODO: 修改加载方式 18/5/18
 */
 class Font
 {

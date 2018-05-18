@@ -5,6 +5,8 @@ AddonLists.cfgs = {
 	"Root",
 	"Title",
 	"Story",
+	"StatusBar",
+	"WeaponBar",
 
 	-- 显示顺序控制
 	"DialogBox",
@@ -13,6 +15,7 @@ AddonLists.cfgs = {
 
 AddonLists.temps  ={
 	"Button",
+	"ProgressBar",
 }
 
 return AddonLists

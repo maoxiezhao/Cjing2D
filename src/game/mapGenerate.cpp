@@ -49,6 +49,8 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 		MapGenerateData* mapGenerateData = static_cast<MapGenerateData*>(lua_touserdata(l, -1));
 		lua_pop(l, 1);
 
+		const std::string curPath = mapGenerateData->GetFilePath();
+
 		const std::string name = LuaTools::CheckFieldString(l, 1, "name");
 		int x = LuaTools::CheckFieldInt(l, 1, "x");
 		int y = LuaTools::CheckFieldInt(l, 1, "y");
@@ -75,6 +77,22 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 		bool randomHallWay = LuaTools::CheckFieldBool(l, 1, "randomHallWay");
 		mapGenerateData->SetRandomHallWay(randomHallWay);
 
+		const std::string& updown    = LuaTools::CheckFieldString(l, 1, "hallWayUpDown");
+		const std::string& leftright = LuaTools::CheckFieldString(l, 1, "hallWayLeftRight");
+		const std::string& center    = LuaTools::CheckFieldString(l, 1, "hallWayCenter");
+		const std::string& upleft    = LuaTools::CheckFieldString(l, 1, "hallWayUpleft");
+		const std::string& leftdown  = LuaTools::CheckFieldString(l, 1, "hallWayleftdown");
+		const std::string& downright = LuaTools::CheckFieldString(l, 1, "hallWaydownright");
+		const std::string& rightup   = LuaTools::CheckFieldString(l, 1, "hallWayrightup");
+
+		mapGenerateData->AddHallwayData(HallWayType::HallWayUpDown,    FileData::GetPositivePath(curPath, updown));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayLeftRight, FileData::GetPositivePath(curPath, leftright));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayCenter,    FileData::GetPositivePath(curPath, center));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayLeftDown,  FileData::GetPositivePath(curPath, leftdown));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayDownRight, FileData::GetPositivePath(curPath, downright));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayUpLeft,    FileData::GetPositivePath(curPath, upleft));
+		mapGenerateData->AddHallwayData(HallWayType::HallWayRightUp,   FileData::GetPositivePath(curPath, rightup));
+
 		// 加载房间信息
 		lua_settop(l, 1);
 		lua_getfield(l, 1, "rooms");
@@ -88,8 +106,7 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 		while (!lua_isnil(l, -1))
 		{
 			MapGenerateData::MapRoomInfo roomInfo;
-			roomInfo.name = LuaTools::CheckFieldString(l, -1, "name");
-			const std::string curPath = mapGenerateData->GetFilePath();
+			roomInfo.name = LuaTools::CheckFieldString(l, -1, "name");	
 			const std::string roomPath = LuaTools::CheckFieldString(l, -1, "path");
 			roomInfo.path = FileData::GetPositivePath(curPath, roomPath);
 			
@@ -109,6 +126,10 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 	});
 }
 
+void MapGenerateData::AddHallwayData(HallWayType type, const std::string & id)
+{
+	mHallwayPaths[type] = id;
+}
 
 MapGenerate::MapGenerate():
 	mMapID(""),
@@ -163,10 +184,25 @@ bool MapGenerate::LoadMap(const std::string & mapID)
 		MapDataPtr mapData = std::make_shared<MapData>();
 		if (!mapData->ImportFromFile(roomInfo.path + ".dat"))
 		{
-			Debug::Error("Failed to load room'" + roomInfo.path + "' data");
+			Debug::Error("Failed to load room '" + roomInfo.path + "' data");
 			continue;
 		}
 		AddMapData(roomInfo.name, mapData, count);
+	}
+
+	// 加载走廊数据
+	const auto& hallwayPaths = generateData.GetHallwayPaths();
+	for (const auto& kvp : hallwayPaths)
+	{
+		HallWayType type = kvp.first;
+		// 添加到roomInfos
+		MapDataPtr mapData = std::make_shared<MapData>();
+		if (!mapData->ImportFromFile(kvp.second + ".dat"))
+		{
+			Debug::Error("Failed to load hallway '" + kvp.second + "' data");
+			continue;
+		}
+		mHallways[type] = mapData;
 	}
 
 	// 随机生成地图
@@ -174,6 +210,8 @@ bool MapGenerate::LoadMap(const std::string & mapID)
 	bool result = true;
 	if (randomGenerate)
 		result = RandomGenerateMap();
+	else
+		result = FixedMap();
 
 	return result;
 }
@@ -191,7 +229,7 @@ bool MapGenerate::SaveMap()
 */
 void MapGenerate::DrawDebug()
 {
-	//return;
+	return;
 
 	const Size screenSize = Video::GetScreenSize();
 	float ratioX = (float)mSize.width / screenSize.width;
@@ -355,12 +393,29 @@ std::vector<MapGenerate::HallwayData> MapGenerate::GetHallwayDatas() const
 	return mHallwaydatas;
 }
 
+MapData & MapGenerate::GetHallwayMapData(HallWayType type)
+{
+	return *mHallways.at(type);
+}
+
 void MapGenerate::AddMapData(const std::string & name, MapDataPtr mapData, int count)
 {
 	mMapRoomIDs.push_back(name);
 	mMapRooms[name] = mapData;
 	mMapRoomCount[name] = count;
 	mRoomCount += count;
+}
+
+/**
+*	\brief 固定地图
+*/
+bool MapGenerate::FixedMap()
+{
+	auto mapID = mMapRoomIDs[0];
+	auto& mapRects = mMapRoomRect[mapID];
+	mapRects.push_back({ mPos, mSize });
+
+	return true;
 }
 
 /**
@@ -471,6 +526,13 @@ namespace {
 		}
 		return point;
 	};
+
+	FloorFillDir GetPositiveDir(FloorFillDir dir)
+	{
+		int ret = (dir + 2) % 4;
+		ret = ret == 0 ? 4 : ret;
+		return static_cast<FloorFillDir>(ret);
+	}
 
 	/**
 	*	\brief 洪水填充发，房间的大小和位置已经道路的
@@ -650,15 +712,13 @@ namespace {
 			dst.GetCenterPos().x / cellSize.width,
 			dst.GetCenterPos().y / cellSize.height
 		};
-		Rect bounding;
-		bounding.SetTowPos(srcPos, dstPos);
 
 		auto CheckGrid = [&,dstPos](const Point2& pos, util::Grid<int>& grid)->bool {
 			auto& element = grid.GetElements(pos.x, pos.y);
 			if (!element.empty())
 			{
 				int value = element[0];
-				if (value != srcIndex && value != dstIndex)
+				if (value != srcIndex )
 					return false;
 			}
 			return true;
@@ -667,9 +727,44 @@ namespace {
 		FloorFillDir enabelDir[2];
 		enabelDir[0] = srcPos.x <= dstPos.x ? FloorFillRight : FloorFillLeft;
 		enabelDir[1] = srcPos.y <= dstPos.y ? FloorFillDown  : FloorFillUp;
-		int priorDir = (dstPos.x - srcPos.x) < (dstPos.y - srcPos.y) ? 0 : 1;
 
-		int step = 0;
+		// 需要拓展dst的目标位置
+		auto FindDestEnablePoint = [&grid, value](FloorFillDir dir, Point2& dstPos) {
+			auto newPos = dstPos;
+			while (1)
+			{
+				newPos = GetPosByDir(newPos, dir);
+				auto& element = grid.GetElements(newPos.x, newPos.y);
+				if (element.empty() || (element[0] == value))
+				{
+					grid.Add(value, newPos.x, newPos.y);
+					newPos = GetPosByDir(newPos, dir);
+
+					dstPos.x = newPos.x;
+					dstPos.y = newPos.y;
+					break;
+				}
+			}
+		};
+		if (abs(dstPos.x - srcPos.x) <= abs(dstPos.y - srcPos.y))
+		{
+			FindDestEnablePoint((enabelDir[1]), srcPos);
+			FindDestEnablePoint(GetPositiveDir(enabelDir[1]), dstPos);
+		}
+		else
+		{	
+			FindDestEnablePoint((enabelDir[0]), srcPos);
+			FindDestEnablePoint(GetPositiveDir(enabelDir[0]), dstPos);
+		}
+
+		// 设置一个有效范围
+		Rect bounding;
+		bounding.SetTowPos(srcPos, dstPos);
+		enabelDir[0] = srcPos.x <= dstPos.x ? FloorFillRight : FloorFillLeft;
+		enabelDir[1] = srcPos.y <= dstPos.y ? FloorFillDown : FloorFillUp;
+		int priorDir = abs(dstPos.x - srcPos.x) < abs(dstPos.y - srcPos.y) ? 0 : 1;
+
+		int step = -1;
 		bool linkPath = false;
 		std::stack<Point2> mFindCells;
 		mFindCells.push(srcPos);
@@ -678,18 +773,20 @@ namespace {
 			Point2 curPos = mFindCells.top();
 			mFindCells.pop();
 
+			if (!CheckGrid(curPos, grid))
+				continue;
+
+			auto& element = grid.GetElements(curPos.x, curPos.y);
+			if (element.empty()) {
+				grid.Add(value, curPos.x, curPos.y);
+				step++;
+			}
+
 			if (curPos == dstPos)
 			{
 				linkPath = true;
 				break;
 			}
-
-			if (!CheckGrid(curPos, grid))
-				continue;
-
-			auto& element = grid.GetElements(curPos.x, curPos.y);
-			if (element.empty())
-				grid.Add(value, curPos.x, curPos.y);
 
 			// add random
 			int dir = priorDir;
@@ -697,7 +794,7 @@ namespace {
 			{
 				dir = 1 - priorDir;
 				priorDir = 1 - priorDir;
-				step = 0;
+				step = -1;
 			}
 
 			auto newPos = GetPosByDir(curPos, static_cast<FloorFillDir>(enabelDir[dir]));
@@ -715,8 +812,6 @@ namespace {
 			{
 				mFindCells.push(newPos);
 			}
-
-			step++;
 		}
 		return linkPath;
 	}
@@ -835,17 +930,18 @@ void MapGenerate::AddHallwayData(util::Grid<int>& grid, int col, int row)
 	int hallwayMask = 0x0000;	// 左右上下
 
 	auto vecs = grid.GetElements(col - 1, row);
-	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x1000; };
+	if (!vecs.empty()){ hallwayCount++; hallwayMask |= 0x1000; };
 	vecs = grid.GetElements(col + 1, row);
-	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0100; };
+	if (!vecs.empty()){ hallwayCount++; hallwayMask |= 0x0100; };
 	vecs = grid.GetElements(col, row - 1);
-	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0010; };
+	if (!vecs.empty()){ hallwayCount++; hallwayMask |= 0x0010; };
 	vecs = grid.GetElements(col, row + 1);
-	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0001; };
+	if (!vecs.empty()){ hallwayCount++; hallwayMask |= 0x0001; };
 
 	const Size& cellSize = grid.GetCellSize();
 	HallwayData data;
 	data.pos = Point2(col * cellSize.width, row * cellSize.height );
+
 	// 如果有三面墙必然是center
 	if (hallwayCount >= 3)
 	{
@@ -855,11 +951,19 @@ void MapGenerate::AddHallwayData(util::Grid<int>& grid, int col, int row)
 	}
 
 	// 判断道路的类型
-	if (hallwayMask & 0x1100)
+	if ((hallwayMask == 0x1010))
+		data.type = HallWayUpLeft;
+	else if (hallwayMask == 0x1001)
+		data.type = HallWayLeftDown;
+	else if (hallwayMask  == 0x0101)
+		data.type = HallWayDownRight;
+	else if (hallwayMask  == 0x0110)
+		data.type = HallWayRightUp;
+	else if (hallwayMask & 0x1100)
 		data.type = HallWayLeftRight;
 	else if (hallwayMask & 0x0011)
 		data.type = HallWayUpDown;
-	else
+	else if (hallwayMask & 0x0000)
 		data.type = HallWayCenter;
 
 	mHallwaydatas.push_back(data);

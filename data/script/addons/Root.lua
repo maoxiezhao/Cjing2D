@@ -21,7 +21,7 @@ function OnLoad()
 	-- debug
 	Frame.AddCustom("CreateTemplateFrame", FrameMT.CreateTemplateFrame)
 	Frame.SetDebug(false)		-- 显示Widget Debug 
-	Frame.DrawDebugBoard(true)	-- 显示调试面板
+	Frame.DrawDebugBoard(false)	-- 显示调试面板
 end
 
 function OnUnLoad()

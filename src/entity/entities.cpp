@@ -313,7 +313,7 @@ void Entities::InitEntities(const MapData& mapData)
 	}
 }
 
-void Entities::InitEntities(const MapData & mapData, const Rect & rect, const std::string & roomName)
+void Entities::InitEntities(const MapData & mapData, const Point2& pos, const std::string & roomName)
 {
 	// 按照层级顺序创建entity
 	for (int curLayer = mapData.GetMinLayer(); curLayer <= mapData.GetMaxLayer(); curLayer++)
@@ -321,7 +321,7 @@ void Entities::InitEntities(const MapData & mapData, const Rect & rect, const st
 		for (int index = 0; index < mapData.GetEntityCountByLayer(curLayer); index++)
 		{
 		    EntityData entityData = mapData.GetEntity(curLayer, index);
-			entityData.AddPos({ rect.x, rect.y });
+			entityData.AddPos(pos);
 			if (!GetLuaContext().CreateEntity(entityData, mMap, LuaRef::Nil, true))
 			{
 				Debug::Error("Failed to create entity.");

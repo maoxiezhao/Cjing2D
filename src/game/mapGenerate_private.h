@@ -38,6 +38,7 @@ namespace MapGenerateImplemention
 			bFlag[0] = true;
 			for (int k = 0; k < nodeCount - 1; k++) {
 
+				int maxWeight = MaxInteger;
 				int nodeIndex = 0;
 				while (nodeIndex < nodeCount)
 				{
@@ -46,9 +47,8 @@ namespace MapGenerateImplemention
 						++nodeIndex;
 						continue;
 					}
-					firstNode = nodeIndex;
+
 					auto& graphNode = mGraph[nodeIndex];
-					int maxWeight = MaxInteger;
 					for (int j = 0; j < nodeCount; ++j)
 					{
 						if (!bFlag[j] && maxWeight > graphNode[j])

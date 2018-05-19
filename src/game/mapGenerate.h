@@ -4,6 +4,18 @@
 #include"utils\grid.h"
 #include<unordered_map>
 
+/** 走廊数据 */
+enum HallWayType {
+	HallWayUpDown,
+	HallWayLeftRight,
+	HallWayCenter,
+
+	HallWayUpLeft,
+	HallWayLeftDown,
+	HallWayDownRight,
+	HallWayRightUp,
+};
+
 /**
 *	\brief 随机地图生成
 */
@@ -47,7 +59,9 @@ public:
 
 	void AddRoomInfo(const std::string& roomID, MapRoomInfo roomInfo);
 	const std::map<string, MapRoomInfo>& GetRoomInfos()const { return mRoomInfos; }
-	
+	const std::map< HallWayType, std::string>& GetHallwayPaths()const { return mHallwayPaths; }
+	void AddHallwayData(HallWayType type, const std::string& id);
+
 private:
 	// base property
 	std::string mMapID;
@@ -65,7 +79,7 @@ private:
 	std::map<string, MapRoomInfo> mRoomInfos;
 
 	// hallway path
-	std::vector<std::string> mHallwayPaths;
+	std::map< HallWayType, std::string> mHallwayPaths;
 };
 
 /**
@@ -106,14 +120,6 @@ public:
 	static const int cellSize = 32 * 3;
 	static const int maxTryTimes = 50;
 
-	/** 走廊数据 */
-	enum HallWayType {
-		HallWayUpDown,
-		HallWayLeftRight,
-		HallWayCenter,
-
-
-	};
 
 	/** 房间位置数据 */
 	struct RoomRect
@@ -129,9 +135,11 @@ public:
 		Point2 pos;
 	};
 	std::vector<HallwayData> GetHallwayDatas()const;
+	MapData& GetHallwayMapData(HallWayType type);
 
 private:
 	void AddMapData(const std::string& name, MapDataPtr mapData, int count);
+	bool FixedMap();
 	bool RandomGenerateMap();
 	bool RandomGenerateHallWay(util::Grid<int>& grid, std::vector<RoomRect>& roomRects);
 	bool QuickGenerateHallWay(util::Grid<int>& grid, std::vector<RoomRect>& roomRects);

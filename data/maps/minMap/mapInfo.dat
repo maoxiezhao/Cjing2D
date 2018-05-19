@@ -9,22 +9,28 @@ mapInfo{
   name = "test",
   x = 0,
   y = 0,
-  width = 2000,
-  height = 2000,
+  width = 480,
+  height = 480,
   minlayer = 0,
   maxlayer = 2,
-  minRooms = 4,  -- 最少房间数
-  maxRooms = 4,  -- 最大房间数
+  minRooms = 6,  -- 最少房间数
+  maxRooms = 6,  -- 最大房间数
   tileset = 'minMap',
 
   -- hallway data
-  randomHallWay = false,
+  randomHallWay    = false,
   hallWayUpDown    = "./common/updown",
   hallWayLeftRight = "./common/leftright",
   hallWayCenter    = "./common/center",
+  hallWayUpleft    = "./common/rightup",
+  hallWayleftdown  = "./common/upleft",
+  hallWaydownright = "./common/leftdown",
+  hallWayrightup   = "./common/downright",
 
   -- room data
-  random = true,   -- 是否随机大地图，true随机、false不随机
+  random = false,   -- 是否随机大地图，true随机、false不随机
+  path = "room1",-- 不随机时读取的地图
+
   rooms = {
       {
         -- 房间信息，如果未设置为随机，位置则取x,y，

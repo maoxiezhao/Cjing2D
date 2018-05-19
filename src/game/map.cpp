@@ -55,16 +55,8 @@ Map::~Map()
 */
 void Map::Load(Game * game)
 {
-	MapData mapData;
-	const string& mapFileName = string("maps/") + GetMapID() + ".dat";
-	bool successed = mapData.ImportFromFile(mapFileName);
-	if (!successed)
-	{
-		Debug::Die("Failed to load map file '" + GetMapID() + "'.");
-	}
 	// 加载地图成功，则初始化地图数据
 	mGame = game;
-
 
 	// debug map load
 	if (!mMapGenerate.LoadMap(GetMapID()))
@@ -73,6 +65,7 @@ void Map::Load(Game * game)
 		return;
 	}
 
+	// map base property
 	mWidth    = mMapGenerate.GetSize().width;
 	mHeight   = mMapGenerate.GetSize().height;
 	mMinLayer = mMapGenerate.GetMinLayer();
@@ -80,17 +73,27 @@ void Map::Load(Game * game)
 	mTilesetId = mMapGenerate.getTitlesetID();
 	mTileset = std::make_shared<Tileset>(mTilesetId);
 	mTileset->Load();
-
 	mEntities = std::unique_ptr<Entities>(new Entities(*game, *this));
+
+	// 加载房间数据
 	auto& rooms = mMapGenerate.GetMapRoomIDs();
 	for( auto& id : rooms)
 	{
 		auto rects = mMapGenerate.GetMapRoomRects(id);
+		auto& mapData = mMapGenerate.GetMapData(id);
 		for (int i = 0; i < rects.size(); i++)
 		{
 			std::string roomName = id + "_" + std::to_string(i);
-			mEntities->InitEntities(mapData, rects[i], roomName);
+			mEntities->InitEntities(*mapData, rects[i].GetPos(), roomName);
 		}
+	}
+
+	// 加载走廊数据
+	auto& hallways = mMapGenerate.GetHallwayDatas();
+	for (auto& hallway : hallways)
+	{
+		auto& mapData = mMapGenerate.GetHallwayMapData(hallway.type);
+		mEntities->InitEntities(mapData, hallway.pos, "");
 	}
 
 	mCamera = mEntities->GetCamear();

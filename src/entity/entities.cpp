@@ -313,6 +313,23 @@ void Entities::InitEntities(const MapData& mapData)
 	}
 }
 
+void Entities::InitEntities(const MapData & mapData, const Rect & rect, const std::string & roomName)
+{
+	// 按照层级顺序创建entity
+	for (int curLayer = mapData.GetMinLayer(); curLayer <= mapData.GetMaxLayer(); curLayer++)
+	{
+		for (int index = 0; index < mapData.GetEntityCountByLayer(curLayer); index++)
+		{
+		    EntityData entityData = mapData.GetEntity(curLayer, index);
+			entityData.AddPos({ rect.x, rect.y });
+			if (!GetLuaContext().CreateEntity(entityData, mMap, LuaRef::Nil, true))
+			{
+				Debug::Error("Failed to create entity.");
+			}
+		}
+	}
+}
+
 /**
 *	\biref 添加一个新的entity
 */

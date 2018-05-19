@@ -987,6 +987,9 @@
     <ClInclude Include="src\gui\widget\label.h">
       <Filter>gui\widget</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\mapGenerate_private.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -29,7 +29,7 @@ local addon_env_list = {
 	["util_log_warn"] = "util_log_warn",
 	["util_log_err"]  = "util_log_err",
 	["event_system_register_event"] = "event_system_register_event",
-	["StringUTF8Sub"] = "StringUTF8Sub",
+	-- ["StringUTF8Sub"] = "StringUTF8Sub",
 	-- timer func
 	["SetTimer"] 	  = "SetTimer",
 	["SetDelayTimer"] = "SetDelayTimer",
@@ -47,6 +47,7 @@ local addon_env_list = {
 	["Frame"]	      = "Frame",
 	["SystemImport"]  = "SystemImport",
 	["Sound"]         = "Sound",
+	["Timer"]	      = "Timer",
 }
 
 -- 界面的addon的env需要做一个限制
@@ -61,11 +62,9 @@ local function addon_create_env(genv)
 	end
 
 	-- 再次加载Common来使Common进入环境
-	local t	= traced_pcall(SystemDoFile, "script/common.lua", env)
-	print(t)
-	local res = traced_pcall(SystemDoFile, "script/core/systemUtils.lua", env)
-	print("DDDDDDDDDDDD")
-	print(res)
+	traced_pcall(SystemDoFile, "script/common.lua", env)
+	traced_pcall(SystemDoFile, "script/core/systemUtils.lua", env)
+
 	-- addon env
 	env.CreateTemplate = AddonManager.CreateTemplate
 
@@ -352,7 +351,7 @@ function AddonManager.CreateTemplate(parent, name, templ, ...)
 
 		local ok, ret = traced_pcall(create_func, parent, name, ...)
 		if not ok then 
-			util_log_err("The tempalte " .. name .. "created failed")
+			util_log_err("The tempalte " .. name .. " created failed:" ..  ret)
 			return
 		end
 		return ret

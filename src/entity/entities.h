@@ -36,6 +36,7 @@ public:
 
 	/** entities */
 	void InitEntities(const MapData& mapData);
+	void InitEntities(const MapData& mapData, const Rect& rect, const std::string& roomName);
 	void AddEntity(const EntityPtr& entity);
 	void RemoveEntity(Entity& entity);
 	CameraPtr GetCamear()const;

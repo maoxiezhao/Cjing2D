@@ -20,7 +20,10 @@ local function register_image_set_image(root, name, img)
 
 		if path then img:SetImage(path) end
 		if pos then img:SetPos(pos) end
-		if size then img:SetSize(size) end
+		if size then 
+			img:SetSize(size) 
+			img._max_size = size
+		end
 	end
 end
 
@@ -46,9 +49,14 @@ end
 local function set_image_width_by_value(root, cur, min, max)
 	local image = root._images["Progress"]
 	if image then 
-		image:GetSize()
-		--local size = image:GetSize()
-		--print(size, size[1], size[2])
+		local max_size = image._max_size or image:GetSize()
+		local precent = tonumber(cur - min) / tonumber(max - min)
+		precent = IsNan(precent) and 0.0 or precent
+		local new_size = {
+			math.floor(max_size[1] * precent),
+			max_size[2]
+		}
+		image:SetSize(new_size)
 	end
 end
 

@@ -64,26 +64,37 @@ void Map::Load(Game * game)
 	}
 	// 加载地图成功，则初始化地图数据
 	mGame = game;
-	mWidth  = mapData.GetSize().width;
-	mHeight = mapData.GetSize().height;
-	mMinLayer = mapData.GetMinLayer();
-	mMaxLayer = mapData.GetMaxLayer();
-	mTilesetId = mapData.getTitlesetID();
+
+
+	// debug map load
+	if (!mMapGenerate.LoadMap(GetMapID()))
+	{
+		Debug::Die("Failed to load map file '" + GetMapID());
+		return;
+	}
+
+	mWidth    = mMapGenerate.GetSize().width;
+	mHeight   = mMapGenerate.GetSize().height;
+	mMinLayer = mMapGenerate.GetMinLayer();
+	mMaxLayer = mMapGenerate.GetMaxLayer();
+	mTilesetId = mMapGenerate.getTitlesetID();
 	mTileset = std::make_shared<Tileset>(mTilesetId);
 	mTileset->Load();
 
 	mEntities = std::unique_ptr<Entities>(new Entities(*game, *this));
-	mEntities->InitEntities(mapData);
-	
+	auto& rooms = mMapGenerate.GetMapRoomIDs();
+	for( auto& id : rooms)
+	{
+		auto rects = mMapGenerate.GetMapRoomRects(id);
+		for (int i = 0; i < rects.size(); i++)
+		{
+			std::string roomName = id + "_" + std::to_string(i);
+			mEntities->InitEntities(mapData, rects[i], roomName);
+		}
+	}
+
 	mCamera = mEntities->GetCamear();
 	mIsLoaded = true;
-
-	// debug map load
-	//if (!mMapGenerate.LoadMap(GetMapID()))
-	//{
-	//	Debug::Die("Failed to load map file '" + GetMapID());
-	//	return;
-	//}
 }
 
 void Map::UnLoad()

@@ -1,5 +1,6 @@
 #include"game\mapGenerate.h"
 #include"game\map.h"
+#include"game\mapGenerate_private.h"
 #include"core\random.h"
 #include"core\fileData.h"
 #include"core\video.h"
@@ -58,6 +59,7 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 		int minRooms = LuaTools::CheckFieldInt(l, 1, "minRooms");
 		int maxRooms = LuaTools::CheckFieldInt(l, 1, "maxRooms");
 		bool isRandom = LuaTools::CheckFieldBool(l, 1, "random");
+		const std::string& titleSetID = LuaTools::CheckFieldString(l, 1, "tileset");
 
 		mapGenerateData->SetMapID(name);
 		mapGenerateData->SetPos({ x, y });
@@ -67,6 +69,11 @@ int MapGenerateData::LuaMapGenerateData(lua_State * l)
 		mapGenerateData->SetMinRooms(minRooms);
 		mapGenerateData->SetMaxRooms(maxRooms);
 		mapGenerateData->SetRandomGenerate(isRandom);
+		mapGenerateData->SetTilesetID(titleSetID);
+
+		// 加载走廊数据
+		bool randomHallWay = LuaTools::CheckFieldBool(l, 1, "randomHallWay");
+		mapGenerateData->SetRandomHallWay(randomHallWay);
 
 		// 加载房间信息
 		lua_settop(l, 1);
@@ -136,7 +143,11 @@ bool MapGenerate::LoadMap(const std::string & mapID)
 	mSize = generateData.GetSize();
 	mMinLayer = generateData.GetMinLayer();
 	mMaxLayer = generateData.GetMaxLayer();
+	mMinRoomCount = generateData.GetMinRooms();
+	mMaxRoomCount = generateData.GetMaxRooms();
+	mRandomGenerateHallWay = generateData.GetRandomHallWay();
 	mRoomCount = 0;
+	mTitleSetID = generateData.GetTilesetID();
 	
 	// 加载各个房间信息
 	const auto& roomInfos = generateData.GetRoomInfos();
@@ -180,7 +191,7 @@ bool MapGenerate::SaveMap()
 */
 void MapGenerate::DrawDebug()
 {
-	return;
+	//return;
 
 	const Size screenSize = Video::GetScreenSize();
 	float ratioX = (float)mSize.width / screenSize.width;
@@ -197,15 +208,17 @@ void MapGenerate::DrawDebug()
 			gui::UIRender::RenderShape(
 			{   (int)(x * cellSize / ratioX),
 				(int)(y * cellSize / ratioY),
-				(int)((cellSize - 16) / ratioX),
-				(int)((cellSize - 16) / ratioY) },
-				{ 255,255, 255,55 });
+				(int)((cellSize - 5) / ratioX),
+				(int)((cellSize - 5) / ratioY) },
+				{ 0,0, 0,55 });
 
-			int region = mDebugGrid[y * gridCols + x];
-			if(region >= 0)
-				gui::UIRender::RenderText(std::to_string(region), 
-				(int)(x * cellSize / ratioX), 
-				(int)(y * cellSize / ratioY));
+			if (mDebugGrid.size() > 0) {
+				int region = mDebugGrid[y * gridCols + x];
+				if (region >= 0)
+					gui::UIRender::RenderText(std::to_string(region),
+						(int)(x * cellSize / ratioX),
+						(int)(y * cellSize / ratioY));
+			}
 		}
 	}
 
@@ -241,10 +254,40 @@ std::unordered_map<string, int> MapGenerate::GetMapRoomCount() const
 
 std::vector<string> MapGenerate::GetMapRoomIDs() const
 {
-	return std::vector<string>();
+	return mMapRoomIDs;
 }
 
-const std::unordered_map<string, MapDataPtr>& MapGenerate::GetMapRooms()const
+std::vector<Rect> MapGenerate::GetMapRoomRects(const std::string& id)const
+{
+	return mMapRoomRect.at(id);
+}
+
+MapDataPtr MapGenerate::GetMapData(const std::string & id)
+{
+	return mMapRooms.at(id);
+}
+
+int MapGenerate::GetMinLayer() const
+{
+	return mMinLayer;
+}
+
+int MapGenerate::GetMaxLayer() const
+{
+	return mMaxLayer;
+}
+
+Size MapGenerate::GetSize() const
+{
+	return mSize;
+}
+
+const string & MapGenerate::getTitlesetID() const
+{
+	return mTitleSetID;
+}
+
+std::unordered_map<string, MapDataPtr>& MapGenerate::GetMapRooms()
 {
 	return mMapRooms;
 }
@@ -253,27 +296,28 @@ namespace {
 	/**
 	*	\brief 随机排布房间
 	*/
-	bool LayoutRoomRects(std::vector<Rect>& roomRects, Rect boundRect, int tryTimes)
+	bool LayoutRoomRects(std::vector<MapGenerate::RoomRect>& roomRects, Rect boundRect,int maxCount, int tryTimes)
 	{
-		auto RectValidCheck = [](const std::vector<Rect>& rects, const Rect& testRect)->bool {
+		auto RectValidCheck = [](const std::vector<MapGenerate::RoomRect>& rects, const Rect& testRect)->bool {
 			Rect tmpRect(testRect);
 			tmpRect.AddSize(MapGenerate::cellSize, MapGenerate::cellSize);
 			for (auto rect : rects) {
-				rect.AddSize(MapGenerate::cellSize, MapGenerate::cellSize);
-				if (tmpRect.Overlaps(rect))
+				rect.rect.AddSize(MapGenerate::cellSize, MapGenerate::cellSize);
+				if (tmpRect.Overlaps(rect.rect))
 					return false;
 			}
 			return true;
 		};
 
 		// 随机生成各个room的rect的位置
+		int generateCount = 0;
 		int curTimes = 0;
 		int cellSize = MapGenerate::cellSize;
-		std::vector<Rect> rects;
+		std::vector<MapGenerate::RoomRect> rects;
 		for (auto& rect : roomRects)
 		{
 			while (1){
-				Rect tmpRect = rect;
+				Rect tmpRect = rect.rect;
 				int randPosX = Random::GetRandomInt(boundRect.width - tmpRect.width - cellSize) + boundRect.x + 1;
 				int randPosY = Random::GetRandomInt(boundRect.height - tmpRect.height - cellSize) + boundRect.y + 1;
 				randPosX = ((randPosX / cellSize + 1) | 1 )* cellSize;
@@ -282,7 +326,7 @@ namespace {
 
 				if (RectValidCheck(rects, tmpRect))
 				{
-					rects.push_back(tmpRect);
+					rects.push_back({ tmpRect, rect.mapID });
 					break;
 				}
 
@@ -294,6 +338,8 @@ namespace {
 					return false;
 				}
 			}
+			if ((++generateCount) >= maxCount)
+				break;
 		}
 
 		roomRects.clear();
@@ -302,6 +348,11 @@ namespace {
 
 		return true;
 	}
+}
+
+std::vector<MapGenerate::HallwayData> MapGenerate::GetHallwayDatas() const
+{
+	return mHallwaydatas;
 }
 
 void MapGenerate::AddMapData(const std::string & name, MapDataPtr mapData, int count)
@@ -327,7 +378,7 @@ bool MapGenerate::RandomGenerateMap()
 	grids.SetCellCapacity(1);
 
 	// 0.添加room rect
-	std::vector<Rect> roomRect;
+	std::vector<RoomRect> roomRects;
 	for (auto mapID : mMapRoomIDs)
 	{
 		MapDataPtr mapData = mMapRooms[mapID];		// 不需要判空，必然存在
@@ -335,50 +386,67 @@ bool MapGenerate::RandomGenerateMap()
 		for (int i = 0; i < count; i++)
 		{
 			Rect rect = mapData->GetRect();
-			roomRect.push_back(rect);
+			roomRects.push_back({rect, mapID});
 		}
 	}
+	std::random_shuffle(roomRects.begin(), roomRects.end());
+
 
 	// 1.不断尝试随机排布位置
-	if (!LayoutRoomRects(roomRect, Rect(mPos, mSize), 500))
+	int generateCount = Random::GetRandomInt(mMinRoomCount, mMaxRoomCount);
+	if (!LayoutRoomRects(roomRects, Rect(mPos, mSize), generateCount, 1000))
 	{
 		Debug::Error("Failed to layout room.");
 		return false;
 	}
 
 	int index = 0;
-	for (auto mapID : mMapRoomIDs)
+	for (auto roomRect : roomRects)
 	{
-		auto& mapRects = mMapRoomRect[mapID];		
-		int count = mMapRoomCount[mapID];
-		for (int i = 0; i < count; i++)
-		{
-			if (index >= roomRect.size())
-			{
-				Debug::Error("Error in Layout Room rects.");
-				return false;
-			}
-			// 修改mapData位置数据,同时添加到grid中
-			Rect rect = roomRect[index];
-			mapRects.push_back(rect);
-			grids.Add(index, rect);
-			index++;
-		}
+		// 修改mapData位置数据,同时添加到grid中
+		auto& mapRects = mMapRoomRect[roomRect.mapID];
+		mapRects.push_back(roomRect.rect);
+		grids.Add(index, roomRect.rect);
+		index++;
 	}
 
+	//for (auto mapID : mMapRoomIDs)
+	//{
+	//	auto& mapRects = mMapRoomRect[mapID];		
+	//	int count = mMapRoomCount[mapID];
+	//	for (int i = 0; i < count; i++)
+	//	{
+	//		if (index >= roomRect.size())
+	//		{
+	//			Debug::Error("Error in Layout Room rects.");
+	//			return false;
+	//		}
+	//		
+	//		Rect rect = roomRect[index];
+
+	//	}
+	//}
+
 	// 2.添加走廊数据
-	if (mRandomGenerateHallWay && !RandomGenerateHallWay(grids))
+	if (mRandomGenerateHallWay && !RandomGenerateHallWay(grids, roomRects))
 	{
 		Debug::Error("Failed to generate hallway by random way.");
 		return false;
 	}
-	else if (!mRandomGenerateHallWay && QuickGenerateHallWay(grids))
+	else if (!mRandomGenerateHallWay && !QuickGenerateHallWay(grids, roomRects))
 	{
 		Debug::Error("Failed to generate hallway by directly way.");
 		return false;
 	}
 
 	// 3.额外的修饰
+
+	// 4.处理Grid数据
+	if (!HandelMapGrid(grids))
+	{
+		Debug::Error("Failed to handel generate map grid.");
+		return false;
+	}
 
 	return true;
 }
@@ -477,7 +545,7 @@ namespace {
 /**
 *	\brief 随机生成走廊
 */
-bool MapGenerate::RandomGenerateHallWay(util::Grid<int>& grid)
+bool MapGenerate::RandomGenerateHallWay(util::Grid<int>& grid, std::vector<RoomRect>& roomRects)
 {
 	// 创建区域，首先添加room区域
 	std::vector<int> regions;
@@ -570,12 +638,132 @@ bool MapGenerate::RandomGenerateHallWay(util::Grid<int>& grid)
 	return true;
 }
 
+namespace {
+	bool QuickGenerateHallWayByRect(int srcIndex, Rect src, int dstIndex, Rect dst, util::Grid<int>& grid, int value)
+	{
+		const Size cellSize = grid.GetCellSize();
+		Point2 srcPos = {
+			src.GetCenterPos().x / cellSize.width,
+			src.GetCenterPos().y / cellSize.height
+		};
+		Point2 dstPos = {
+			dst.GetCenterPos().x / cellSize.width,
+			dst.GetCenterPos().y / cellSize.height
+		};
+		Rect bounding;
+		bounding.SetTowPos(srcPos, dstPos);
+
+		auto CheckGrid = [&,dstPos](const Point2& pos, util::Grid<int>& grid)->bool {
+			auto& element = grid.GetElements(pos.x, pos.y);
+			if (!element.empty())
+			{
+				int value = element[0];
+				if (value != srcIndex && value != dstIndex)
+					return false;
+			}
+			return true;
+		};
+
+		FloorFillDir enabelDir[2];
+		enabelDir[0] = srcPos.x <= dstPos.x ? FloorFillRight : FloorFillLeft;
+		enabelDir[1] = srcPos.y <= dstPos.y ? FloorFillDown  : FloorFillUp;
+		int priorDir = (dstPos.x - srcPos.x) < (dstPos.y - srcPos.y) ? 0 : 1;
+
+		int step = 0;
+		bool linkPath = false;
+		std::stack<Point2> mFindCells;
+		mFindCells.push(srcPos);
+		while (!mFindCells.empty())
+		{
+			Point2 curPos = mFindCells.top();
+			mFindCells.pop();
+
+			if (curPos == dstPos)
+			{
+				linkPath = true;
+				break;
+			}
+
+			if (!CheckGrid(curPos, grid))
+				continue;
+
+			auto& element = grid.GetElements(curPos.x, curPos.y);
+			if (element.empty())
+				grid.Add(value, curPos.x, curPos.y);
+
+			// add random
+			int dir = priorDir;
+			if (Random::GetRandomFloat() < (0.2f * step))
+			{
+				dir = 1 - priorDir;
+				priorDir = 1 - priorDir;
+				step = 0;
+			}
+
+			auto newPos = GetPosByDir(curPos, static_cast<FloorFillDir>(enabelDir[dir]));
+			if (bounding.Contains(newPos))
+			{
+				mFindCells.push(newPos);
+			}
+			else
+			{
+				priorDir = 1 - dir;
+			}
+
+			newPos = GetPosByDir(curPos, static_cast<FloorFillDir>(enabelDir[1 - dir]));
+			if (bounding.Contains(newPos))
+			{
+				mFindCells.push(newPos);
+			}
+
+			step++;
+		}
+		return linkPath;
+	}
+}
+
 /**
 *	\brief 以直线或者折线方式快速链接房间
 */
-bool MapGenerate::QuickGenerateHallWay(util::Grid<int>& grid)
+bool MapGenerate::QuickGenerateHallWay(util::Grid<int>& grid, std::vector<RoomRect>& roomRects)
 {
-	return false;
+	// 1.先生成最小生成树
+	std::vector<Rect> tmpRects;
+	for (const auto& roomRect : roomRects)
+		tmpRects.push_back(roomRect.rect);
+
+	using MapTreeNode = MapGenerateImplemention::TreeNode;
+	std::vector<MapTreeNode> mapTree = 
+		MapGenerateImplemention::CaculateMinimumTree(tmpRects);
+
+	mHallwayIndex = roomRects.size() + 1;
+	// 2.生成走廊
+	for (const auto& node : mapTree)
+	{
+		Rect& srcRect = roomRects[node.firstNode].rect;
+		Rect& dstRect = roomRects[node.lastNode].rect;
+
+		if (!QuickGenerateHallWayByRect(node.firstNode, srcRect, node.lastNode,
+			dstRect, grid, mHallwayIndex)) {
+			Debug::Error("Failed to generate hallway in quick way.");
+			return false;
+		}
+	}
+
+	// debug
+	int cols = grid.GetCols();
+	int rows = grid.GetRows();
+	mDebugGrid.clear();
+	for (int y = 0; y < rows; y++) {
+		for (int x = 0; x < cols; x++) {
+			auto v = grid.GetElements(x, y);
+			if (v.empty())
+				mDebugGrid.push_back(-1);
+			else
+				mDebugGrid.push_back(v[0]);
+		}
+	}
+	return true;
 }
 
 /**
@@ -611,6 +799,70 @@ bool MapGenerate::ConnectRegions(util::Grid<int>& grid, const std::vector<int>& 
 bool MapGenerate::RemoveDeadWay(util::Grid<int>& grid)
 {
 	return true;
+}
+
+/**
+*	\brief 处理地图网格，生成最终地图数据
+*		
+*	HallWayUp 
+*	HallWayDown
+*	HallWayLeft
+*	HallWayRight
+*	HallWayCenter
+*/
+bool MapGenerate::HandelMapGrid(util::Grid<int>& grid)
+{
+	int cols = grid.GetCols();
+	int rows = grid.GetRows();
+	for (int y = 0; y < rows; y++)
+	{
+		for (int x = 0; x < cols; x++)
+		{
+			auto& element = grid.GetElements(x, y);
+			if (!element.empty() && element[0] == mHallwayIndex)
+				AddHallwayData(grid, x, y);
+		}
+	}
+	return true;
+}
+
+/**
+*	\brief 添加走廊数据
+*/
+void MapGenerate::AddHallwayData(util::Grid<int>& grid, int col, int row)
+{
+	int hallwayCount = 0;
+	int hallwayMask = 0x0000;	// 左右上下
+
+	auto vecs = grid.GetElements(col - 1, row);
+	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x1000; };
+	vecs = grid.GetElements(col + 1, row);
+	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0100; };
+	vecs = grid.GetElements(col, row - 1);
+	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0010; };
+	vecs = grid.GetElements(col, row + 1);
+	if (!vecs.empty())if (vecs[0] == mHallwayIndex) { hallwayCount++; hallwayMask |= 0x0001; };
+
+	const Size& cellSize = grid.GetCellSize();
+	HallwayData data;
+	data.pos = Point2(col * cellSize.width, row * cellSize.height );
+	// 如果有三面墙必然是center
+	if (hallwayCount >= 3)
+	{
+		data.type = HallWayCenter;
+		mHallwaydatas.push_back(data);
+		return;
+	}
+
+	// 判断道路的类型
+	if (hallwayMask & 0x1100)
+		data.type = HallWayLeftRight;
+	else if (hallwayMask & 0x0011)
+		data.type = HallWayUpDown;
+	else
+		data.type = HallWayCenter;
+
+	mHallwaydatas.push_back(data);
 }
 
 

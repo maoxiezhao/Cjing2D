@@ -92,6 +92,10 @@ public:
 	{
 		return mPos;
 	}
+	void AddPos(const Point2& offset)
+	{
+		mPos = mPos + offset;
+	}
 
 	/**** **** value set **** ****/
 	void SetValueBoolean(const string& key, bool value);

@@ -69,9 +69,16 @@ local function RegisterStringFunction(env)
 	end
 end
 
+local function RegisterMathFunction(env)
+	env.IsNan = function(x)
+		return x ~= x
+	end
+end
+
 local function RegisterUtilsFunction(env)
 	RegisterTimerFunction(env)
 	RegisterStringFunction(env)
+	RegisterMathFunction(env)
 end
 
 RegisterUtilsFunction(env)

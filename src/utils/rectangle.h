@@ -30,6 +30,7 @@ public:
 	void SetCenter(int cx, int cy);
 	void SetAngle(float a);
 	float GetAngle()const;
+	void SetTowPos(const Point2& lt, const Point2& rb);
 
 	Point2 GetPos()const;
 	Size GetSize()const;

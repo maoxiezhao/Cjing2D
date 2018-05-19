@@ -28,6 +28,7 @@ local function status_bar_create_bar(root, name, data)
 		status_label:SetFontSize(20)
 		status_label:SetText("10/10")
 		status_label:SetFontFace("ui_pixel")
+		bar_frame._num = status_label
 
 		-- progress bar.using img now.
 		local progress_img_path = "sprites/menus/hud/point_" .. name .. ".png"
@@ -37,7 +38,13 @@ local function status_bar_create_bar(root, name, data)
 		})
 		progress_bar:SetBorderImage("sprites/menus/hud/heart_bar.png")
 		progress_bar:SetProgressImage(progress_img_path, {6, 6}, {122, 17})
-		progress_bar:ResetValue(0, 10, 5)
+		progress_bar:ResetValue(0, 10, 10)
+		bar_frame._progress = progress_bar 
+
+		-- set metatable
+		for k,v in pairs(StatusBarMT) do
+			bar_frame[k] = v
+		end
 		return bar_frame
 	end
 end

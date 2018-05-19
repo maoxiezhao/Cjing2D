@@ -13,14 +13,15 @@ mapInfo{
   height = 2000,
   minlayer = 0,
   maxlayer = 2,
-  minRooms = 5,  -- 最少房间数
-  maxRooms = 5,  -- 最大房间数
+  minRooms = 4,  -- 最少房间数
+  maxRooms = 4,  -- 最大房间数
+  tileset = 'minMap',
 
   -- hallway data
-  hallWayUp = "",
-  hallWayRight = "",
-  hallWayDown = "",
-  hallWayLeft = "",
+  randomHallWay = false,
+  hallWayUpDown    = "./common/updown",
+  hallWayLeftRight = "./common/leftright",
+  hallWayCenter    = "./common/center",
 
   -- room data
   random = true,   -- 是否随机大地图，true随机、false不随机

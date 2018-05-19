@@ -112,6 +112,14 @@ inline float Rect::GetAngle() const
 	return angle;
 }
 
+inline void Rect::SetTowPos(const Point2 & lt, const Point2 & rb)
+{
+	width = abs(rb.x - lt.x);
+	height = abs(rb.y - lt.y);
+	x = std::min(lt.x, rb.x);
+	y = std::min(lt.y, rb.y);
+}
+
 inline Point2 Rect::GetPos() const
 {
 	return Point2(x, y);

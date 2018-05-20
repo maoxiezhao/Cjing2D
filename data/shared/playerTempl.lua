@@ -99,7 +99,12 @@ PlayerTempl.metatable = {
 	end,
 
 	-- 装备管理
-
+	TrySwapWeaponBullet = function(player)
+		local cur_weapon = Weapon.GetCurWeapon(player)
+		if cur_weapon and not cur_weapon:IsSwapingBullet() then 
+			cur_weapon:SwapBullets(true)
+		end
+	end,
 }
 
 return PlayerTempl

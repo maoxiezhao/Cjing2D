@@ -24,6 +24,9 @@ function WeaponOverideMT:OnWeaponAttack()
 			bullet:SetFireEntity(cur_player, self)
 			-- 发射子弹
 			bullet:Firing()
+
+			-- 响应武器默认发射事件
+			self:FireBullet(1)
 		end
 	else
 		util_log_warning("Failed to use bullet:" .. bullet_name)

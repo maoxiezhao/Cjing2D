@@ -37,6 +37,8 @@ OnInputKeyDown = function( cur_game, key, modify)
 		print("Swap Equip")
 	elseif key == "3" then 
 		print("Swap Equip")
+	elseif key == "r" then 
+		player:TrySwapWeaponBullet()
 	elseif key == "t" then
 		local slot = Weapon.GetCurSlot(player)
 		Weapon.DropEquip(player, slot)

@@ -430,11 +430,10 @@ int LuaContext::userdata_get_utable(lua_State* l)
 
 		LuaContext& luaContext = GetLuaContext(l);
 		const LuaObjectPtr& userdata = *static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
+		
+		lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");
 		if (userdata->IsWithLuaTable())
-		{
-			// ´Óuserdata tableÖĞ
-			lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");
-										// userdata utables
+		{								// userdata utables
 			Debug::CheckAssertion(!lua_isnil(l, -1), "userdatas tables is not init.");
 
 			lua_pushlightuserdata(l, userdata.get());
@@ -446,7 +445,19 @@ int LuaContext::userdata_get_utable(lua_State* l)
 										// userdata utable/nil
 			return 1;
 		}
-		return 0;
+		else
+		{
+			userdata->SetWithLuaTable(true);
+			lua_newtable(l);
+										// userdata_table usertable
+			lua_pushlightuserdata(l, userdata.get());
+										// userdata_table usertable userdata
+			lua_pushvalue(l, -2);
+										// userdata_table usertable userdata usertable
+			lua_settable(l, -4);
+										// userdata_table usertable
+			return 1;
+		}
 	});
 }
 

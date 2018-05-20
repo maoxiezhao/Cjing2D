@@ -96,11 +96,12 @@ bool Weapon::UnEquiped()
 			+ " has already unequiped.");
 		return false;
 	}
+
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
+
 	mEntity->RemoveSprite(normalAnimationName);
 	mEntity = nullptr;
 	mIsEquiped = false;
-
-	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
 	return true;
 }
 

@@ -54,6 +54,7 @@ local addon_env_list = {
 	["SystemImport"]  = "SystemImport",
 	["Sound"]         = "Sound",
 	["Timer"]	      = "Timer",
+	["Weapon"]		  = "Weapon",
 }
 
 -- 界面的addon的env需要做一个限制

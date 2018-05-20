@@ -74,6 +74,7 @@ public:
 		EVENT_GAME_MAP_LEAVE = 4,
 		EVENT_GAME_PLAYR_ENTER = 5,
 		EVENT_GAME_PLAYR_LEAVE = 6,
+		EVENT_ITEM_COUNT_CHANGE = 50,
 	};
 
 	LuaContext(App& app);
@@ -300,6 +301,7 @@ public:
 		weapon_api_unequip,
 		weapon_api_get_entity,
 		weapon_api_get_slot,
+		weapon_api_get_cur_equip,
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,

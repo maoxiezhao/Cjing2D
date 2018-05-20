@@ -25,8 +25,8 @@ public:
 	bool SetItemCount(int newCount, bool notify = false);
 
 	/** status */
-	const std::string& GetPickedSound()const;
-	const std::string& GetItemName()const;
+	std::string GetPickedSound()const;
+	std::string GetItemName()const;
 	Equipment& GetEquipment();
 	Savegame& GetSavegame();
 
@@ -66,7 +66,7 @@ private:
 
 using ItemPtr = std::shared_ptr<Item>;
 
-inline const std::string & Item::GetItemName() const
+inline std::string Item::GetItemName() const
 {
 	return mItemName;
 }

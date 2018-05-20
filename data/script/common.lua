@@ -22,7 +22,7 @@ GAME_DIRECTION_DOWN = 3
 GAME_PROP_IS_NEW_GAME = "game_prop_is_new_game"
 GAME_PROP_MAX_SP = "game_prop_max_sp"
 
--- Common event define
+---------------- Common event define ------------------------
 EVENT_GAME_START = 1
 EVENT_GAME_END = 2
 EVENT_GAME_MAP_ENTER = 3
@@ -38,9 +38,15 @@ EVENT_INPUT_KEY_UP = 10
 EVENT_GAME_START_DIALOG = 11
 EVENT_GAME_START_QUESTIONS = 12
 
+EVENT_ITEM_COUNT_CHANGE = 50
+EVENT_WEAPON_SWAP_BULLET = 51
+EVENT_WEAPON_FIRE_BULLET = 52
+
+EVENT_ENTITY_EQUIP_WEAPON    = 500
+EVENT_ENTITY_UNEQUIP_WEAPON  = 501
 EVENT_ENTITY_PROPERTY_CHANGE = 1000
 
--- Entity Type
+---------------- Entity Type ----------------------------------
 ENTITY_TYPE_TITLE          = 1   --/** 地图块 */
 ENTITY_TYPE_DYNAMIC_TITLE  = 2   --/** 动态地图块 */
 ENTITY_TYPE_DESTIMATION    = 3	 --/** 目标点 */

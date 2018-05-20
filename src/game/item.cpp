@@ -69,7 +69,7 @@ bool Item::AddItem(int count)
 /**
 *	\brief 获取item被拾取时的音效，默认为空
 */
-const std::string & Item::GetPickedSound() const
+std::string Item::GetPickedSound() const
 {
 	return mPickedSound;
 }
@@ -101,6 +101,15 @@ bool Item::SetItemCount(int newCount, bool notify)
 		lua_pushinteger(l, oldCount);
 		lua_pushinteger(l, newCount);
 		return 2;
+	});
+
+	GetLuaContext().DoFireLuaSystemEvent(
+		LuaContext::SystemLuaEvent::EVENT_ITEM_COUNT_CHANGE,
+		[&](lua_State*l) {
+		GetLuaContext().PushItem(l, *this);
+		lua_pushinteger(l, oldCount);
+		lua_pushinteger(l, newCount);
+		return 3;
 	});
 	return true;
 }

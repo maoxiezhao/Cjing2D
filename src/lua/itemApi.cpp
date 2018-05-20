@@ -25,6 +25,7 @@ void LuaContext::RegisterItem()
 	itemClass.AddMethod("SetFlow", item_api_set_flow);
 	itemClass.AddMethod("SetAutoPicked", item_api_set_auto_picked);
 	itemClass.AddMethod("GetCount", &Item::GetItemCount);
+	itemClass.AddMethod("GetName", &Item::GetItemName);
 
 	// weapon class
 	LuaBindClass<Weapon> weaponClass(l, module_weapon_name, module_item_name);
@@ -35,6 +36,7 @@ void LuaContext::RegisterItem()
 	weaponClass.AddFunction("Equip", weapon_api_equip);
 	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
 	weaponClass.AddFunction("GetCurSlot", weapon_api_get_slot);
+	weaponClass.AddFunction("GetCurWeapon", weapon_api_get_cur_equip);
 
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
@@ -383,4 +385,23 @@ int LuaContext::weapon_api_get_entity(lua_State*l)
 	});
 }
 
-
+/**
+*	\brief 是按weapon:GetEntity()
+*	\return 返回当前武器的持有Entity,如果为空返回nil
+*/
+int LuaContext::weapon_api_get_cur_equip(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
+		
+		auto curEquip = equipment.GetCurWeapon();
+		if (curEquip != nullptr)
+		{
+			PushUserdata(l, *curEquip);
+			return 1;
+		}
+		
+		return 0;
+	});
+}

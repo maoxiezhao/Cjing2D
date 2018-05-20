@@ -111,7 +111,7 @@ public:
 	void CloseUserdatas();
 	void NotifyUserdataDestoryed(LuaObject& obj);
 	void CallFileWithUserdata(const std::string& name, LuaObject& userdata);
-	void CallFunctionWithUserdata(LuaObject& userdata, const std::string& funcName, std::function<int(lua_State*l)>paramFunc = nullptr);
+	bool CallFunctionWithUserdata(LuaObject& userdata, const std::string& funcName, std::function<int(lua_State*l)>paramFunc = nullptr);
 
 	// notify userdata
 	void NotifyEntityWithMovement(Entity& entity, const std::string& funcName);
@@ -295,9 +295,11 @@ public:
 		item_api_use_item,
 		// weapon
 		weapon_api_add,
+		weapon_api_drop,
 		weapon_api_equip,
 		weapon_api_unequip,
 		weapon_api_get_entity,
+		weapon_api_get_slot,
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,

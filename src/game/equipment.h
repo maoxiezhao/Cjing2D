@@ -65,6 +65,8 @@ public:
 	int GetCurEquipSlot()const;
 	bool HasCurWeapon()const;
 	bool HasWeaponBySlot(int curSlot)const;
+	bool RemoveWeaponBySlot(int slot);
+	bool RemoveWeaponByID(const std::string& weaponID);
 
 	WeaponPtr GetCurWeapon();
 	WeaponPtr GetWeaponFromSlot(int curSlot);

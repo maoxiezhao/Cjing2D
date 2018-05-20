@@ -53,6 +53,13 @@ void Player::Update()
 
 	// state update
 	GetState().Update();
+
+	// lua update if exists
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnUpdate",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, *this);
+		return 1;
+	});
 }
 
 /**
@@ -231,15 +238,6 @@ void Player::Attack()
 void Player::SetNormalState()
 {
 	SetState(new MouseState(*this));
-}
-
-void Player::NotifyShiftMove()
-{
-	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyShiftMove",
-		[&](lua_State*l)->int {
-		GetLuaContext()->PushUserdata(l, *this);
-		return 1;
-	});
 }
 
 void Player::NotifyAttack()

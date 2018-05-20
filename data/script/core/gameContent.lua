@@ -28,7 +28,8 @@ function GameContent.Initialize()
 	load_shared_templ("enemyTempl.lua")
 	load_shared_templ("playerTempl.lua")
 	load_shared_templ("bulletTempl.lua")
-
+	load_shared_templ("weaponTempl.lua")
+	
 	-- load cfgs
 	load_shared_templ("addonLists.lua")
 	load_shared_templ("dialogsList.lua")

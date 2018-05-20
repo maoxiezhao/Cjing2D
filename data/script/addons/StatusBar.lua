@@ -118,7 +118,7 @@ local function OnPlayerSPChange(event, scope, custom, player)
 	if selfFrame and player then
 		local cur_sp = player:GetProperty(ENTITY_PROPERTY_SP)
 		local sp_bar = selfFrame._sp_bar
-		hp_bar:SetValue(cur_sp)
+		sp_bar:SetValue(cur_sp)
 	end
 end
 

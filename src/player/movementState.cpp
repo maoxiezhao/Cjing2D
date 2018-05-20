@@ -58,8 +58,22 @@ void MovementState::NotifyMovementChanged()
 void MovementState::NotifyCommandShiftPressed()
 {
 	auto& player = GetPlayer();
+	auto& luaContext = *player.GetLuaContext();
+	bool canShift = luaContext.CallFunctionWithUserdata(player, "OnBeforeShiftMove",
+		[&](lua_State*l)->int {
+		luaContext.PushUserdata(l, player);
+		return 1;
+	});
+
+	if (!canShift)
+		return;
+
 	mPlayerMovement->StartShift(player.GetShiftSpeed());
-	player.NotifyShiftMove();
+	luaContext.CallFunctionWithUserdata(player, "OnAfterShiftMove",
+		[&](lua_State*l)->int {
+		luaContext.PushUserdata(l, player);
+		return 1;
+	});
 }
 
 void MovementState::SetPlayerWalkingAnimation()

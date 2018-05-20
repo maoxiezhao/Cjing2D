@@ -41,8 +41,6 @@ public:
 	void CheckPosition();
 	void Attack();
 	void SetNormalState();
-	
-	void NotifyShiftMove();
 	void NotifyAttack();
 
 	/** getter/setter */
@@ -73,6 +71,7 @@ private:
 	int mNormalWalkingSpeed;
 	int mCurWalkingSpeed;
 	int mShiftSpeed;
+	bool mCanUseSpActive;
 
 	// test
 	std::shared_ptr<Weapon> mWeapon;

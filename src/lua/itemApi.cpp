@@ -31,8 +31,10 @@ void LuaContext::RegisterItem()
 	weaponClass.AddDefaultMetaFunction();
 	weaponClass.AddFunction("GetEquip", item_api_get_item);
 	weaponClass.AddFunction("AddEquip", weapon_api_add);
+	weaponClass.AddFunction("DropEquip", weapon_api_drop);
 	weaponClass.AddFunction("Equip", weapon_api_equip);
 	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
+	weaponClass.AddFunction("GetCurSlot", weapon_api_get_slot);
 
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
@@ -265,6 +267,34 @@ int LuaContext::weapon_api_add(lua_State*l)
 }
 
 /**
+*	\brief 实现Weapon.DropEquip(player, equipID)
+*	\return bool 是否删除成功
+*/
+int LuaContext::weapon_api_drop(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
+
+
+		bool result = false;
+		if (lua_isinteger(l, 2))
+		{
+			int slot = LuaTools::CheckInt(l, 2);
+			result = equipment.RemoveWeaponBySlot(slot);
+		}
+		else if (lua_isstring(l, 2))
+		{
+			const std::string& weaponID = LuaTools::CheckString(l, 2);
+			result = equipment.RemoveWeaponByID(weaponID);
+		}
+
+		lua_pushboolean(l, result);
+		return 1;
+	});
+}
+
+/**
 *	\brief 实现Weapon.Equip(player, equipID)
 *	\return bool 是否添加成功
 */
@@ -312,6 +342,23 @@ int LuaContext::weapon_api_unequip(lua_State*l)
 			result = equipment.UnEquipWeaponFromSlots(weaponID);
 		}
 		lua_pushboolean(l, result);
+		return 1;
+	});
+}
+
+
+/**
+*	\brief 实现Weapon.GetCurSlot(player)
+*	\return int 当前装备槽位
+*/
+int LuaContext::weapon_api_get_slot(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
+		int slot = equipment.GetCurEquipSlot();
+	
+		lua_pushinteger(l, slot);
 		return 1;
 	});
 }

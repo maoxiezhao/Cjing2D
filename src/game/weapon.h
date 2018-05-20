@@ -24,7 +24,7 @@ public:
 	virtual bool Equiped(Entity& entity);
 	virtual bool UnEquiped();
 
-	virtual void BeforeAttack();
+	virtual bool BeforeAttack();
 	virtual void Attack();
 	virtual void AfterAttack();
 	virtual bool IsAttack()const;

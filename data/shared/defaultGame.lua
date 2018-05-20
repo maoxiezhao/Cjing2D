@@ -22,11 +22,14 @@ StartDefaultGame = function ( cur_game )
 	if not player then return end
 
 	-- player statsu 
-	Weapon.AddEquip(player, "usp", true)
+	--Weapon.AddEquip(player, "usp", true)
 	Item.AddItem(cur_game, "usp_bullet", 60)
 end,
 
 OnInputKeyDown = function( cur_game, key, modify)
+	local player = cur_game:GetPlayer()
+	if not player then return end
+
 	-- 换武器？？？
 	if key == "1" then 
 		print("Swap Equip")
@@ -34,6 +37,9 @@ OnInputKeyDown = function( cur_game, key, modify)
 		print("Swap Equip")
 	elseif key == "3" then 
 		print("Swap Equip")
+	elseif key == "t" then
+		local slot = Weapon.GetCurSlot(player)
+		Weapon.DropEquip(player, slot)
 	end
 
 

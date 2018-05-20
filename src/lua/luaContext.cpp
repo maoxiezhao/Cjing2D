@@ -488,12 +488,13 @@ void LuaContext::CallFileWithUserdata(const std::string & name, LuaObject & user
 	LuaTools::CallFunction(l, 1, 0, "CallFileFunction");
 }
 
-void LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::string & funcName, std::function<int(lua_State*l)> paramFunc)
+bool LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::string & funcName, std::function<int(lua_State*l)> paramFunc)
 {
+	bool result = false;
 	if (!IsUserdataHasField(userdata, funcName))
 	{
 		//Debug::Warning("Failed to call userdata function:" + funcName);
-		return;
+		return result;
 	}
 	PushUserdata(l, userdata);
 	if (FindMethod(funcName))
@@ -502,10 +503,13 @@ void LuaContext::CallFunctionWithUserdata(LuaObject & userdata, const std::strin
 		if (paramFunc != nullptr)
 			paramNum += paramFunc(l);
 
-		LuaTools::CallFunction(l, paramNum, 0, funcName);
+		LuaTools::CallFunction(l, paramNum, 1, funcName);
+		if (lua_isboolean(l, -1))
+			result = LuaTools::CheckBoolean(l, -1);
+		lua_pop(l, 1);
 	}
 	lua_pop(l, 1);
-
+	return result;
 }
 
 /**

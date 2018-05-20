@@ -104,9 +104,9 @@ bool Weapon::UnEquiped()
 	return true;
 }
 
-void Weapon::BeforeAttack()
+bool Weapon::BeforeAttack()
 {
-	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponBeforeAttack");
+	return GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponBeforeAttack");
 }
 
 /**
@@ -116,9 +116,13 @@ void Weapon::Attack()
 {
 	if (IsEquiped() && IsCanAttack())
 	{
-		BeforeAttack();
-		GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");
-		AfterAttack();
+		// 在lua中再判断依次
+		bool canAttack = BeforeAttack();
+		if (canAttack)
+		{
+			GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");
+			AfterAttack();
+		}
 	}
 }
 

@@ -270,6 +270,22 @@ bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 	if (weapon.IsEquiped())
 		return true;
 
+	int equipSlot = 0;
+	for (auto& equip : mEquipdWeapons)
+	{
+		if (equip.get() == &weapon)
+			break;
+
+		equipSlot++;
+	}
+
+	if (equipSlot >= mMaxEquipSlot - 1)
+	{
+		Debug::Warning("The equip slog is invalid " + weapon.GetItemName());
+		return false;
+	}
+
+	mCurEquipSlot = equipSlot;
 	auto& player = GetCurPlayer();
 	return weapon.Equiped(player);
 }
@@ -286,7 +302,7 @@ bool Equipment::UnEquipWeaponFromSlots(int slot)
 {
 	auto& weapon = GetWeaponFromSlot(slot);
 	if (weapon)
-		return EquipWeaponFromSlots(*weapon);
+		return UnEquipWeaponFromSlots(*weapon);
 	return false;
 }
 
@@ -303,8 +319,9 @@ bool Equipment::UnEquipWeaponFromSlots(Weapon & weapon)
 bool Equipment::EquipWeaponFromSlots(int slot)
 {
 	auto& weapon = GetWeaponFromSlot(slot);
-	if(weapon)
+	if (weapon) {
 		return EquipWeaponFromSlots(*weapon);
+	}
 	return false;
 }
 
@@ -325,6 +342,44 @@ bool Equipment::HasWeaponBySlot(int curSlot)const
 
 	return mEquipdWeapons.size() > curSlot &&
 		mEquipdWeapons[curSlot] != nullptr;
+}
+
+bool Equipment::RemoveWeaponBySlot(int slot)
+{
+	// 如果slot为-1，则尝试查找一次有效槽位
+	if (slot == -1)
+		slot = FindEmptyWeaponSlot();
+
+	if (slot == -1 || !HasWeaponBySlot(slot))
+		return false;
+
+	auto weapon = GetWeaponFromSlot(slot);
+	if (weapon->IsEquiped())
+		UnEquipWeaponFromSlots(*weapon);
+
+	mEquipdWeapons[slot] = nullptr;
+	return true;
+}
+
+bool Equipment::RemoveWeaponByID(const std::string & weaponID)
+{
+	auto weapon = GetWeaponFromSlot(weaponID);
+	if (!weapon)
+		return false;
+
+	if (weapon->IsEquiped())
+		UnEquipWeaponFromSlots(*weapon);
+
+	bool result = false;
+	for (int i = 0; i < mMaxEquipSlot; i++)
+	{
+		if (mEquipdWeapons[i] &&
+			mEquipdWeapons[i].get() == weapon.get()) {
+			mEquipdWeapons[i] = nullptr;
+			result = true;
+		}
+	}
+	return result;
 }
 
 WeaponPtr Equipment::GetWeaponFromSlot(int curSlot)

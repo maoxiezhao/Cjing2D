@@ -285,7 +285,7 @@ void UIRender::RenderImage(const ImageRenderInfo & imageInfo)
 			float w = gridWidth * (imageUV[2] - imageUV[0]);
 			float h = gridHeight* (imageUV[3] - imageUV[1]);
 			nvgBeginPath(vg);
-			nvgRoundedRect(vg, x, y, w, h, 5);
+			nvgRoundedRect(vg, x, y, w, h, 0);
 			nvgFillPaint(vg, imgPaint);
 			nvgFill(vg);
 		}

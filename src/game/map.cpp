@@ -8,6 +8,7 @@
 #include "entity\entity.h"
 #include "entity\tileset.h"
 #include "entity\tilepattern.h"
+#include "entity\destination.h"
 
 Map::Map():
 	mMapID(),
@@ -124,6 +125,7 @@ void Map::Start()
 void Map::Leave()
 {
 	mIsStarted = false;
+	mEntities->NotifyMapStoped();
 	GetLuaContext().LeaveMap(*this);
 }
 
@@ -285,6 +287,34 @@ void Map::SetBackground(SpritePtr background)
 	mBackGround = background;
 	mBackGround->SetGlobalOrder(-1);
 	mBackGround->SetDeferredDraw(true);
+}
+
+std::string Map::GetDestination() const
+{
+	return mDestinationName;
+}
+
+void Map::SetDestination(const std::string & name)
+{
+	mDestinationName = name;
+}
+
+Destination * Map::GetDestination()
+{
+	Debug::CheckAssertion(IsLoaded(), "Get destination, but the map is not loaded");
+	std::shared_ptr<Destination> destination = nullptr;
+	
+	if (mDestinationName != "")
+	{
+		const auto& findEntity = GetEntities().FindEntity(mDestinationName);
+		if (findEntity == nullptr || findEntity->GetEntityType() != EntityType::DESTIMATION)
+		{
+			Debug::Error("The Destination named'" + mDestinationName + "' is invalid");
+			return nullptr;
+		}
+		destination = std::static_pointer_cast<Destination>(findEntity);
+	}
+	return destination.get();
 }
 
 /**

@@ -33,11 +33,17 @@ public:
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
+	virtual void NotifyAfterCreated();
+	virtual void NotifyBeRemoved();
 
 	/** status manager */
 	void PlaceOnMap(Map& map);
 	void CheckPosition();
 	void Attack();
+	void SetNormalState();
+	
+	void NotifyShiftMove();
+	void NotifyAttack();
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;

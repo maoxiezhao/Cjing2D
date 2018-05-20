@@ -1,5 +1,6 @@
 #include"entity\player.h"
 #include"entity\entities.h"
+#include"entity\destination.h"
 #include"game\map.h"
 #include"game\equipment.h"
 #include"game\weapon.h"
@@ -33,7 +34,7 @@ Player::Player(Equipment & equipment) :
 	mPlayerSprites = std::unique_ptr<PlayerSprite>(playerSprite);
 
 	// 设置当前状态
-	SetState(new MouseState(*this));
+	SetNormalState();
 }
 
 void Player::Update()
@@ -80,16 +81,31 @@ void Player::Draw()
 
 void Player::Initalized()
 {
+	Entity::Initalized();
 }
 
 void Player::PlaceOnMap(Map & map)
 {
+	// 当前地图相同
+	if (IsOnMap() && &GetMap() == &map)
+		return;
+
 	// 刷新下当前状态
 	mEquipment.NotifyPlayerEnter(*this);
 
 	// 添加到地图中
 	auto sharedPlayer = std::dynamic_pointer_cast<Entity>(this->shared_from_this());
 	map.GetEntities().AddEntity(sharedPlayer);
+
+	// 设置位置和方向
+	auto destination = map.GetDestination();
+	if (destination)
+	{
+		SetPos(destination->GetPos());
+	}
+
+	SetNormalState();
+	CheckPosition();
 }
 
 /**
@@ -100,6 +116,9 @@ void Player::PlaceOnMap(Map & map)
 */
 void Player::CheckPosition()
 {
+	if (!IsOnMap())
+		return;
+
 	SetFacingEntity(nullptr);
 	SetOverlapEntity(nullptr);
 
@@ -209,6 +228,24 @@ void Player::Attack()
 	curWeapon->Attack();
 }
 
+void Player::SetNormalState()
+{
+	SetState(new MouseState(*this));
+}
+
+void Player::NotifyShiftMove()
+{
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyShiftMove",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, *this);
+		return 1;
+	});
+}
+
+void Player::NotifyAttack()
+{
+}
+
 /**
 *	\brief 响应移动改变
 *
@@ -306,4 +343,16 @@ void Player::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
 void Player::NotifyCollisionWithEnemy(Enemy & enemy)
 {
 	Logger::Info("Notify Collison.");
+}
+
+void Player::NotifyAfterCreated()
+{
+	// 响应玩家进入事件
+	// 执行map Enter
+	GetLuaContext()->EnterPlayer(*this);
+}
+
+void Player::NotifyBeRemoved()
+{
+	GetLuaContext()->LeavePlayer(*this);
 }

@@ -1,6 +1,7 @@
 #include "movementState.h"
 #include "entity\player.h"
 #include "player\playerSprite.h"
+#include "lua\luaContext.h"
 
 MovementState::MovementState(Entity & entity):
 	PlayerState(entity),
@@ -58,6 +59,7 @@ void MovementState::NotifyCommandShiftPressed()
 {
 	auto& player = GetPlayer();
 	mPlayerMovement->StartShift(player.GetShiftSpeed());
+	player.NotifyShiftMove();
 }
 
 void MovementState::SetPlayerWalkingAnimation()

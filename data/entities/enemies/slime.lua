@@ -9,6 +9,9 @@ local enemyBaseClass = {
 		self._damage = 2
 		self._state = nil
 
+		self:SetProperty(ENTITY_PROPERTY_HP, 5)
+		self:SetProperty(ENTITY_PROPERTY_DEMAGE, 2)
+
 		self:SetSize({26, 20})
 		self:SetOrigin({-3, -20})
 	end,
@@ -56,6 +59,7 @@ local enemyBaseClass = {
 
 	SetLife = function( self, life )
 		self._life = life
+		self:OnLifeChange()
 	end,
 
 	GetLife = function(self)
@@ -65,6 +69,7 @@ local enemyBaseClass = {
 	AddLife = function(self, add_life)
 		self._life = self._life + add_life
 		print("add life:", add_life, "finial lief:", self._life)
+		self:OnLifeChange()
 	end,
 
 	-- 受击打效果
@@ -78,6 +83,10 @@ local enemyBaseClass = {
 			movement:SetMaxDistance(32)
 			movement:SetAngle(-degree)
 		end
+	end,
+
+	OnLifeChange = function(self)
+		self:SetProperty(ENTITY_PROPERTY_HP, self._life)
 	end,
 }
 

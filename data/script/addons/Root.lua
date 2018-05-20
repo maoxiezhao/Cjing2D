@@ -40,7 +40,7 @@ function OnRootStart()
 		size = {400, 200},
 		vertical = "center",
 		horizontal = "center"})
-	cur_logo:SetVisible(false)
+	cur_logo:SetVisible(true)
 
 	-- 首先处理异步加载
 	Frame.LoadFont("ui_pixel", "fonts/Mouse.ttf", true)
@@ -57,7 +57,7 @@ function OnFinishAsyncLoading()
 	cur_logo:SetVisible(false)
 
 	SetDelayTimer("OnFinishAsync", 500, function()
-		--Title:OpenTitle()
+		Title:OpenTitle()
 	end)
 
 	

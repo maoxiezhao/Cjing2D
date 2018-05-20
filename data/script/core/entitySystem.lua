@@ -2,6 +2,16 @@
 -- 负责创建和管理entity
 local EntitySystem = SystemModule("EntitySystem")
 
+-----------------------------------------------------
+-- Entity event
+-----------------------------------------------------
+-- local function RegisterEntityEvent(entity, event, callback, custom, scope)
+-- 	if not entity then 
+
+-- 		return	
+-- 	end
+-- end
+
 ------------------------------------------------------
 -- Entity Metatable
 ------------------------------------------------------
@@ -20,6 +30,22 @@ end
 
 function EntityMT:OnRemoved()
 	EntitySystem.RemoveEntity(self._uid)
+end
+
+function EntityMT:SetProperty(prop, value)
+	local properties = self._properties or {}
+	local property = properties[prop]
+	if property ~= value then 
+		properties[prop] = value
+
+		entity_prop_fire(self, prop, self)
+		self._properties = properties
+	end
+end
+
+function EntityMT:GetProperty(prop)
+	local properties = self._properties or {}
+	return properties[prop]
 end
 
 local function SetEntityMetatable(entity, meta)
@@ -118,14 +144,31 @@ local function OnMapLeave( ... )
 	cur_map = nil
 end
 
+local function OnPlayerEnter(event, scope, custom, player)
+	InitEntity(player)
+
+	local playerTempl = game_content_get_templ("player")
+	if playerTempl and playerTempl.metatable then 
+		SetEntityMetatable(player, playerTempl.metatable)
+
+		player:InitPlayer()
+	end
+end
+
+local function OnPlayerLeave(event, scope, custom, player)
+
+end
+
 function EntitySystem.Initialize()
 	all_entities = {}
 	entity_uid = 1
 
-	event_system_register_event(EVENT_GAME_START,    EntitySystem,  OnGameStart)
-	event_system_register_event(EVENT_GAME_END,      EntitySystem,  OnGameEnd)
-	event_system_register_event(EVENT_GAME_MAP_ENTER, EntitySystem, OnMapEnter)
-	event_system_register_event(EVENT_GAME_MAP_LEAVE, EntitySystem, OnMapLeave)
+	event_system_register_event(EVENT_GAME_START,       EntitySystem,  OnGameStart)
+	event_system_register_event(EVENT_GAME_END,         EntitySystem,  OnGameEnd)
+	event_system_register_event(EVENT_GAME_MAP_ENTER,   EntitySystem,  OnMapEnter)
+	event_system_register_event(EVENT_GAME_MAP_LEAVE,   EntitySystem,  OnMapLeave)
+	event_system_register_event(EVENT_GAME_PLAYR_ENTER, EntitySystem,  OnPlayerEnter)
+	event_system_register_event(EVENT_GAME_PLAYR_LEAVE, EntitySystem,  OnPlayerLeave)
 end
 
 function EntitySystem.Uninitialize()

@@ -39,7 +39,7 @@ public:
 	/** Map */
 	bool HasCurrentMap()const;
 	Map& GetCurrentMap();
-	void SetCurrentMap(const string& mapID);
+	void SetCurrentMap(const std::string& mapID, const std::string& destination);
 	void UpdateTransitoin();
 
 	/** Notify */

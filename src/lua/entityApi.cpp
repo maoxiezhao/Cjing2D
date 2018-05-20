@@ -11,6 +11,7 @@
 #include"entity\enemy.h"
 #include"entity\player.h"
 #include"entity\bullet.h"
+#include"entity\destination.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_player_name = "Player";
@@ -42,6 +43,10 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("GetFacingDegree", &Entity::GetFacingDegree);
 	entityClass.AddMethod("StopMovement", &Entity::StopMovement);
 	entityClass.AddMethod("SetEnable", &Entity::SetEnable);
+	entityClass.AddMethod("GetGame", entity_api_get_game);
+	entityClass.AddMethod("GetType", entity_api_get_type);
+	entityClass.AddMethod("GetMap", entity_api_get_map);
+	entityClass.AddMethod("GetUTable", userdata_get_utable);
 
 	// player 
 	LuaBindClass<Player> playerClass(l, module_player_name, module_entity_name);
@@ -102,10 +107,16 @@ int LuaContext::entity_api_create_title(lua_State* l)
 int LuaContext::entity_api_create_destimation(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		const Map& map = *CheckMap(l, 1);
+		Map& map = *CheckMap(l, 1);
 		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
 
-		lua_pushboolean(l, true);
+		auto destination = std::make_shared<Destination>(
+			entityData.GetName(),
+			entityData.GetPos(),
+			entityData.GetLayer()
+			);
+		map.GetEntities().AddEntity(destination);
+		PushUserdata(l, *destination);
 		return 1;
 	});
 }
@@ -304,6 +315,34 @@ int LuaContext::entity_api_get_type(lua_State*l)
 		return 1;
 	});
 }
+
+/**
+*	\brief 返回当前entity所属的 entity:GetType()
+*/
+int LuaContext::entity_api_get_map(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Entity& entity = *CheckEntity(l, 1);
+		auto& map = entity.GetMap();
+		GetLuaContext(l).PushMap(l, map);
+		return 1;
+	});
+}
+
+/**
+*	\brief 返回当前entity类型 entity:GetType()
+*/
+int LuaContext::entity_api_get_game(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Entity& entity = *CheckEntity(l, 1);
+		auto& game = entity.GetGame().GetSavegame();
+		
+		GetLuaContext(l).PushGame(l, game);
+		return 1;
+	});
+}
+
 
 /**-------------------------------------------------------
 *	\brief Player Lua API

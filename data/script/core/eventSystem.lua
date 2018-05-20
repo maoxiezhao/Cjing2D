@@ -69,8 +69,11 @@ local function event_set_unreg(event_set, event, scope)
 
 	local objects = event_set.objects
 	local object = objects[event]
-	local handlers = object.handlers
+	if not object then 
+		return 
+	end
 
+	local handlers = object.handlers
 	local index, handler = event_get_handler(object, scope)
 	if not handler then return false end
 
@@ -99,7 +102,7 @@ local function event_set_fire(event_set, event, ...)
 			local scope = handler.scope
 			local ok,ret = traced_pcall(callback, event, scope, custom, ...)
 			if not ok then 
-				util_log_err("Errors on fire event ", event)
+				util_log_err("Errors on fire event " ..  ret)
 			end
 		end
 	end
@@ -130,6 +133,10 @@ end
 function fire_event(event, ...)
 	return event_set_fire(normal_event_set, event, ...)
 end
+
+GlobalExports.event_set_reg = event_set_reg
+GlobalExports.event_set_unreg = event_set_unreg
+GlobalExports.event_set_fire = event_set_fire
 
 GlobalExports.event_system_register_event = register_event
 GlobalExports.event_system_unregister_event = unregister_event

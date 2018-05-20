@@ -4,6 +4,7 @@ package.path = package.path .. ";data/?.lua"
 SystemDoFile("script/common.lua")
 
 SystemDoFile("script/core/eventSystem.lua")
+SystemDoFile("script/core/entityEvent.lua")
 SystemDoFile("script/core/inputSystem.lua")
 SystemDoFile("script/core/systemUtils.lua")
 SystemDoFile("script/core/addonManager.lua")
@@ -40,7 +41,7 @@ function Main.OnStarted()
 
 	addon_manager_root_start()
 	-- test
-	game_manager_start_debug()	
+	--game_manager_start_debug()	
 end
 
 -- 模块更新

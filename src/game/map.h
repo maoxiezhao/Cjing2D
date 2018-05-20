@@ -18,6 +18,7 @@ class Entities;
 class InputEvent;
 class Tileset;
 class Entity;
+class Destination;
 
 /**
 *	\brief map¿‡
@@ -78,6 +79,9 @@ public:
 	int GetWidth()const;
 	int GetHeight()const;
 	void SetBackground(SpritePtr background);
+	std::string GetDestination()const;
+	void SetDestination(const std::string& name);
+	Destination* GetDestination();
 
 	// test collison
 	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);
@@ -95,6 +99,7 @@ private:
 	int mHeight;
 	int mMinLayer;
 	int mMaxLayer;
+	std::string mDestinationName;
 	Game* mGame;
 
 	bool mIsLoaded;
@@ -111,6 +116,7 @@ private:
 	SpritePtr mBackGround;
 	SpritePtr mFrontGround;
 
+	/** map generate */
 	MapGenerate mMapGenerate;
 };
 

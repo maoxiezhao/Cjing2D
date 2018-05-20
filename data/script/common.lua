@@ -20,6 +20,7 @@ GAME_DIRECTION_DOWN = 3
 
 -- Game save value define
 GAME_PROP_IS_NEW_GAME = "game_prop_is_new_game"
+GAME_PROP_MAX_SP = "game_prop_max_sp"
 
 -- Common event define
 EVENT_GAME_START = 1
@@ -36,6 +37,8 @@ EVENT_INPUT_KEY_UP = 10
 
 EVENT_GAME_START_DIALOG = 11
 EVENT_GAME_START_QUESTIONS = 12
+
+EVENT_ENTITY_PROPERTY_CHANGE = 1000
 
 -- Entity Type
 ENTITY_TYPE_TITLE          = 1   --/** 地图块 */
@@ -56,6 +59,13 @@ ATTACK_BOOMERANG = 3		--/** 爆炸伤害 */
 REACTION_IGNORE  = 1   		 --/** 忽略攻击 */			
 REACTION_HURT	 = 2   		 --/** 受伤 */
 REACTION_CUSTOM  = 3  		 --/** 在脚本中处理 */
+
+-- Entity perperty
+ENTITY_PROPERTY_HP = 1
+ENTITY_PROPERTY_MAX_HP = 2
+ENTITY_PROPERTY_SP = 3
+ENTITY_PROPERTY_MAX_SP = 4 
+ENTITY_PROPERTY_DEMAGE = 5
 
 -- Origin env function
 ORGIN_ENV_LIST = {

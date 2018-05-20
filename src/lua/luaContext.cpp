@@ -421,6 +421,36 @@ int LuaContext::userdata_meta_index(lua_State* l)
 }
 
 /**
+*	\brief 获取userdata的utable
+*/
+int LuaContext::userdata_get_utable(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		LuaTools::CheckType(l, 1, LUA_TUSERDATA);
+
+		LuaContext& luaContext = GetLuaContext(l);
+		const LuaObjectPtr& userdata = *static_cast<LuaObjectPtr*>(lua_touserdata(l, 1));
+		if (userdata->IsWithLuaTable())
+		{
+			// 从userdata table中
+			lua_getfield(l, LUA_REGISTRYINDEX, "userdata_tables");
+										// userdata utables
+			Debug::CheckAssertion(!lua_isnil(l, -1), "userdatas tables is not init.");
+
+			lua_pushlightuserdata(l, userdata.get());
+										// userdata utables userdata
+			lua_rawget(l, -2);			
+										// 不触发元方法
+										// userdata utables utable/nil
+			lua_remove(l, 2);
+										// userdata utable/nil
+			return 1;
+		}
+		return 0;
+	});
+}
+
+/**
 *	\brief 响应userdata销毁
 *
 *	当userdata(shared_ptr)的引用计数为0时，析构函数调用该函数,主要用来释放

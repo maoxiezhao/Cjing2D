@@ -9,7 +9,8 @@ InitDefaultGame = function ( cur_game )
 	-- default status
 	cur_game:SetLife(10)
 	cur_game:SetMaxLife(10)
-	cur_game:SetStartLocation("minMap")
+	cur_game:SetValue(GAME_PROP_MAX_SP, 5)
+	cur_game:SetStartLocation("minMap", "playerDest")
 
 	return true
 end,

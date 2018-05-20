@@ -55,7 +55,8 @@ void Entities::Update()
 	// update all entites
 	for (const auto& entity : mAllEntities)
 	{
-		entity->Update();
+		if(!entity->IsBeRemoved())
+			entity->Update();
 	}
 
 	mCamera->Update();
@@ -165,11 +166,25 @@ void Entities::NotifyMapStarted()
 		mTileRegions[layer]->Build();
 	}
 
+	// 响应player map started
+	mPlayer->NotifyMapStarted();
+
 	// entity响应map startd
 	for (const auto& entity : mAllEntities)
 	{
 		entity->NotifyMapStarted();
 	}
+}
+
+void Entities::NotifyMapStoped()
+{
+	for (auto& entity : mAllEntities)
+	{
+		if (!entity->IsBeRemoved())
+			entity->NotifyBeRemoved();
+	}
+
+	mPlayer->NotifyBeRemoved();
 }
 
 /**
@@ -186,6 +201,10 @@ void Entities::ClearRemovedEntites()
 
 		mZCache.RemoveEntity(entity);
 		mAllEntities.remove(entity);
+
+		std::string name = entity->GetName();
+		if (name != "")
+			mEntityNamed.erase(name);
 	}
 	mEntityToRemove.clear();
 }
@@ -356,6 +375,18 @@ void Entities::AddEntity(const EntityPtr& entity)
 	{
 		mAllEntities.push_back(entity);
 	}
+
+	std::string name = entity->GetName();
+	if (name != "")
+	{
+		if (mEntityNamed.find(name) != mEntityNamed.end())
+		{
+			Debug::Warning("The adding entity named '" + 
+				name + "' has already exists and replace older.");
+		}
+		mEntityNamed[name] = entity;
+	}
+
 	entity->SetMap(&mMap);
 }
 
@@ -406,6 +437,21 @@ void Entities::NotifyEntityRectChanged(Entity & entity)
 uint32_t Entities::GetEntityValueZ(const EntityPtr& entity) const
 {
 	return mZCache.GetZ(entity);
+}
+
+/**
+*	\brief 查找指定name的实体
+*/
+EntityPtr Entities::FindEntity(const std::string & name)
+{
+	auto it = mEntityNamed.find(name);
+	if (it == mEntityNamed.end())
+		return nullptr;
+
+	if (it->second->IsBeRemoved())
+		return nullptr;
+
+	return it->second;
 }
 
 Entities::ZCache::ZCache():

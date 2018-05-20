@@ -28,8 +28,14 @@ local addon_env_list = {
 	["util_log_info"] = "util_log_info",
 	["util_log_warn"] = "util_log_warn",
 	["util_log_err"]  = "util_log_err",
+
+	-- event
 	["event_system_register_event"] = "event_system_register_event",
-	-- ["StringUTF8Sub"] = "StringUTF8Sub",
+	["entity_prop_reg"] = "entity_prop_reg",
+	["entity_event_reg"]= "entity_event_reg",
+	["entity_prop_unreg"] = "entity_prop_unreg",
+	["entity_event_unreg"]= "entity_event_unreg",
+
 	-- timer func
 	["SetTimer"] 	  = "SetTimer",
 	["SetDelayTimer"] = "SetDelayTimer",

@@ -33,6 +33,7 @@ namespace LuaTools
 	string  CheckFieldStringByDefault(lua_State*l, int tableIndex, const string& name, const string& defaultString);
 	int   CheckFieldIntByDefault(lua_State*l, int tableIndex, const string&name, int defaultValue);
 	string CheckString(lua_State*l,int index);
+	string CheckStringByDefault(lua_State*l, int index, const std::string& defaultValue);
 	bool CheckFieldBool(lua_State*l, int tableIndex, const string& name);
 	bool CheckFieldBoolByDefault(lua_State*l, int tableIndex, const string& name, bool defaultValue);
 	LuaRef CheckFunction(lua_State*l, int index);

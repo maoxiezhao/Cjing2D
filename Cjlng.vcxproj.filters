@@ -990,6 +990,9 @@
     <ClInclude Include="src\game\mapGenerate_private.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\destination.h">
+      <Filter>entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

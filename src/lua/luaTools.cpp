@@ -123,6 +123,15 @@ namespace LuaTools
 		return lua_tostring(l, index);
 	}
 
+	string CheckStringByDefault(lua_State * l, int index, const std::string & defaultValue)
+	{
+		if (!lua_isstring(l, index))
+		{
+			return defaultValue;
+		}
+		return CheckString(l, index);
+	}
+
 	bool CheckFieldBool(lua_State*l, int tableIndex, const string& name)
 	{
 		lua_getfield(l, tableIndex, name.c_str());

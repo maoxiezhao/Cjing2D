@@ -2177,3 +2177,10 @@ tile{
   pattern = 31,
 }
 
+destination{
+  name = "playerDest",
+  x = 200,
+  y = 200,
+  layer = 0,
+  direction = "left",
+}

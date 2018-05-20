@@ -83,6 +83,7 @@ public:
 
 	/*** *** 当前游戏数值的Keyword *** ***/
 	static const std::string KEYWORD_START_MAP;
+	static const std::string KEYWORD_START_DESTINATION;
 	static const std::string KEYWORD_CURRENT_LIFE;
 	static const std::string KEYWORD_CURRENT_MAX_LIFE;
 

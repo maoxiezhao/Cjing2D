@@ -15,6 +15,7 @@ const std::string Savegame::GAMECOMMAND_KEYBOARD_INTERACT = "keyboard_interact";
 const std::string Savegame::GAMECOMMAND_KEYBOARD_SHIFT = "keyboard_shift";
 
 const std::string Savegame::KEYWORD_START_MAP = "keyword_start_map";
+const std::string Savegame::KEYWORD_START_DESTINATION = "keyword_start_destination";
 const std::string Savegame::KEYWORD_CURRENT_LIFE = "keyword_current_life";
 const std::string Savegame::KEYWORD_CURRENT_MAX_LIFE = "keyword_current_max_life";
 

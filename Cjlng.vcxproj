@@ -266,6 +266,7 @@
     <ClInclude Include="src\entity\animatedTilePattern.h" />
     <ClInclude Include="src\entity\bullet.h" />
     <ClInclude Include="src\entity\camera.h" />
+    <ClInclude Include="src\entity\destination.h" />
     <ClInclude Include="src\entity\enemy.h" />
     <ClInclude Include="src\entity\entities.h" />
     <ClInclude Include="src\entity\entity.h" />

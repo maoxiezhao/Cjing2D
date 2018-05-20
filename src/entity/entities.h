@@ -32,6 +32,7 @@ public:
 	void Draw();
 	void SetSuspended(bool suspended);
 	void NotifyMapStarted();
+	void NotifyMapStoped();
 	void ClearRemovedEntites();
 
 	/** entities */
@@ -47,6 +48,7 @@ public:
 	void SetGround(const Ground& ground, int layer, int cellX, int cellY);
 	Ground GetGround(int layer, int cellX, int cellY)const;
 	uint32_t GetEntityValueZ(const EntityPtr& entity) const;
+	EntityPtr FindEntity(const std::string& name);
 
 	// lua
 	LuaContext& GetLuaContext();

@@ -45,7 +45,7 @@ GameBaseClass.LoadSaveGame = function(self, gameName)
 			return true
 		end
 	else
-		game:SetStartLocation("minMap")
+		--game:SetStartLocation("minMap")
 	end
 	return true
 end

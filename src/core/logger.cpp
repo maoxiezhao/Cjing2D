@@ -6,7 +6,8 @@
 
 namespace Logger {
 	namespace {
-		const string errorLogFileName = "error.txt";
+		const string errorLogFileName  = "error.txt";
+		const string normalLogFileName = "logger.txt";
 		std::ofstream errorFile;
 	
 		std::ofstream& GetErrorFile()
@@ -15,6 +16,14 @@ namespace Logger {
 				errorFile.open(errorLogFileName);
 			return errorFile;
 		}
+
+		std::ofstream& GetLoggerFile()
+		{
+			if (!errorFile.is_open())
+				errorFile.open(normalLogFileName);
+			return errorFile;
+		}
+
 
 		// 以字符串形式获取系统当前时间
 		std::string GetCurSystemTimeStr()
@@ -45,6 +54,9 @@ namespace Logger {
 	{
 		auto timeStr = GetCurSystemTimeStr();
 		out << timeStr << "  " << msg << std::endl;
+
+		std::ostream& logger = GetLoggerFile();
+		logger << timeStr << "  " << msg << std::endl;
 	}
 
 	void Debug(const string & msg)

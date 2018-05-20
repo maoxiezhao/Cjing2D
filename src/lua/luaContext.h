@@ -72,6 +72,8 @@ public:
 	enum SystemLuaEvent {
 		EVENT_GAME_MAP_ENTER = 3,
 		EVENT_GAME_MAP_LEAVE = 4,
+		EVENT_GAME_PLAYR_ENTER = 5,
+		EVENT_GAME_PLAYR_LEAVE = 6,
 	};
 
 	LuaContext(App& app);
@@ -299,6 +301,8 @@ public:
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,
+		entity_api_get_map,
+		entity_api_get_game,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,
@@ -309,7 +313,8 @@ public:
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
-		userdata_meta_index
+		userdata_meta_index,
+		userdata_get_utable
 		;
 		
 
@@ -335,6 +340,8 @@ public:
 	void OnGameFinish(Game& game);
 	void OnGameDraw(Game& game);
 	bool OnGameInput(Game& game, const InputEvent& event);
+	void EnterPlayer(Player& player);
+	void LeavePlayer(Player& player);
 
 	// map api
 	void RunMap(Map& map);

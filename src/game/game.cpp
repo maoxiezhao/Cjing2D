@@ -45,12 +45,11 @@ Game::Game(App* app, const std::shared_ptr<Savegame>& savegame):
 	// 加载map
 	string mapID = savegame->GetString(Savegame::KEYWORD_START_MAP);
 	if (mapID.empty())
-	{
 		mapID = "test";
-	}
-	string destination_name = ""; //savegame->getStringDestination();
-	
-	SetCurrentMap(mapID);
+
+	// 设置目标位置
+	string destination_name = savegame->GetString(Savegame::KEYWORD_START_DESTINATION);
+	SetCurrentMap(mapID, destination_name);
 }
 
 void Game::Start()
@@ -70,7 +69,14 @@ void Game::Stop()
 	}
 	if (mCurrentMap != nullptr)
 	{
-		mCurrentMap->UnLoad();
+		if (mCurrentMap)
+		{
+			if (mCurrentMap->IsStarted())
+				mCurrentMap->Leave();
+
+			if (mCurrentMap->IsLoaded())
+				mCurrentMap->UnLoad();
+		}
 	}
 
 	mStarted = false;
@@ -157,16 +163,14 @@ Map & Game::GetCurrentMap()
 *
 *	设置的地图的会在unpdateTransition中更新
 */
-void Game::SetCurrentMap(const string & mapID)
+void Game::SetCurrentMap(const std::string & mapID, const std::string & destination)
 {
 	if (mCurrentMap == nullptr || mNextMap->GetMapID() != mCurrentMap->GetMapID())
 	{
 		// 加载下一张地图
 		mNextMap = std::make_shared<Map>(mapID);
 		mNextMap->Load(this);
-
-		// 放置角色
-		mPlayer->PlaceOnMap(*mNextMap);
+		mNextMap->SetDestination(destination);
 	}
 	else
 	{
@@ -183,6 +187,13 @@ void Game::UpdateTransitoin()
 			mCurrentMap = mNextMap;
 			mNextMap = nullptr;
 		}
+		else if (mNextMap != mCurrentMap)
+		{
+
+		}
+
+		// 放置角色
+		mPlayer->PlaceOnMap(*mCurrentMap);
 		// start game
 		mCurrentMap->Start();
 	}

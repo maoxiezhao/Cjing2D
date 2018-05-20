@@ -81,6 +81,23 @@ bool LuaContext::OnGameInput(Game & game, const InputEvent & event)
 	return false;
 }
 
+void LuaContext::EnterPlayer(Player & player)
+{
+	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_PLAYR_ENTER,
+		[&](lua_State*l) {
+		PushUserdata(l, player);
+		return 1;
+	});
+}
+
+void LuaContext::LeavePlayer(Player & player)
+{
+	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_PLAYR_LEAVE,
+		[&](lua_State*l) {
+		PushUserdata(l, player);
+		return 1;
+	});
+}
 
 /**
 *	\brief 加载一个游戏存档
@@ -222,6 +239,9 @@ int LuaContext::game_api_set_start_location(lua_State* l)
 		Savegame& savegame = *CheckSavegame(l, 1);
 		const std::string mapID = LuaTools::CheckString(l, 2);
 		savegame.SetString(Savegame::KEYWORD_START_MAP, mapID);
+
+		const std::string destinationName = LuaTools::CheckStringByDefault(l, 3, "");
+		savegame.SetString(Savegame::KEYWORD_START_DESTINATION, destinationName);
 
 		return 0;
 	});

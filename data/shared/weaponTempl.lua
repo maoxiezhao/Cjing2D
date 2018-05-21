@@ -4,6 +4,7 @@ WeaponTempl.name = "weapon"
 WeaponTempl.metatable = {
 	
 	OnWeaponInit = function (self, cfg )
+		self._id		   = cfg._id
 		self._clip_size    = cfg._clip_size	  -- 弹夹容量
 		self._demage       = cfg._demage		  -- 武器伤害
 		self._swapSpeed    = cfg._swapSpeed	  -- 换单速度
@@ -120,15 +121,38 @@ WeaponTempl.metatable = {
 	end,
 
 	-- 拾取武器时
-	OnWeaponObtained = function(self)
+	OnWeaponObtained = function(self, picker)
 		-- 一般的处理方式是拾取武器时判断当前是否存在空的SLot，则先
 		-- 放置到空的SLot，如果没有则把当前武器卸下，装备该武器
-
+		if picker and picker.TryPickWeaponToSlot then 
+			picker:TryPickWeaponToSlot(self._id, true)
+		end
 	end,
 	
 	-- 一些额外的武器效果
 	OnWeaponUpdate = function(self)
 		-- 比如蓄能的武器？？？或者各种奇怪的武器效果
+	end,
+
+	-- 武器被扔下，一般用于创建pickable
+	OnWeaponDroped = function(self)
+		local cur_player = self:GetEntity()
+		if not cur_player then return end
+
+		local cur_map = cur_player:GetMap()
+		if not cur_map then return end 
+
+		local pos = cur_player:GetCenterPos()
+		local data  = {
+		  x = pos[1],
+		  y = pos[2],
+		  layer = cur_player:GetLayer(),
+		  itemName = self._id,
+		  itemCount = 1,
+		}
+
+		local EntitySystem = SystemImport("EntitySystem")
+	 	EntitySystem.CreatePickable(data)
 	end,
 
 	------------------------------------------------------------------

@@ -18,7 +18,7 @@ function item:onCreated()
 end
 
 -- 获取物品时调用
-function item:onObtained(itemName, itemCount)
+function item:OnObtained(picker, itemName, itemCount)
 	local curLife = game:GetLife()
 	local maxLife = game:GetMaxLife()
 

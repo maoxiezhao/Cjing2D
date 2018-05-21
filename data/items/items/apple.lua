@@ -9,11 +9,11 @@ local item = ...
 -- 创建时动作
 function item:onCreated()
 	self:SetAutoPicked(false)
-	self:SetShadow(false)
+	self:SetShadow(true)
 	--self:setFlow(false)
 end
 
 -- 获取物品时调用
-function item:onObtained(itemName, itemCount)
+function item:OnObtained(picker, itemName, itemCount)
 	print("Item Test.")
 end

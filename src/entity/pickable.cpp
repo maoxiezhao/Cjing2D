@@ -118,32 +118,38 @@ bool Pickable::InitSprites()
 		return false;
 	}
 	mItemSprite->SetCurrAnimation(itemName);
-	mItemSprite->SetPos(GetPos());
 	mItemSprite->StartAnimation();
+
+	auto spriteSize = mItemSprite->GetSize();
+	SetSize(spriteSize);
+
+	Point2 spritePos = { GetPos().x, GetPos().y - spriteSize.height};
+	mItemSprite->SetPos(spritePos);
 
 	auto& item = mItemAcquired.GetItem();
 	// 创建用于提醒的阴影和浮动效果
 	if (item.IsHasShadow())
 	{
 		mShadowSprite = Entity::CreateAnimationSprite("entities/shadow", "big");
-		mShadowSprite->SetAnchorFloat(-0.3f, -1.2f);
+		mShadowSprite->SetPos({ spriteSize.width / 3, 0 });
+		mShadowSprite->SetAnchorFloat(0.0f, 0.0f);
 	}
 	// movement
 	if (item.IsHasFlowEffect())
 	{
 		mMovemment = std::make_shared<SequenceMovement>(true, true);
-		Point2 upPoint = GetPos() + Point2(0, -4);
+		Point2 upPoint = spritePos + Point2(0, -4);
 		auto upMovement = std::make_shared<TargetMovement>(nullptr, upPoint, 10, true);
 		mMovemment->AddMovement(upMovement);
-		Point2 downPoint = GetPos();
+		Point2 downPoint = spritePos;
 		auto downMovement = std::make_shared<TargetMovement>(nullptr, downPoint, 10, true);
 		mMovemment->AddMovement(downMovement);
 		mItemSprite->StartMovement(mMovemment);
 	}
 
 	// status
-	SetSize({ 16, 16 });
-	SetOrigin({ 0, -8 });
+	//SetSize({ 16, 16 });
+	//SetOrigin({ spriteSize.width/ 2 , 0});
 
 	return true;
 }
@@ -166,7 +172,7 @@ void Pickable::TryGiveItemToPicker(Entity& picker)
 	}
 
 	// 获取item
-	bool pickSucceesed = mItemAcquired.GiveItemToPlayer();
+	bool pickSucceesed = mItemAcquired.GiveItemToPlayer(picker);
 	if (pickSucceesed)
 	{
 		// 如果拾取音效存在，则播放

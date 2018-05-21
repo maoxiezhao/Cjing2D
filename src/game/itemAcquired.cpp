@@ -23,7 +23,7 @@ Item& ItemAcquired::GetItem()
 *
 *	该操作会将该item添加到equipment begs
 */
-bool ItemAcquired::GiveItemToPlayer()
+bool ItemAcquired::GiveItemToPlayer(Entity& picker)
 {
 	Item& item = GetItem();
 	auto& equipment = mGame.GetEquipment();
@@ -37,7 +37,13 @@ bool ItemAcquired::GiveItemToPlayer()
 	}
 	else
 	{
-		giveSuccessed = mGame.GetLuaContext().OnItemObtained(item, *this);
+		if (item.IsWeapon())
+		{
+			Weapon& weapon = dynamic_cast<Weapon&>(item);
+			giveSuccessed = mGame.GetLuaContext().OnWeaponObtained(weapon, *this, picker);
+		}
+		else
+			giveSuccessed = mGame.GetLuaContext().OnItemObtained(item, *this, picker);
 	}
 	return giveSuccessed;
 }

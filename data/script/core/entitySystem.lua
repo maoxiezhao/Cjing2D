@@ -224,5 +224,12 @@ function EntitySystem.CreateBullet(layer, templ_name)
 	return entity
 end
 
+function EntitySystem.CreatePickable(data)
+	if not cur_map or not data then return end
+	print("Create Bullet", templ_name, layer)
+
+	return cur_map:Create_pickable(data)
+end
+
 GlobalExports.entity_system_init = EntitySystem.Initialize
 GlobalExports.entity_system_uninit = EntitySystem.Uninitialize

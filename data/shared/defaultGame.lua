@@ -32,11 +32,11 @@ OnInputKeyDown = function( cur_game, key, modify)
 
 	-- 换武器？？？
 	if key == "1" then 
-		print("Swap Equip")
+		player:TrySwapWeaponSlot(0)
 	elseif key == "2" then 
-		print("Swap Equip")
+		player:TrySwapWeaponSlot(1)
 	elseif key == "3" then 
-		print("Swap Equip")
+		player:TrySwapWeaponSlot(2)
 	elseif key == "r" then 
 		player:TrySwapWeaponBullet()
 	elseif key == "t" then

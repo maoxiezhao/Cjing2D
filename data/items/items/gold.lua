@@ -14,6 +14,6 @@ function item:onCreated()
 end
 
 -- 获取物品时调用
-function item:onObtained(itemName, itemCount)
+function item:OnObtained(picker, itemName, itemCount)
 	print("Item Test.")
 end

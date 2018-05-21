@@ -121,7 +121,7 @@ void Equipment::LoadAllItems()
 Item & Equipment::GetItem(const std::string & itemName)
 {
 	auto it = mAllItems.find(itemName);
-	if (it == mAllItems.end() || it->second->IsWeapon())
+	if (it == mAllItems.end())		// || it->second->IsWeapon()) 是否需要考虑装备
 		Debug::Error("Get the non-exists item:" + itemName);
 
 	return *it->second;
@@ -239,11 +239,15 @@ Weapon & Equipment::GetWeapon(const std::string & weaponID)
 */
 bool Equipment::AddWeaponToSlot(const std::string & weaponID, bool equiped, int slot)
 {
+	if (!HasWeapon(weaponID))
+		return false;
+
 	// 如果slot为-1，则尝试查找一次有效槽位
 	if (slot == -1)
 		slot = FindEmptyWeaponSlot();
 
-	if (slot == -1 || !HasWeapon(weaponID))
+	// 如果没有空的slot，则使用当前slot
+	if (slot == -1 )
 		return false;
 
 	Weapon& weapon = GetWeapon(weaponID);
@@ -284,6 +288,10 @@ bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 		Debug::Warning("The equip slog is invalid " + weapon.GetItemName());
 		return false;
 	}
+
+	auto cur_weapon = GetCurWeapon();
+	if (cur_weapon && cur_weapon->IsEquiped())
+		cur_weapon->UnEquiped();
 
 	mCurEquipSlot = equipSlot;
 	auto& player = GetCurPlayer();
@@ -357,6 +365,8 @@ bool Equipment::RemoveWeaponBySlot(int slot)
 	if (weapon->IsEquiped())
 		UnEquipWeaponFromSlots(*weapon);
 
+	weapon->Droped();
+
 	mEquipdWeapons[slot] = nullptr;
 	return true;
 }
@@ -369,6 +379,8 @@ bool Equipment::RemoveWeaponByID(const std::string & weaponID)
 
 	if (weapon->IsEquiped())
 		UnEquipWeaponFromSlots(*weapon);
+
+	weapon->Droped();
 
 	bool result = false;
 	for (int i = 0; i < mMaxEquipSlot; i++)

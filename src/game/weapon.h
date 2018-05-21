@@ -23,6 +23,7 @@ public:
 	virtual void Uninitialize();
 	virtual bool Equiped(Entity& entity);
 	virtual bool UnEquiped();
+	virtual void Droped();
 
 	virtual bool BeforeAttack();
 	virtual void Attack();

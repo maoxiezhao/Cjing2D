@@ -37,6 +37,7 @@ void LuaContext::RegisterItem()
 	weaponClass.AddFunction("UnEquip", weapon_api_unequip);
 	weaponClass.AddFunction("GetCurSlot", weapon_api_get_slot);
 	weaponClass.AddFunction("GetCurWeapon", weapon_api_get_cur_equip);
+	weaponClass.AddFunction("HasWeapon", weapon_api_has_weapon);
 
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
@@ -103,18 +104,36 @@ void LuaContext::OnItemCreated(Item & item)
 *
 *	当item获取物品时调用，同时传入itemAcquired到函数中
 */
-bool LuaContext::OnItemObtained(Item & item, ItemAcquired & itemAcquired)
+bool LuaContext::OnItemObtained(Item & item, ItemAcquired & itemAcquired, Entity& picker)
 {									
-	if (!IsUserdataHasField(item, "onObtained"))
+	if (!IsUserdataHasField(item, "OnObtained"))
 	{
 		return false;
 	}
 	PushItem(l, item);
-	if (FindMethod("onObtained"))
+	if (FindMethod("OnObtained"))
 	{
+		PushUserdata(l, picker);
 		lua_pushstring(l, item.GetItemName().c_str());
 		lua_pushinteger(l, itemAcquired.GetVariant());
-		LuaTools::CallFunction(l, 3, 1, "onObtained");
+		LuaTools::CallFunction(l, 4, 1, "OnObtained");
+	}
+	bool result = LuaTools::OptBoolean(l, -1, true);
+	lua_pop(l, 2);
+	return result;
+}
+
+bool LuaContext::OnWeaponObtained(Weapon & weapon, ItemAcquired & itemAccquired, Entity& picker)
+{
+	if (!IsUserdataHasField(weapon, "OnWeaponObtained"))
+	{
+		return false;
+	}
+	PushUserdata(l, weapon);
+	if (FindMethod("OnWeaponObtained"))
+	{
+		PushUserdata(l, picker);
+		LuaTools::CallFunction(l, 2, 1, "OnWeaponObtained");
 	}
 	bool result = LuaTools::OptBoolean(l, -1, true);
 	lua_pop(l, 2);
@@ -405,3 +424,20 @@ int LuaContext::weapon_api_get_cur_equip(lua_State*l)
 		return 0;
 	});
 }
+
+/**
+*	\brief 是按weapon:HasWeapon(slot)
+*	\return 返回当前武器的持有Entity,如果为空返回nil
+*/
+int LuaContext::weapon_api_has_weapon(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		auto& equipment = player.GetEquipment();
+		int slot = LuaTools::CheckInt(l, 2);
+		bool result = equipment.GetWeaponFromSlot(slot) != nullptr;
+	
+		lua_pushboolean(l, result);
+		return 1;
+	});
+};

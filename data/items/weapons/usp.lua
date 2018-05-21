@@ -49,12 +49,13 @@ function GetWeaponMT()
 end
 
 local usp_cfg = {
+	_id = "usp",
 	_clip_size = 15,	-- 弹夹容量
 	_demage = 1,		-- 武器伤害
 	_swapSpeed = 2000,	-- 换单速度
 	_offset = 5,	    -- 发射偏差值
 	_usedSp = 1,		-- 消耗的sp
-	_attack_delta = 300,-- 攻击间隔
+	_attack_delta = 600,-- 攻击间隔
 	_bullet_name = bullet_name
 }
 
@@ -65,5 +66,6 @@ function Weapon:OnCreated()
 		self[k] = v
 	end
 
+	self:SetAutoPicked(false)
 	self:OnWeaponInit(usp_cfg)
 end

@@ -27,3 +27,23 @@ animation{
     { x = 0, y = 32, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
   },
 }
+
+animation{
+  name = "usp",
+  src_image = "entities/items.png",
+  frame_delay = 200,
+  frame_loop = 0,
+  directions = {
+    { x = 16, y = 32, frame_width = 32, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
+  },
+}
+
+animation{
+  name = "apg",
+  src_image = "entities/items.png",
+  frame_delay = 200,
+  frame_loop = 0,
+  directions = {
+    { x = 64, y = 0, frame_width = 48, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 1, num_columns = 1 },
+  },
+}

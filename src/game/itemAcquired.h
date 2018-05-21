@@ -4,6 +4,7 @@
 #include"game\item.h"
 
 class Game;
+class Entity;
 
 /**
 *	\brief ItemAcquired 物品获取数据
@@ -18,7 +19,7 @@ class ItemAcquired
 public:
 	ItemAcquired(Game& game, const std::string& itemName, int variant);
 
-	bool GiveItemToPlayer();
+	bool GiveItemToPlayer(Entity& picker);
 	const string& GetItemName()const;
 	void SetItemName(const string& name);
 	int GetVariant()const;

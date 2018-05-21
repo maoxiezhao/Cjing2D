@@ -30,12 +30,15 @@ PlayerTempl.metatable = {
 		player:SetProperty(ENTITY_PROPERTY_MAX_HP, max_hp)
 
 		local max_sp = game:GetValue(GAME_PROP_MAX_SP)
-		player:SetProperty(ENTITY_PROPERTY_SP, max_sp)
-		player:SetProperty(ENTITY_PROPERTY_MAX_SP, max_sp)
+		player:SetProperty(ENTITY_PROPERTY_SP, 100)
+		player:SetProperty(ENTITY_PROPERTY_MAX_SP, 100)
 		player:SetProperty(ENTITY_PROPERTY_DEMAGE, 5)
 
 		-- custom define 
 		player:SetTired(false)
+
+		-- weapon
+		player._cur_slot = Weapon.GetCurSlot(player)
 	end,
 
 	SavePlayer = function(player)
@@ -103,6 +106,25 @@ PlayerTempl.metatable = {
 		local cur_weapon = Weapon.GetCurWeapon(player)
 		if cur_weapon and not cur_weapon:IsSwapingBullet() then 
 			cur_weapon:SwapBullets(true)
+		end
+	end,
+
+	TryPickWeaponToSlot = function(player, weaponID, equiped)
+		local equiped = Weapon.AddEquip(player, weaponID, equiped)
+		if equiped then 
+			player._cur_slot = Weapon.GetCurSlot(player)
+		end
+
+	end,
+
+	TrySwapWeaponSlot = function(player, slot)
+		if player._cur_slot == slot then 
+			return 
+		end
+
+		if Weapon.HasWeapon(player, slot) and
+			Weapon.Equip(player, slot) then
+			player._cur_slot = slot
 		end
 	end,
 }

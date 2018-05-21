@@ -343,7 +343,7 @@ end
 
 function AddonManager.CreateTemplate(parent, name, templ, ...)
 	if parent and name and templ then 
-		print("Create template " .. templ)
+		--print("Create template " .. templ)
 		local template = addon_manager.templates[templ]
 		if not template then 
 			util_log_err("Try creating template" .. templ .. " is not invalid.")

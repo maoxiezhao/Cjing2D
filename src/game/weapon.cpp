@@ -19,7 +19,8 @@ Weapon::Weapon(const std::string & weaponName, Equipment & equipment) :
 	mWeaponSprite(nullptr),
 	mAttackDelta(500),
 	mNextAttackDate(0),
-	mCanAttack(true)
+	mCanAttack(true),
+	mIsEquiped(false)
 {
 	mControl = std::make_unique<RotateWeaponControl>(*this);
 }
@@ -100,9 +101,19 @@ bool Weapon::UnEquiped()
 	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
 
 	mEntity->RemoveSprite(normalAnimationName);
-	mEntity = nullptr;
 	mIsEquiped = false;
+
+	//mEntity = nullptr;
 	return true;
+}
+
+/**
+*	\brief Œ‰∆˜±ª»”œ¬
+*/
+void Weapon::Droped()
+{
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponDroped");
+	mEntity = nullptr;
 }
 
 bool Weapon::BeforeAttack()
@@ -200,7 +211,7 @@ uint32_t Weapon::GetAttackDelta() const
 
 bool Weapon::IsEquiped()const 
 {
-	return mEntity;
+	return mEntity && mIsEquiped;
 }
 
 bool Weapon::IsWeapon()const 

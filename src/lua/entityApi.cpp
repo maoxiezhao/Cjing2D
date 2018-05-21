@@ -36,6 +36,7 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("SetSize", &Entity::SetSize);
 	entityClass.AddMethod("SetOrigin", &Entity::SetOrigin);
 	entityClass.AddMethod("GetPos", &Entity::GetPos);
+	entityClass.AddMethod("GetCenterPos", &Entity::GetCenterPos);
 	entityClass.AddMethod("SetPos", &Entity::SetPos);
 	entityClass.AddMethod("GetLayer", &Entity::GetLayer);
 	entityClass.AddMethod("GetAttachPos", &Entity::GetAttachPos);

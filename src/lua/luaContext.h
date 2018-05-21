@@ -37,6 +37,7 @@ class Item;
 class ItemAcquired;
 class Entity;
 class Player;
+class Weapon;
 
 /**
  *	\brief C++和lua的接口，提供与用于lua使用的C++ API
@@ -302,6 +303,7 @@ public:
 		weapon_api_get_entity,
 		weapon_api_get_slot,
 		weapon_api_get_cur_equip,
+		weapon_api_has_weapon,
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,
@@ -373,8 +375,9 @@ public:
 	// item api
 	void RunItem(Item& item);
 	void OnItemCreated(Item& item);
-	bool OnItemObtained(Item& item, ItemAcquired& itemAcquired);
-	
+	bool OnItemObtained(Item& item, ItemAcquired& itemAcquired, Entity& picker);
+	bool OnWeaponObtained(Weapon& weapon, ItemAcquired& itemAccquired, Entity& picker);
+
 	// menu api
 	struct MenuData	
 	{	// 菜单数据结构，用于指向菜单的table

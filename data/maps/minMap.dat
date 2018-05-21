@@ -2184,3 +2184,36 @@ destination{
   layer = 0,
   direction = "left",
 }
+
+
+pickable{
+  x = 280,
+  y = 200,
+  layer = 0,
+  itemName = "heart",
+  itemCount = 0,
+}
+
+pickable{
+  x = 300,
+  y = 200,
+  layer = 0,
+  itemName = "usp",
+  itemCount = 0,
+}
+
+pickable{
+  x = 350,
+  y = 200,
+  layer = 0,
+  itemName = "apg",
+  itemCount = 0,
+}
+
+pickable{
+  x = 250,
+  y = 200,
+  layer = 0,
+  itemName = "apple",
+  itemCount = 0,
+}

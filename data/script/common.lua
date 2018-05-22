@@ -2,6 +2,7 @@
 CLIENT_LUA_DEBUG = true
 
 
+---------------- Common system define ------------------------
 -- 系统级函数定义，必须和C++端对应，在C++的const实现后剔除
 CLIENT_LUA_MAIN_START = 1
 CLIENT_LUA_MAIN_UPDATE = 2
@@ -44,6 +45,9 @@ EVENT_WEAPON_FIRE_BULLET = 52
 
 EVENT_ENTITY_EQUIP_WEAPON    = 500
 EVENT_ENTITY_UNEQUIP_WEAPON  = 501
+EVENT_ENTITY_OBTAIN_WEAPON   = 502
+EVENT_ENTITY_DROP_WEAPON	 = 503
+
 EVENT_ENTITY_PROPERTY_CHANGE = 1000
 
 ---------------- Entity Type ----------------------------------
@@ -72,7 +76,9 @@ ENTITY_PROPERTY_MAX_HP = 2
 ENTITY_PROPERTY_SP = 3
 ENTITY_PROPERTY_MAX_SP = 4 
 ENTITY_PROPERTY_DEMAGE = 5
+ENTITY_PROPERTY_HEAD_LABEL = 20
 
+---------------- Other Define  ----------------------------------
 -- Origin env function
 ORGIN_ENV_LIST = {
 	"assert", 

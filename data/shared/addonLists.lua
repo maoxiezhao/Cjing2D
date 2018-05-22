@@ -7,6 +7,7 @@ AddonLists.cfgs = {
 	"Story",
 	"StatusBar",
 	"WeaponBar",
+	"BillBoard",
 
 	-- 显示顺序控制
 	"DialogBox",

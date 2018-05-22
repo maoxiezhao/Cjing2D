@@ -85,7 +85,7 @@ function EntitySystem.AddEntity(entity)
 		local name = entity:GetName()
 		name_entities[name] = entity
 
-		event_system_fire_event(EVENT_GAME_ENTITY_ENTER, entity)
+		--event_system_fire_event(EVENT_GAME_ENTITY_ENTER, entity)
 	end
 end
 
@@ -97,7 +97,7 @@ function EntitySystem.RemoveEntity(uid)
 			name_entities[entity:GetName()] = nil
 
 			--entity:RemoveBySelf()
-			event_system_fire_event(EVENT_GAME_ENTITY_LEAVE, entity)
+			--event_system_fire_event(EVENT_GAME_ENTITY_LEAVE, entity)
 			return true
 		end
 	end
@@ -159,6 +159,16 @@ local function OnPlayerLeave(event, scope, custom, player)
 
 end
 
+local function OnEntityEnter(event, scope, custom, entity)
+	if entity:GetType() ~= ENTITY_TYPE_PLAYRE then
+		InitEntity(entity)
+	end
+end
+
+local function OnEntityLeave(event, scope, custom, entity)
+
+end
+
 function EntitySystem.Initialize()
 	all_entities = {}
 	entity_uid = 1
@@ -169,6 +179,8 @@ function EntitySystem.Initialize()
 	event_system_register_event(EVENT_GAME_MAP_LEAVE,   EntitySystem,  OnMapLeave)
 	event_system_register_event(EVENT_GAME_PLAYR_ENTER, EntitySystem,  OnPlayerEnter)
 	event_system_register_event(EVENT_GAME_PLAYR_LEAVE, EntitySystem,  OnPlayerLeave)
+	event_system_register_event(EVENT_GAME_ENTITY_ENTER,EntitySystem,  OnEntityEnter)
+	event_system_register_event(EVENT_GAME_ENTITY_LEAVE,EntitySystem,  OnEntityLeave)
 end
 
 function EntitySystem.Uninitialize()

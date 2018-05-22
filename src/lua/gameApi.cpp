@@ -81,6 +81,9 @@ bool LuaContext::OnGameInput(Game & game, const InputEvent & event)
 	return false;
 }
 
+/**
+*	\brief Player添加至地图时调用
+*/
 void LuaContext::EnterPlayer(Player & player)
 {
 	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_PLAYR_ENTER,
@@ -90,6 +93,9 @@ void LuaContext::EnterPlayer(Player & player)
 	});
 }
 
+/**
+*	\brief Player移除地图时调用
+*/
 void LuaContext::LeavePlayer(Player & player)
 {
 	DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_PLAYR_LEAVE,
@@ -97,6 +103,42 @@ void LuaContext::LeavePlayer(Player & player)
 		PushUserdata(l, player);
 		return 1;
 	});
+}
+
+/**
+*	\brief Entity加入地图时调用
+*/
+void LuaContext::EnterEntity(Entity & entity)
+{
+	EntityType entityType = entity.GetEntityType();
+	if (entityType == EntityType::PICKABLE ||
+		entityType == EntityType::ENEMEY ||
+		entityType == EntityType::PLAYRE)
+	{
+		DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_ENTITY_ENTER,
+			[&](lua_State*l) {
+			PushUserdata(l, entity);
+			return 1;
+		});
+	}
+}
+
+/**
+*	\brief Entity离开地图时调用
+*/
+void LuaContext::LeaveEntity(Entity & entity)
+{
+	EntityType entityType = entity.GetEntityType();
+	if (entityType == EntityType::PICKABLE ||
+		entityType == EntityType::ENEMEY ||
+		entityType == EntityType::PLAYRE)
+	{
+		DoFireLuaSystemEvent(SystemLuaEvent::EVENT_GAME_ENTITY_LEAVE,
+			[&](lua_State*l) {
+			PushUserdata(l, entity);
+			return 1;
+		});
+	}
 }
 
 /**

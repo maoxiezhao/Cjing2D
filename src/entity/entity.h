@@ -91,6 +91,7 @@ public:
 	virtual void NotifyObstacleReached();
 	virtual void NotifyAttackEnemy(Enemy& enemy,EntityAttack attack, EntityReactionType reaction);
 	virtual void NotifyAttackPlayer(Player& player, EntityAttack attack, EntityReactionType reaction);
+	virtual void NotifyFocusChange(bool focused);
 
 	// game command notify
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
@@ -106,6 +107,7 @@ public:
 	Point2 GetCenterPos()const;
 	Point2 GetLeftTopPos()const;
 	Point2 GetAttachPos()const;
+	virtual Point2 GetBillBoardPos()const;
 	void SetPos(const Point2& pos);
 	void SetLayer(int layer);
 	int GetLayer()const;
@@ -129,6 +131,7 @@ public:
 	bool IsSuspended()const;
 	void SetEnable(bool enable);
 	bool IsEnable()const;
+	Point2 GetPositivePos()const;
 
 	BoundingBox GetBoundingBox(int type)const;
 	Rect GetRectBounding(int type = BOUNDING_BOX_NOTIFY)const;

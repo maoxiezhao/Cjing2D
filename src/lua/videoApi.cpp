@@ -15,7 +15,7 @@ void LuaContext::RegisterVideoModule()
 	static const luaL_Reg functions[] = {
 		{"setFullScreen",video_api_setFullScreen},
 		{"isFullScreen",video_api_isFullScreen},
-		{"getScreenSize", video_api_get_wanted_size},
+		{"GetScreenSize", video_api_get_wanted_size},
 		{"getFPS", video_api_get_fps },
 		{"SetCursor", video_api_set_cursor },
 		{"loadProgram", video_api_load_program},

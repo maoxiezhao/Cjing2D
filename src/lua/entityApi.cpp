@@ -29,24 +29,27 @@ void LuaContext::RegisterEntityModule()
 {
 	// entity base
 	LuaBindClass<Entity> entityClass(l, "Entity");
+	entityClass.AddDefaultMetaFunction();
 	entityClass.AddMethod("CreateSprite", entity_api_create_sprite);
 	entityClass.AddMethod("ClearSprites", &Entity::ClearSprites);
-	entityClass.AddMethod("GetName", &Entity::GetName);
-	entityClass.AddMethod("SetName", &Entity::SetName);
-	entityClass.AddMethod("SetSize", &Entity::SetSize);
-	entityClass.AddMethod("SetOrigin", &Entity::SetOrigin);
-	entityClass.AddMethod("GetPos", &Entity::GetPos);
+	entityClass.AddMethod("GetName",  &Entity::GetName);
+	entityClass.AddMethod("SetName",  &Entity::SetName);
+	entityClass.AddMethod("SetSize",  &Entity::SetSize);
+	entityClass.AddMethod("GetSize",  &Entity::GetSize);
+	entityClass.AddMethod("SetOrigin",&Entity::SetOrigin);
+	entityClass.AddMethod("GetPos",   &Entity::GetPos);
 	entityClass.AddMethod("GetCenterPos", &Entity::GetCenterPos);
-	entityClass.AddMethod("SetPos", &Entity::SetPos);
+	entityClass.AddMethod("SetPos",  &Entity::SetPos);
+	entityClass.AddMethod("GetBillBoardPos", &Entity::GetBillBoardPos);
 	entityClass.AddMethod("GetLayer", &Entity::GetLayer);
 	entityClass.AddMethod("GetAttachPos", &Entity::GetAttachPos);
 	entityClass.AddMethod("SetFacingDegree", &Entity::SetFacingDegree);
 	entityClass.AddMethod("GetFacingDegree", &Entity::GetFacingDegree);
 	entityClass.AddMethod("StopMovement", &Entity::StopMovement);
 	entityClass.AddMethod("SetEnable", &Entity::SetEnable);
-	entityClass.AddMethod("GetGame", entity_api_get_game);
-	entityClass.AddMethod("GetType", entity_api_get_type);
-	entityClass.AddMethod("GetMap", entity_api_get_map);
+	entityClass.AddMethod("GetGame",   entity_api_get_game);
+	entityClass.AddMethod("GetType",   entity_api_get_type);
+	entityClass.AddMethod("GetMap",    entity_api_get_map);
 	entityClass.AddMethod("GetUTable", userdata_get_utable);
 
 	// player 
@@ -144,7 +147,7 @@ int LuaContext::entity_api_create_pickable(lua_State* l)
 		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
 	
 		auto pickable = std::make_shared<Pickable>(
-			entityData.GetName(), 
+			entityData.GetValueString("itemName"),
 			entityData.GetLayer(), 
 			entityData.GetPos(),
 			ItemAcquired(map.GetGame(), entityData.GetValueString("itemName"), entityData.GetValueInteger("itemCount"))
@@ -343,7 +346,6 @@ int LuaContext::entity_api_get_game(lua_State*l)
 		return 1;
 	});
 }
-
 
 /**-------------------------------------------------------
 *	\brief Player Lua API

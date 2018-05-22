@@ -82,6 +82,7 @@ public:
 	std::string GetDestination()const;
 	void SetDestination(const std::string& name);
 	Destination* GetDestination();
+	Point2 GetCameraLeftTopPos()const;
 
 	// test collison
 	bool TestCollisionWithObstacle(const Rect& rect, Entity& entity);

@@ -3,6 +3,7 @@
 #include"game\item.h"
 #include"movements\targetMovement.h"
 #include"movements\sequenceMovement.h"
+#include"lua\luaContext.h"
 
 namespace
 {
@@ -68,7 +69,15 @@ EntityType Pickable::GetEntityType() const
 
 const string Pickable::GetLuaObjectName() const
 {
-	return string();
+	return LuaContext::module_entity_name;
+}
+
+Point2 Pickable::GetBillBoardPos() const
+{
+	Point2 positivePos = GetPositivePos();
+	Size entitySize = GetSize();
+	positivePos.y = positivePos.y - entitySize.height - 5;
+	return positivePos;
 }
 
 /**
@@ -100,6 +109,26 @@ bool Pickable::NotifyCommandInteractPressed(Entity& interactEntity)
 		TryGiveItemToPicker(interactEntity);
 	}
 	return false;
+}
+
+/**
+*	\brief 当该Entity的focus被改变时触发
+*/
+void Pickable::NotifyFocusChange(bool focused)
+{
+	auto& item = mItemAcquired.GetItem();
+	if (focused)
+		GetLuaContext()->CallFunctionWithUserdata(item, "OnGainFocus", 
+			[&](lua_State*l)->int {
+			GetLuaContext()->PushUserdata(l, *this);
+			return 1;
+		});
+	else
+		GetLuaContext()->CallFunctionWithUserdata(item, "OnLoseFocus", 
+			[&](lua_State*l)->int {
+			GetLuaContext()->PushUserdata(l, *this);
+			return 1;
+		});
 }
 
 /**

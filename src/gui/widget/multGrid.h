@@ -164,7 +164,6 @@ private:
 		WidgetPtr mWidget;
 	};
 
-
 	// 修改网格的为多Children 
 	// by zy 2018.5.14
 	using GridItem = std::vector<Children>;
@@ -177,11 +176,13 @@ private:
 public:
 	void SetChildren(Widget* widget, int row, int col, const unsigned int flat);		// 是否使用智能指针
 	void SetChildren(const WidgetPtr& widget, int row, int col, const unsigned int flag, int borderSize);
-	void RemoveChildren(int row, int col);
-	void RemoveChildren(const string& id);
+	void RemoveChildrenByGrid(int row, int col);
+	void RemoveChildrenByID(const string& id);
+	void RemoveChildren(Widget& widget);
 	void RemoveAllChildren();
 	void SetChildrenAlignment(WidgetPtr widget, const unsigned int setflag, const unsigned int modeMask);
 	void TopChildren(Widget& widget, int row, int col);
+	void ClearChildren(Children& child);
 
 	Children* GetChildren(const WidgetPtr& widget);
 	Children* GetChildren(const std::string& id);

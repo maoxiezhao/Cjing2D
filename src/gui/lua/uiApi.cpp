@@ -50,7 +50,7 @@ int RegisterFunction(lua_State* l)
 	windowClass.AddMethod("CreateImage", frame_api_create_image);
 	windowClass.AddMethod("CreateLabel", frame_api_create_label);
 
-	windowClass.AddMethod("RemoveChildren", &Frame::RemoveChildren);
+	windowClass.AddMethod("RemoveChildren", &Frame::RemoveChildrenByID);
 	windowClass.AddMethod("RemoveAllChildrens", &Frame::RemoveAllChildrens);
 	windowClass.AddMethod("RemoveBySelf", frame_api_remove_by_self);
 	windowClass.AddMethod("GetParent", frame_api_get_parent);
@@ -190,8 +190,8 @@ int frame_api_remove_by_self(lua_State * l)
 			LuaTools::Error(l, "Try to remove root frame.");
 			return 0;
 		}
-		const std::string& id = frame.GetID();
-		parent->RemoveChildren(id);
+		//const std::string& id = frame.GetID();
+		parent->RemoveChildren(frame);
 
 		return 0;
 	});

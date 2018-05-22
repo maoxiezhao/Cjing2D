@@ -20,10 +20,12 @@ public:
 	virtual void Draw();
 	virtual EntityType GetEntityType()const;
 	virtual const string GetLuaObjectName()const;
+	virtual Point2 GetBillBoardPos()const;
 
 	/** notify */
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
+	virtual void NotifyFocusChange(bool focused);
 
 private:
 	bool InitSprites();

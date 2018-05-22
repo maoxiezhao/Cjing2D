@@ -167,6 +167,9 @@ Widget * Frame::FindAt(const Point2 & pos)
 	if (findIt)
 		return findIt;
 
+	if (!CanMouseFocus())
+		return false;
+
 	return  Widget::IsAt(pos) ? this : nullptr;
 }
 

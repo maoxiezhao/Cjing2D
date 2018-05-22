@@ -211,6 +211,7 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 	Debug::CheckAssertion(flag & ALIGN_HORIZONTAL_MASK,"The horizontl align is invalid");
 
 	// 先找到是否存在同名Chdren，如果有则直接替换,否则创建一个
+	const std::string name = widget->GetID();
 	Children* findChild = GetChildren(widget->GetID());
 	Children& children = findChild != nullptr? *findChild : *CreateChildren(row, col);
 	if (children.GetWidget() != nullptr)
@@ -239,7 +240,7 @@ void Grid::SetChildren(const WidgetPtr& widget, int row, int col, const unsigned
 *	\brief 移除指定网格的所有子节点
 *	\param row,col 指定的网格
 */
-void Grid::RemoveChildren(int row, int col)
+void Grid::RemoveChildrenByGrid(int row, int col)
 {
 	Debug::CheckAssertion(row < mRows && col < mCols);
 
@@ -247,8 +248,7 @@ void Grid::RemoveChildren(int row, int col)
 	for (auto& child : childs)
 	{
 		if (child.GetWidget() != nullptr) {
-			child.GetWidget()->SetGridPos({ -1, -1 });
-			child.SetWidget(nullptr);
+			ClearChildren(child);
 		}
 	}
 }
@@ -257,7 +257,7 @@ void Grid::RemoveChildren(int row, int col)
 *	\brief 移除指定网格的子节点
 *	\param row,col 指定的网格
 */
-void Grid::RemoveChildren(const string& id)
+void Grid::RemoveChildrenByID(const string& id)
 {
 	auto& findedChildren = mNamedChilds.find(id);
 	if (findedChildren != mNamedChilds.end())
@@ -268,17 +268,29 @@ void Grid::RemoveChildren(const string& id)
 	{
 		ForEachChildren([&](Children& child) {
 			if (child.GetID() == id)
-				child.Clear();
+				ClearChildren(child);
 			return true;
 		});
 	}
+}
+
+void Grid::RemoveChildren(Widget & widget)
+{
+	ForEachChildren([&](Children& child) {
+		if (child.GetWidget() &&
+			child.GetWidget().get() == &widget) {
+			ClearChildren(child);
+			return false;
+		}
+		return true;
+	});
 }
 
 void Grid::RemoveAllChildren()
 {
 	ForEachChildren([&](Children& child) {
 		if (child.GetWidget() != nullptr)
-			child.Clear();
+			ClearChildren(child);
 
 		return true;
 	});
@@ -309,6 +321,8 @@ Grid::Children * Grid::GetChildren(const std::string & id)
 Grid::Children* Grid::CreateChildren(int row, int col)
 {
 	GridItem& gridItem = GetGridItem(row, col);
+	if (gridItem.size() == 0)
+		gridItem.reserve(64);
 	gridItem.emplace_back();
 
 	// Set a limit
@@ -353,6 +367,13 @@ void Grid::TopChildren(Widget & widget, int row, int col)
 			break;
 		}
 	}
+}
+
+void Grid::ClearChildren(Children & child)
+{
+	std::string id = child.GetID();
+	mNamedChilds.erase(id);
+	child.Clear();
 }
 
 Grid::Children::Children():
@@ -504,8 +525,9 @@ void Grid::Children::Clear()
 	{
 		auto& frame = dynamic_cast<Frame&>(*mWidget);
 		frame.RemoveAllChildrens();
+		mWidget->SetGridPos({ -1, -1 });
+		mWidget->SetParent(nullptr);
 	}
-	mWidget->SetGridPos({ -1, -1 });
 	mWidget = nullptr;
 }
 

@@ -75,6 +75,8 @@ public:
 		EVENT_GAME_MAP_LEAVE = 4,
 		EVENT_GAME_PLAYR_ENTER = 5,
 		EVENT_GAME_PLAYR_LEAVE = 6,
+		EVENT_GAME_ENTITY_ENTER = 7,
+		EVENT_GAME_ENTITY_LEAVE = 8,
 		EVENT_ITEM_COUNT_CHANGE = 50,
 	};
 
@@ -348,6 +350,8 @@ public:
 	bool OnGameInput(Game& game, const InputEvent& event);
 	void EnterPlayer(Player& player);
 	void LeavePlayer(Player& player);
+	void EnterEntity(Entity& entity);
+	void LeaveEntity(Entity& entity);
 
 	// map api
 	void RunMap(Map& map);

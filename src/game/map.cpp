@@ -318,6 +318,19 @@ Destination * Map::GetDestination()
 }
 
 /**
+*	\brief 获取相机左上角坐标
+*/
+Point2 Map::GetCameraLeftTopPos() const
+{
+	if (mCamera == nullptr)
+	{
+		Debug::Warning("Get the camear pos without camera.");
+		return Point2();
+	}
+	return mCamera->GetLeftTopPos();
+}
+
+/**
 *	\brief 测试entity与障碍物的碰撞检测
 *	\param rect 测试entity的包围盒rect
 *	\param entity 参与碰撞检测的entity

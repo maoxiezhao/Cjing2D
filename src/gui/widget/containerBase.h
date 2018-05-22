@@ -85,9 +85,14 @@ public:
 		mGrid.TopChildren(widget, row, col);
 	}
 
-	void RemoveChildren(const string& id)
+	void RemoveChildrenByID(const string& id)
 	{
-		mGrid.RemoveChildren(id);
+		mGrid.RemoveChildrenByID(id);
+	}
+
+	void RemoveChildren(Widget& widget)
+	{
+		mGrid.RemoveChildren(widget);
 	}
 
 	void RemoveAllChildrens()

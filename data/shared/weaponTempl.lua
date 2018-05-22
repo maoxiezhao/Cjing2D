@@ -25,7 +25,7 @@ WeaponTempl.metatable = {
 		local player = self:GetEntity()
 		if player then 
 			-- 这里同时可以对player设置一些状态
-			entity_event_fire(player, EVENT_ENTITY_EQUIP_WEAPON, self)
+			entity_event_fire(player, EVENT_ENTITY_EQUIP_WEAPON, self, slot)
 
 			-- 装备上后自动进行非延迟换单
 			self:SwapBullets(false)
@@ -37,7 +37,7 @@ WeaponTempl.metatable = {
 		local player = self:GetEntity()
 		if player then 
 			-- 这里同时可以对player设置一些状态
-			entity_event_fire(player, EVENT_ENTITY_UNEQUIP_WEAPON, self)
+			entity_event_fire(player, EVENT_ENTITY_UNEQUIP_WEAPON, self, slot)
 		end
 	end,
 
@@ -126,6 +126,9 @@ WeaponTempl.metatable = {
 		-- 放置到空的SLot，如果没有则把当前武器卸下，装备该武器
 		if picker and picker.TryPickWeaponToSlot then 
 			picker:TryPickWeaponToSlot(self._id, true)
+
+			local slot = Weapon.GetCurSlot(picker)
+			entity_event_fire(picker, EVENT_ENTITY_OBTAIN_WEAPON, self, slot)
 		end
 	end,
 	
@@ -142,6 +145,9 @@ WeaponTempl.metatable = {
 		local cur_map = cur_player:GetMap()
 		if not cur_map then return end 
 
+		local slot = Weapon.GetCurSlot(cur_player)
+		entity_event_fire(cur_player, EVENT_ENTITY_DROP_WEAPON, self, slot)
+
 		local pos = cur_player:GetCenterPos()
 		local data  = {
 		  x = pos[1],
@@ -153,6 +159,18 @@ WeaponTempl.metatable = {
 
 		local EntitySystem = SystemImport("EntitySystem")
 	 	EntitySystem.CreatePickable(data)
+	end,
+
+	OnLoseFocus = function(self, pickable)
+		if pickable then 
+			pickable:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "")
+		end
+	end,
+
+	OnGainFocus = function(self, pickable)
+		if pickable then 
+			pickable:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, self._id)
+		end
 	end,
 
 	------------------------------------------------------------------

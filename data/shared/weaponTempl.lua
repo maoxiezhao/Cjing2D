@@ -11,9 +11,9 @@ WeaponTempl.metatable = {
 		self._offset 	   = cfg._offset	      -- 发射偏差值
 		self._usedSp       = cfg._usedSp
 		self._bullet_name  = cfg._bullet_name
-
 		self._swapBullet   = false
 		self._cur_bullet_count = 0 
+		self._first_equiped = true
 
 		local cur_game = self:GetGame()
 		self._bullet = Item.GetItem(cur_game, cfg._bullet_name)
@@ -28,7 +28,10 @@ WeaponTempl.metatable = {
 			entity_event_fire(player, EVENT_ENTITY_EQUIP_WEAPON, self, slot)
 
 			-- 装备上后自动进行非延迟换单
-			self:SwapBullets(false)
+			if self._first_equiped then 
+				self:SwapBullets(false)
+				self._first_equiped = false
+			end
 		end
 	end,
 
@@ -207,20 +210,28 @@ WeaponTempl.metatable = {
 		local clip_size = self._clip_size
 		local cur_count = self._cur_bullet_count
 		local bullet_count = bullet:GetCount() - cur_count
+		local player = self:GetEntity()
 
-		if cur_count < clip_size then 
+		if cur_count < clip_size and player then 
 			local delta = clip_size - cur_count
 			local real = math.min(delta, bullet_count)
 			if real <= 0 then return end
 
-			local delay_time = is_delay and self._swapSpeed or 0
-			self._swapBullet = true
-			print("Swap Bullet!!!!!!!")
-			SetDelayTimer("SwapBullet", delay_time, function()
+			if is_delay then 
+				local delay_time = is_delay and self._swapSpeed or 0
+				self._swapBullet = true
+				print("Swap Bullet!!!!!!!")
+				player:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "Reload!!!")
+				SetDelayTimer("SwapBullet", delay_time, function()
+					self._cur_bullet_count = cur_count + real
+					event_system_fire_event(EVENT_WEAPON_SWAP_BULLET, self)
+					self._swapBullet = false
+					player:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "")
+				end)
+			else
 				self._cur_bullet_count = cur_count + real
 				event_system_fire_event(EVENT_WEAPON_SWAP_BULLET, self)
-				self._swapBullet = false
-			end)
+			end
 		end
 	end,
 }

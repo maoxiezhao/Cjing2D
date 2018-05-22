@@ -42,6 +42,9 @@ void LuaContext::RegisterItem()
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
 	weaponClass.AddMethod("GetEntity", weapon_api_get_entity);
+	weaponClass.AddMethod("GetSprite", weapon_api_get_sprite);
+	weaponClass.AddMethod("SetPosOffset", &Weapon::SetSpritePosOffset);
+	weaponClass.AddMethod("SetRotateOffset", &Weapon::SetSpriteRotateOffset);
 }
 
 /**
@@ -398,6 +401,25 @@ int LuaContext::weapon_api_get_entity(lua_State*l)
 		if (entity != nullptr)
 		{
 			GetLuaContext(l).PushUserdata(l, *entity);
+			return 1;
+		}
+		return 0;
+	});
+}
+
+/**
+*	\brief ÊÇ°´weapon:GetSprite()
+*/
+int LuaContext::weapon_api_get_sprite(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Weapon& weapon = *std::static_pointer_cast<Weapon>(
+			CheckUserdata(l, 1, module_weapon_name));
+
+		auto sprite = weapon.GetWeaponSprite();
+		if (sprite != nullptr)
+		{
+			PushUserdata(l, *sprite);
 			return 1;
 		}
 		return 0;

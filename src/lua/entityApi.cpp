@@ -50,6 +50,7 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("GetGame",   entity_api_get_game);
 	entityClass.AddMethod("GetType",   entity_api_get_type);
 	entityClass.AddMethod("GetMap",    entity_api_get_map);
+	entityClass.AddMethod("GetSprite", entity_api_get_sprite);
 	entityClass.AddMethod("GetUTable", userdata_get_utable);
 
 	// player 
@@ -330,6 +331,24 @@ int LuaContext::entity_api_get_map(lua_State*l)
 		auto& map = entity.GetMap();
 		GetLuaContext(l).PushMap(l, map);
 		return 1;
+	});
+}
+
+/**
+*	\brief 返回当前entity所属的 entity:GetSprite()
+*/
+int LuaContext::entity_api_get_sprite(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Entity& entity = *CheckEntity(l, 1);
+		auto&sprites =  entity.GetSprites();
+		if (sprites.size() > 0)
+		{
+			auto sprite = sprites[0].sprite;
+			PushSprite(l, *sprite);
+			return 1;
+		}
+		return 0;
 	});
 }
 

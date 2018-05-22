@@ -306,11 +306,13 @@ public:
 		weapon_api_get_slot,
 		weapon_api_get_cur_equip,
 		weapon_api_has_weapon,
+		weapon_api_get_sprite,
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,
 		entity_api_get_map,
 		entity_api_get_game,
+		entity_api_get_sprite,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,

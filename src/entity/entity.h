@@ -239,7 +239,8 @@ private:
 	Direction4 mDirection;
 	bool mCanPushed;
 	bool mNotifyScriptMovement;
-
+	bool mStopMovement;		/** 临时用来处理mMovement在结束后为nullptr，有时会被设置
+								为非空导致访问无效内存，所以加个flag做强制保护，找到实际原因后删除 */
 	// core member
 	LuaContext* mLuaContext;				/** 当前的luaContext */
 	Map* mMap;								/** 当前entity所属的map */

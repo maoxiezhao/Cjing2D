@@ -42,7 +42,6 @@ function GetWeaponMT()
 	end
 	local weaponMT = weapon_template.metatable
 	for k,v in pairs(WeaponOverideMT) do 
-		print(k, v)
 		weaponMT[k] = v
 	end
 	return weaponMT

@@ -520,11 +520,13 @@ Size Grid::Children::GetBorderSpace()const
 
 void Grid::Children::Clear()
 {
-	if (mWidget != nullptr &&
-		mWidget->GetWidgetType() == WIDGET_TYPE::WIDGET_FRAME)
+	if (mWidget != nullptr)
 	{
-		auto& frame = dynamic_cast<Frame&>(*mWidget);
-		frame.RemoveAllChildrens();
+		if(mWidget->GetWidgetType() == WIDGET_TYPE::WIDGET_FRAME)
+		{
+			auto& frame = dynamic_cast<Frame&>(*mWidget);
+			frame.RemoveAllChildrens();
+		}
 		mWidget->SetGridPos({ -1, -1 });
 		mWidget->SetParent(nullptr);
 	}

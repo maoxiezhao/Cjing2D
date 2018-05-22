@@ -76,9 +76,13 @@ bool Weapon::Equiped(Entity & entity)
 	
 	auto size = entity.GetSize();
 	auto spriteSize = mWeaponSprite->GetSize();
-	auto attachPos = entity.GetAttachPos();
-	mWeaponSprite->SetRotateAnchor(0, float(spriteSize.height / 2));
+	auto attachPos = entity.GetAttachPos() + mSpritePosOffset;
 	mWeaponSprite->SetPos(attachPos);
+
+	Point2 rotateAnchor = { 0, spriteSize.height / 2 };
+	rotateAnchor += mSpriteRotateOffset;
+	mWeaponSprite->SetRotateAnchor((float)rotateAnchor.x, (float)rotateAnchor.y);
+
 
 	SetAttackAnimation();
 
@@ -207,6 +211,19 @@ void Weapon::SetAttackDelta(uint32_t delta)
 uint32_t Weapon::GetAttackDelta() const
 {
 	return uint32_t();
+}
+
+/**
+*	\brief 设置武器精灵位置偏移，应在Equip前设置
+*/
+void Weapon::SetSpritePosOffset(const Point2 & offset)
+{
+	mSpritePosOffset = offset;
+}
+
+void Weapon::SetSpriteRotateOffset(const Point2 & offset)
+{
+	mSpriteRotateOffset = offset;
 }
 
 bool Weapon::IsEquiped()const 

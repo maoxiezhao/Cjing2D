@@ -97,6 +97,11 @@ bool Drawable::IsSuspended() const
 	return mSuspended;
 }
 
+void Drawable::Translate(const Point2 & offset)
+{
+	mPos += offset;
+}
+
 void Drawable::StopMovement()
 {
 	mMovement = nullptr;

@@ -42,6 +42,8 @@ public:
 	Entity* GetEntity();
 	void SetAttackDelta(uint32_t delta);
 	uint32_t GetAttackDelta()const;
+	void SetSpritePosOffset(const Point2& offset);
+	void SetSpriteRotateOffset(const Point2& offset);
 
 	virtual const string GetLuaObjectName()const;
 
@@ -50,6 +52,8 @@ private:
 	uint32_t mAttackDelta;		/** 攻击间隔 */
 	uint32_t mNextAttackDate;	/** 下次攻击时间 */
 	bool mCanAttack;			/** 是否可以攻击 */
+	Point2 mSpritePosOffset;	/** 精灵位置偏移 */
+	Point2 mSpriteRotateOffset; /** 精灵选择偏移 */
 
 	Entity* mEntity;
 	AnimationSpritePtr mWeaponSprite;

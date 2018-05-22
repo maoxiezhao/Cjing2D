@@ -29,6 +29,7 @@ public:
 	void SetGlobalOrder(float order);
 	virtual void SetSuspended(bool suspended);
 	bool IsSuspended()const;
+	void Translate(const Point2& offset);
 
 	// movement
 	void StopMovement();

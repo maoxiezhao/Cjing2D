@@ -44,6 +44,9 @@ public:
 	void TranslateX(int x);
 	void TranslateY(int y);
 	void TranslatePos(const Point2& dxy);
+	float GetAngle()const;
+	void SetAngle(float angle);
+	void TranslateRotate(float angle);
 	uint32_t GetWhenSuspeneded()const;
 	virtual void SetDrawable(Drawable* drawable);
 	virtual void SetEntity(Entity* entity);
@@ -79,6 +82,7 @@ protected:
 
 private:
 	Point2 mPos;
+	float mAngle;
 	bool mFinished;
 	bool mSuspended;
 	uint32_t mWhenSuspendedTime;

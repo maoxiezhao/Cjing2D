@@ -8,6 +8,7 @@
 
 Movement::Movement():
 	mPos(Point2(0,0)),
+	mAngle(0.0f),
 	mFinished(false),
 	mSuspended(false),
 	mDrawable(nullptr),
@@ -20,6 +21,7 @@ Movement::Movement():
 
 Movement::Movement(bool ingoreObstacles):
 	mPos(Point2(0, 0)),
+	mAngle(0.0f),
 	mFinished(false),
 	mSuspended(false),
 	mDrawable(nullptr),
@@ -285,6 +287,35 @@ void Movement::TranslatePos(const Point2 & dxy)
 	SetPos(Point2(GetPosX() + dxy.x, GetPosY() + dxy.y));
 }
 
+float Movement::GetAngle() const
+{
+	return mAngle;
+}
+
+void Movement::SetAngle(float angle)
+{
+	if (mEntity != nullptr)
+	{
+		mEntity->SetFacingDegree(angle);
+	}
+	if (mDrawable != nullptr)
+	{
+		mDrawable->SetRotated(angle);
+	}
+	if (mWidget != nullptr)
+	{
+		//
+	}
+	mAngle = angle;
+	NotifyPositonChanged();
+}
+
+void Movement::TranslateRotate(float angle)
+{
+	SetAngle(GetAngle() + angle);
+	NotifyPositonChanged();
+}
+
 /**
 *	\brief 获取暂定时的时间
 */
@@ -302,9 +333,11 @@ void Movement::SetDrawable(Drawable * drawable)
 	if (mDrawable == nullptr)
 	{
 		mPos = {0, 0};
+		mAngle = 0.0f;
 	}
 	else
 	{
+		mAngle = mDrawable->GetRotated();
 		mPos = mDrawable->GetPos();
 		NotifyMovementChanged();
 	}
@@ -322,6 +355,7 @@ void Movement::SetEntity(Entity * entity)
 	}
 	else
 	{
+		mAngle = mEntity->GetFacingDegree();
 		mPos = mEntity->GetPos();
 		NotifyMovementChanged();
 	}

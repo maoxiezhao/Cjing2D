@@ -51,6 +51,7 @@ public:
 	void SetBindDirectoinByGameCommand(bool binded);
 	Direction8 GetDirection8()const;
 	bool CanAttack()const;
+	bool IsWeaponAttack()const;
 	Equipment& GetEquipment();
 	const Equipment& GetEquipment()const;
 	virtual float GetFacingDegree()const;

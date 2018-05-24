@@ -104,7 +104,8 @@ PlayerTempl.metatable = {
 	-- 装备管理
 	TrySwapWeaponBullet = function(player)
 		local cur_weapon = Weapon.GetCurWeapon(player)
-		if cur_weapon and not cur_weapon:IsSwapingBullet() then 
+		if cur_weapon and cur_weapon:IsWeaponGun() and
+		 not cur_weapon:IsSwapingBullet() then 
 			cur_weapon:SwapBullets(true)
 		end
 	end,

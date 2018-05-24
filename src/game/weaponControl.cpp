@@ -4,7 +4,8 @@
 #include "utils\geometry.h"
 
 RotateWeaponControl::RotateWeaponControl(Weapon & weapon) :
-	WeaponControlMode(weapon)
+	WeaponControlMode(weapon),
+	mIsFliped(false)
 {
 }
 
@@ -14,6 +15,9 @@ void RotateWeaponControl::Enter()
 
 void RotateWeaponControl::Update()
 {
+	if (!IsEnable())
+		return;
+
 	auto weaponSprite = mWeapon.GetWeaponSprite();
 	if (weaponSprite)
 	{
@@ -21,15 +25,21 @@ void RotateWeaponControl::Update()
 		if (entity == nullptr)
 			return;
 
-		float degree = Geometry::Degree(entity->GetFacingDegree());
+		float degree = (entity->GetFacingDegree());
 		degree = degree >= 180 ? degree - 360 : degree;
-		bool fliped = fabsf(degree) > 90;
+		mIsFliped = fabsf(degree) > 90;
 
-		weaponSprite->SetFlipY(fliped);
-		weaponSprite->SetRotated(-degree);
+		weaponSprite->SetFlipY(mIsFliped);
+		auto& weaponInstance = mWeapon.GetWeaponInstance();
+		weaponInstance.SetFacingDegree(-degree);
 	}
 }
 
 void RotateWeaponControl::Leave()
 {
+}
+
+bool RotateWeaponControl::IsFlip() const
+{
+	return mIsFliped;
 }

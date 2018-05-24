@@ -179,6 +179,14 @@ WeaponTempl.metatable = {
 	------------------------------------------------------------------
 	--  非C++调用的自定义方法
 	------------------------------------------------------------------
+	GetWeaponID = function( self)
+		return self._id
+	end,
+
+	IsWeaponGun = function( self )
+		return true
+	end,
+
 	-- 是否在换单
 	IsSwapingBullet = function ( self )
 		return self._swapBullet

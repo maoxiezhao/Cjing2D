@@ -55,6 +55,7 @@ BulletTempl.metatable = {
 			movement:SetMaxDistance(1000)
 			
 			degree = degree + (math.random() * 2 - 1) * self._offset
+			degree = util_to_radians(degree)	--	是否还是在C++改了算了？？
 			movement:SetAngle(-degree)
 		end
 	end,

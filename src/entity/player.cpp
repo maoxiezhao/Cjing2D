@@ -54,6 +54,9 @@ void Player::Update()
 	// state update
 	GetState().Update();
 
+	// attach update
+	UpdateAttachEntities();
+
 	// lua update if exists
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnUpdate",
 		[&](lua_State*l)->int {
@@ -187,6 +190,11 @@ bool Player::CanAttack() const
 	bool result = GetState().CanAttack() &&
 		GetEquipment().HasCurWeapon();
 	return result;
+}
+
+bool Player::IsWeaponAttack() const
+{
+	return false;
 }
 
 Equipment & Player::GetEquipment()

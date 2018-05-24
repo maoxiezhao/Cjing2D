@@ -2217,3 +2217,12 @@ pickable{
   itemName = "apple",
   itemCount = 0,
 }
+
+pickable{
+  x = 390,
+  y = 200,
+  layer = 0,
+  itemName = "axe",
+  itemCount = 0,
+}
+

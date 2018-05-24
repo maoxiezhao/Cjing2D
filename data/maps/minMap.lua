@@ -8,7 +8,7 @@ function Map:onStarted()
 	self:SetBackground("sprites/map/test_bg.png")
 
 	-- test begin
---	local enemey = EntitySystem.CreateEnemy("slime", 128, 160, 0, GAME_DIRECTION_DOWN, "slime")
+	local enemey = EntitySystem.CreateEnemy("slime", 128, 160, 0, GAME_DIRECTION_DOWN, "slime")
 	-- test end
 
 end

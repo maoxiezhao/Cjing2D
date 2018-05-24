@@ -257,6 +257,8 @@ public:
 		movement_path_pai_create,
 		movement_path_finding_api_create,
 		movement_path_finding_api_set_target,
+		// rotate movement
+		movement_rotate_api_create,
 		// text 
 		text_api_create,
 		text_api_load_font,
@@ -307,12 +309,14 @@ public:
 		weapon_api_get_cur_equip,
 		weapon_api_has_weapon,
 		weapon_api_get_sprite,
+		weapon_api_get_inst,
 		// entity
 		entity_api_create_sprite,
 		entity_api_get_type,
 		entity_api_get_map,
 		entity_api_get_game,
 		entity_api_get_sprite,
+		entity_api_try_hurt,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,
@@ -493,6 +497,7 @@ public:
 	static const string module_target_movement_name;
 	static const string module_path_movement_name;
 	static const string module_path_finding_movement_name;
+	static const string module_rotate_movement_name;
 	// drawable
 	static const string module_drawable_name;
 	static const string module_sprite_name;
@@ -502,6 +507,7 @@ public:
 	static const string module_player_name;
 	static const string module_enemy_name;
 	static const string module_entity_bullet_name;
+	static const string module_weapon_instance;
 	// widget
 	static const string module_window_name;
 

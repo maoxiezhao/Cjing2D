@@ -132,6 +132,7 @@
     <ClCompile Include="src\entity\tileRegions.cpp" />
     <ClCompile Include="src\entity\tileset.cpp" />
     <ClCompile Include="src\entity\trigger.cpp" />
+    <ClCompile Include="src\entity\weaponInstance.cpp" />
     <ClCompile Include="src\game\animation.cpp" />
     <ClCompile Include="src\game\animationData.cpp" />
     <ClCompile Include="src\game\animationSet.cpp" />
@@ -225,6 +226,7 @@
     <ClCompile Include="src\player\movementState.cpp" />
     <ClCompile Include="src\player\playerSprite.cpp" />
     <ClCompile Include="src\player\playerState.cpp" />
+    <ClCompile Include="src\player\swordState.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\nanovg.c" />
@@ -284,6 +286,7 @@
     <ClInclude Include="src\entity\tileRegions.h" />
     <ClInclude Include="src\entity\tileset.h" />
     <ClInclude Include="src\entity\trigger.h" />
+    <ClInclude Include="src\entity\weaponInstance.h" />
     <ClInclude Include="src\game\animation.h" />
     <ClInclude Include="src\game\animationSet.h" />
     <ClInclude Include="src\game\animationSprite.h" />
@@ -371,6 +374,7 @@
     <ClInclude Include="src\player\movementState.h" />
     <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\player\playerState.h" />
+    <ClInclude Include="src\player\swordState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\boundingBox.h" />
     <ClInclude Include="src\utils\color.h" />

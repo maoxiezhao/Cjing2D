@@ -79,9 +79,10 @@ local enemyBaseClass = {
 			movement:Start(self)
 
 			local degree = source:GetFacingDegree()
+			print(degree)
 			movement:SetSpeed(200)
 			movement:SetMaxDistance(32)
-			movement:SetAngle(-degree)
+			movement:SetAngle(-util_to_radians(degree))
 		end
 	end,
 

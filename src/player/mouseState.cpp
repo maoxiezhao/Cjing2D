@@ -89,7 +89,7 @@ void MouseState::Update()
 
 float MouseState::GetFacingDegree() const
 {
-	return mFacingDegree;
+	return Geometry::Degree(mFacingDegree);
 }
 
 bool MouseState::CanAttack() const

@@ -19,11 +19,14 @@ public:
 	void AddPos(int dx, int dy);
 	void SetSize(int w, int h);
 	void SetSize(const Size& size);
-	void SetRotate(float radius);
+	void SetRotate(float degree);
 	float GetRotate()const;
+	void SetRotateAnchor(float x, float y);
+	void GetRotateAnchor(float&x, float& y);
 	Rect GetRect()const;
 	OBB GetOBB()const;
 	void SetAnchor(int x, int y);
+	Rect GetRotateRect()const;
 
 	Point2 GetPos()const;
 	Size GetSize()const;
@@ -43,13 +46,17 @@ private:
 
 	Point2 anchor;
 	float angle;
+	float rotateAnchorX;
+	float rotateAnchorY;
 };
 
 inline BoundingBox::BoundingBox():
 	rect(),
 	obb(),
 	anchor(),
-	angle(0.0f)
+	angle(0.0f),
+	rotateAnchorX(0.0f),
+	rotateAnchorY(0.0f)
 {
 }
 
@@ -57,7 +64,9 @@ inline BoundingBox::BoundingBox(Point2 pos, Size size):
 	rect(pos, size),
 	obb(pos, size),
 	anchor(),
-	angle(0.0f)
+	angle(0.0f),
+	rotateAnchorX(0.0f),
+	rotateAnchorY(0.0f)
 {
 }
 
@@ -84,10 +93,13 @@ inline void BoundingBox::SetSize(const Size & size)
 	SetSize(size.width, size.height);
 }
 
-inline void BoundingBox::SetRotate(float radius)
+inline void BoundingBox::SetRotate(float degree)
 {
-	angle = radius;
-	Recomput();
+	if (angle != degree)
+	{
+		angle = degree;
+		Recomput();
+	}
 }
 
 inline float BoundingBox::GetRotate() const
@@ -95,20 +107,56 @@ inline float BoundingBox::GetRotate() const
 	return angle;
 }
 
+inline void BoundingBox::SetRotateAnchor(float x, float y)
+{
+	if (rotateAnchorX != x || rotateAnchorY != y)
+	{
+		rotateAnchorX = x;
+		rotateAnchorY = y;
+		Recomput();
+	}
+}
+
+inline void BoundingBox::GetRotateAnchor(float & x, float & y)
+{
+	x = rotateAnchorX;
+	y = rotateAnchorY;
+}
+
 inline Rect BoundingBox::GetRect() const
 {
-	return rect;
+	if(angle == 0)
+		return rect;
+	return GetRotateRect();
 }
 
 inline OBB BoundingBox::GetOBB() const
 {
-	return OBB();
+	return obb;
 }
 
 inline void BoundingBox::SetAnchor(int x, int y)
 {
 	anchor = Point2(x, y);
 	Recomput();
+}
+
+inline Rect BoundingBox::GetRotateRect() const
+{
+	std::vector<Vec2f> points;
+	obb.GetCorners(points);
+	std::vector<Point2> newPoints;
+	for (auto& float2 : points)
+	{
+		newPoints.push_back(Point2(
+			(int)float2.x,
+			(int)float2.y
+			));
+	}
+	Rect result;
+	result.SetFourPos(newPoints[0], newPoints[1], newPoints[2], newPoints[3]);
+
+	return result;
 }
 
 inline Point2 BoundingBox::GetPos() const
@@ -182,6 +230,27 @@ inline bool BoundingBox::Intersect(const Ray & ray, float & mint, float & maxt)
 
 inline void BoundingBox::Recomput() 
 {
+	if (angle != 0.0f)
+	{
+		float distX = (float)rect.x + rotateAnchorX;
+		float distY = (float)rect.y + rotateAnchorY;
+
+		auto points = rect.GetPoints();
+		for (auto& point : points)
+		{
+			Vec2f float2((float)point.x, (float)point.y);
+			Matrix4 transform = Matrix4::Translate({ 0.0f, 0.0f, 0.0f });
+			transform *= Matrix4::Translate(Vec3f(distX, distY, 0.0f));
+			transform *= Matrix4::Rotate(Vec3f(0.0f, 0.0f, 1.0f), angle);
+			transform *= Matrix4::Translate(Vec3f(-distX, -distY, 0.0f));
+
+			transform.Transform(float2);
+			point.x = (int)float2.x;
+			point.y = (int)float2.y;
+		}
+
+		obb = OBB(points[0], points[1], points[2], points[3]);
+	}
 }
 
 

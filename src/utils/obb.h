@@ -8,7 +8,11 @@
 class OBB
 {
 public:
-	OBB() :mAxis{} {};
+	OBB() :mAxis{} 
+	{
+		mAxis[0].x = 1.0f; mAxis[0].y = 0.0f;
+		mAxis[1].x = 0.0f; mAxis[1].y = 1.0f;
+	};
 	OBB(const Point2& lt, const Point2& rt):mAxis{} 
 	{
 		mCenterPos = {float(lt.x + rt.x) * 0.5f, float(lt.y + rt.y) * 0.5f };
@@ -23,6 +27,18 @@ public:
 		mLength = { (float)size.width / 2, (float)size.height / 2 };
 		mAxis[0].x = 1.0f; mAxis[0].y = 0.0f;
 		mAxis[1].x = 0.0f; mAxis[1].y = 1.0f;
+	}
+
+	OBB(const Point2& lt, const Point2& rt, const Point2& lb, const Point2& rb)
+	{
+		mCenterPos = { float(lt.x + rb.x) * 0.5f, float(lt.y + rb.y) * 0.5f };
+		mLength = {
+			(float)Geometry::GetDistance(lt, rt) * 0.5f,
+			(float)Geometry::GetDistance(lt, lb) * 0.5f };
+		mAxis[0] = { (float)(rt.x - lt.x), (float)(rt.y - lt.y) };
+		mAxis[1] = { (float)(lb.x - lt.x), (float)(lb.y - lt.y) };
+		mAxis[0].Normalized();
+		mAxis[1].Normalized();
 	}
 
 	void AddPos(float x, float y)
@@ -53,13 +69,14 @@ public:
 
 	void GetCorners(std::vector<Vec2f>& corners)const
 	{
-		float extX = mLength.x * mAxis[0].x + mLength.y * mAxis[1].x;
-		float extY = mLength.x * mAxis[0].y + mLength.y * mAxis[1].y;
+		Vec2f axisX = mAxis[0] * mLength.x;
+		Vec2f axisY = mAxis[1] * mLength.y;
+		Vec2f ext = axisX + axisY;
 
-		corners.push_back({ mCenterPos.x - extX, mCenterPos.y - extY });
-		corners.push_back({ mCenterPos.x - extX, mCenterPos.y + extY });
-		corners.push_back({ mCenterPos.x + extX, mCenterPos.y - extY });
-		corners.push_back({ mCenterPos.x + extX, mCenterPos.y + extY });
+		corners.push_back( mCenterPos + axisX + axisY );
+		corners.push_back( mCenterPos + axisX - axisY );
+		corners.push_back( mCenterPos - axisX + axisY );
+		corners.push_back( mCenterPos - axisX - axisY );
 	}
 
 	float GetProjectPoint(const Vec2f& axis, const Vec2f& pos)const
@@ -69,12 +86,30 @@ public:
 		return ret;
 	}
 
+	void Transform(const Vec2f anchor, float rotate)
+	{
+		Vec2f offset = anchor - mLength;
+		Vec2f origin = mCenterPos + offset;
+
+		Matrix4 transform = Matrix4::Translate({ 0.0f, 0.0f, 0.0f });
+		transform *= Matrix4::Translate(Vec3f(offset.x, offset.y, 0.0f));
+		transform *= Matrix4::Rotate(Vec3f(0.0f, 0.0f, 1.0f), rotate);
+		transform *= Matrix4::Translate(Vec3f(-offset.x, -offset.y, 0.0f));
+
+		transform.Transform(offset);
+		transform.Transform(mAxis[0]);
+		transform.Transform(mAxis[1]);
+
+		mAxis[0].Normalized();
+		mAxis[1].Normalized();
+
+		mCenterPos = origin - offset;
+	}
+
 	// 不处理缩放！！
 	void Transform(const Matrix4& transform)
 	{
-		transform.Transform(mCenterPos);
-		transform.Transform(mAxis[0]);
-		transform.Transform(mAxis[1]);
+
 	}
 
 	void GetInterval(const OBB& box, const  Vec2f& axis, float&tmin, float&tmax)const

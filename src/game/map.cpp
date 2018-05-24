@@ -433,7 +433,8 @@ void Map::CheckCollisionWithEntities(Entity & entity)
 		if (!checkEntity->IsHaveCollision() ||
 			checkEntity->IsBeRemoved() ||
 			!checkEntity->IsEnable() ||
-			checkEntity.get() == &entity)
+			checkEntity.get() == &entity ||
+			checkEntity->HasAttachEntity(entity) )
 		{
 			continue;
 		}

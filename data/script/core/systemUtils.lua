@@ -73,6 +73,7 @@ local function RegisterMathFunction(env)
 	env.IsNan = function(x)
 		return x ~= x
 	end
+
 end
 
 local function RegisterUtilsFunction(env)

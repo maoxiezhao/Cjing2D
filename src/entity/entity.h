@@ -27,6 +27,10 @@ class Player;
 *	2018.5.9
 *	做了个碰撞盒相关处理，分为障碍碰撞盒和响应范围盒，响应范围盒用于处理Notify事件
 *	而障碍碰撞和则用于处理位置和障碍物碰撞，和原先Rect一致
+*
+*	2018.5.20
+*	添加AttachEntity，AttachEntity全部由被挂载的Entity管理，自动添加到地图和从地图中
+*	移除
 */
 class Entity : public LuaObject
 {
@@ -145,6 +149,7 @@ public:
 	/** direction */
 	virtual void SetFacingDegree(float degree);
 	virtual float GetFacingDegree()const;
+	virtual void SetBoundRotateAnchor(float x, float y);
 	virtual void SetDirection(Direction4 dir);
 	Direction4 GetDirection()const;
 	
@@ -163,6 +168,12 @@ public:
 	Entity* GetOverlapEntity();
 	void SetFocused(bool bFocused);
 	bool IsFosused()const;
+	void AddAttachEntity(std::shared_ptr<Entity> attachEntity, const Point2& offset);
+	void RemoveAttachEntity(std::shared_ptr<Entity> attachEntity);
+	Point2 GetAttachOffset()const;
+	void SetAttachOffset(const Point2& offset);
+	void UpdateAttachEntities();
+	bool HasAttachEntity(Entity& checkEntity)const;
 
 	void SetMap(Map* map);
 	Map& GetMap();
@@ -256,6 +267,9 @@ private:
 	std::vector<NamedSpritePtr> mSprites;	/** entity 所拥有的用于展示的sprites */
 	SpritePtr mDebugSprite;
 	SpritePtr mDebugSprite1;
+
+	std::vector<std::shared_ptr<Entity> > mAttachEntities;
+	Point2 mAttachOffset;
 };
 
 using EntityPtr = std::shared_ptr<Entity>;

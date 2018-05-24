@@ -37,6 +37,7 @@ public:
 	void SetLife(int life);
 	int GetLife()const;
 	void SetDeadAnimTime(uint32_t time);
+	bool IsHurting()const;
 
 	/** attack */
 	void SetAttackReaction(EntityAttack attack, EntityReactionType type);

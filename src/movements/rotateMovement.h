@@ -10,14 +10,31 @@ class RotateMovement : public Movement
 {
 public:
 	RotateMovement();
-	RotateMovement(double angleAmount, double angularSpeed);
+	RotateMovement(float angleAmount, float rotateSpeed);
 
 	virtual void Update();
 	virtual void SetSuspended(bool suspended);
 
+	void SetRotateSpeed(float speed);
+	float GetRotateSpeed()const;
+	void SetAngleAmount(float amount);
+
+	virtual bool IsFinished()const;
+	virtual void Stop();
+	void SetFinished(bool finished);
+
+	// lua
+	virtual const string GetLuaObjectName()const;
+
 private:
-	double mAngularSpeed;
-	
+	float mRotateSpeed;
+	float mAngleAmount;
+	float mCurAngle;
+	int mRotateDirection;
+	bool mFinished;
+
+	uint32_t mNextRotateDate;
+	uint32_t mRotateDelay;
 };
 
 #endif

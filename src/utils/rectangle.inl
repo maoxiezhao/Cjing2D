@@ -120,6 +120,19 @@ inline void Rect::SetTowPos(const Point2 & lt, const Point2 & rb)
 	y = std::min(lt.y, rb.y);
 }
 
+inline void Rect::SetFourPos(const Point2 & lt, const Point2 & rt, const Point2 & lb, const Point2 & rb)
+{
+	int minx = std::min(lt.x, std::min(rt.x, std::min(lb.x, rb.x)));
+	int miny = std::min(lt.y, std::min(rt.y, std::min(lb.y, rb.y)));
+	int maxx = std::max(lt.x, std::max(rt.x, std::max(lb.x, rb.x)));
+	int maxy = std::max(lt.y, std::max(rt.y, std::max(lb.y, rb.y)));
+
+	width = maxx - minx;
+	height = maxy - miny;
+	x = minx;
+	y = miny;
+}
+
 inline Point2 Rect::GetPos() const
 {
 	return Point2(x, y);

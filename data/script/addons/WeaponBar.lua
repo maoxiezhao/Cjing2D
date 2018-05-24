@@ -21,13 +21,27 @@ local function set_cur_weapon(frame, weapon)
 		local icon_path = "sprites/menus/icon/".. weapon_name ..".png"
 		weapon_icon:SetImage(icon_path)
 
+		local name_label = frame._name_label 
+		if name_label then 
+			local name = weapon:GetWeaponID()
+			if name then 
+				name_label:SetText(name)
+			end
+		end
+
 		local label = frame._num_label
-		local bullet = weapon:GetBullet()
-		if bullet then 
-			cur_bullet = bullet
-			set_cur_bullet_count(label, weapon, bullet)
+		if weapon:IsWeaponGun() then 
+			-- 枪械武器显示弹药
+			local bullet = weapon:GetBullet()
+			if bullet then 
+				cur_bullet = bullet
+				set_cur_bullet_count(label, weapon, bullet)
+			else
+				label:SetText("")
+			end
 		else
-			label:SetText("∞")
+			-- 刀具不显示么？？
+			label:SetText("")
 		end
 	end
 end
@@ -148,8 +162,19 @@ function WeaponBar.OnLoad()
 	})
 	weaponFrame._weapon_icon = weapon_icon
 
-	local num_label = weaponFrame:CreateLabel("numLabel",{
+	local name_label = weaponFrame:CreateLabel("nameLabel",{
 		 pos = {0, 100},
+		 horizontal = "center",
+	})
+	name_label:SetFontColor({255,255,255,255})
+	name_label:SetFontSize(20)
+	name_label:SetText("Dead Boy")
+	name_label:SetFontFace("ui_pixel")
+	name_label:SetTextAlign(FONT_ALIGN_CENTER | FONT_ALIGN_TOP)
+	weaponFrame._name_label = name_label
+
+	local num_label = weaponFrame:CreateLabel("numLabel",{
+		 pos = {0, 125},
 		 horizontal = "center",
 	})
 	num_label:SetFontColor({255,255,255,255})

@@ -1,6 +1,7 @@
 #include"lua\luaContext.h"
 #include"lua\luaBinder.h"
 #include"entity\player.h"
+#include"entity\weaponInstance.h"
 #include"game\item.h"
 #include"game\weapon.h"
 #include"game\itemAcquired.h"
@@ -45,6 +46,10 @@ void LuaContext::RegisterItem()
 	weaponClass.AddMethod("GetSprite", weapon_api_get_sprite);
 	weaponClass.AddMethod("SetPosOffset", &Weapon::SetSpritePosOffset);
 	weaponClass.AddMethod("SetRotateOffset", &Weapon::SetSpriteRotateOffset);
+	weaponClass.AddMethod("SetControlEnable", &Weapon::SetWeaponControlEnable);
+	weaponClass.AddMethod("IsWeaponFlip", &Weapon::IsWeaponFliped);
+	weaponClass.AddMethod("GetInstance", weapon_api_get_inst);
+	weaponClass.AddMethod("SetNotifyCollision", &Weapon::SetNotifyCollision);
 }
 
 /**
@@ -463,3 +468,20 @@ int LuaContext::weapon_api_has_weapon(lua_State*l)
 		return 1;
 	});
 };
+
+/**
+*	\brief 是按weapon:HasWeapon(slot)
+*	\return 返回当前武器的持有Entity,如果为空返回nil
+*/
+int LuaContext::weapon_api_get_inst(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Weapon& weapon = *std::static_pointer_cast<Weapon>(
+			CheckUserdata(l, 1, module_weapon_name));
+
+		auto& instance = weapon.GetWeaponInstance();
+		PushUserdata(l, instance);
+		return 1;
+	});
+};
+

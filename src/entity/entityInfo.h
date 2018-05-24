@@ -15,6 +15,7 @@ enum EntityType
 	PICKABLE,		/** 可拾取对象 */
 	ENEMEY,			/** 敌人 */
 	BULLET,			/** 子弹 */
+	WEAPON,			/** 武器 */
 	UNKNOW,			/** 未知的类型 */
 };
 

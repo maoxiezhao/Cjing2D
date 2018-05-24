@@ -133,7 +133,7 @@ template<typename T>
 inline Vec2<T> Vec2<T>::Normalized()
 {
 	double inv = 1.0f / GetLength();
-	x *= inv;
-	y *= inv;
+	x *= (T)inv;
+	y *= (T)inv;
 	return *this;
 }

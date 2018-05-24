@@ -1,6 +1,10 @@
 #include "weapon.h"
 #include "lua\luaContext.h"
 #include "core\system.h"
+#include "entity\entity.h"
+#include "entity\entities.h"
+#include "entity\player.h"
+#include "entity\enemy.h"
 
 /**
 *	\TODO 原先的思路是希望对于Gun和Knife分别作为weapon的派生类
@@ -20,9 +24,14 @@ Weapon::Weapon(const std::string & weaponName, Equipment & equipment) :
 	mAttackDelta(500),
 	mNextAttackDate(0),
 	mCanAttack(true),
-	mIsEquiped(false)
+	mIsEquiped(false),
+	mNotifyCollision(false),
+	mStopAttackDelay(200),
+	mStopAttackDate(0)
 {
 	mControl = std::make_unique<RotateWeaponControl>(*this);
+	mWeaponInstance = std::make_shared<WeaponInstance>(weaponName + "_instance", 0, *this);
+	mWeaponInstance->SetNotifyCollision(mNotifyCollision);
 }
 
 void Weapon::Initialize()
@@ -49,7 +58,14 @@ void Weapon::Update()
 	if (mControl)
 		mControl->Update();
 
-	if (System::Now() >= mNextAttackDate)
+	uint32_t now = System::Now();
+	if (mIsAttack)
+	{
+		if (now >= mStopAttackDate)
+			mIsAttack = false;
+	}
+
+	if ( now >= mNextAttackDate)
 		mCanAttack = true;
 
 	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUpdate");
@@ -64,32 +80,25 @@ bool Weapon::Equiped(Entity & entity)
 {
 	if (IsEquiped())
 	{
-		Debug::Warning("The Equip:" + GetWeaponName()
-			+ " has already equiped.");
+		Debug::Warning("The Equip:" + GetWeaponName() + " has already equiped.");
 		return false;
 	}
 
+	// 挂载到装备的entity上
+	auto attachPos = entity.GetAttachPos() + mSpritePosOffset;
+	entity.AddAttachEntity(mWeaponInstance, attachPos);
+
 	// 创建装备Sprite
 	const std::string animatePath = "weapons/" + GetItemName();
-	mWeaponSprite = entity.CreateAnimationSprite(animatePath, normalAnimationName);
-	mWeaponSprite->SetDeferredDraw(true);
-	
-	auto size = entity.GetSize();
-	auto spriteSize = mWeaponSprite->GetSize();
-	auto attachPos = entity.GetAttachPos() + mSpritePosOffset;
-	mWeaponSprite->SetPos(attachPos);
-
-	Point2 rotateAnchor = { 0, spriteSize.height / 2 };
-	rotateAnchor += mSpriteRotateOffset;
-	mWeaponSprite->SetRotateAnchor((float)rotateAnchor.x, (float)rotateAnchor.y);
-
-
-	SetAttackAnimation();
+	if(mWeaponInstance->GetSprite(animatePath) == nullptr )
+		CreateWeaponSprite(entity, animatePath);
 
 	mEntity = &entity;
 	mIsEquiped = true;
 
+	SetNormalAnimation();
 	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponEquiped");
+
 	return true;
 }
 
@@ -104,10 +113,9 @@ bool Weapon::UnEquiped()
 
 	GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponUnequiped");
 
-	mEntity->RemoveSprite(normalAnimationName);
+	mEntity->RemoveAttachEntity(mWeaponInstance);
 	mIsEquiped = false;
 
-	//mEntity = nullptr;
 	return true;
 }
 
@@ -136,6 +144,10 @@ void Weapon::Attack()
 		bool canAttack = BeforeAttack();
 		if (canAttack)
 		{
+			// 设置攻击中状态
+			mIsAttack = true;			
+			mStopAttackDate = System::Now() + mStopAttackDelay;
+
 			GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");
 			AfterAttack();
 		}
@@ -152,13 +164,14 @@ void Weapon::AfterAttack()
 
 bool Weapon::IsAttack()const
 {
-	return  (mWeaponSprite != nullptr ? 
-		!mWeaponSprite->IsFrameFinished() : false);
+	//return  (mWeaponSprite != nullptr ? 
+	//	!mWeaponSprite->IsFrameFinished() : false) || mIsAttack;
+	return mIsAttack;
 }
 
 bool Weapon::IsCanAttack() const
 {
-	return mCanAttack && !IsAttack();
+	return mCanAttack && !IsAttack() && !mIsAttack;
 }
 
 /**
@@ -183,7 +196,7 @@ void Weapon::SetNormalAnimation()
 	SetAnimation(normalAnimationName);
 }
 
-const std::string & Weapon::GetWeaponName() const
+std::string Weapon::GetWeaponName() const
 {
 	return Item::GetItemName();
 }
@@ -191,6 +204,21 @@ const std::string & Weapon::GetWeaponName() const
 const string Weapon::GetLuaObjectName() const
 {
 	return LuaContext::module_weapon_name;
+}
+
+void Weapon::CreateWeaponSprite(Entity& entity, const std::string& path)
+{
+	mWeaponSprite = mWeaponInstance->CreateAnimationSprite(path, normalAnimationName);
+	mWeaponSprite->SetDeferredDraw(true);
+
+	auto size = entity.GetSize();
+	auto spriteSize = mWeaponSprite->GetSize();
+	Point2 rotateAnchor = { 0, spriteSize.height / 2 };
+	rotateAnchor += mSpriteRotateOffset;
+	
+	mWeaponSprite->SetRotateAnchor((float)rotateAnchor.x, (float)rotateAnchor.y);
+	mWeaponInstance->SetSize(spriteSize);
+	mWeaponInstance->SetBoundRotateAnchor((float)rotateAnchor.x, (float)rotateAnchor.y);
 }
 
 AnimationSpritePtr Weapon::GetWeaponSprite() 
@@ -201,6 +229,11 @@ AnimationSpritePtr Weapon::GetWeaponSprite()
 Entity* Weapon::GetEntity() 
 {
 	return mEntity;
+}
+
+Entity & Weapon::GetWeaponInstance()
+{
+	return *mWeaponInstance;
 }
 
 void Weapon::SetAttackDelta(uint32_t delta)
@@ -224,6 +257,51 @@ void Weapon::SetSpritePosOffset(const Point2 & offset)
 void Weapon::SetSpriteRotateOffset(const Point2 & offset)
 {
 	mSpriteRotateOffset = offset;
+}
+
+void Weapon::SetWeaponControlEnable(bool enable)
+{
+	if (mControl != nullptr)
+		mControl->SetEnable(enable);
+}
+
+bool Weapon::IsWeaponFliped() const
+{
+	return mControl != nullptr ? mControl->IsFlip() : false;
+}
+
+void Weapon::SetNotifyCollision(bool collisioned)
+{
+	mNotifyCollision = collisioned;
+	mWeaponInstance->SetNotifyCollision(collisioned);
+}
+
+bool Weapon::IsNotifyCollision() const
+{
+	return mNotifyCollision;
+}
+
+void Weapon::SetStopAttackDelay(uint32_t delay)
+{
+	mStopAttackDelay = delay;
+}
+
+void Weapon::NotifyAttackPlayer(Player & enemy)
+{
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnTryAttackPlayer",
+		[&](lua_State*l)->int {
+		GetLuaContext().PushUserdata(l, enemy);
+		return 1;
+	});
+}
+
+void Weapon::NotifyAttackEnemy(Enemy & enemy)
+{
+	GetLuaContext().CallFunctionWithUserdata(*this, "OnTryAttackEnemey",
+		[&](lua_State*l)->int {
+		GetLuaContext().PushUserdata(l, enemy);
+		return 1;
+	});
 }
 
 bool Weapon::IsEquiped()const 

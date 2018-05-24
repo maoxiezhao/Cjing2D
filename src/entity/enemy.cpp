@@ -194,6 +194,11 @@ void Enemy::SetDeadAnimTime(uint32_t time)
 	mDeadAnimTime = time;
 }
 
+bool Enemy::IsHurting() const
+{
+	return mIsHurting;
+}
+
 /**
 *	\brief 重置当前Enemy状态,当enemy创建后或者enable状态改变时调用
 */

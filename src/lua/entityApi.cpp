@@ -4,6 +4,7 @@
 #include"game\map.h"
 #include"game\mapData.h"
 #include"game\itemAcquired.h"
+
 #include"entity\tile.h"
 #include"entity\entities.h"
 #include"entity\tileset.h"
@@ -12,17 +13,20 @@
 #include"entity\player.h"
 #include"entity\bullet.h"
 #include"entity\destination.h"
+#include"entity\weaponInstance.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_player_name = "Player";
 const std::string LuaContext::module_enemy_name = "Enemy";
 const std::string LuaContext::module_entity_bullet_name = "Bullet";
+const std::string LuaContext::module_weapon_instance = "WeaponInstance";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
 	LuaContext::module_enemy_name,
 	LuaContext::module_player_name,
-	LuaContext::module_entity_bullet_name
+	LuaContext::module_entity_bullet_name,
+	LuaContext::module_weapon_instance
 };
 
 void LuaContext::RegisterEntityModule()
@@ -62,11 +66,17 @@ void LuaContext::RegisterEntityModule()
 	enemyClass.AddDefaultMetaFunction();
 	enemyClass.AddMethod("Killed", &Enemy::Killed);
 	enemyClass.AddMethod("SetDeadAnimTime", &Enemy::SetDeadAnimTime);
+	enemyClass.AddMethod("TryHurt", entity_api_try_hurt);		// try hurt方法应该将要实现为AttackEntity的基类方法
+	enemyClass.AddMethod("IsHurting", &Enemy::IsHurting);
 
 	// Bullet
 	LuaBindClass<Bullet> bulletClass(l, "Bullet", "Entity");
 	bulletClass.AddDefaultMetaFunction();
 	bulletClass.AddMethod("SetDisappearAnimTime", &Bullet::SetDisapearAnimTime);
+
+	// Weapon instance
+	LuaBindClass<WeaponInstance> weaponClass(l, module_weapon_instance, module_entity_name);
+	weaponClass.AddDefaultMetaFunction();
 }
 
 /**
@@ -363,6 +373,26 @@ int LuaContext::entity_api_get_game(lua_State*l)
 		
 		GetLuaContext(l).PushGame(l, game);
 		return 1;
+	});
+}
+
+/**-------------------------------------------------------
+*	\brief Enemy Lua API
+*///------------------------------------------------------
+
+/**
+*	\brief Entity执行TryHurt操作
+*/
+int LuaContext::entity_api_try_hurt(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Enemy& enemy = *std::static_pointer_cast<Enemy>(CheckUserdata(l, 1, module_enemy_name));
+		int attack = LuaTools::CheckInt(l, 2);
+		Entity& source = *CheckEntity(l, 3);
+
+		EntityAttack atackType = static_cast<EntityAttack>(attack);
+		enemy.TryHurt(atackType, source);
+		return 0;
 	});
 }
 

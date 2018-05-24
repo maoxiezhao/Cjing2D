@@ -58,7 +58,7 @@ void Matrix4::MakeIdentity()
 {
 	for (int index = 0; index < 16; ++index)
 		M[index] = 0;
-	M[0] = M[5] = M[10] = M[15] = 1;
+	//M[0] = M[5] = M[10] = M[15] = 1;
 }
 
 Matrix4 & Matrix4::operator*=(float factor)

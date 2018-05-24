@@ -1,18 +1,21 @@
 #include"lua\luaContext.h"
 #include"lua\luaBinder.h"
+#include"entity\entity.h"
+#include"gui\widget\widget.h"
+#include"gui\lua\uiApi.h"
+
 #include"movements\movement.h"
 #include"movements\targetMovement.h"
 #include"movements\pathMovement.h"
 #include"movements\pathFinding_movement.h"
-#include"entity\entity.h"
-#include"gui\widget\widget.h"
-#include"gui\lua\uiApi.h"
+#include"movements\rotateMovement.h"
 
 const string LuaContext::module_movement_name = "Movement";
 const string LuaContext::module_straight_movement_name = "StraightMovement";
 const string LuaContext::module_target_movement_name = "TargetMovement";
 const string LuaContext::module_path_movement_name = "PathMovement";
 const string LuaContext::module_path_finding_movement_name = "PathFindingMovement";
+const string LuaContext::module_rotate_movement_name = "RotateMovement";
 
 void LuaContext::RegisterMovementModule()
 {
@@ -57,6 +60,13 @@ void LuaContext::RegisterMovementModule()
 	pathFindingClass.AddDefaultMetaFunction();
 	pathFindingClass.AddFunction("Create", movement_path_finding_api_create);
 	pathFindingClass.AddMethod("SetTarget", movement_path_finding_api_set_target);
+
+	// rotate movement
+	LuaBindClass<RotateMovement> roatetClass(l, module_rotate_movement_name, module_movement_name);
+	roatetClass.AddDefaultMetaFunction();
+	roatetClass.AddFunction("Create", movement_rotate_api_create);
+	roatetClass.AddMethod("SetSpeed", &RotateMovement::SetRotateSpeed);
+	roatetClass.AddMethod("SetAngleAmount", &RotateMovement::SetAngleAmount);
 }
 
 /************************************************************
@@ -430,3 +440,20 @@ int LuaContext::movement_path_finding_api_set_target(lua_State*l)
 	});
 }
 
+/**-----------------------------------------------------
+*	\brief RotateMovement
+*///----------------------------------------------------
+
+int LuaContext::movement_rotate_api_create(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		//float amount = LuaTools::CheckNumber(l, 1);
+		//float speed = LuaTools::CheckNumber(l, 2);
+		
+		std::shared_ptr<RotateMovement> movement =
+			std::make_shared<RotateMovement>();
+
+		PushMovement(l, *movement);
+		return 1;
+	});
+};

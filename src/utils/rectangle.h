@@ -31,6 +31,7 @@ public:
 	void SetAngle(float a);
 	float GetAngle()const;
 	void SetTowPos(const Point2& lt, const Point2& rb);
+	void SetFourPos(const Point2& lt, const Point2& rt, const Point2& lb, const Point2& rb);
 
 	Point2 GetPos()const;
 	Size GetSize()const;

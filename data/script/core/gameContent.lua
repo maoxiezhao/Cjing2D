@@ -23,13 +23,15 @@ function GameContent.Initialize()
 	util_log_info("[lua] GameContent:Init.")
 
 	util_log_info("***** Start loading game shared **************")
+	
 	-- load templ
 	load_shared_templ("defaultGame.lua")
 	load_shared_templ("enemyTempl.lua")
 	load_shared_templ("playerTempl.lua")
 	load_shared_templ("bulletTempl.lua")
 	load_shared_templ("weaponTempl.lua")
-	
+	load_shared_templ("swordTempl.lua")
+
 	-- load cfgs
 	load_shared_templ("addonLists.lua")
 	load_shared_templ("dialogsList.lua")

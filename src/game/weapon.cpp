@@ -174,6 +174,12 @@ bool Weapon::IsCanAttack() const
 	return mCanAttack && !IsAttack() && !mIsAttack;
 }
 
+void Weapon::SetVisible(bool visible)
+{
+	mWeaponInstance->SetVisible(visible);
+	mWeaponSprite->SetVisible(visible);
+}
+
 /**
 *	\brief ÉèÖÃweapon¶¯»­
 */
@@ -284,6 +290,18 @@ bool Weapon::IsNotifyCollision() const
 void Weapon::SetStopAttackDelay(uint32_t delay)
 {
 	mStopAttackDelay = delay;
+}
+
+void Weapon::ComputeDemage(Entity & entity)
+{
+	if (IsAttack())
+	{
+		GetLuaContext().CallFunctionWithUserdata(*this, "OnComputeDemage",
+			[&](lua_State*l)->int {
+			GetLuaContext().PushUserdata(l, entity);
+			return 1;
+		});
+	}
 }
 
 void Weapon::NotifyAttackPlayer(Player & enemy)

@@ -1,8 +1,10 @@
 #include "entityState.h"
+#include "game\game.h"
 
 EntityState::EntityState(Entity & entity, const std::string& name):
 	mEntity(entity),
-	mName(name)
+	mName(name),
+	mIsSuspended(false)
 {
 }
 
@@ -16,6 +18,19 @@ void EntityState::Stop(EntityState & state)
 
 void EntityState::Update()
 {
+}
+
+void EntityState::SetSuspended(bool suspended)
+{
+	if (mIsSuspended != suspended)
+	{
+		mIsSuspended = suspended;
+	}
+}
+
+bool EntityState::IsSuspended() const
+{
+	return mIsSuspended;
 }
 
 void EntityState::NotifyCommandPressed(const GameCommand & command)
@@ -118,6 +133,16 @@ bool EntityState::CanAttack() const
 float EntityState::GetFacingDegree() const
 {
 	return 0.0f;
+}
+
+Game & EntityState::GetGame()
+{
+	return mEntity.GetGame();
+}
+
+const Game & EntityState::GetGame() const
+{
+	return mEntity.GetGame();
 }
 
 Entity & EntityState::GetEntity()

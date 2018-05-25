@@ -16,6 +16,7 @@ enum EntityType
 	ENEMEY,			/** 敌人 */
 	BULLET,			/** 子弹 */
 	WEAPON,			/** 武器 */
+	BLOCK,			/** 方块 */
 	UNKNOW,			/** 未知的类型 */
 };
 

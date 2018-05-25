@@ -33,6 +33,11 @@ void WeaponInstance::SetFacingDegree(float degree)
 	SetBoundingAngle(degree);
 }
 
+float WeaponInstance::GetFacingDegree() const
+{
+	return GetBoundingAngle();
+}
+
 EntityType WeaponInstance::GetEntityType() const
 {
 	return EntityType::WEAPON;
@@ -55,6 +60,11 @@ void WeaponInstance::NotifyCollisionWithPlayer(Player & player)
 	weapon.NotifyAttackPlayer(player);
 }
 
+void WeaponInstance::NotifyPositonChanged()
+{
+	NotifyBoundingRectChange();
+}
+
 Weapon & WeaponInstance::GetWeapon()
 {
 	return mWeapon;
@@ -68,4 +78,9 @@ void WeaponInstance::SetNotifyCollision(bool notified)
 	CollisionMode mode = notified ? CollisionMode::COLLISION_OVERLAPING :
 		CollisionMode::COLLISION_NONE;
 	SetCollisionMode(mode);
+}
+
+void WeaponInstance::ComputeDemage(Entity & entity)
+{
+	GetWeapon().ComputeDemage(entity);
 }

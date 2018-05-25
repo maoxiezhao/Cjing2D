@@ -18,6 +18,7 @@ public:
 
 	virtual void Update();
 	virtual const string GetLuaObjectName()const;
+	virtual int GetDirection()const;
 
 	void ComputeMovement();
 	int GetMovingSpeed()const;

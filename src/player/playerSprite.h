@@ -24,6 +24,7 @@ public:
 	void SetWalkingNormalAnimation();
 	void SetStopNormalAnimation();
 	void SetShiftNormalAnimation();
+	void SetGrabbingAnimation();
 
 	/** Status */
 	void SetAnimationDirection4(Direction4 direction);
@@ -32,6 +33,7 @@ public:
 	Direction4 GetAnimationDirection4(Direction8 wantedDirection, Direction8 realDirection)const;
 	Direction8 GetAnimationDirection8()const;
 	bool IsFourDirection()const;
+	virtual bool IsCanHurt()const;
 
 private:
 	Player& mPlayer;
@@ -46,4 +48,9 @@ private:
 inline bool PlayerSprite::IsFourDirection()const
 {
 	return mIsFourDirecitonSprite;
+}
+
+inline bool PlayerSprite::IsCanHurt() const
+{
+	return false;
 }

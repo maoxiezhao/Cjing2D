@@ -499,11 +499,17 @@
     <ClCompile Include="src\gui\widget\label.cpp">
       <Filter>gui\widget</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\swordState.cpp">
-      <Filter>player</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\weaponInstance.cpp">
       <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\block.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\grabbingState.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\pullingState.cpp">
+      <Filter>player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -999,11 +1005,17 @@
     <ClInclude Include="src\entity\destination.h">
       <Filter>entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\swordState.h">
-      <Filter>player</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\weaponInstance.h">
       <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\block.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\grabbingState.h">
+      <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\pullingState.h">
+      <Filter>player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

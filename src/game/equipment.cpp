@@ -283,7 +283,7 @@ bool Equipment::EquipWeaponFromSlots(Weapon & weapon)
 		equipSlot++;
 	}
 
-	if (equipSlot >= mMaxEquipSlot - 1)
+	if (equipSlot > mMaxEquipSlot - 1)
 	{
 		Debug::Warning("The equip slog is invalid " + weapon.GetItemName());
 		return false;

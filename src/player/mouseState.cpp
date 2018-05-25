@@ -96,3 +96,8 @@ bool MouseState::CanAttack() const
 {
 	return true;
 }
+
+bool MouseState::IsCanHurt() const
+{
+	return true;
+}

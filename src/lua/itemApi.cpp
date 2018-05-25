@@ -42,6 +42,7 @@ void LuaContext::RegisterItem()
 
 	weaponClass.AddMethod("SetAnimation", &Weapon::SetAnimation);
 	weaponClass.AddMethod("SetAttackDelta", &Weapon::SetAttackDelta);
+	weaponClass.AddMethod("SetAttackEnableDelta", &Weapon::SetStopAttackDelay);
 	weaponClass.AddMethod("GetEntity", weapon_api_get_entity);
 	weaponClass.AddMethod("GetSprite", weapon_api_get_sprite);
 	weaponClass.AddMethod("SetPosOffset", &Weapon::SetSpritePosOffset);
@@ -50,6 +51,7 @@ void LuaContext::RegisterItem()
 	weaponClass.AddMethod("IsWeaponFlip", &Weapon::IsWeaponFliped);
 	weaponClass.AddMethod("GetInstance", weapon_api_get_inst);
 	weaponClass.AddMethod("SetNotifyCollision", &Weapon::SetNotifyCollision);
+	
 }
 
 /**

@@ -115,6 +115,7 @@
     <ClCompile Include="src\core\vertexArray.cpp" />
     <ClCompile Include="src\core\video.cpp" />
     <ClCompile Include="src\entity\animatedTilePattern.cpp" />
+    <ClCompile Include="src\entity\block.cpp" />
     <ClCompile Include="src\entity\bullet.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
     <ClCompile Include="src\entity\enemy.cpp" />
@@ -226,7 +227,8 @@
     <ClCompile Include="src\player\movementState.cpp" />
     <ClCompile Include="src\player\playerSprite.cpp" />
     <ClCompile Include="src\player\playerState.cpp" />
-    <ClCompile Include="src\player\swordState.cpp" />
+    <ClCompile Include="src\player\grabbingState.cpp" />
+    <ClCompile Include="src\player\pullingState.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\nanovg.c" />
@@ -266,6 +268,7 @@
     <ClInclude Include="src\core\vertexArray.h" />
     <ClInclude Include="src\core\video.h" />
     <ClInclude Include="src\entity\animatedTilePattern.h" />
+    <ClInclude Include="src\entity\block.h" />
     <ClInclude Include="src\entity\bullet.h" />
     <ClInclude Include="src\entity\camera.h" />
     <ClInclude Include="src\entity\destination.h" />
@@ -374,7 +377,8 @@
     <ClInclude Include="src\player\movementState.h" />
     <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\player\playerState.h" />
-    <ClInclude Include="src\player\swordState.h" />
+    <ClInclude Include="src\player\grabbingState.h" />
+    <ClInclude Include="src\player\pullingState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\boundingBox.h" />
     <ClInclude Include="src\utils\color.h" />

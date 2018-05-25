@@ -27,6 +27,9 @@ function Main.OnStarted()
 	math.randomseed(tostring(os.time()):reverse():sub(1, 6)) 
 	Video.SetCursor("sprites/menus/cursor.png")
 
+	-- debug setting
+	Entity.SetDebugDraw(false)
+
 	-- core system init
 	game_content_init()
 

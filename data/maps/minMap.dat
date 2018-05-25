@@ -2226,3 +2226,11 @@ pickable{
   itemCount = 0,
 }
 
+block{
+  name = "box2",
+  x = 200,
+  y = 300,
+  layer = 0,
+  direction = 1,
+  sprite = "box1",
+}

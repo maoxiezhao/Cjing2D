@@ -20,6 +20,7 @@ public:
 
 	virtual float GetFacingDegree()const;
 	virtual bool CanAttack()const;
+	virtual bool IsCanHurt()const;
 private:
 	float mFacingDegree;
 };

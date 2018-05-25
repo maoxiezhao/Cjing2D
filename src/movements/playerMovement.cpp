@@ -56,6 +56,11 @@ const string PlayerMovement::GetLuaObjectName() const
 	return string();
 }
 
+int PlayerMovement::GetDirection() const
+{
+	return static_cast<Direction4>(mDirection / 2);
+}
+
 /**
 *	\brief º∆À„µ±«∞movment
 *

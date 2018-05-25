@@ -33,6 +33,7 @@ public:
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
+	virtual void NotifyCollisionWithBlock(Block& block);
 	virtual void NotifyAfterCreated();
 	virtual void NotifyBeRemoved();
 
@@ -42,6 +43,7 @@ public:
 	void Attack();
 	void SetNormalState();
 	void NotifyAttack();
+	void Grabbing();
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;
@@ -49,15 +51,18 @@ public:
 	PlayerSprite& GetPlayerSprites();
 	virtual EntityType GetEntityType()const;
 	void SetBindDirectoinByGameCommand(bool binded);
+	Direction4 GetDirection4()const;
 	Direction8 GetDirection8()const;
 	bool CanAttack()const;
 	bool IsWeaponAttack()const;
 	Equipment& GetEquipment();
 	const Equipment& GetEquipment()const;
 	virtual float GetFacingDegree()const;
+	virtual Point2 GetFacingPoint()const;
 
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
+	virtual bool IsObstacleBlock()const;
 
 	/** Lua Context */
 	virtual const string GetLuaObjectName()const;

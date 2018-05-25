@@ -42,6 +42,14 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 			{ "templ",      EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
 		}
 	},
+	{
+		EntityType::BLOCK,{
+			{ "sprite",     EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+			{ "push",       EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(false) },
+			{ "pull",       EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(false) },
+			{ "destory",    EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(false) },
+		}
+	},
 };
 }
 

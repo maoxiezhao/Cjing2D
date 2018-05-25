@@ -45,6 +45,11 @@ PlayerTempl.metatable = {
 
 	end,
 
+	------------------------------------------------------------------
+	--  C++调用的方法
+	------------------------------------------------------------------
+
+	-- 每帧调用的刷新函数
 	OnUpdate = function(player)
 		local cur_sp = player:GetProperty(ENTITY_PROPERTY_SP)
 		local max_sp = player:GetProperty(ENTITY_PROPERTY_MAX_SP)
@@ -55,6 +60,24 @@ PlayerTempl.metatable = {
 		end
 	end,
 
+	-- 当碰到block时调用
+	OnNotifyCollisionBlock = function(player, block)
+		if block then 
+			player:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "!!!!")
+		end
+	end,
+
+	-- 当facing的entity改变时调用
+	OnNotifyFacingEntityChanged = function( player, entity)
+		if not entity then 
+			player:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "")
+		end
+	end,
+
+
+	------------------------------------------------------------------
+	--  非C++调用的自定义方法
+	------------------------------------------------------------------
 	-- player sp define
 	SetTired = function(player, tired)
 		if tired == player._tired then 

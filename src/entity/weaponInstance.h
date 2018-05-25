@@ -21,6 +21,7 @@ public:
 	virtual void Update();
 	virtual void Draw();
 	virtual void SetFacingDegree(float degree);
+	virtual float GetFacingDegree()const;
 
 	/** lua */
 	virtual EntityType GetEntityType()const;
@@ -29,10 +30,12 @@ public:
 	/** notify */
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 	virtual void NotifyCollisionWithPlayer(Player& player);
+	virtual void NotifyPositonChanged();
 
 	/** status */
 	Weapon& GetWeapon();
 	void SetNotifyCollision(bool notified);
+	void ComputeDemage(Entity& entity);
 
 private:
 	Weapon& mWeapon;

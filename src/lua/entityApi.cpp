@@ -14,19 +14,22 @@
 #include"entity\bullet.h"
 #include"entity\destination.h"
 #include"entity\weaponInstance.h"
+#include"entity\block.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_player_name = "Player";
 const std::string LuaContext::module_enemy_name = "Enemy";
 const std::string LuaContext::module_entity_bullet_name = "Bullet";
 const std::string LuaContext::module_weapon_instance = "WeaponInstance";
+const std::string LuaContext::module_block_name = "Block";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
 	LuaContext::module_enemy_name,
 	LuaContext::module_player_name,
 	LuaContext::module_entity_bullet_name,
-	LuaContext::module_weapon_instance
+	LuaContext::module_weapon_instance,
+	LuaContext::module_block_name,
 };
 
 void LuaContext::RegisterEntityModule()
@@ -34,6 +37,7 @@ void LuaContext::RegisterEntityModule()
 	// entity base
 	LuaBindClass<Entity> entityClass(l, "Entity");
 	entityClass.AddDefaultMetaFunction();
+	entityClass.AddFunction("SetDebugDraw", &Entity::SetDebugDrawBounding);
 	entityClass.AddMethod("CreateSprite", entity_api_create_sprite);
 	entityClass.AddMethod("ClearSprites", &Entity::ClearSprites);
 	entityClass.AddMethod("GetName",  &Entity::GetName);
@@ -77,6 +81,10 @@ void LuaContext::RegisterEntityModule()
 	// Weapon instance
 	LuaBindClass<WeaponInstance> weaponClass(l, module_weapon_instance, module_entity_name);
 	weaponClass.AddDefaultMetaFunction();
+
+	// Block 
+	LuaBindClass<Block> blockClass(l, module_block_name, module_entity_name);
+	blockClass.AddDefaultMetaFunction();
 }
 
 /**
@@ -89,7 +97,8 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 	{ EntityType::DYNAMIC_TITLE, entity_api_create_dynamic_title },
 	{ EntityType::PICKABLE, entity_api_create_pickable },
 	{ EntityType::ENEMEY, entity_api_create_enemy },
-	{ EntityType::BULLET, entity_api_create_bullet }
+	{ EntityType::BULLET, entity_api_create_bullet },
+	{ EntityType::BLOCK, entity_api_create_block },
 };
 
 /**
@@ -236,6 +245,32 @@ int LuaContext::entity_api_create_bullet(lua_State* l)
 			return 1;
 		}
 		return 0;
+	});
+}
+
+
+
+/**
+*	\brief cr的创建函数
+*/
+int LuaContext::entity_api_create_block(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Map& map = *CheckMap(l, 1);
+		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
+
+		auto block = std::make_shared<Block>(
+			entityData.GetName(),
+			entityData.GetLayer(),
+			entityData.GetPos(),
+			entityData.GetValueString("sprite"),
+			entityData.GetValueBoolean("push"),
+			entityData.GetValueBoolean("pull"),
+			entityData.GetValueBoolean("destory"));
+
+		map.GetEntities().AddEntity(block);
+		PushUserdata(l, *block);
+		return 1;
 	});
 }
 
@@ -409,3 +444,4 @@ bool LuaContext::IsPlyaer(lua_State*l, int index)
 {
 	return IsUserdata(l, index, module_player_name);
 }
+

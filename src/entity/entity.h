@@ -20,6 +20,7 @@ class Map;
 class EntityState;
 class Enemy;
 class Player;
+class Block;
 
 /**
 *	\brief 游戏实体的抽象类
@@ -54,6 +55,7 @@ public:
 		COLLISION_OVERLAPING = 0x01,	// 覆盖模式
 		COLLISION_CONTAINING = 0x02,	// 包含模式
 		COLLLSION_SPRITE = 0x04,        // 精灵间像素碰撞检测
+		COLLISION_FACING = 0x08,
 	};
 
 	/**
@@ -149,6 +151,8 @@ public:
 	/** direction */
 	virtual void SetFacingDegree(float degree);
 	virtual float GetFacingDegree()const;
+	virtual Point2 GetFacingPoint()const;
+	Point2 GetPointByDirection(Direction4 direction)const;
 	virtual void SetBoundRotateAnchor(float x, float y);
 	virtual void SetDirection(Direction4 dir);
 	Direction4 GetDirection()const;
@@ -160,6 +164,7 @@ public:
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
 	virtual bool IsObstaclePlayer()const;
+	virtual bool IsObstacleBlock()const;
 
 	// special status
 	void SetFacingEntity(Entity* entity);
@@ -203,6 +208,7 @@ public:
 	const std::shared_ptr<Movement>& GetMovement();
 	const std::shared_ptr<Movement>& GetMovement()const;
 	virtual void StartMoveByPushed(Entity& entity);
+	virtual void StopMoveByPushed();
 
 	/***** **** *** collision *** ***** *****/
 	void CheckCollisionWithEntities();
@@ -212,6 +218,7 @@ public:
 	bool TestCollisionOverlaping(const Entity& entity, int type = BOUNDING_BOX_NOTIFY);
 	bool TestCollisionWithBox(const BoundingBox box,   int type = BOUNDING_BOX_NOTIFY);
 	bool TestCollisionWithRect(const Rect& rect,       int type = BOUNDING_BOX_NOTIFY);
+	bool TestCollisionFacing(const Entity& entity,     int type = BOUNDING_BOX_NOTIFY);
 
 	bool IsHaveCollision()const;
 	void SetCollisionMode(CollisionMode collisionMode);
@@ -224,12 +231,15 @@ public:
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 	virtual void NotifyCollisionWithPlayer(Player& player);
+	virtual void NotifyCollisionWithBlock(Block& block);
 
 	// notify pixel collision
 	virtual void NotifySpriteCollision(Entity& otherEntity, Sprite& srcSprite, Sprite& otherSprite);
 	virtual void NotifySpriteCollisionWithEnemy(Enemy& enemy, Sprite& srcSprite, Sprite& otherSprite);
 	virtual void NotifySpriteCollisionWithPlayer(Player& player, Sprite& srcSprite, Sprite& otherSprite);
 
+	static void SetDebugDrawBounding(bool drawed);
+	static bool isDebugDrawBounding;	/** 是否绘制包围盒 */
 private:
 	// status
 	string mName;			  /** 自定义名字，不可相同 */

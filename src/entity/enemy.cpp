@@ -1,5 +1,6 @@
 #include"entity\enemy.h"
 #include"entity\bullet.h"
+#include"entity\weaponInstance.h"
 #include"game\combat.h"
 #include"game\animationSprite.h"
 #include"lua\luaContext.h"
@@ -244,6 +245,11 @@ void Enemy::TryHurt(EntityAttack attack, Entity & source)
 		{
 			auto& bullet = dynamic_cast<Bullet&>(source);
 			bullet.ComputeDemage(*this);
+		}
+		else if (attack == EntityAttack::COMBAT)
+		{
+			auto& weapon = dynamic_cast<WeaponInstance&>(source);
+			weapon.ComputeDemage(*this);
 		}
 
 		Hurt(source);

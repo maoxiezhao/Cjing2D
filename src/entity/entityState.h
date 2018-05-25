@@ -3,6 +3,8 @@
 #include"entity\entity.h"
 #include"game\gameCommands.h"
 
+class Game;
+
 /**
 *	\brief entity 状态组件的基类
 *
@@ -19,6 +21,8 @@ public:
 	virtual void Start(EntityState& state);
 	virtual void Stop(EntityState& state);
 	virtual void Update();
+	virtual void SetSuspended(bool suspended);
+	bool IsSuspended()const;
 
 	/** command notify */
 	virtual void NotifyCommandPressed(const GameCommand& command);
@@ -37,10 +41,13 @@ public:
 	virtual bool CanAttack()const;
 	virtual float GetFacingDegree()const;
 
+	Game& GetGame();
+	const Game& GetGame()const;
 	Entity& GetEntity();
 	const Entity& GetEntity()const;
 
 private:
 	Entity& mEntity;
 	std::string mName;
+	bool mIsSuspended;
 };

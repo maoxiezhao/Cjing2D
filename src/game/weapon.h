@@ -21,6 +21,7 @@ class Weapon : public Item
 public:
 	Weapon(const std::string& weaponName, Equipment& equipment);
 
+	/** system */
 	virtual void Initialize();
 	virtual void Update();
 	virtual void Uninitialize();
@@ -28,16 +29,19 @@ public:
 	virtual bool UnEquiped();
 	virtual void Droped();
 
+	/** operation */
 	virtual bool BeforeAttack();
 	virtual void Attack();
 	virtual void AfterAttack();
 	virtual bool IsAttack()const;
 	virtual bool IsCanAttack()const;
-
+	
+	/** status */
 	std::string GetWeaponName()const;
 	virtual bool IsEquiped()const;
 	virtual bool IsWeapon()const;
 
+	void SetVisible(bool visible);
 	void SetAnimation(const std::string& name);
 	void SetAttackAnimation();
 	void SetNormalAnimation();
@@ -54,6 +58,7 @@ public:
 	bool IsNotifyCollision()const;
 	void SetStopAttackDelay(uint32_t delay);
 
+	void ComputeDemage(Entity& entity);
 	void NotifyAttackPlayer(Player & enemy);
 	void NotifyAttackEnemy(Enemy & enemy);
 	virtual const string GetLuaObjectName()const;

@@ -8,6 +8,8 @@
 #include "entity\enemy.h"
 #include "movements\movement.h"
 
+bool Entity::isDebugDrawBounding = false;
+
 Entity::Entity():
 	mName(""),
 	mOrigin(0, 0),
@@ -29,7 +31,8 @@ Entity::Entity():
 	mInsertQuadTree(false),
 	mFocused(false),
 	mCanPushed(false),
-	mNotifyScriptMovement(true)
+	mNotifyScriptMovement(true),
+	mStopMovement(true)
 {
 }
 
@@ -56,7 +59,8 @@ Entity::Entity(const string & name, const string& templName, const Point2 & pos,
 	mInsertQuadTree(false),
 	mFocused(false),
 	mCanPushed(false),
-	mNotifyScriptMovement(true)
+	mNotifyScriptMovement(true),
+	mStopMovement(true)
 {
 	mBoundBox[0] = BoundingBox(pos, { size.width + 4, size.height + 4});
 	mBoundBox[1] = BoundingBox(pos, { size.width, size.height});
@@ -88,7 +92,7 @@ void Entity::Update()
 	ClearRemovedSprite();
 
 	// movement
-	if (mMovement != nullptr)
+	if (mMovement != nullptr && !mStopMovement)
 	{
 		mMovement->Update();
 
@@ -96,6 +100,9 @@ void Entity::Update()
 		if (mMovement != nullptr && mMovement->IsFinished())
 			StopMovement();
 	}
+
+	// attach update
+	UpdateAttachEntities();
 
 	// state
 	UpdateState();
@@ -106,7 +113,11 @@ void Entity::Update()
 */
 void Entity::Draw()
 {
-	//DrawDebugBounding();
+	// draw debug
+	if(isDebugDrawBounding)
+		DrawDebugBounding();
+
+	// draw sprites
 	for (auto& nameSprite : mSprites)
 	{
 		auto sprite = nameSprite.sprite;
@@ -116,6 +127,10 @@ void Entity::Draw()
 			GetMap().DrawOnMap(*sprite, pos);
 		}
 	}
+
+	// attch entities
+	for (auto& entity : mAttachEntities)
+		entity->Draw();
 }
 
 /**
@@ -130,6 +145,7 @@ void Entity::Initalized()
 	NotifyBeforeCreated();
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnCreated");
 	NotifyAfterCreated();
+	GetLuaContext()->EnterEntity(*this);
 
 	mIsInitialized = true;
 }
@@ -146,14 +162,8 @@ void Entity::SetFocused(bool bFocused)
 {
 	if (mFocused != bFocused)
 	{
-		//if (bFocused)
-		//{
-		//	// notifyGetFocused()
-		//}
-		//else
-		//{
-		//	// notifyLoseFocused()
-		//}
+		NotifyFocusChange(bFocused);
+	
 		mFocused = bFocused;
 	}
 }
@@ -163,9 +173,83 @@ bool Entity::IsFosused() const
 	return mFocused;
 }
 
+Point2 Entity::GetAttachOffset() const
+{
+	return mAttachOffset;
+}
+
+void Entity::SetAttachOffset(const Point2 & offset)
+{
+	mAttachOffset = offset;
+}
+
+void Entity::UpdateAttachEntities()
+{
+	// attch entities
+	for (auto& entity : mAttachEntities)
+		entity->Update();
+}
+
+bool Entity::HasAttachEntity(Entity & checkEntity) const
+{
+	for (auto& entity : mAttachEntities)
+		if (entity.get() == &checkEntity)
+			return true;
+
+	return false;
+}
+
+/**
+*	\brief 添加一个Entity置指定挂载点
+*/
+void Entity::AddAttachEntity(EntityPtr attachEntity, const Point2 & offset)
+{
+	// 遍历避免重复添加
+	for (auto& entity : mAttachEntities)
+	{
+		if (entity.get() == attachEntity.get())
+		{
+			Debug::Warning("The adding attach entity has already added. "
+				+ attachEntity->GetName());
+			return;
+		}
+	}
+
+	// 如果被挂载Entity已经在地图中，则直接添加到地图中
+	if (!attachEntity->IsOnMap() && IsOnMap())
+	{
+		auto& map = GetMap();
+		map.GetEntities().AddEntity(attachEntity);
+	}
+
+	auto pos = GetPos() + offset;
+	attachEntity->SetPos(pos);
+	attachEntity->SetAttachOffset(offset);
+	mAttachEntities.push_back(attachEntity);
+}
+
+/**
+*	\brief 从挂载的Entities中移除指定的entity
+*/
+void Entity::RemoveAttachEntity(EntityPtr attachEntity)
+{
+	for (auto it = mAttachEntities.begin(); it != mAttachEntities.end(); ++it)
+	{
+		auto& entity = *it;
+		if (entity.get() == attachEntity.get())
+		{
+			if (entity->IsOnMap())
+				entity->RemoveFromMap();
+
+			mAttachEntities.erase(it);
+			return;
+		}
+	}
+}
+
 const string Entity::GetLuaObjectName() const
 {
-	return string();
+	return LuaContext::module_entity_name;
 }
 
 void Entity::DrawDebugBounding()
@@ -175,12 +259,17 @@ void Entity::DrawDebugBounding()
 		mDebugSprite = std::make_shared<Sprite>(Color4B(rand() % (255), rand() % (255), rand() % (255), 255), Size(0, 0));
 
 	Rect box = mBoundBox[0].GetRect();
-	float angle = Geometry::Degree(GetFacingDegree());
+	float angle = (GetFacingDegree());
+	float rx, ry;
+	angle = GetEntityType() == EntityType::PLAYRE ? 0.0f : angle;
+
+	mBoundBox[0].GetRotateAnchor(rx, ry);
 	mDebugSprite->SetPos(box.GetPos());
 	mDebugSprite->SetSize(box.GetSize());
 	mDebugSprite->SetDeferredDraw(false);
+//	mDebugSprite->SetRotateAnchor(rx, ry);
+//	mDebugSprite->SetRotated(angle);
 	GetMap().DrawOnMap(*mDebugSprite);
-
 
 	// obstacle
 	if (mDebugSprite1 == nullptr)
@@ -261,6 +350,10 @@ void Entity::NotifyCollisionWithPlayer(Player & player)
 {
 }
 
+void Entity::NotifyCollisionWithBlock(Block & block)
+{
+}
+
 void Entity::NotifySpriteCollision(Entity & otherEntity, Sprite & srcSprite, Sprite & otherSprite)
 {
 }
@@ -273,12 +366,19 @@ void Entity::NotifySpriteCollisionWithPlayer(Player & player, Sprite & srcSprite
 {
 }
 
+void Entity::SetDebugDrawBounding(bool drawed)
+{
+	isDebugDrawBounding = drawed;
+}
+
 /**
 *	\brief 响应被销毁
 */
 void Entity::NotifyBeRemoved()
 {
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnRemoved");
+	GetLuaContext()->LeaveEntity(*this);
+
 	mBeRemoved = true;
 }
 
@@ -343,6 +443,14 @@ void Entity::NotifyAttackPlayer(Player & player, EntityAttack attack, EntityReac
 {
 }
 
+void Entity::NotifyFocusChange(bool focused)
+{
+	//if (focused)
+	//	GetLuaContext()->CallFunctionWithUserdata(*this, "OnGainFocus");
+	//else
+	//	GetLuaContext()->CallFunctionWithUserdata(*this, "OnLoseFocus");
+}
+
 /**
 *	\brief 响应交互键的按下
 *	\param interactEntity 发起交互的实体
@@ -381,6 +489,9 @@ void Entity::SetMap(Map * map)
 		// 则在加入地图时初始化
 		Initalized();
 	}
+
+	for (auto& entity : mAttachEntities)
+		entity->SetMap(map);
 }
 
 Map & Entity::GetMap()
@@ -407,6 +518,9 @@ const Map & Entity::GetMap() const
 void Entity::RemoveFromMap()
 {
 	auto& entities = mMap->GetEntities();
+	for (auto& entity : mAttachEntities)
+		entities.RemoveEntity(*entity);
+
 	entities.RemoveEntity(*this);
 }
 
@@ -564,6 +678,9 @@ void Entity::UpdateState()
 		mState->Update();
 	}
 	mOldState.clear();
+
+	for (auto& entity : mAttachEntities)
+		entity->Update();
 }
 
 void Entity::StopMovement()
@@ -574,6 +691,7 @@ void Entity::StopMovement()
 		mMovement->Stop();
 	}
 	mMovement = nullptr;
+	mStopMovement = true;
 }
 
 void Entity::StartMovement(const std::shared_ptr<Movement>& movement)
@@ -582,6 +700,7 @@ void Entity::StartMovement(const std::shared_ptr<Movement>& movement)
 	mMovement = movement;
 	mMovement->SetEntity(this);
 	mMovement->Start();
+	mStopMovement = false;
 }
 
 const std::shared_ptr<Movement>& Entity::GetMovement()
@@ -670,6 +789,14 @@ void Entity::CheckCollision(Entity & otherEntity)
 	{
 		NotifyCollision(otherEntity, CollisionMode::COLLISION_CONTAINING);
 	}
+	else if (HasCollisionMode(CollisionMode::COLLISION_FACING) &&
+		TestCollisionFacing(otherEntity))
+	{
+		if (otherEntity.GetFacingEntity() == nullptr)
+			otherEntity.SetFacingEntity(this);
+
+		NotifyCollision(otherEntity, CollisionMode::COLLISION_FACING);
+	}
 }
 
 /**
@@ -723,6 +850,13 @@ bool Entity::TestCollisionWithRect(const Rect & rect, int type)
 	return GetRectBounding(type).Overlaps(rect);
 }
 
+bool Entity::TestCollisionFacing(const Entity & entity, int type)
+{
+	BoundingBox box = GetBoundingBox(type);
+	const Point2 facingPoint = entity.GetFacingPoint();
+	return box.Contains(facingPoint);
+}
+
 bool Entity::TestCollisionContaining(const Entity & entity, int type)
 {
 	return false;
@@ -761,8 +895,11 @@ Size Entity::GetNotifySize() const
 
 void Entity::SetBoundingAngle(float angle)
 {
+	//angle = angle != 0 ? 90.0f : 0.0f;
 	for(auto& box : mBoundBox)
 		box.SetRotate(angle);
+
+	NotifyBoundingRectChange();
 }
 
 float Entity::GetBoundingAngle() const
@@ -846,6 +983,14 @@ bool Entity::IsEnable() const
 	return mEnabled;
 }
 
+Point2 Entity::GetPositivePos() const
+{
+	const Map& curMap = GetMap();
+	const Point2& pos = GetPos();
+
+	return (pos - curMap.GetCameraLeftTopPos());
+}
+
 Point2 Entity::GetPos()const
 {
 	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos() + mOrigin;
@@ -866,7 +1011,12 @@ Point2 Entity::GetLeftTopPos() const
 Point2 Entity::GetAttachPos() const
 {
 	Size size = GetSize();
-	return{ (int)(size.width * 0.6), size.height / 2 };
+	return{ (int)(size.width * 0.7), size.height / 2 };
+}
+
+Point2 Entity::GetBillBoardPos() const
+{
+	return GetPositivePos();
 }
 
 void Entity::SetPos(const Point2& pos)
@@ -874,6 +1024,10 @@ void Entity::SetPos(const Point2& pos)
 	int x = pos.x - mOrigin.x, y = pos.y - mOrigin.y;
 	mBoundBox[BOUNDING_BOX_OBSTACLE].SetPos(x, y);
 	mBoundBox[BOUNDING_BOX_NOTIFY].SetPos(x + mNotifyOffset.x, y + mNotifyOffset.y);
+
+	for (auto& entity : mAttachEntities)
+		entity->SetPos(pos + entity->GetAttachOffset());
+
 	NotifyBoundingRectChange();
 }
 
@@ -948,7 +1102,6 @@ void Entity::SetFacingDegree(float degree)
 		if (!namesprite.removed)
 		{
 			auto& sprite = namesprite.sprite;
-			degree = Geometry::Degree(degree);
 			sprite->SetRotated(degree);
 		}
 	}
@@ -959,7 +1112,51 @@ void Entity::SetFacingDegree(float degree)
 */
 float Entity::GetFacingDegree() const
 {
-	return 0.0f;
+	return mBoundBox[0].GetRotate();
+}
+
+Point2 Entity::GetFacingPoint() const
+{
+	return GetPointByDirection(mDirection);
+}
+
+Point2 Entity::GetPointByDirection(Direction4 direction)const
+{
+	Point2 point = GetCenterPos();
+	switch (direction)
+	{
+	case DIRECTION4_RIGHT:
+		point.x += GetSize().width / 2;
+		break;
+	case DIRECTION4_UP:
+		point.y -= GetSize().height / 2;
+		break;
+	case DIRECTION4_LEFT:
+		point.x -= GetSize().width / 2;
+		break;
+	case DIRECTION4_DOWN:
+		point.y += GetSize().height / 2;
+		break;
+	default:
+		Debug::Warning("The direction is invalid in GetFacingPoint().");
+		break;
+	}
+	return point;;
+}
+
+void Entity::SetBoundRotateAnchor(float x, float y)
+{
+	auto& sprites = GetSprites();
+	for (auto& namesprite : sprites)
+	{
+		if (!namesprite.removed)
+		{
+			auto& sprite = namesprite.sprite;
+			sprite->SetRotateAnchor(x, y);
+		}
+	}
+	mBoundBox[0].SetRotateAnchor(x, y);
+	mBoundBox[1].SetRotateAnchor(x, y);
 }
 
 void Entity::SetDirection(Direction4 dir)
@@ -994,6 +1191,10 @@ void Entity::StartMoveByPushed(Entity & entity)
 {
 }
 
+void Entity::StopMoveByPushed()
+{
+}
+
 bool Entity::IsObstacle(Entity & entity) const
 {
 	return false;
@@ -1005,6 +1206,11 @@ bool Entity::IsObstacleEnemy() const
 }
 
 bool Entity::IsObstaclePlayer() const
+{
+	return false;
+}
+
+bool Entity::IsObstacleBlock() const
 {
 	return false;
 }

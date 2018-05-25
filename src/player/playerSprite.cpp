@@ -5,6 +5,7 @@ namespace{
 	const std::string walkAnimationName = "walking";
 	const std::string stopAnimationName = "stopping";
 	const std::string shiftAnimationName = "shifting";
+	const std::string grabbingAnimationName = "grabbing";
 
 	// 4方向动画方向，用于多个方向产生时确定
 	// 真正移动的方向,仅用在4方向行走图
@@ -102,6 +103,12 @@ void PlayerSprite::SetStopNormalAnimation()
 void PlayerSprite::SetShiftNormalAnimation()
 {
 	mBodySprite->SetCurrAnimation(shiftAnimationName);
+	mBodySprite->StartAnimation();
+}
+
+void PlayerSprite::SetGrabbingAnimation()
+{
+	mBodySprite->SetCurrAnimation(grabbingAnimationName);
 	mBodySprite->StartAnimation();
 }
 

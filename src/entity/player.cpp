@@ -1,11 +1,13 @@
 #include"entity\player.h"
 #include"entity\entities.h"
 #include"entity\destination.h"
+#include"entity\block.h"
 #include"game\map.h"
 #include"game\equipment.h"
 #include"game\weapon.h"
 #include"player\freeState.h"
 #include"player\mouseState.h"
+#include"player\grabbingState.h"
 #include"player\playerSprite.h"
 #include"core\logger.h"
 #include"gui\core\uiRender.h"
@@ -46,7 +48,8 @@ void Player::Update()
 	ClearRemovedSprite();
 
 	// movement update
-	GetMovement()->Update();
+	if(GetMovement() != nullptr)
+		GetMovement()->Update();
 
 	// equipment update
 	GetEquipment().Update();
@@ -173,6 +176,12 @@ void Player::SetBindDirectoinByGameCommand(bool binded)
 	mIsBindDirectionByGameCommand = binded;
 }
 
+Direction4 Player::GetDirection4() const
+{
+	auto dir = mPlayerSprites->GetAnimationDirection8();
+	return static_cast<Direction4>(dir / 2);
+}
+
 /**
 *	\brief 获取sprite的方向
 *	\return 以8方向形式返回
@@ -212,12 +221,26 @@ float Player::GetFacingDegree() const
 	return GetState().GetFacingDegree();
 }
 
+Point2 Player::GetFacingPoint() const
+{
+	Direction4 dir = DIRECTION4_NONE;
+	if (GetMovement() != nullptr)
+		dir = static_cast<Direction4>( GetMovement()->GetDirection());
+	
+	return GetPointByDirection(dir);
+}
+
 bool Player::IsObstacle(Entity & entity) const
 {
 	return entity.IsObstaclePlayer();
 }
 
 bool Player::IsObstacleEnemy() const
+{
+	return true;
+}
+
+bool Player::IsObstacleBlock() const
 {
 	return true;
 }
@@ -250,6 +273,11 @@ void Player::SetNormalState()
 
 void Player::NotifyAttack()
 {
+}
+
+void Player::Grabbing()
+{
+	SetState(new GrabbingState(*this));
 }
 
 /**
@@ -310,6 +338,16 @@ void Player::NotifyFacingEntityChanged(Entity * entity)
 		{
 			entity->SetFocused(true);
 		}
+
+		// lua notify
+		GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyFacingEntityChanged",
+			[&](lua_State*l)->int {
+			if (entity) {
+				GetLuaContext()->PushUserdata(l, *this);
+				return 1;
+			}
+			return 0;
+		});
 	}
 }
 
@@ -349,6 +387,15 @@ void Player::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
 void Player::NotifyCollisionWithEnemy(Enemy & enemy)
 {
 	Logger::Info("Notify Collison.");
+}
+
+void Player::NotifyCollisionWithBlock(Block & block)
+{
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyCollisionBlock",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, block);
+		return 1;
+	});
 }
 
 void Player::NotifyAfterCreated()

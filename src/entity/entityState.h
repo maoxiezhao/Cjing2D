@@ -28,6 +28,7 @@ public:
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
+	virtual void NotifyMovementFinished();
 
 	// notify special command
 	virtual void NotifyCommandDirectionPressed(Direction4 direction);
@@ -35,9 +36,11 @@ public:
 	virtual void NotifyCommandInteractPressed();
 	virtual void NotifyCommandShiftPressed();
 	virtual void NotifyCommandAttackPressed();
+	virtual void NotifyStopGrabbing();
 
 	std::string GetName()const;
 	virtual Direction8 GetWantedDirection8()const;
+	virtual Direction4 GetWantedDirection4()const;
 	virtual bool CanAttack()const;
 	virtual float GetFacingDegree()const;
 

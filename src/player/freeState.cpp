@@ -3,7 +3,7 @@
 #include "player\playerSprite.h"
 
 FreeState::FreeState(Entity & entity):
-	MovementState(entity)
+	MovementState(entity, "NormalMovement")
 {
 }
 

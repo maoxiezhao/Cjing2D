@@ -156,7 +156,6 @@ function WeaponBar.OnLoad()
 		size = {96, 96},
 	})
 	local weapon_icon = weaponFrame:CreateImage("weaponIcon", { 
-		path =  "sprites/menus/icon/usp.png",
 		pos  = {0, 0},
 		size = {96, 96},
 	})
@@ -168,7 +167,6 @@ function WeaponBar.OnLoad()
 	})
 	name_label:SetFontColor({255,255,255,255})
 	name_label:SetFontSize(20)
-	name_label:SetText("Dead Boy")
 	name_label:SetFontFace("ui_pixel")
 	name_label:SetTextAlign(FONT_ALIGN_CENTER | FONT_ALIGN_TOP)
 	weaponFrame._name_label = name_label
@@ -179,7 +177,6 @@ function WeaponBar.OnLoad()
 	})
 	num_label:SetFontColor({255,255,255,255})
 	num_label:SetFontSize(20)
-	num_label:SetText("100/100")
 	num_label:SetFontFace("ui_pixel")
 	num_label:SetTextAlign(FONT_ALIGN_CENTER | FONT_ALIGN_TOP)
 	weaponFrame._num_label = num_label

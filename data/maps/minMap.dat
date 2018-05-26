@@ -2233,4 +2233,5 @@ block{
   layer = 0,
   direction = 1,
   sprite = "box1",
+  push = true,
 }

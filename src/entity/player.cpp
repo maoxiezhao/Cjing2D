@@ -280,6 +280,11 @@ void Player::Grabbing()
 	SetState(new GrabbingState(*this));
 }
 
+void Player::StopGrabbing()
+{
+	GetState().NotifyStopGrabbing();
+}
+
 /**
 *	\brief 响应移动改变
 *
@@ -306,6 +311,11 @@ void Player::NotifyMovementChanged()
 	}
 	// 响应中设置动画的播放暂停
 	GetState().NotifyMovementChanged();	
+}
+
+void Player::NotifyMovementFinished()
+{
+	GetState().NotifyMovementFinished();
 }
 
 /**

@@ -87,6 +87,7 @@ public:
 	virtual void NotifyCommandPressed(const GameCommand& command);
 	virtual void NotifyCommandReleased(const GameCommand& command);
 	virtual void NotifyMovementChanged();
+	virtual void NotifyMovementFinished();
 	virtual void NotifyPositonChanged();
 	virtual void NotifyBeRemoved();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
@@ -207,8 +208,8 @@ public:
 	void StartMovement(const std::shared_ptr<Movement>& movement);
 	const std::shared_ptr<Movement>& GetMovement();
 	const std::shared_ptr<Movement>& GetMovement()const;
-	virtual void StartMoveByPushed(Entity& entity);
-	virtual void StopMoveByPushed();
+	virtual bool StartMoveByPushed(Entity& entity);
+	virtual bool StopMoveByPushed();
 
 	/***** **** *** collision *** ***** *****/
 	void CheckCollisionWithEntities();

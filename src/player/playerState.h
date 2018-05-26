@@ -14,7 +14,7 @@ class Equipment;
 class PlayerState : public EntityState
 {
 public:
-	PlayerState(Entity& entity);
+	PlayerState(Entity& entity, const std::string& name);
 
 	virtual void Update();
 

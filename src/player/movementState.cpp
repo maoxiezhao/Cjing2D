@@ -3,8 +3,8 @@
 #include "player\playerSprite.h"
 #include "lua\luaContext.h"
 
-MovementState::MovementState(Entity & entity):
-	PlayerState(entity),
+MovementState::MovementState(Entity & entity, const std::string& name):
+	PlayerState(entity, name),
 	mPlayerMovement(nullptr)
 {
 }
@@ -26,6 +26,16 @@ void MovementState::Stop(EntityState & state)
 void MovementState::Update()
 {
 	PlayerState::Update();
+	mDirection = static_cast<Direction4>(mPlayerMovement->GetDirection());
+}
+
+/**
+*	\brief 返回4方向，和8方向处理不同，这里以成员的方式记录
+*	当前移动方向，用于在其他StateStart时获取方向（因此此时PlayerMovment已经Clear）
+*/
+Direction4 MovementState::GetWantedDirection4() const
+{
+	return mDirection;
 }
 
 Direction8 MovementState::GetWantedDirection8() const

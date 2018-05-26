@@ -13,10 +13,11 @@ public:
 
 	/** notify */
 	virtual bool IsObstacle(Entity& entity)const;
-	virtual void StartMoveByPushed(Entity& entity);
-	virtual void StopMoveByPushed();
+	virtual bool StartMoveByPushed(Entity& entity);
+	virtual bool StopMoveByPushed();
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
+	virtual void NotifyObstacleReached();
 
 	/** status */
 	bool IsCanPushed()const;
@@ -37,6 +38,8 @@ private:
 	bool mCanPushed;
 	bool mCanPulled;
 	bool mCanDestory;
+
+	EntityPtr mMovingEntity;
 
 	const std::string animateSetID = "entities/common";
 };

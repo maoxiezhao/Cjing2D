@@ -4,8 +4,8 @@
 #include "game\equipment.h"
 #include "game\game.h"
 
-PlayerState::PlayerState(Entity & entity):
-	EntityState(entity, "PlayerState")
+PlayerState::PlayerState(Entity & entity, const std::string& name):
+	EntityState(entity, name)
 {
 }
 

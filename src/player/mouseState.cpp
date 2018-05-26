@@ -6,7 +6,7 @@
 #include "utils\geometry.h"
 
 MouseState::MouseState(Entity & entity):
-	MovementState(entity),
+	MovementState(entity, "MouseMovement"),
 	mFacingDegree(0.0f)
 {
 }

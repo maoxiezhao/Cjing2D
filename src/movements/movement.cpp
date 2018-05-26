@@ -140,6 +140,9 @@ void Movement::NotifyMovementFinished()
 	{
 		mFinishedCallBack.Call("movment finished callback");
 	}
+
+	if (mEntity != nullptr && !mEntity->IsBeRemoved())
+		mEntity->NotifyMovementFinished();
 }
 
 void Movement::NotifyObstacleReached()

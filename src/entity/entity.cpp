@@ -319,6 +319,10 @@ void Entity::NotifyMovementChanged()
 	}
 }
 
+void Entity::NotifyMovementFinished()
+{
+}
+
 /**
 *	\brief 响应位置变动
 */
@@ -1187,12 +1191,14 @@ void Entity::SetCanPushed(bool pushed)
 	mCanPushed = pushed;
 }
 
-void Entity::StartMoveByPushed(Entity & entity)
+bool Entity::StartMoveByPushed(Entity & entity)
 {
+	return true;
 }
 
-void Entity::StopMoveByPushed()
+bool Entity::StopMoveByPushed()
 {
+	return true;
 }
 
 bool Entity::IsObstacle(Entity & entity) const

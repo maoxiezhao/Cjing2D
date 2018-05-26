@@ -28,6 +28,7 @@ public:
 
 	/** Notify event */
 	virtual void NotifyMovementChanged();
+	virtual void NotifyMovementFinished();
 	virtual void NotifyPositonChanged();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
@@ -44,6 +45,7 @@ public:
 	void SetNormalState();
 	void NotifyAttack();
 	void Grabbing();
+	void StopGrabbing();
 
 	/** getter/setter */
 	int GetWalkingSpeed()const;

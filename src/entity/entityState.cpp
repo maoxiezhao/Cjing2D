@@ -92,6 +92,10 @@ void EntityState::NotifyMovementChanged()
 	// do nothing
 }
 
+void EntityState::NotifyMovementFinished()
+{
+}
+
 void EntityState::NotifyCommandDirectionPressed(Direction4 direction)
 {
 	// do nothing
@@ -115,6 +119,10 @@ void EntityState::NotifyCommandAttackPressed()
 {
 }
 
+void EntityState::NotifyStopGrabbing()
+{
+}
+
 std::string EntityState::GetName() const
 {
 	return mName;
@@ -123,6 +131,11 @@ std::string EntityState::GetName() const
 Direction8 EntityState::GetWantedDirection8() const
 {
 	return Direction8::DIRECTION8_NONE;
+}
+
+Direction4 EntityState::GetWantedDirection4() const
+{
+	return Direction4::DIRECTION4_NONE;
 }
 
 bool EntityState::CanAttack() const

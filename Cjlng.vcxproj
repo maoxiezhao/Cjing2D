@@ -213,6 +213,7 @@
     <ClCompile Include="src\main\perf.c" />
     <ClCompile Include="src\main\test.cpp" />
     <ClCompile Include="src\movements\accelMovement.cpp" />
+    <ClCompile Include="src\movements\attachMovement.cpp" />
     <ClCompile Include="src\movements\movement.cpp" />
     <ClCompile Include="src\movements\pathFinding_movement.cpp" />
     <ClCompile Include="src\movements\pathFinding_private.cpp" />
@@ -228,7 +229,7 @@
     <ClCompile Include="src\player\playerSprite.cpp" />
     <ClCompile Include="src\player\playerState.cpp" />
     <ClCompile Include="src\player\grabbingState.cpp" />
-    <ClCompile Include="src\player\pullingState.cpp" />
+    <ClCompile Include="src\player\pushingState.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\nanovg.c" />
@@ -363,6 +364,7 @@
     <ClInclude Include="src\main\string.h" />
     <ClInclude Include="src\main\test.h" />
     <ClInclude Include="src\movements\accelMovement.h" />
+    <ClInclude Include="src\movements\attachMovement.h" />
     <ClInclude Include="src\movements\movement.h" />
     <ClInclude Include="src\movements\pathFinding_private.h" />
     <ClInclude Include="src\movements\pathFinding_movement.h" />
@@ -378,7 +380,7 @@
     <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\player\playerState.h" />
     <ClInclude Include="src\player\grabbingState.h" />
-    <ClInclude Include="src\player\pullingState.h" />
+    <ClInclude Include="src\player\pushingState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\boundingBox.h" />
     <ClInclude Include="src\utils\color.h" />

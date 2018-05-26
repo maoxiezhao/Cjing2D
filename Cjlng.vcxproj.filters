@@ -508,8 +508,11 @@
     <ClCompile Include="src\player\grabbingState.cpp">
       <Filter>player</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\pullingState.cpp">
+    <ClCompile Include="src\player\pushingState.cpp">
       <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movements\attachMovement.cpp">
+      <Filter>movments</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1014,8 +1017,11 @@
     <ClInclude Include="src\player\grabbingState.h">
       <Filter>player</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\pullingState.h">
+    <ClInclude Include="src\player\pushingState.h">
       <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movements\attachMovement.h">
+      <Filter>movments</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -118,6 +118,7 @@
     <ClCompile Include="src\entity\block.cpp" />
     <ClCompile Include="src\entity\bullet.cpp" />
     <ClCompile Include="src\entity\camera.cpp" />
+    <ClCompile Include="src\entity\chest.cpp" />
     <ClCompile Include="src\entity\enemy.cpp" />
     <ClCompile Include="src\entity\entities.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="src\entity\block.h" />
     <ClInclude Include="src\entity\bullet.h" />
     <ClInclude Include="src\entity\camera.h" />
+    <ClInclude Include="src\entity\chest.h" />
     <ClInclude Include="src\entity\destination.h" />
     <ClInclude Include="src\entity\enemy.h" />
     <ClInclude Include="src\entity\entities.h" />

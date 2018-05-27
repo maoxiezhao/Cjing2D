@@ -358,6 +358,10 @@ void Entity::NotifyCollisionWithBlock(Block & block)
 {
 }
 
+void Entity::NotifyCollisionWithChest(Chest & chest)
+{
+}
+
 void Entity::NotifySpriteCollision(Entity & otherEntity, Sprite & srcSprite, Sprite & otherSprite)
 {
 }
@@ -587,6 +591,14 @@ SpritePtr Entity::GetSprite(const string & spriteName)
 		}
 	}
 	return nullptr;
+}
+
+SpritePtr Entity::GetFirstSprite()
+{
+	if (mSprites.empty())
+		return nullptr;
+
+	return mSprites[0].sprite;
 }
 
 bool Entity::RemoveSprite(SpritePtr sprite)
@@ -1217,6 +1229,11 @@ bool Entity::IsObstaclePlayer() const
 }
 
 bool Entity::IsObstacleBlock() const
+{
+	return false;
+}
+
+bool Entity::isObstacleChest() const
 {
 	return false;
 }

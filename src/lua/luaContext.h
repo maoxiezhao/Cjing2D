@@ -325,6 +325,7 @@ public:
 		entity_api_create_enemy,
 		entity_api_create_bullet,
 		entity_api_create_block,
+		entity_api_create_chest,
 		// userdata
 		userdata_meta_gc,
 		userdata_meta_newindex,
@@ -510,6 +511,7 @@ public:
 	static const string module_entity_bullet_name;
 	static const string module_weapon_instance;
 	static const string module_block_name;
+	static const string module_chest_name;
 	// widget
 	static const string module_window_name;
 

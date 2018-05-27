@@ -67,6 +67,12 @@ PlayerTempl.metatable = {
 		end
 	end,
 
+	OnNotifyCollisionChest = function(player, chest)
+		if chest and not chest:IsOpen() then 
+			player:SetProperty(ENTITY_PROPERTY_HEAD_LABEL, "!!!!")
+		end
+	end,
+
 	-- 当facing的entity改变时调用
 	OnNotifyFacingEntityChanged = function( player, entity)
 		if not entity then 

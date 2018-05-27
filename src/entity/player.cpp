@@ -2,6 +2,9 @@
 #include"entity\entities.h"
 #include"entity\destination.h"
 #include"entity\block.h"
+#include"entity\chest.h"
+#include"entity\enemy.h"
+
 #include"game\map.h"
 #include"game\equipment.h"
 #include"game\weapon.h"
@@ -245,6 +248,11 @@ bool Player::IsObstacleBlock() const
 	return true;
 }
 
+bool Player::isObstacleChest() const
+{
+	return true;
+}
+
 const string Player::GetLuaObjectName() const
 {
 	return LuaContext::module_player_name;
@@ -396,7 +404,11 @@ void Player::NotifyCollision(Entity & otherEntity, CollisionMode collisionMode)
 */
 void Player::NotifyCollisionWithEnemy(Enemy & enemy)
 {
-	Logger::Info("Notify Collison.");
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyCollisionEnemy",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, enemy);
+		return 1;
+	});
 }
 
 void Player::NotifyCollisionWithBlock(Block & block)
@@ -404,6 +416,15 @@ void Player::NotifyCollisionWithBlock(Block & block)
 	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyCollisionBlock",
 		[&](lua_State*l)->int {
 		GetLuaContext()->PushUserdata(l, block);
+		return 1;
+	});
+}
+
+void Player::NotifyCollisionWithChest(Chest & chest)
+{
+	GetLuaContext()->CallFunctionWithUserdata(*this, "OnNotifyCollisionChest",
+		[&](lua_State*l)->int {
+		GetLuaContext()->PushUserdata(l, chest);
 		return 1;
 	});
 }

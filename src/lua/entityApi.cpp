@@ -15,6 +15,7 @@
 #include"entity\destination.h"
 #include"entity\weaponInstance.h"
 #include"entity\block.h"
+#include"entity\chest.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_player_name = "Player";
@@ -22,6 +23,7 @@ const std::string LuaContext::module_enemy_name = "Enemy";
 const std::string LuaContext::module_entity_bullet_name = "Bullet";
 const std::string LuaContext::module_weapon_instance = "WeaponInstance";
 const std::string LuaContext::module_block_name = "Block";
+const std::string LuaContext::module_chest_name = "Chest";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
@@ -85,6 +87,12 @@ void LuaContext::RegisterEntityModule()
 	// Block 
 	LuaBindClass<Block> blockClass(l, module_block_name, module_entity_name);
 	blockClass.AddDefaultMetaFunction();
+
+	// Chest
+	LuaBindClass<Chest> chestClass(l, module_chest_name, module_entity_name);
+	chestClass.AddDefaultMetaFunction();
+	chestClass.AddMethod("IsOpen", &Chest::IsOpen);
+	chestClass.AddMethod("GetItems", &Chest::GetItmes);
 }
 
 /**
@@ -99,6 +107,7 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 	{ EntityType::ENEMEY, entity_api_create_enemy },
 	{ EntityType::BULLET, entity_api_create_bullet },
 	{ EntityType::BLOCK, entity_api_create_block },
+	{ EntityType::CHEST, entity_api_create_chest },
 };
 
 /**
@@ -248,10 +257,31 @@ int LuaContext::entity_api_create_bullet(lua_State* l)
 	});
 }
 
+/**
+*	\brief block的创建函数
+*/
+int LuaContext::entity_api_create_chest(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Map& map = *CheckMap(l, 1);
+		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
 
+		auto chest = std::make_shared<Chest>(
+			entityData.GetName(),
+			entityData.GetValueString("templ"),
+			entityData.GetLayer(),
+			entityData.GetPos(),
+			entityData.GetValueString("sprite"));
+
+		chest->SetItems(entityData.GetValueString("items"));	
+		map.GetEntities().AddEntity(chest);
+		PushUserdata(l, *chest);
+		return 1;
+	});
+}
 
 /**
-*	\brief cr的创建函数
+*	\brief chest的创建函数
 */
 int LuaContext::entity_api_create_block(lua_State* l)
 {

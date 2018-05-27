@@ -17,6 +17,7 @@ enum EntityType
 	BULLET,			/** 子弹 */
 	WEAPON,			/** 武器 */
 	BLOCK,			/** 方块 */
+	CHEST,			/** 宝箱 */
 	UNKNOW,			/** 未知的类型 */
 };
 

@@ -50,6 +50,13 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 			{ "destory",    EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(false) },
 		}
 	},
+	{
+		EntityType::CHEST,{
+			{ "templ",      EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+			{ "sprite",     EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+			{ "items",     EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(string("")) },
+		}
+	},
 };
 }
 

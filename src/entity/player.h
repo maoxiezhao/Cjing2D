@@ -32,11 +32,13 @@ public:
 	virtual void NotifyPositonChanged();
 	virtual void NotifyFacingEntityChanged(Entity* entity);
 	virtual void NotifyOverlapEntityChanged(Entity* entity);
+	virtual void NotifyAfterCreated();
+	virtual void NotifyBeRemoved();
+
 	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 	virtual void NotifyCollisionWithBlock(Block& block);
-	virtual void NotifyAfterCreated();
-	virtual void NotifyBeRemoved();
+	virtual void NotifyCollisionWithChest(Chest& chest);
 
 	/** status manager */
 	void PlaceOnMap(Map& map);
@@ -65,6 +67,7 @@ public:
 	virtual bool IsObstacle(Entity& entity)const;
 	virtual bool IsObstacleEnemy()const;
 	virtual bool IsObstacleBlock()const;
+	virtual bool isObstacleChest()const;
 
 	/** Lua Context */
 	virtual const string GetLuaObjectName()const;

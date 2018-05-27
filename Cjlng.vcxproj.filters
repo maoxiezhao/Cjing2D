@@ -514,6 +514,9 @@
     <ClCompile Include="src\movements\attachMovement.cpp">
       <Filter>movments</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\chest.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -1022,6 +1025,9 @@
     </ClInclude>
     <ClInclude Include="src\movements\attachMovement.h">
       <Filter>movments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\chest.h">
+      <Filter>entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

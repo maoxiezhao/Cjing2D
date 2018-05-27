@@ -21,6 +21,7 @@ class EntityState;
 class Enemy;
 class Player;
 class Block;
+class Chest;
 
 /**
 *	\brief 游戏实体的抽象类
@@ -166,6 +167,7 @@ public:
 	virtual bool IsObstacleEnemy()const;
 	virtual bool IsObstaclePlayer()const;
 	virtual bool IsObstacleBlock()const;
+	virtual bool isObstacleChest()const;
 
 	// special status
 	void SetFacingEntity(Entity* entity);
@@ -192,6 +194,7 @@ public:
 	SpritePtr CreateSprite(const string & spriteName);
 	AnimationSpritePtr CreateAnimationSprite(const string & animationSetId, const string & animationID = "");
 	SpritePtr GetSprite(const string& spriteName);
+	SpritePtr GetFirstSprite();
 	bool RemoveSprite(SpritePtr sprite);
 	bool RemoveSprite(const std::string& spriteName);
 	void ClearSprites();
@@ -233,6 +236,7 @@ public:
 	virtual void NotifyCollisionWithEnemy(Enemy& enemy);
 	virtual void NotifyCollisionWithPlayer(Player& player);
 	virtual void NotifyCollisionWithBlock(Block& block);
+	virtual void NotifyCollisionWithChest(Chest& chest);
 
 	// notify pixel collision
 	virtual void NotifySpriteCollision(Entity& otherEntity, Sprite& srcSprite, Sprite& otherSprite);

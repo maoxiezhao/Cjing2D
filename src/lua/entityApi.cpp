@@ -16,6 +16,7 @@
 #include"entity\weaponInstance.h"
 #include"entity\block.h"
 #include"entity\chest.h"
+#include"entity\trigger.h"
 
 const std::string LuaContext::module_entity_name = "Entity";
 const std::string LuaContext::module_player_name = "Player";
@@ -24,6 +25,7 @@ const std::string LuaContext::module_entity_bullet_name = "Bullet";
 const std::string LuaContext::module_weapon_instance = "WeaponInstance";
 const std::string LuaContext::module_block_name = "Block";
 const std::string LuaContext::module_chest_name = "Chest";
+const std::string LuaContext::module_trigger_name = "Trigger";
 
 const std::vector<std::string> mEntityClassNames = {
 	LuaContext::module_entity_name,
@@ -97,6 +99,10 @@ void LuaContext::RegisterEntityModule()
 	chestClass.AddDefaultMetaFunction();
 	chestClass.AddMethod("IsOpen", &Chest::IsOpen);
 	chestClass.AddMethod("GetItems", &Chest::GetItmes);
+
+	// Trigger
+	LuaBindClass<Trigger> triggerClass(l, module_trigger_name, module_entity_name);
+	triggerClass.AddDefaultMetaFunction();
 }
 
 /**
@@ -112,6 +118,7 @@ std::map<EntityType, lua_CFunction> LuaContext::mEntitityCreaters =
 	{ EntityType::BULLET, entity_api_create_bullet },
 	{ EntityType::BLOCK, entity_api_create_block },
 	{ EntityType::CHEST, entity_api_create_chest },
+	{ EntityType::TRIGGER, entity_api_create_trigger },
 };
 
 /**
@@ -280,6 +287,29 @@ int LuaContext::entity_api_create_chest(lua_State* l)
 		chest->SetItems(entityData.GetValueString("items"));	
 		map.GetEntities().AddEntity(chest);
 		PushUserdata(l, *chest);
+		return 1;
+	});
+}
+
+/**
+*	\brief Trigger的创建函数
+*/
+int LuaContext::entity_api_create_trigger(lua_State* l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		Map& map = *CheckMap(l, 1);
+		const EntityData& entityData = *static_cast<EntityData*>(lua_touserdata(l, 2));
+
+		auto trigger = std::make_shared<RectTrigger>(
+			entityData.GetName(),
+			entityData.GetLayer(),
+			entityData.GetPos(),
+			Size(entityData.GetValueInteger("width"),
+				entityData.GetValueInteger("height")));
+		trigger->SetTriggerTimes(entityData.GetValueInteger("times"));
+
+		map.GetEntities().AddEntity(trigger);
+		PushUserdata(l, *trigger);
 		return 1;
 	});
 }

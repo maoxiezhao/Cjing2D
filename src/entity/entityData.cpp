@@ -57,6 +57,13 @@ const std::map<EntityType, const EntityData::EntityFieldDescriptions> entityType
 			{ "items",     EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(string("")) },
 		}
 	},
+	{
+		EntityType::TRIGGER,{
+			{ "times",  EntityData::EntityValueFlag::VALUE_FALG_DEFAULT, EntityData::EntityDefaultValue(1) },
+			{ "width",  EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0) },
+			{ "height", EntityData::EntityValueFlag::VALUE_FLAG_NO_DEFAULT, EntityData::EntityDefaultValue(0) }
+		}
+	},
 };
 }
 

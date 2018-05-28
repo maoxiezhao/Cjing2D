@@ -14,4 +14,5 @@ const EnumInfo<EntityType>::nameType EnumInfoTraits<EntityType>::names =
 	{ WEAPON, "weapon" },
 	{ BLOCK, "block" },
 	{ CHEST, "chest" },
+	{ TRIGGER, "trigger" },
 };

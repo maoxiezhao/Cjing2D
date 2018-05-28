@@ -297,7 +297,7 @@ template<typename T>
 inline int QuadTree<T>::Node::GetElementCount() const
 {
 	int result = 0;
-	if (!IsSplit())
+	if (IsSplit())
 	{
 		for (auto& child : mChilds)
 		{

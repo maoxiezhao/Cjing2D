@@ -18,6 +18,7 @@ enum EntityType
 	WEAPON,			/** 武器 */
 	BLOCK,			/** 方块 */
 	CHEST,			/** 宝箱 */
+	TRIGGER,		/** 触发器 */
 	UNKNOW,			/** 未知的类型 */
 };
 

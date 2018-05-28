@@ -11,33 +11,28 @@
 class Trigger : public Entity
 {
 public:
-	enum TriggerCollisionMode
+	enum TriggerMode
 	{
 		TRIGGER_COLLISION_NONE = 0x00,      // 默认使用RECT检测碰撞
 		TRIGGER_COLLISION_CIRCLE = 0x01,	// 圆形的碰撞检测
 		TRIGGER_COLLISION_POLYGON = 0x02,   // 多边形的碰撞检测
 	};
 
-	Trigger(const std::string& name, int layer, const Point2& pos, TriggerCollisionMode triggerCollisonMode);
-	~Trigger();
+	Trigger(const std::string& name, int layer, const Point2& pos, TriggerMode triggerMode);
 
-	/** system */
-	virtual void Update();
-	virtual void Draw();
+	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
 	virtual EntityType GetEntityType()const;
 	virtual const string GetLuaObjectName()const;
-
-	/** notify */
-	virtual void NotifyCollision(Entity& otherEntity, CollisionMode collisionMode);
-	virtual bool NotifyCommandInteractPressed(Entity& interactEntity);
-
-	void SetTriggerCallBack(const std::function<void()>& callback);
-	void SetTriggerCallBack(const LuaRef& callback);
+	TriggerMode GetTriggerType()const;
+	
+	void SetTriggerTimes(int times);
+private:
+	bool CanNotifyTrigger(Entity& otherEntity);
+	void NotifyTrigger(Entity& otherEntity);
 
 private:
-	TriggerCollisionMode mTriggerCollisonMode;
-	std::function<void()> mFinishCallBack;		/** 结束回调函数 */
-
+	TriggerMode mTriggerMode;
+	int mTriggerTimes;			/** 触发器触发的次数，当为-1时可以无限触发 */
 };
 
 /**
@@ -46,24 +41,6 @@ private:
 class RectTrigger : public Trigger
 {
 public:
-	RectTrigger(const std::string& name, int layer, const Point2& pos, const Rect& rect);
-
+	RectTrigger(const std::string& name, int layer, const Point2& pos, const Size& size);
 };
 
-/**
-*	\brief 圆形Trigger
-*/
-class CircleTrigger : public Trigger
-{
-public:
-	CircleTrigger(const std::string& name, int layer, const Point2& pos, int radius);
-};
-
-/**
-*	\brief 多边形Trigger
-*/
-class PolygonTrigger : public Trigger
-{
-public:
-	PolygonTrigger(const std::string& name, int layer, const Point2& pos, std::vector<Point2> polygons);
-};

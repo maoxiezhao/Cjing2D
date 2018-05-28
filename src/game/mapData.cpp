@@ -79,6 +79,16 @@ Rect MapData::GetRect() const
 	return Rect(mPosition, mSize);
 }
 
+string MapData::GetMapPath() const
+{
+	return mMapPath;
+}
+
+void MapData::SetMapPath(const std::string & path)
+{
+	mMapPath = path;
+}
+
 /**
 *	\brief 添加一个entityData
 *	\return 添加成功返回true,反之返回false

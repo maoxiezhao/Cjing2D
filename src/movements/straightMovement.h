@@ -13,6 +13,7 @@ class StraightMovement : public Movement
 public:
 	StraightMovement();
 	StraightMovement(bool isIngroedObstacles, bool smooth = false);
+	virtual ~StraightMovement();
 
 	virtual void Update();
 	virtual void SetSuspended(bool suspended);

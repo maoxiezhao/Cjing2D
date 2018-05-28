@@ -19,6 +19,41 @@ class InputEvent;
 class Tileset;
 class Entity;
 class Destination;
+class Map;
+
+/**
+*	\brief 房间数据
+*/
+class MapRoom : public LuaObject
+{
+public:
+	MapRoom(Map& map);
+
+	void Initialize(const std::string& name, const MapData& data);
+	void UnInitialize();
+	void StartRoom();
+	void StopRoom();
+
+	/** Status */
+	Map& GetMap();
+	const Map& GetMap()const;
+	std::string GetMapID()const;
+	std::string GetMapPath()const;
+	Point2 GetPos()const;
+	Size GetSize()const;
+	LuaContext& GetLuaContext();
+
+	virtual const string GetLuaObjectName()const;
+
+private:
+	Map& mMap;
+	std::string mMapName;
+	std::string mMapPath;
+	Point2 mPos;
+	Size mSize;
+	bool mIsStarted;
+};
+using MapRoomPtr = std::shared_ptr<MapRoom>;
 
 /**
 *	\brief map类
@@ -119,6 +154,7 @@ private:
 
 	/** map generate */
 	MapGenerate mMapGenerate;
+	std::vector<MapRoomPtr> mRooms;
 };
 
 #endif

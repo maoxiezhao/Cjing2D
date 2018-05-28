@@ -10,6 +10,78 @@
 #include "entity\tilepattern.h"
 #include "entity\destination.h"
 
+
+MapRoom::MapRoom(Map & map):
+	mMap(map),
+	mIsStarted(false)
+{
+}
+
+void MapRoom::Initialize(const std::string& name, const MapData& data)
+{
+	mMapName = name;
+	mMapPath = data.GetMapPath();
+	mPos = data.GetPosition();
+	mSize = data.GetSize();
+}
+
+void MapRoom::UnInitialize()
+{
+}
+
+void MapRoom::StartRoom()
+{
+	mIsStarted = true;
+	GetLuaContext().RunRoom(*this);
+}
+
+void MapRoom::StopRoom()
+{
+	mIsStarted = false;
+	GetLuaContext().LeaveRoom(*this);
+}
+
+Map & MapRoom::GetMap()
+{
+	return mMap;
+}
+
+const Map & MapRoom::GetMap() const
+{
+	return mMap;
+}
+
+std::string MapRoom::GetMapID() const
+{
+	return mMapName;
+}
+
+std::string MapRoom::GetMapPath() const
+{
+	return mMapPath;
+}
+
+Point2 MapRoom::GetPos() const
+{
+	return mPos;
+}
+
+Size MapRoom::GetSize() const
+{
+	return mSize;
+}
+
+LuaContext & MapRoom::GetLuaContext()
+{
+	return mMap.GetLuaContext();
+}
+
+const string MapRoom::GetLuaObjectName() const
+{
+	return LuaContext::module_room_name;
+}
+
+
 Map::Map():
 	mMapID(),
 	mGame(nullptr),
@@ -85,6 +157,12 @@ void Map::Load(Game * game)
 		for (int i = 0; i < rects.size(); i++)
 		{
 			std::string roomName = id + "_" + std::to_string(i);
+			// init room
+			auto mapRoom = std::make_shared<MapRoom>(*this);
+			mapRoom->Initialize(roomName, *mapData);
+			mRooms.push_back(mapRoom);
+
+			// init entity
 			mEntities->InitEntities(*mapData, rects[i].GetPos(), roomName);
 		}
 	}
@@ -101,12 +179,20 @@ void Map::Load(Game * game)
 	mIsLoaded = true;
 }
 
+/**
+*	\brief Ð¶ÔØµØÍ¼
+*/
 void Map::UnLoad()
 {
+	for (auto& mapRoom : mRooms)
+		mapRoom->UnInitialize();
+	mRooms.clear();
+
 	if (mTileset != nullptr)
-	{
 		mTileset->UnLoad();
-	}
+
+	mEntities = nullptr;
+	mIsLoaded = false;
 }
 
 /**
@@ -117,6 +203,9 @@ void Map::Start()
 	mIsStarted = true;
 	mEntities->NotifyMapStarted();
 	GetLuaContext().RunMap(*this);
+
+	for (auto& mapRoom : mRooms)
+		mapRoom->StartRoom();
 }
 
 /**
@@ -127,6 +216,9 @@ void Map::Leave()
 	mIsStarted = false;
 	mEntities->NotifyMapStoped();
 	GetLuaContext().LeaveMap(*this);
+
+	for (auto& mapRoom : mRooms)
+		mapRoom->StopRoom();
 }
 
 /**

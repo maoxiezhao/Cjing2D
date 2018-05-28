@@ -36,9 +36,13 @@ BulletTempl.metatable = {
 
 	SetFireEntity = function(self, entity, weapon)
 		if not entity or not weapon then return end
+		local inst = weapon:GetInstance()
+		if not inst then return end
 
-		local pos = entity:GetPos()
-		pos[2] = pos[2] + 6
+		local entityPos = entity:GetPos()
+		local attachPos = entity:GetAttachPos() 
+		local pos = {entityPos[1] + attachPos[1], entityPos[2] + attachPos[2]}
+		pos[2] = pos[2] - 6
 		self:SetPos(pos)
 
 		local degree = entity:GetFacingDegree()
@@ -69,8 +73,10 @@ BulletTempl.metatable = {
 			sprite:Start()
 
 			local degree = self:GetFacingDegree()
+			local diff = self:GetRotateDiffPos()
 			local attachPos = self:GetAttachPos()
-			sprite:SetPos(attachPos)
+			local pos = {attachPos[1] + diff[1], attachPos[2] + diff[2]}
+			sprite:SetPos(pos)
 			sprite:SetRotateAnchor(8, 8)
 			sprite:SetRotation(degree)
 			sprite:SetAnchor(0.0, 0.2)

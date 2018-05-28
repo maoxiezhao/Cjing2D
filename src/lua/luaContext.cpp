@@ -122,6 +122,14 @@ void LuaContext::Update()
 		"There are something in lua stack after update");
 }
 
+/**
+*	\brief 执行LuaContenxt下的绘制方法，主要用来绘制Drawable
+*/
+void LuaContext::Draw()
+{
+	DrawDrawables();
+}
+
 
 /**
 *	\brief 关闭lua
@@ -1072,35 +1080,35 @@ void LuaContext::CloseUserdatas()
 
 void LuaContext::OnStart()
 {
-	if (FindMethod("onStarted"))
-		LuaTools::CallFunction(l, 1, 0, "onStarted");
+	if (FindMethod("OnStarted"))
+		LuaTools::CallFunction(l, 1, 0, "OnStarted");
 }
 
 void LuaContext::OnUpdate()
 {
-	if (FindMethod("onUpdated"))
-		LuaTools::CallFunction(l, 1, 0, "onUpdated");
+	if (FindMethod("OnUpdated"))
+		LuaTools::CallFunction(l, 1, 0, "OnUpdated");
 }
 
 void LuaContext::OnFinish()
 {
-	if (FindMethod("onFinished"))
-		LuaTools::CallFunction(l, 1, 0, "onFinished");
+	if (FindMethod("OnFinished"))
+		LuaTools::CallFunction(l, 1, 0, "OnFinished");
 }
 
 void LuaContext::OnDraw()
 {
-	if (FindMethod("onDraw"))
+	if (FindMethod("OnDraw"))
 	{
-		LuaTools::CallFunction(l, 1, 0, "onDraw");
+		LuaTools::CallFunction(l, 1, 0, "OnDraw");
 	}
 }
 
 void LuaContext::OnCreated()
 {
-	if (FindMethod("onCreated"))
+	if (FindMethod("OnCreated"))
 	{
-		LuaTools::CallFunction(l, 1, 0, "onCreated");
+		LuaTools::CallFunction(l, 1, 0, "OnCreated");
 	}
 }
 

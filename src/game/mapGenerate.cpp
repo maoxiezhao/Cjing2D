@@ -187,6 +187,7 @@ bool MapGenerate::LoadMap(const std::string & mapID)
 			Debug::Error("Failed to load room '" + roomInfo.path + "' data");
 			continue;
 		}
+		mapData->SetMapPath(roomInfo.path);
 		AddMapData(roomInfo.name, mapData, count);
 	}
 

@@ -217,6 +217,7 @@ void App::Render()
 		mCurrGame->Draw();
 	}
 
+	mLuaContext->Draw();
 	mLuaContext->OnMainDraw();
 
 	Video::Rendercanvas(UIStage::GetInstance());

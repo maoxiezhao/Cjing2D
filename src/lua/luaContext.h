@@ -32,6 +32,7 @@ class AsyncLoader;
 class Savegame;
 class Game;
 class Map;
+class MapRoom;
 class ParticleSystem;
 class Item;
 class ItemAcquired;
@@ -86,6 +87,7 @@ public:
 	// system
 	void Initialize();
 	void Update();
+	void Draw();
 	void Exit();
 	App& GetApp()const;
 	bool NotifyInput(const InputEvent& event);
@@ -120,7 +122,7 @@ public:
 	// notify userdata
 	void NotifyEntityWithMovement(Entity& entity, const std::string& funcName);
 
-	// process
+	// process, to removed.
 	void OnStart();
 	void OnUpdate();
 	void OnFinish();
@@ -185,6 +187,8 @@ public:
 		// map
 		map_api_set_background,
 		map_api_create_entity,
+		map_api_get_entity_global,
+		room_api_get_map,
 		// time
 		time_api_start,
 		time_api_remove,
@@ -362,6 +366,8 @@ public:
 	void LeaveEntity(Entity& entity);
 
 	// map api
+	void RunRoom(MapRoom& room);
+	void LeaveRoom(MapRoom& room);
 	void RunMap(Map& map);
 	void LeaveMap(Map& map);
 	void OnMapStart(Map& map);
@@ -413,6 +419,7 @@ public:
 	void RemoveMenus();
 
 	// sprite api
+	void DrawDrawables();
 	void UpdateDrawables();
 	void DestoryDrawables();
 	void AddDrawable(const std::shared_ptr<Drawable>& drawable);
@@ -482,6 +489,7 @@ public:
 	static const string module_main_name;
 	static const string module_game_name;
 	static const string module_map_name;
+	static const string module_room_name;
 	static const string module_time_name;
 	static const string module_menu_name;
 	static const string module_video_name;

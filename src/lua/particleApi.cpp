@@ -1,4 +1,5 @@
 #include"lua\luaContext.h"
+#include"lua\luaBinder.h"
 #include"game\particleSystem.h"
 
 const string LuaContext::module_particle_name = "Particle";
@@ -8,11 +9,6 @@ const string LuaContext::module_particle_name = "Particle";
 */
 void LuaContext::RegisterParticle()
 {
-	static const luaL_Reg functions[] = {
-		{ "create", particle_api_create },
-		{ nullptr,nullptr }
-	};
-
 	static const luaL_Reg methods[] = {
 		{ "play", particle_api_play},
 		{ "stop", particle_api_stop},
@@ -26,12 +22,12 @@ void LuaContext::RegisterParticle()
 		{ nullptr, nullptr }
 	};
 
-	static const luaL_Reg metamethods[] = {
-		{ "__gc", drawable_meta_api_gc },
-		{ nullptr, nullptr },
-	};
-
-	RegisterType(l, module_particle_name, functions, methods, metamethods);
+	LuaBindClass<ParticleSystem> particleSystem(l, module_particle_name);
+	particleSystem.AddMetaFunction("__gc", drawable_meta_api_gc);
+	particleSystem.AddFunction("Create", particle_api_create);
+	particleSystem.AddMethod("Play", particle_api_play);
+	particleSystem.AddMethod("Stop", particle_api_stop);
+	particleSystem.AddMethod("SetPreprocess", particle_api_set_preprocess);
 }
 
 /**
@@ -94,7 +90,6 @@ int LuaContext::particle_api_play(lua_State*l)
 		return 0;
 	});
 }
-
 
 /**
 *	\brief  µœ÷Particle:Stop()

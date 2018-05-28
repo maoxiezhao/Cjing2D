@@ -115,6 +115,12 @@ public:
 	Point2 GetCenterPos()const;
 	Point2 GetLeftTopPos()const;
 	Point2 GetAttachPos()const;
+	Point2 GetRotatePos()const;
+	Point2 GetRotateDiffPos()const;
+	Point2 GetOrigin()const;
+	Point2 GetScreenPos()const;
+	Point2 GetPositivePos()const;
+
 	virtual Point2 GetBillBoardPos()const;
 	void SetPos(const Point2& pos);
 	void SetLayer(int layer);
@@ -128,8 +134,7 @@ public:
 	void SetDrawOnYOrder(bool isDrawOnY);
 	bool IsDrawOnYOrder()const;
 	void SetOrigin(const Point2& origin);
-	const Point2& GetOrigin()const;
-	Point2 GetScreenPos()const;
+
 	bool IsVisible()const;
 	void SetVisible(bool visibled);
 	bool IsBeRemoved()const;
@@ -139,7 +144,6 @@ public:
 	bool IsSuspended()const;
 	void SetEnable(bool enable);
 	bool IsEnable()const;
-	Point2 GetPositivePos()const;
 
 	BoundingBox GetBoundingBox(int type)const;
 	Rect GetRectBounding(int type = BOUNDING_BOX_NOTIFY)const;

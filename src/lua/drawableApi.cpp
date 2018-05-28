@@ -44,6 +44,17 @@ bool LuaContext::HasDrawable(const std::shared_ptr<Drawable>& drawalbe)
 	return mDrawables.find(drawalbe) != mDrawables.end();
 }
 
+void LuaContext::DrawDrawables()
+{
+	for (const DrawablePtr& drawable : mDrawables)
+	{
+		if (HasDrawable(drawable))
+		{
+			drawable->Draw();
+		}
+	}
+}
+
 void LuaContext::UpdateDrawables()
 {
 	for (const DrawablePtr& drawable : mDrawables)

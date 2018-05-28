@@ -24,7 +24,6 @@ public:
 	virtual bool ExportToLua(lua_State*l);
 
 	/**** **** **** setter/getter **** **** ****/
-
 	void SetPosition(const Point2& pos);
 	const Point2& GetPosition()const;
 	void SetMinLayer(int minLayer);
@@ -37,9 +36,10 @@ public:
 	const string& getTitlesetID()const;
 	bool IsValidLayer(int layer)const;
 	Rect GetRect()const;
+	string GetMapPath()const;
+	void SetMapPath(const std::string& path);
 
 	/***** ***** ****** entity ***** ***** ******/
-
 	int GetEntityCountByLayer(int layer)const;
 	bool AddEntity(const EntityData& entityData);
 	const EntityData& GetEntity(int layer, int index)const;
@@ -55,7 +55,7 @@ private:
 	Size mSize;
 	Point2 mPosition;
 	string mTilesetID;
-
+	string mMapPath;
 	std::map<int, EntityDataList> mEntitiesByLayer;	/** 存储每层的entity数据信息 */
 
 };

@@ -34,6 +34,7 @@ Movement::Movement(bool ingoreObstacles):
 
 Movement::~Movement()
 {
+	mEntity = nullptr;
 }
 
 /**

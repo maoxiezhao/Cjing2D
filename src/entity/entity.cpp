@@ -153,6 +153,7 @@ void Entity::Initalized()
 void Entity::ClearMovements()
 {
 	mMovement = nullptr;
+	mStopMovement = true;
 }
 
 /**
@@ -941,7 +942,7 @@ void Entity::SetOrigin(const Point2 & origin)
 	mOrigin = origin;
 }
 
-const Point2 & Entity::GetOrigin() const
+Point2 Entity::GetOrigin() const
 {
 	return mOrigin;
 }
@@ -999,6 +1000,9 @@ bool Entity::IsEnable() const
 	return mEnabled;
 }
 
+/**
+*	\brief 获取Entity在相机中的相对位置
+*/
 Point2 Entity::GetPositivePos() const
 {
 	const Map& curMap = GetMap();
@@ -1007,10 +1011,17 @@ Point2 Entity::GetPositivePos() const
 	return (pos - curMap.GetCameraLeftTopPos());
 }
 
+/**
+*	\brief 获取Entity在map中的坐标，加上Origin偏移值
+*/
 Point2 Entity::GetPos()const
 {
 	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos() + mOrigin;
 }
+
+/**
+*	\brief 获取entity在map中的中心点坐标
+*/
 Point2 Entity::GetCenterPos() const
 {
 	Size size = GetSize();
@@ -1019,17 +1030,44 @@ Point2 Entity::GetCenterPos() const
 		pos.y + size.height / 2);
 }
 
+/**
+*	\brief 获取左上角坐标
+*/
 Point2 Entity::GetLeftTopPos() const
 {
 	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetPos();
 }
 
+/**
+*	\brief 获取挂载点坐标
+*/
 Point2 Entity::GetAttachPos() const
 {
 	Size size = GetSize();
 	return{ (int)(size.width * 0.7), size.height / 2 };
 }
 
+/**
+*	\brief 获取旋转后的坐标点坐标，当角度为0是和GetPos相同，
+*	当角度大于0时，始终取左上角的坐标
+*/
+Point2 Entity::GetRotatePos() const
+{
+	return mBoundBox[BOUNDING_BOX_OBSTACLE].GetRect().GetPos() + mOrigin;
+}
+
+/**
+*	\brief 获取普通位置和旋转后坐标点偏移值，主要方便Lua处理，还在
+*	考虑是否统一GetPos
+*/
+Point2 Entity::GetRotateDiffPos() const
+{
+	return GetRotatePos() - GetPos();
+}
+
+/**
+*	\brief 获取Billboar坐标
+*/
 Point2 Entity::GetBillBoardPos() const
 {
 	return GetPositivePos();

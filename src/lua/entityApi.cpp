@@ -51,6 +51,10 @@ void LuaContext::RegisterEntityModule()
 	entityClass.AddMethod("GetCenterPos", &Entity::GetCenterPos);
 	entityClass.AddMethod("SetPos",  &Entity::SetPos);
 	entityClass.AddMethod("GetBillBoardPos", &Entity::GetBillBoardPos);
+	entityClass.AddMethod("GetCameraPos", &Entity::GetPositivePos);
+	entityClass.AddMethod("GetRotatePos", &Entity::GetRotatePos);
+	entityClass.AddMethod("GetRotateDiffPos", &Entity::GetRotateDiffPos);
+	entityClass.AddMethod("SetBoundRotateAnchor", &Entity::SetBoundRotateAnchor);
 	entityClass.AddMethod("GetLayer", &Entity::GetLayer);
 	entityClass.AddMethod("GetAttachPos", &Entity::GetAttachPos);
 	entityClass.AddMethod("SetFacingDegree", &Entity::SetFacingDegree);

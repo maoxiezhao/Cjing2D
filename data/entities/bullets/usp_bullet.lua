@@ -1,5 +1,7 @@
 -- usp bullet 
 local Bullet = ...
+local particle = Particle.Create("boom")
+
 -- usp bullet
 -- usp子弹是一种最基本的子弹
 
@@ -9,10 +11,12 @@ function Bullet:OnCreated()
 		speed = 500,
 		offset = 0.1
 	}
+
 	-- custom config --
 	self:InitBullet("usp_bullet", usp_cfg)
 	self:SetSize({16, 16})
 	self:SetOrigin({-8, -8})
+	self:SetBoundRotateAnchor(-8, 8)
 	self:SetDisappearAnimTime(200)
 end
 
@@ -41,6 +45,13 @@ function OnBulletBoom(bullet)
 	bullet:ClearSprites()
 	-- 默认的爆炸效果
 	bullet:Boom("boom_yellow")
+	-- 火花效果
+	local diff = bullet:GetRotateDiffPos()
+	local pos = bullet:GetCameraPos()
+	local size = bullet:GetSize()
+	local x = pos[1] + size[1] / 2 + diff[1]
+	local y = pos[2] + size[2] / 2 + diff[2]
+	particle:Play(x, y, 200)
 end
 
 -- 计算敌人收到的伤害

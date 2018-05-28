@@ -39,6 +39,12 @@ StraightMovement::StraightMovement(bool isIngroedObstacles, bool smooth):
 {
 }
 
+StraightMovement::~StraightMovement()
+{
+	Movement::~Movement();
+	mFinished = true;
+}
+
 /**
 *	\brief ÔÝÍ£µ±Ç°ÒÆ¶¯
 *

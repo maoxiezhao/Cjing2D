@@ -31,6 +31,7 @@ void LuaContext::RegisterMovementModule()
 	// straight movement
 	LuaBindClass<StraightMovement> straightMovementClass(l, module_straight_movement_name, module_movement_name);
 	straightMovementClass.AddDefaultMetaFunction();
+	straightMovementClass.AddMetaFunction("__gc", movement_api_api_gc);
 	straightMovementClass.AddFunction("Create", movement_straight_api_create);
 	straightMovementClass.AddMethod("SetSpeed", &StraightMovement::SetSpeed);
 	straightMovementClass.AddMethod("GetSpeed", &StraightMovement::GetSpeed);

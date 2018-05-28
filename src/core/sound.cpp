@@ -95,19 +95,20 @@ ov_callbacks Sound::mCallBacks = {
 	memTell
 };
 
-std::map<std::string, Sound> Sound::mSounds;
+std::map<std::string, Sound> Sound::mAllSounds;
+std::list<Sound*> Sound::mCurrentSounds;
 
 Sound::Sound() :
 	mSoundID(""),
 	mBuffer(AL_NONE),
-	mSource(AL_NONE)
+	mVolume(1.0f)
 {
 }
 
 Sound::Sound(const std::string soundID) :
 	mSoundID(soundID),
 	mBuffer(AL_NONE),
-	mSource(AL_NONE)
+	mVolume(1.0f)
 {
 }
 
@@ -122,18 +123,31 @@ Sound::~Sound()
 			alDeleteSources(1, &source);
 		}
 		alDeleteBuffers(1, &mBuffer);
+		mCurrentSounds.remove(this);
 	}
 }
 
-// test function
-void Sound::Update(int a)
+/**
+*	\brief 更新当前的sound
+*/
+bool Sound::UpdatePlay()
 {
-	if (initialized == false)
+	// 是否所有的source都播放完
+	if (mSources.empty())
+		return false;
+
+	// 判断当前source是否播放完
+	auto source = *mSources.begin();
+	ALint state;
+	alGetSourcei(source, AL_SOURCE_STATE, &state);
+	if (state != AL_PLAYING)
 	{
-		return;
+		mSources.pop_front();
+		alSourcei(source, AL_BUFFER, 0);
+		alDeleteSources(1, &source);
 	}
 
-	Music::Update();
+	return !mSources.empty();
 }
 
 /**
@@ -146,32 +160,136 @@ void Sound::Load()
 	{
 		Debug::Error("The sound:" + soundPath + "is not exists.");
 	}
-	const std::string oggData = FileData::ReadFile(soundPath);
 
-	/** 加载步骤 */
-
+	/** 加载buffer */
+	mBuffer = DecodeFile(soundPath);
 }
 
-ALuint Sound::DecodeFile(const std::string file)
+ALuint Sound::DecodeFile(const std::string& filePath)
 {
-	return AL_NONE;
+	ALuint buffer = AL_NONE;
+	OggMemory mem;
+	mem.loop = false;
+	mem.position = 0;
+	mem.data = FileData::ReadFile(filePath);
+
+	// 基于OggVorbis的ogg格式解析
+	OggVorbis_File file;
+	int error = ov_open_callbacks(&mem, &file, nullptr, 0, mCallBacks);
+	if (error)
+	{
+		std::ostringstream oss;
+		oss << "Cannot load sound file '" << filePath;
+		Debug::Error(oss.str());
+		return AL_NONE;
+	}
+
+	// 解析ogg文件属性
+	vorbis_info* info = ov_info(&file, -1);
+	ALsizei sampleRate = ALsizei(info->rate);
+	ALenum format = AL_NONE;
+	if (info->channels == 1)
+		format = AL_FORMAT_MONO16;
+	else if (info->channels == 2)
+		format = AL_FORMAT_STEREO16;
+
+	if (format == AL_NONE)
+	{
+		Debug::Error("Invalid sound format.");
+		return AL_NONE;
+	}
+
+	// 解析ogg文件流
+	std::vector<char> samples;
+	int bitStream;
+	long bytesRead;
+	long totalBytesRead = 0;
+	char samplesBuffer[16384];
+	do 	{
+		bytesRead = ov_read(&file, samplesBuffer, 16384, 0, 2, 1, &bitStream);
+		if (bytesRead < 0)
+		{
+			Debug::Error("Error while decoding ogg chunk.");
+			return AL_NONE;
+		}
+		totalBytesRead += bytesRead;
+		samples.insert(samples.end(), samplesBuffer, samplesBuffer + bytesRead);
+	} 
+	while (bytesRead > 0);
+
+	// 创建buffer
+	alGenBuffers(1, &buffer);
+	if (alGetError() != AL_NO_ERROR)
+		Debug::Error("Failed to generate buffer");
+
+	alBufferData(buffer, AL_FORMAT_STEREO16,
+		reinterpret_cast<ALshort*>(samples.data()),
+		ALsizei(totalBytesRead), sampleRate);
+
+	if (alGetError() != AL_NO_ERROR)
+		Debug::Error("Failed to bind buffer");
+
+	// clear
+	ov_clear(&file);
+
+	return buffer;
 }
 
+/**
+*	\brief 播放当前音效
+*/
 void Sound::Play()
 {
+	if (initialized)
+	{
+		if (mBuffer == AL_NONE)
+			Load();
+
+		if (mBuffer != AL_NONE)
+		{
+			// 创建source，并设置buffer
+			ALuint source;
+			alGenSources(1, &source);
+			alSourcei(source, AL_BUFFER, mBuffer);
+			alSourcef(source, AL_GAIN, mVolume);
+			
+			if (alGetError() != AL_NO_ERROR)
+			{
+				Debug::Error("Failed to attach sound buffer '" + mSoundID + "'");
+				alDeleteSources(1, &source);
+				return;
+			}
+
+			mSources.push_back(source);
+			mCurrentSounds.remove(this);
+			mCurrentSounds.push_back(this);
+			
+			alSourcePlay(source);
+
+			if (alGetError() != AL_NO_ERROR)
+			{
+				Debug::Error("Failed to play sound '" + mSoundID + "'");
+				alDeleteSources(1, &source);
+				return;
+			}
+		}
+	}
 }
 
 Sound * Sound::LoadFile(const std::string soundID)
 {
-	auto it = mSounds.find(soundID);
-	if (it != mSounds.end())
+	auto it = mAllSounds.find(soundID);
+	if (it != mAllSounds.end())
 	{
 		return &it->second;
 	}
-	mSounds[soundID] = Sound(soundID);
-	return &mSounds[soundID];
+	mAllSounds[soundID] = Sound(soundID);
+	return &mAllSounds[soundID];
 }
 
+/**
+*	\brief 初始化OpenAL模块
+*/
 void Sound::Initialize()
 {
 	// init openAL
@@ -183,7 +301,8 @@ void Sound::Initialize()
 		return;
 	}
 
-	context = alcCreateContext(device, nullptr);
+	ALCint attr[] = { ALC_FREQUENCY, 32000, 0 };
+	context = alcCreateContext(device, attr);
 	if (context == nullptr)
 	{
 		Debug::Error("Failed to create alccontext.");
@@ -208,14 +327,27 @@ void Sound::Initialize()
 
 void Sound::Update()
 {
+	std::vector<Sound*> soundsToRemove;
+	for (auto& sound : mCurrentSounds)
+	{
+		if (sound->UpdatePlay())
+			soundsToRemove.push_back(sound);
+	}
+
+	for (auto& sound : soundsToRemove)
+		mCurrentSounds.remove(sound);
+	soundsToRemove.clear();
+
 	Music::Update();
 }
 
-void Sound::Quid()
+void Sound::Quit()
 {
 	if (initialized)
 	{
 		Music::Quid();
+
+		mAllSounds.clear();
 
 		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(context);
@@ -225,4 +357,15 @@ void Sound::Quid()
 
 		initialized = false;
 	}
+}
+
+/**
+*	\brief 播放指定的sound
+*/
+void Sound::PlaySound(const std::string & id)
+{
+	if (mAllSounds.find(id) == mAllSounds.end())
+		mAllSounds[id] = Sound(id);
+
+	mAllSounds[id].Play();
 }

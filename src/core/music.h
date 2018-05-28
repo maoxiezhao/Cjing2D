@@ -45,6 +45,7 @@ public:
 	static void Quid();
 	static void PlayMusic(const std::string& musicID, bool loop);
 	static void StopMusic();
+	static void SetMusicVolume(int volume);
 	static string GetCurMusicID();
 
 private:

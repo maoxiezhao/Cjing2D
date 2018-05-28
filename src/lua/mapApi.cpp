@@ -3,6 +3,8 @@
 #include"game\map.h"
 #include"core\fileData.h"
 #include"entity\entityInfo.h"
+#include"entity\entity.h"
+#include"entity\entities.h"
 
 const string LuaContext::module_map_name = "Map";
 const string LuaContext::module_room_name = "MapRoom";
@@ -25,9 +27,9 @@ const std::string LoadMapScript =
 "end\n"
 "local env = {}\n"
 "setmetatable(env, { __index = function(t, k)\n"
-"local v = func(k)\n"
-"if v then return v end\n"
 "local v = _ENV[k]\n"
+"if v then return v end\n"
+"local v = func(k)\n"
 "if v then return v end\n"
 "end })\n"
 "traced_pcall(SystemDoFile, path .. '.lua', env, map)\n"
@@ -221,7 +223,20 @@ int LuaContext::map_api_create_entity(lua_State* l)
 int LuaContext::map_api_get_entity_global(lua_State* l)
 {
 	return LuaTools::ExceptionBoundary(l, [&] {
-		return 0;
+		lua_pushvalue(l, lua_upvalueindex(1));
+		auto& map = *CheckMap(l, -1);
+		const std::string& name = LuaTools::CheckString(l, 1);
+
+		EntityPtr entity = nullptr;
+		if (map.IsStarted())
+			entity = map.GetEntities().FindEntity(name);
+
+		if (entity != nullptr && !entity->IsBeRemoved())
+			PushUserdata(l, *entity);
+		else
+			lua_getglobal(l, name.c_str());
+
+		return 1;
 	});
 }
 

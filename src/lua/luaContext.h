@@ -289,6 +289,8 @@ public:
 		// sound
 		sound_api_play_music,
 		sound_api_stop_music,
+		sound_api_load_sound,
+		sound_api_play_sound,
 		// particle
 		particle_api_create,
 		particle_api_play,

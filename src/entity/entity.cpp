@@ -738,6 +738,9 @@ void Entity::CheckCollisionWithEntities()
 	if (!IsOnMap())
 		return;
 
+	if (!IsEnable())
+		return;
+
 	// Åö×²¼ì²â
 	GetMap().CheckCollisionWithEntities(*this);
 
@@ -758,6 +761,10 @@ void Entity::CheckCollisionFromEntities()
 {
 	if (!IsOnMap())
 		return;
+
+	if (!IsEnable())
+		return;
+
 	GetMap().CheckCollisionFromEntities(*this);
 
 	// ÏñËØ¼¶Åö×²¼ì²â

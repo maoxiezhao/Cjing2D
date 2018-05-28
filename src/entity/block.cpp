@@ -3,6 +3,7 @@
 #include "entity\player.h"
 #include "movements\attachMovement.h"
 #include "core\system.h"
+#include "core\sound.h"
 
 Block::Block(const std::string & name, int layer, const Point2 & pos,
 	const std::string& spriteName, bool canPushed, bool canPulled, bool canDesotry):
@@ -10,6 +11,7 @@ Block::Block(const std::string & name, int layer, const Point2 & pos,
 	mCanPushed(canPushed),
 	mCanPulled(canPulled),
 	mCanDestory(canDesotry),
+	mSoundPlay(false),
 	mCanMoveDate(0),
 	mMovingDelay(500),
 	mMovingEntity(nullptr)
@@ -54,7 +56,7 @@ bool Block::StopMoveByPushed()
 	mCanMoveDate = System::Now() + mMovingDelay;
 	ClearMovements();
 	mMovingEntity = nullptr;
-
+	mSoundPlay = false;
 	return true;
 }
 
@@ -87,6 +89,17 @@ void Block::NotifyObstacleReached()
 	}
 
 	Entity::NotifyObstacleReached();
+}
+
+void Block::NotifyPositonChanged()
+{
+	Entity::NotifyPositonChanged();
+
+	if (!mSoundPlay && GetMovement() != nullptr)
+	{
+		Sound::PlaySound("common/pushes.ogg");
+		mSoundPlay = true;
+	}
 }
 
 bool Block::IsCanPushed() const

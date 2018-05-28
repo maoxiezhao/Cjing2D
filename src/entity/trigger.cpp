@@ -36,11 +36,12 @@ void Trigger::SetTriggerTimes(int times)
 
 bool Trigger::CanNotifyTrigger(Entity & otherEntity)
 {
-	return (mTriggerTimes > 0 || mTriggerTimes == -1 ) && GetLuaContext()->CallFunctionWithUserdata(*this, "OnCanNotifyTrigger",
+	return (mTriggerTimes > 0 || mTriggerTimes == -1 ) && 
+		GetLuaContext()->CallFunctionWithUserdata(*this, "OnCanNotifyTrigger",
 		[&](lua_State*l)->int {
 		GetLuaContext()->PushUserdata(l, otherEntity);
 		return 1;
-	});;
+	});
 }
 
 void Trigger::NotifyTrigger(Entity & otherEntity)

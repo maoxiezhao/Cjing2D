@@ -269,6 +269,12 @@ void Music::StopMusic()
 	}
 }
 
+void Music::SetMusicVolume(int volume)
+{
+	if (mCurMusic != nullptr)
+		mCurMusic->SetVolumn(volume);
+}
+
 /**
 *	\brief 返回当前music id，如果不存在，则返回“”
 */

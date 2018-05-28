@@ -9,6 +9,7 @@
 #include"thirdparty\vorbis\vorbisfile.h"
 
 #include<map>
+#include<list>
 
 class OggDecoder;
 
@@ -33,24 +34,26 @@ public:
 	Sound(const std::string soundID);
 	~Sound();
 
-	void Update(int a);
+	bool UpdatePlay();
 	void Load();
-	ALuint DecodeFile(const std::string file);
+	ALuint DecodeFile(const std::string& filePath);
 	void Play();
 
 	// static function
 	static Sound* LoadFile(const std::string soundID);
 	static void Initialize();
 	static void Update();
-	static void Quid();
+	static void Quit();
+	static void PlaySound(const std::string& id);
 
-	static ov_callbacks mCallBacks;		/** 自定义的ovfile加载时的解析数据行为 */
+	static ov_callbacks mCallBacks;					/** 自定义的ovfile加载时的解析数据行为 */
 
 private:
 	std::string mSoundID;
 	ALuint mBuffer;
-	ALuint mSource;
-	std::vector<ALuint> mSources;		/** 管理每个音效的source */
+	ALfloat mVolume;
+	std::list<ALuint> mSources;					/** 管理每个音效的source */
 
-	static std::map<std::string, Sound> mSounds;	/** 管理全部sound实例 */
+	static std::list<Sound*> mCurrentSounds;		/** 当前正在播放的sounds */
+	static std::map<std::string, Sound> mAllSounds;	/** 管理全部sound实例 */
 };

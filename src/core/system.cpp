@@ -55,6 +55,6 @@ void System::Update()
 void System::Quit()
 {
 	Video::Quit();
-	Sound::Quid();
+	Sound::Quit();
 	InputEvent::Quit();
 }

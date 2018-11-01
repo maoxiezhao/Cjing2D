@@ -1,4 +1,13 @@
--- item define
+------- item define -------
+-- item base
 item{id = "apple", description = "apple is a good foot to heart 5 hp."}
 item{id = "gold",  description = "gold is everty thing."}
 item{id = "heart", description = "heart is hearting."}
+-- item bullet
+item{id = "usp_bullet", description = "The bullet for usp."}
+
+-- item weapon
+weapon{id = "axe", description = "工业重工斧."}
+
+weapon{id = "usp", description = "a mini gun."}
+weapon{id = "apg", description = "安保用普通步枪."}

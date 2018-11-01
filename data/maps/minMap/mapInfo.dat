@@ -36,7 +36,7 @@ mapInfo{
         -- 房间信息，如果未设置为随机，位置则取x,y，
         -- 否则取随机位置, 同时房间的大小要符合cellSize整数倍
         name = "room1", 
-        path = "./minMap",
+        path = "./minMap/minMap",
         x = 0,
         y = 0,
         count = 7,         -- 房间个数

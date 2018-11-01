@@ -114,7 +114,7 @@ void Movement::Start()
 */
 void Movement::NotifyPositonChanged()
 {
-	if (mEntity != nullptr)
+	if (mEntity != nullptr && !mEntity->IsBeRemoved())
 	{
 		mEntity->NotifyPositonChanged();
 	}
@@ -125,7 +125,7 @@ void Movement::NotifyPositonChanged()
 */
 void Movement::NotifyMovementChanged()
 {
-	if (mEntity != nullptr)
+	if (mEntity != nullptr && !mEntity->IsBeRemoved())
 	{
 		mEntity->NotifyMovementChanged();
 	}
@@ -148,7 +148,7 @@ void Movement::NotifyMovementFinished()
 
 void Movement::NotifyObstacleReached()
 {
-	if (mEntity != nullptr)
+	if (mEntity != nullptr && !mEntity->IsBeRemoved())
 		mEntity->NotifyObstacleReached();
 }
 
@@ -382,4 +382,9 @@ void Movement::SetWidget(gui::Widget * widget)
 int Movement::GetDirection() const
 {
 	return Direction4::DIRECTION4_DOWN;
+}
+
+int Movement::GetDirection8() const
+{
+	return Direction8::DIRECTION8_DOWN;
 }

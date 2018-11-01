@@ -1,0 +1,20 @@
+animation{
+  name = "usp_bullet_normal",
+  src_image = "entities/bullets.png",
+  frame_delay = 100,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0, num_frames = 3, num_columns = 3 },
+  },
+}
+
+animation{
+  name = "usp_bullet_fire",
+  src_image = "entities/bullets.png",
+  frame_delay = 200,
+  frame_loop = 0,
+  directions = {
+    { x = 0, y = 32, frame_width = 32, frame_height = 32, origin_x = 0, origin_y = 0, num_frames = 4, num_columns = 4 },
+  },
+}
+

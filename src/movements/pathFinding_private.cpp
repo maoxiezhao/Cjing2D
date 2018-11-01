@@ -9,7 +9,7 @@ namespace PathFindingPrivate {
 namespace {
 	const int FINDING_STEP_LINE_CONST = 8;
 	const int FINDING_STEP_INCLINE_CONST = 11;
-	const int FINDING_MAX_DISTANCE = 200;
+	const int FINDING_MAX_DISTANCE = 400;
 
 	const int FINDING_STEP_LENGTH = 8;
 	std::map<int, Point2> PosOffsets = {

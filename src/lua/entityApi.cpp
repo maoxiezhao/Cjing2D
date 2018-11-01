@@ -4,6 +4,7 @@
 #include"game\map.h"
 #include"game\mapData.h"
 #include"game\itemAcquired.h"
+#include"player\playerSprite.h"
 
 #include"entity\tile.h"
 #include"entity\entities.h"
@@ -72,7 +73,9 @@ void LuaContext::RegisterEntityModule()
 	// player 
 	LuaBindClass<Player> playerClass(l, module_player_name, module_entity_name);
 	playerClass.AddDefaultMetaFunction();
-
+	playerClass.AddMethod("SetNormal", &Player::SetNormalState);
+	playerClass.AddMethod("SetStop", &Player::SetStopState);
+	playerClass.AddMethod("GetBodySprite", player_api_get_sprite);
 	// Enemy
 	LuaBindClass<Enemy> enemyClass(l, "Enemy", "Entity");
 	enemyClass.AddDefaultMetaFunction();
@@ -507,5 +510,19 @@ std::shared_ptr<Player> LuaContext::CheckPlayer(lua_State*l, int index)
 bool LuaContext::IsPlyaer(lua_State*l, int index)
 {
 	return IsUserdata(l, index, module_player_name);
+}
+
+/**
+*	\brief EntityÖ´ÐÐTryHurt²Ù×÷
+*/
+int LuaContext::player_api_get_sprite(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		auto& player = *CheckPlayer(l, 1);
+		auto sprite = player.GetPlayerSprites().GetBodySprite();
+
+		PushSprite(l, *sprite);
+		return 1;
+	});
 }
 

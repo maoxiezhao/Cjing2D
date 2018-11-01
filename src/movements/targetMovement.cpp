@@ -107,6 +107,17 @@ void TargetMovement::RefreshMovment()
 
 }
 
+int TargetMovement::GetDirection8() const
+{
+	float angle = GetAngle();
+	if (Geometry::PI_2 - angle <= Geometry::PI_OVER_2)
+		angle = Geometry::PI_2 - angle;
+	angle += Geometry::PI_OVER_2;
+
+	int direction = (int)(angle / Geometry::PI_OVER_4);
+	return direction;
+}
+
 void TargetMovement::Start()
 {
 	mFinished = false;

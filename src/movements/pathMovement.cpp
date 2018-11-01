@@ -88,6 +88,11 @@ int PathMovement::GetDirection() const
 	return mCurPathDir / 2;
 }
 
+int PathMovement::GetDirection8() const
+{
+	return mCurPathDir;
+}
+
 void PathMovement::SetSpeed(int speed)
 {
 	mSpeed = speed;

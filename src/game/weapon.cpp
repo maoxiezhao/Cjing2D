@@ -32,6 +32,7 @@ Weapon::Weapon(const std::string & weaponName, Equipment & equipment) :
 	mControl = std::make_unique<RotateWeaponControl>(*this);
 	mWeaponInstance = std::make_shared<WeaponInstance>(weaponName + "_instance", 0, *this);
 	mWeaponInstance->SetNotifyCollision(mNotifyCollision);
+	mWeaponInstance->SetEnable(false);
 }
 
 void Weapon::Initialize()
@@ -62,7 +63,11 @@ void Weapon::Update()
 	if (mIsAttack)
 	{
 		if (now >= mStopAttackDate)
+		{
 			mIsAttack = false;
+			if (mWeaponInstance)
+				mWeaponInstance->SetEnable(false);
+		}
 	}
 
 	if ( now >= mNextAttackDate)
@@ -145,7 +150,8 @@ void Weapon::Attack()
 		if (canAttack)
 		{
 			// ÉèÖÃ¹¥»÷ÖÐ×´Ì¬
-			mIsAttack = true;			
+			mIsAttack = true;	
+			mWeaponInstance->SetEnable(true);
 			mStopAttackDate = System::Now() + mStopAttackDelay;
 
 			GetLuaContext().CallFunctionWithUserdata(*this, "OnWeaponAttack");

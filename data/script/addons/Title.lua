@@ -53,7 +53,7 @@ function Title.OnLoad()
 	-- title button
 	local buttons = titleFrame:CreateFrame("buttons", { size = {550, 110}, horizontal = "center",vertical = "bottom",})
 	do
-		local is_has_game = HasGame()
+		local is_has_game = not HasGame()
 		local startGame = buttons:CreateTemplateFrame("startGame", "Button", { pos = {0,0},  size = {150, 80}, })
 		startGame:SetStateImage("Normal", "sprites/menus/title/button_start_1.png")
 		startGame:SetStateImage("Hover",  "sprites/menus/title/button_start_2.png")
@@ -86,6 +86,8 @@ function Title.OnLoad()
 	Title._selfFrame = titleFrame
 	Title._buttons = buttons
 	Title._tip = title_tip
+
+	event_system_register_event(EVENT_GAME_END, Title, Title.OpenTitle)
 end
 
 function Title.OnUnLoad()
@@ -102,7 +104,7 @@ function Title.OpenTitle()
 		selfFrame:SetVisible(true)
 
 		-- 
-		Sound.PlayMusic("title_bgm.ogg", true)
+		Sound.PlayMusic("title_music.ogg", true)
 	end
 end
 

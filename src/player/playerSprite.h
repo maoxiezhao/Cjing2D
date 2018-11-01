@@ -35,6 +35,7 @@ public:
 	bool IsFourDirection()const;
 	virtual bool IsCanHurt()const;
 
+	AnimationSpritePtr GetBodySprite();
 private:
 	Player& mPlayer;
 
@@ -53,4 +54,9 @@ inline bool PlayerSprite::IsFourDirection()const
 inline bool PlayerSprite::IsCanHurt() const
 {
 	return false;
+}
+
+inline AnimationSpritePtr PlayerSprite::GetBodySprite()
+{
+	return mBodySprite;
 }

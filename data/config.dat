@@ -1,7 +1,7 @@
 config{
-	title = "Lost",
+	title = "Lost Universe",
 	write_dir = "cjing",
 	normal_width = 800,
 	normal_height= 600,
-	version = "0.2.0",
+	version = "0.1.0",
 }

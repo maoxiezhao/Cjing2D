@@ -1,0 +1,10 @@
+animation{
+  name = "boom_yellow",
+  src_image = "entities/boom.png",
+  frame_delay = 50,
+  frame_loop = -1,
+  directions = {
+    { x = 0, y = 0, frame_width = 32, frame_height = 32, origin_x = 0, origin_y = 0, num_frames = 4, num_columns = 4 },
+  },
+}
+

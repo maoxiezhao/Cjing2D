@@ -40,6 +40,12 @@ void PlayerMovement::Update()
 	}
 	else
 	{
+		// 如果Entity为空，则直接结束
+		if (GetEntity() == nullptr) {
+			Stop();
+			return;
+		}
+
 		// 根据当前方向设置速度
 		GameCommands& gameCommands = GetEntity()->GetGame().GetGameCommands();
 		Direction8 wantedDirection = gameCommands.GetWantedDirection8();
@@ -59,6 +65,11 @@ const string PlayerMovement::GetLuaObjectName() const
 int PlayerMovement::GetDirection() const
 {
 	return static_cast<Direction4>(mDirection / 2);
+}
+
+int PlayerMovement::GetDirection8() const
+{
+	return mDirection;
 }
 
 /**

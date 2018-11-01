@@ -43,8 +43,15 @@ OnInputKeyDown = function( cur_game, key, modify)
 		local slot = Weapon.GetCurSlot(player)
 		Weapon.DropEquip(player, slot)
 	end
+end,
 
+OnStopGame = function(game)
+	if not game then return end
+	game:Stop()
 
+	SetDelayTimer("ResartTitle", 1000, function()
+		event_system_fire_event(EVENT_GAME_END)
+	end)
 end,
 
 }

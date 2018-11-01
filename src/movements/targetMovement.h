@@ -26,6 +26,7 @@ public:
 	void SetMovingSpeed(int movingSpeed);
 	int GetMovingSpeed()const;
 
+	virtual int GetDirection8()const;
 	virtual void Start();
 	virtual void Update();
 	virtual bool IsFinished()const;

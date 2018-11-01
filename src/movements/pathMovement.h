@@ -21,7 +21,9 @@ public:
 	virtual bool IsFinished()const;
 	virtual void Start();
 	virtual void Stop();
+
 	virtual int GetDirection()const;
+	virtual int GetDirection8()const;
 
 	/** base status */
 	void SetSpeed(int speed);

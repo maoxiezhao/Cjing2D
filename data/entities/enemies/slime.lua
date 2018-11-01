@@ -20,6 +20,9 @@ local enemyBaseClass = {
 		local spritePath = "enemies/" .. name
 		local sprite = self:CreateSprite(spritePath)
 		if sprite then 
+			sprite:SetAnimation("walking")
+			sprite:Start()
+
 			self._sprite = sprite
 		end
 	end,
@@ -79,7 +82,6 @@ local enemyBaseClass = {
 			movement:Start(self)
 
 			local degree = source:GetFacingDegree()
-			print(degree)
 			movement:SetSpeed(200)
 			movement:SetMaxDistance(32)
 			movement:SetAngle(-util_to_radians(degree))
@@ -125,16 +127,33 @@ end
 function Enemy:OnCreated()
 	print("Slime Created")
 	local enemy = self
-	init_enmey(enemy, "slime")
+	init_enmey(enemy, "ghost")
 
-	local movement = PathFindingMovement.Create(64)
+	-- 临时临时设置Enmey逻辑！！！！！
+	local movement = TargetMovement.Create()
 	if movement then 
-		movement:Start(enemy, test_function)
-		movement:SetTarget({160, 250})
+		self._movement = movement
+		movement:SetSpeed(64)
+		SetTimer("CheckPlayer", 1000, CheckPlayer)
+	end
+end
+
+function CheckPlayer()
+	local game = Enemy:GetGame()
+	local player = game:GetPlayer()
+	if player then 
+		local movement = Enemy._movement
+		if not movement then return end
+		
+		movement:Start(Enemy, test_function)
+		local pos = player:GetPos()
+		movement:SetTarget(pos[1], pos[2])
 	end
 end
 
 function Enemy:OnUpdate()
+	self:Update()
+
 
 end
 
@@ -155,18 +174,28 @@ function Enemy:OnHurt(source, attack)
 		-- 播放个后退效果，正常时需要判断
 		self:AttackBack(source)
 	else
+		self:AttackBack(source)
 		self:Killed()
 	end
 end
 
 function Enemy:OnKilled()
-	print("DIEDDDDDDDDDDD")
+	local sprite = self:GetSprite()
+	if sprite then 
+		sprite:SetAnimation("dying")
+	end
+
 	self:SetEnable(false)
 end
 
+-- 临时用来设置方向
+local directionMapping = {
+	0,0,1,2,2,3,3,0
+}
 function Enemy:OnMovementChanged(movement)
 	if movement then 
-		local cur_display_direction = movement:GetDirection()
-		self:SetDirection(cur_display_direction)
+		local cur_display_direction = movement:GetDirection8()
+		local final_direction = directionMapping[cur_display_direction + 1] or 0
+		self:SetDirection(final_direction)
 	end
 end

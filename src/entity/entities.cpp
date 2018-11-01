@@ -85,7 +85,7 @@ void Entities::Draw()
 		for (const auto& entity : entitiesInCamera)
 		{
 			int layer = entity->GetLayer();
-			if (entity->IsVisible() && entity->IsEnable())
+			if (entity->IsVisible()) // && entity->IsEnable())
 			{
 				mEntityToDraw[layer].push_back(entity);
 			}

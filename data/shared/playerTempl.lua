@@ -30,13 +30,14 @@ PlayerTempl.metatable = {
 		player:SetProperty(ENTITY_PROPERTY_MAX_HP, max_hp)
 
 		local max_sp = game:GetValue(GAME_PROP_MAX_SP)
-		player:SetProperty(ENTITY_PROPERTY_SP, 100)
-		player:SetProperty(ENTITY_PROPERTY_MAX_SP, 100)
+		player:SetProperty(ENTITY_PROPERTY_SP, max_sp)
+		player:SetProperty(ENTITY_PROPERTY_MAX_SP, max_sp)
 		player:SetProperty(ENTITY_PROPERTY_DEMAGE, 5)
 
 		-- custom define 
 		player:SetTired(false)
-
+		player._hurt_protect_time = 1500
+		player._hurt_protect = false
 		-- weapon
 		player._cur_slot = Weapon.GetCurSlot(player)
 	end,
@@ -80,10 +81,63 @@ PlayerTempl.metatable = {
 		end
 	end,
 
+	-- 临时临时临时临时临时处理角色伤害,绝对不能在全部处理伤害！！
+	OnNotifyCollisionEnemy = function( player, enemy)
+		if enemy and not player._hurt_protect then 
+			local sprite = player:GetBodySprite()
+			if sprite then
+				sprite:SetBlinking(100)
+			end
+
+			Sound.PlaySound("hurt.ogg")
+
+			-- hurt lift
+			local cur_hp = player:GetProperty(ENTITY_PROPERTY_HP)
+			if cur_hp <= 0 then return end
+
+			cur_hp = cur_hp - 1
+			player:SetProperty(ENTITY_PROPERTY_HP, cur_hp)
+
+			if cur_hp <= 0 then 
+				player:SetStop()
+				dialog_system_start_dialog({
+					"end_1"},
+					function()
+						local game = player:GetGame()
+						game:OnStopGame()
+					end)
+				return
+			end
+
+			-- attack back
+			player:AttackBack()
+
+			-- after hurt
+			player._hurt_protect = true
+			SetDelayTimer("PlayerHurtProcted", player._hurt_protect_time,
+				function ()
+					player._hurt_protect = false
+					sprite:SetBlinking(0)
+				end)
+		end
+	end,
 
 	------------------------------------------------------------------
 	--  非C++调用的自定义方法
 	------------------------------------------------------------------
+	AttackBack = function(player)
+		local movement = StraightMovement.Create()
+		if movement then 
+			movement:Start(player, function() player:SetNormal() end)
+
+			local degree = player:GetFacingDegree()
+			movement:SetSpeed(200)
+			movement:SetMaxDistance(32)
+			movement:SetAngle(-util_to_radians(degree) + 1.57)
+		end
+	end,
+
+
 	-- player sp define
 	SetTired = function(player, tired)
 		if tired == player._tired then 

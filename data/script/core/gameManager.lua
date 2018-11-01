@@ -62,7 +62,7 @@ GameBaseClass.OnGameStart = function(self )
 		cur_game:StartDefaultGame()
 
 		-- 新游戏自动保存
-		self:SaveGame()
+		-- self:SaveGame() --temp throw
 	end
 end
 
@@ -92,6 +92,13 @@ GameBaseClass.OnInputKeyDown = function ( self, key, modify )
 	local cur_game = self._cur_game 
 	if cur_game then 
 		cur_game:OnInputKeyDown(key, modify)
+	end
+end
+
+GameBaseClass.GetPlayer = function( self)
+	local cur_game = self._cur_game 
+	if cur_game then 
+		cur_game:GetPlayer()
 	end
 end
 

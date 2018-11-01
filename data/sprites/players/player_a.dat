@@ -1,0 +1,51 @@
+animation{
+  name = "walking",
+  src_image = "players/player_a.png",
+  frame_delay = 150,
+  frame_loop = 0,
+  directions = {
+  { x = 0, y = 64,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 64,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 96,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 96,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  },
+}
+
+animation{
+  name = "stopping",
+  src_image = "players/player_a.png",
+  frame_delay = 150,
+  frame_loop = 0,
+  directions = {
+  { x = 0, y = 0,   frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 0,   frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 32,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  { x = 0, y = 32,  frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 3, num_columns = 3 },
+  },
+}
+
+animation{
+  name = "shifting",
+  src_image = "players/player_a.png",
+  frame_delay = 150,
+  frame_loop = 0,
+  directions = {
+  { x = 0, y = 128, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 128, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 160, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 160, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  },
+}
+
+animation{
+  name = "grabbing",
+  src_image = "players/player_a.png",
+  frame_delay = 250,
+  frame_loop = 0,
+  directions = {
+  { x = 0, y = 192, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 192, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 224, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  { x = 0, y = 224, frame_width = 40, frame_height = 32, origin_x = 25, origin_y = 25, num_frames = 2, num_columns = 2 },
+  },
+}

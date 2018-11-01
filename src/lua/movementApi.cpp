@@ -27,6 +27,7 @@ void LuaContext::RegisterMovementModule()
 	movementBaseCalss.AddMethod("SetPos", &Movement::SetPos);
 	movementBaseCalss.AddMethod("GetPos", &Movement::GetPos);
 	movementBaseCalss.AddMethod("GetDirection", &Movement::GetDirection);
+	movementBaseCalss.AddMethod("GetDirection8", &Movement::GetDirection8);
 
 	// straight movement
 	LuaBindClass<StraightMovement> straightMovementClass(l, module_straight_movement_name, module_movement_name);

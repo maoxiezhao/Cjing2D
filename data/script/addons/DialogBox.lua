@@ -19,12 +19,19 @@ local function dialog_box_update_content(data)
 	local index = data._index 
 	local len = data._len
 
+
 	label:SetText(StringUTF8Sub(content, index + 1))
 	if index >= len then 
 		KillTimer("ConentUpdate")
 		is_load_content = false
+
+		--Sound.PlaySound("message_end.ogg")
+		return
 	end
 	data._index = index + 1
+
+	-- sound effect
+	Sound.PlaySound("message_letter.ogg")
 end
 
 local function dialog_box_quick_finish()
@@ -294,7 +301,7 @@ function DialogBox.OnUnLoad()
 end
 
 function OnEventDialogBoxStart(event, scope, custom, ids, callback)
-	 DialogBox.OpenDialog(ids)
+	 DialogBox.OpenDialog(ids, callback)
 end
 
 function DialogBox.OpenDialog(dialogIDs, callback)

@@ -1,0 +1,32 @@
+particle{
+  name = "meteor",
+  type = "animation",
+  path = "particles/flash",
+  
+  -- property --
+  minLife = 1200,		-- ms
+  maxLife = 1700,
+  
+  minGravity = 0.0,
+  maxGravity = 0.0,
+  
+  minRadialAccel = 0.0,
+  maxRadialAccel = 0.0,
+  
+  minTangentialAccel = 0.0,
+  maxTangentialAccel = 0.0,
+  
+  minSpeed = 100,
+  maxSpeed = 180,
+  
+  startSpin = 230,
+  endSpin = 230,
+  
+  startAlpah = 255,
+  endAlpha = 255,
+  
+  emissionRate = 5,
+  posOffset = {400, 300},		-- 生成位置的偏移量（正负）
+  
+  
+}

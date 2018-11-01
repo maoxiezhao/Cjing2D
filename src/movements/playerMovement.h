@@ -18,11 +18,11 @@ public:
 
 	virtual void Update();
 	virtual const string GetLuaObjectName()const;
-	virtual int GetDirection()const;
 
+	virtual int GetDirection()const;
+	virtual int GetDirection8()const;
 	void ComputeMovement();
 	int GetMovingSpeed()const;
-	Direction8 GetDirection8()const;
 
 	void StartShift(int shiftSpeed);
 	void StopShift();
@@ -39,10 +39,5 @@ private:
 inline int PlayerMovement::GetMovingSpeed()const
 {
 	return mMovingSpeed;
-}
-
-inline Direction8 PlayerMovement::GetDirection8() const
-{
-	return mDirection;
 }
 

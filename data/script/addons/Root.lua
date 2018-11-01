@@ -21,7 +21,7 @@ function OnLoad()
 	-- debug
 	Frame.AddCustom("CreateTemplateFrame", FrameMT.CreateTemplateFrame)
 	Frame.SetDebug(false)		-- 显示Widget Debug 
-	Frame.DrawDebugBoard(false)	-- 显示调试面板
+	Frame.DrawDebugBoard(true)	-- 显示调试面板
 end
 
 function OnUnLoad()
@@ -41,6 +41,8 @@ function OnRootStart()
 		vertical = "center",
 		horizontal = "center"})
 	cur_logo:SetVisible(true)
+	
+	Sound.PlaySound("logo_sound.ogg")
 
 	-- 首先处理异步加载
 	Frame.LoadFont("ui_pixel", "fonts/Mouse.ttf", true)

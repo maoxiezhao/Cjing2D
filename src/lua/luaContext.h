@@ -175,6 +175,7 @@ public:
 		game_api_load,
 		game_api_exists,
 		game_api_start,
+		game_api_stop,
 		game_api_save,
 		game_api_set_value,
 		game_api_get_value,
@@ -323,6 +324,8 @@ public:
 		entity_api_get_game,
 		entity_api_get_sprite,
 		entity_api_try_hurt,
+		// player
+		player_api_get_sprite,
 		// entity create
 		entity_api_create_title,
 		entity_api_create_destimation,

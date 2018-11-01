@@ -26,6 +26,7 @@ void LuaContext::RegisterGameModule()
 	gameClass.AddMethod("SetMaxLife", game_api_set_max_life);
 	gameClass.AddMethod("SetStartLocation", game_api_set_start_location);
 	gameClass.AddMethod("GetPlayer", game_api_get_player);
+	gameClass.AddMethod("Stop", game_api_stop);
 }
 
 void LuaContext::PushGame(lua_State*l, Savegame& saveGame)
@@ -206,6 +207,24 @@ int LuaContext::game_api_start(lua_State*l)
 		return 0;
 	});
 }
+/**
+*	\brief 开始游戏
+*/
+int LuaContext::game_api_stop(lua_State*l)
+{
+	return LuaTools::ExceptionBoundary(l, [&] {
+		std::shared_ptr<Savegame> savegame = CheckSavegame(l, 1);
+
+		Game* game = savegame->GetGame();
+		if (game != nullptr)
+		{	
+			game->Stop();
+		}
+		return 0;
+	});
+}
+
+
 
 /**
 *	\brief 实现game:saveValue(key, value)

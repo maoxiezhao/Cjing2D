@@ -1,0 +1,32 @@
+particle{
+  name = "boom",
+  type = "animation",
+  path = "particles/boom",
+  
+  -- property --
+  minLife = 500,		-- ms
+  maxLife = 650,
+  
+  minGravity = 0.0,
+  maxGravity = 0.0,
+  
+  minRadialAccel = 0.0,
+  maxRadialAccel = 0.0,
+  
+  minTangentialAccel = 0.0,
+  maxTangentialAccel = 0.0,
+  
+  minSpeed = 20,
+  maxSpeed = 20,
+  
+  startSpin = 0,
+  endSpin = 360,
+  
+  startAlpah = 255,
+  endAlpha = 255,
+  
+  emissionRate = 20,
+  posOffset = {10, 10},		-- 生成位置的偏移量（正负）
+  
+  
+}

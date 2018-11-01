@@ -72,6 +72,7 @@ Entity::~Entity()
 	ClearSprites();
 	ClearRemovedSprite();
 	ClearMovements();
+	ClearOldMovements();
 }
 
 /**
@@ -98,8 +99,10 @@ void Entity::Update()
 
 		// 如果移动完毕，则移除movement
 		if (mMovement != nullptr && mMovement->IsFinished())
-			StopMovement();
+			ClearMovements();	//StopMovement();
 	}
+	// clear odl movements
+	ClearOldMovements();
 
 	// attach update
 	UpdateAttachEntities();
@@ -152,8 +155,13 @@ void Entity::Initalized()
 
 void Entity::ClearMovements()
 {
-	mMovement = nullptr;
-	mStopMovement = true;
+	if (mMovement != nullptr)
+	{
+		mMovement->SetEntity(nullptr);
+		mOldMovements.push_back(mMovement);
+		//mMovement = nullptr;
+		mStopMovement = true;
+	}
 }
 
 /**
@@ -700,15 +708,23 @@ void Entity::UpdateState()
 		entity->Update();
 }
 
+void Entity::ClearOldMovements()
+{
+	// 延迟处理mMovment的删除
+	for (auto& movement : mOldMovements)
+	{
+		if (mMovement.get() == movement.get() && mStopMovement)
+		{
+			mMovement = nullptr;
+			break;
+		}
+	}
+	mOldMovements.clear();
+}
+
 void Entity::StopMovement()
 {
-	if (mMovement)
-	{
-		mMovement->SetEntity(nullptr);
-		mMovement->Stop();
-	}
-	mMovement = nullptr;
-	mStopMovement = true;
+	ClearMovements();
 }
 
 void Entity::StartMovement(const std::shared_ptr<Movement>& movement)

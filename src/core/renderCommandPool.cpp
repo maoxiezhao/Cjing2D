@@ -52,7 +52,7 @@ QuadCommand * RenderCommandPool::GetQuadCommand(float globalOrder, GLProgramStat
 		// 未开启LRU管理，则直接创建初始化command
 		auto quadCommand = new QuadCommand();
 		quadCommand->Init(globalOrder, programState,
-			textureID, quads, 1, blendFunc, transfomr, modelView);
+			textureID, 0, quads, 1, blendFunc, transfomr, modelView);
 
 		mQuadCommmandToRemoves.push_back(quadCommand);
 	}

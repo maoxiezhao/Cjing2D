@@ -231,6 +231,7 @@
     <ClCompile Include="src\player\playerState.cpp" />
     <ClCompile Include="src\player\grabbingState.cpp" />
     <ClCompile Include="src\player\pushingState.cpp" />
+    <ClCompile Include="src\player\StoppintState.cpp" />
     <ClCompile Include="src\utils\color.cpp" />
     <ClCompile Include="src\utils\matrix4.cpp" />
     <ClCompile Include="src\utils\nanovg.c" />
@@ -377,12 +378,14 @@
     <ClInclude Include="src\movements\straightMovement.h" />
     <ClInclude Include="src\movements\targetMovement.h" />
     <ClInclude Include="src\player\freeState.h" />
+    <ClInclude Include="src\player\hurtState.h" />
     <ClInclude Include="src\player\mouseState.h" />
     <ClInclude Include="src\player\movementState.h" />
     <ClInclude Include="src\player\playerSprite.h" />
     <ClInclude Include="src\player\playerState.h" />
     <ClInclude Include="src\player\grabbingState.h" />
     <ClInclude Include="src\player\pushingState.h" />
+    <ClInclude Include="src\player\StoppintState.h" />
     <ClInclude Include="src\utils\bevTree.h" />
     <ClInclude Include="src\utils\boundingBox.h" />
     <ClInclude Include="src\utils\color.h" />

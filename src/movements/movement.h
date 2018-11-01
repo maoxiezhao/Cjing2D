@@ -54,6 +54,7 @@ public:
 
 	// display
 	virtual int GetDirection()const;
+	virtual int GetDirection8()const;
 
 	// move
 	virtual bool IsFinished()const;

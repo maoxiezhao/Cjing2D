@@ -1,22 +1,20 @@
-local Map = ...
+local Room = ...
 local EntitySystem = SystemImport("EntitySystem")
 
-function Map:onStarted()
-	print("[lua] map started.")
-	
-	-- init map
-	self:SetBackground("sprites/map/test_bg.png")
-
-	-- test begin
+function Room:OnStarted()
+	print("[lua] Room started.")
+	-- -- test begin
 	local enemey = EntitySystem.CreateEnemy("slime", 128, 160, 0, GAME_DIRECTION_DOWN, "slime")
-	-- test end
+	-- -- test end
 
 end
 
-function Map:onUpdated()
+function Room:OnUpdated()
 
 end
 
-function Map:onDraw()
+function Room:OnDraw()
 
 end
+
+

@@ -211,6 +211,7 @@ public:
 	void UpdateState();
 
 	/***** **** *** movement manager *** ***** *****/
+	void ClearOldMovements();
 	void StopMovement();
 	void StartMovement(const std::shared_ptr<Movement>& movement);
 	const std::shared_ptr<Movement>& GetMovement();
@@ -279,7 +280,8 @@ private:
 	std::vector<std::unique_ptr<EntityState>> mOldState;
 
 	std::shared_ptr<Movement> mMovement;	/** entity 的运动组件 */
-
+	std::vector<std::shared_ptr<Movement> > mOldMovements;
+											/** 清除的movement在这一帧中不可马上删除（报错），留在下一帧Update删除 */
 	Entity* mFacingEntity;
 	Entity* mOverlapEntity;
 

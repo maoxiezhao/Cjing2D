@@ -45,6 +45,7 @@ public:
 	void CheckPosition();
 	void Attack();
 	void SetNormalState();
+	void SetStopState();
 	void NotifyAttack();
 	void Grabbing();
 	void StopGrabbing();

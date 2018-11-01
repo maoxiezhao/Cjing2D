@@ -43,12 +43,14 @@ Direction8 MovementState::GetWantedDirection8() const
 	Debug::CheckAssertion(mPlayerMovement != nullptr,
 		"Used movement without initialized.");
 
-	return mPlayerMovement->GetDirection8();
+	return static_cast<Direction8>( mPlayerMovement->GetDirection8());
 }
 
 void MovementState::NotifyMovementChanged()
 {
-	Direction8 wantedDirection = mPlayerMovement->GetDirection8();
+	Direction8 wantedDirection = static_cast<Direction8>(
+		mPlayerMovement->GetDirection8());
+
 	if (wantedDirection == Direction8::DIRECTION8_NONE)
 	{
 		SetPlayerStopAnimation();

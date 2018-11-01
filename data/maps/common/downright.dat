@@ -1,0 +1,91 @@
+property{
+  x = 0,
+  y = 0,
+  width = 96,
+  height = 96,
+  min_layer = 0,
+  max_layer = 1,
+  tileset = 'minMap',
+}
+
+tile{
+  x = 0,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 20,
+}
+
+tile{
+  x = 32,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 64,
+  y = 0,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 23,
+}
+
+tile{
+  x = 0,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 20,
+}
+
+tile{
+  x = 32,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 64,
+  y = 32,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 21,
+}
+
+tile{
+  x = 0,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 34,
+}
+
+tile{
+  x = 32,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+
+tile{
+  x = 64,
+  y = 64,
+  layer = 0,
+  width = 32,
+  height = 32,
+  pattern = 35,
+}
+

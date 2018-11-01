@@ -24,7 +24,8 @@ function WeaponOverideMT:OnWeaponAttack()
 			bullet:SetFireEntity(cur_player, self)
 			-- 发射子弹
 			bullet:Firing()
-
+			-- sound
+			Sound.PlaySound("shoot.ogg")
 			-- 响应武器默认发射事件
 			self:FireBullet(1)
 		end

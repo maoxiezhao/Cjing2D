@@ -1,0 +1,44 @@
+-- mapInfo
+-- 教程地图
+
+mapInfo{
+  -- main property
+  name = "start",
+  x = 0,
+  y = 0,
+  width = 1920,
+  height = 320,
+  minlayer = 0,
+  maxlayer = 2,
+  minRooms = 1,  -- 最少房间数
+  maxRooms = 1,  -- 最大房间数
+  tileset = 'start',
+
+  -- hallway data
+  randomHallWay    = false,
+  hallWayUpDown    = "./common/updown",
+  hallWayLeftRight = "./common/leftright",
+  hallWayCenter    = "./common/center",
+  hallWayUpleft    = "./common/rightup",
+  hallWayleftdown  = "./common/upleft",
+  hallWaydownright = "./common/leftdown",
+  hallWayrightup   = "./common/downright",
+
+  -- room data
+  random = false,   -- 是否随机大地图，true随机、false不随机
+  path = "room1",-- 不随机时读取的地图
+
+  rooms = {
+      {
+        -- 房间信息，如果未设置为随机，位置则取x,y，
+        -- 否则取随机位置, 同时房间的大小要符合cellSize整数倍
+        name = "room1", 
+        path = "./start/start",
+        x = 0,
+        y = 0,
+        count = 1,         -- 房间个数
+        linkMask = "1111",  --房间链接信息，必然为4长度数字字符串，左到右为“上右下左”
+      },                  -- 先默认所有出口在各个墙的中间
+
+  },
+}

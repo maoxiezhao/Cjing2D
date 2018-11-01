@@ -5,13 +5,15 @@
 #include"entity\chest.h"
 #include"entity\enemy.h"
 
-#include"game\map.h"
-#include"game\equipment.h"
-#include"game\weapon.h"
 #include"player\freeState.h"
 #include"player\mouseState.h"
 #include"player\grabbingState.h"
 #include"player\playerSprite.h"
+#include"player\StoppintState.h"
+
+#include"game\map.h"
+#include"game\equipment.h"
+#include"game\weapon.h"
 #include"core\logger.h"
 #include"gui\core\uiRender.h"
 #include"lua\luaContext.h"
@@ -53,6 +55,8 @@ void Player::Update()
 	// movement update
 	if(GetMovement() != nullptr)
 		GetMovement()->Update();
+
+	ClearOldMovements();
 
 	// equipment update
 	GetEquipment().Update();
@@ -240,7 +244,7 @@ bool Player::IsObstacle(Entity & entity) const
 
 bool Player::IsObstacleEnemy() const
 {
-	return true;
+	return false;
 }
 
 bool Player::IsObstacleBlock() const
@@ -277,6 +281,11 @@ void Player::Attack()
 void Player::SetNormalState()
 {
 	SetState(new MouseState(*this));
+}
+
+void Player::SetStopState()
+{
+	SetState(new StoppingState(*this));
 }
 
 void Player::NotifyAttack()

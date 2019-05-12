@@ -6,5 +6,4 @@
 # Installing
 使用VS2015 Build
 
-# Screenshot
-![Image text](https://raw.githubusercontent.com/maoxiezhao/Cjing2D/master/data/screenshot/screenshot.jpg)
+
